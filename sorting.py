@@ -5,9 +5,9 @@ def selectionsort(list):
     """ Idea: Get the minimum and swap it to the front. """
     n = len(list)
     for i in xrange(0, n-1):
-        minimum = i
-        for j in xrange(i+1, n):
-            if list[j] < list[i]:
+        minimum = i # This is the index of the minimum!
+        for j in xrange(i, n):
+            if list[j] < list[minimum]:
                 minimum = j
         # Swap
         list[minimum], list[i] = list[i], list[minimum]
@@ -133,6 +133,7 @@ def test(algorithm):
     assert algorithm([1,2,3,4,5,6]) == [1,2,3,4,5,6]
     assert algorithm([6,5,4,3,2,1]) == [1,2,3,4,5,6]
     assert algorithm([1,3,7,4,8,9]) == [1,3,4,7,8,9]
+    assert algorithm([1,3,8,4,7,9]) == [1,3,4,7,8,9]
 
 if __name__ == "__main__":
     test(selectionsort)
