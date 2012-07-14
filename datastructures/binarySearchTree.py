@@ -23,10 +23,16 @@ class node(object):
                     doc="The right child of this node.")
 
     def __str__(self):
-        return str(self.key)
+        if self.key != None:
+            return str("Key: %i\tValue:%s" % (self.key, self.data))
+        else:
+            return "NIL"
 
     def __repr__(self):
-        return str(self.key)
+        if self.key != None:
+            return str("Key: %i\tValue:%s" % (self.key, self.data))
+        else:
+            return "NIL"
 
 class binarySearchTree(object):
     """ A binary search tree implementation for learning purposes. """
