@@ -83,11 +83,53 @@ def quicksort(list):
     sort(0, len(list)-1)
     return list
 
+def heapsort(list):
+    import heapq
+
+    h = []
+    for value in list:
+        heapq.heappush(h, value)
+    return [heapq.heappop(h) for i in range(len(h))]
+
+def mergesort(list):
+    def merge(linkeListe, rechteListe):
+        neueListe = []
+        while len(linkeListe) != 0 and len(rechteListe) != 0:
+            if linkeListe[0] <= rechteListe[0]:
+                neueListe.append(linkeListe[0])
+                linkeListe = linkeListe[1:]
+            else:
+                neueListe.append(rechteListe[0])
+                rechteListe = rechteListe[1:]
+
+        while len(linkeListe) != 0:
+            neueListe.append(linkeListe[0])
+            linkeListe = linkeListe[1:]
+
+        while len(rechteListe) != 0:
+            neueListe.append(rechteListe[0])
+            rechteListe = rechteListe[1:]
+        return neueListe
+
+    def sort(list):
+        if len(list) <= 1:
+            return list
+        else:
+            halb = len(list)/2
+            linkeListe  = list[0:halb]
+            rechteListe = list[halb:]
+            linkeListe  = sort(linkeListe)
+            rechteListe = sort(rechteListe)
+            return merge(linkeListe, rechteListe)
+
+    return sort(list)
+
 def test(algorithm):
     """ Some testcases to make sure, that the implementations are 
         not completely wrong. """
     assert algorithm([]) == []
     assert algorithm([1]) == [1]
+    assert algorithm([6,1,1]) == [1,1,6]
     assert algorithm([1,2,3,4,5,6]) == [1,2,3,4,5,6]
     assert algorithm([6,5,4,3,2,1]) == [1,2,3,4,5,6]
     assert algorithm([1,3,7,4,8,9]) == [1,3,4,7,8,9]
@@ -97,4 +139,5 @@ if __name__ == "__main__":
     test(bubblesort)
     test(insertionsort)
     test(quicksort)
-
+    test(heapsort)
+    test(mergesort)
