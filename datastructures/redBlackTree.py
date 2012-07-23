@@ -584,7 +584,7 @@ def test_tree(t, iKeys, dKeys):
         assert t.check_invariants()
     handMadeTests()
 
-if '__main__' == __name__:
+if '__main__' == __name__: # pragma: no branch coverage
     from argparse import ArgumentParser 
     parser = ArgumentParser() 
     parser.add_argument("-t", "--test", 
@@ -606,7 +606,7 @@ if '__main__' == __name__:
         t = rbtree()
         test_tree(t, iKeys, dKeys)
 
-    if args.example:
+    if args.example: # pragma: no cover
         tree = rbtree()
         list = [17, 19, 9, 20, 3, 8, 11, -3, 6 , 7, 2, 2, 17, -4, 17, 5]
         for k, el in enumerate(list):
