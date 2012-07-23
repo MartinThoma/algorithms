@@ -13,6 +13,12 @@
         RB4) Every child of a red node is black.
         RB5) For every node: The number of black nodes in all paths
            to leafs is equal.
+
+    John Reids originals source code:
+    http://code.activestate.com/recipes/576817-red-black-tree/
+
+    My latest source code:
+    https://github.com/MartinThoma/algorithms/blob/master/datastructures/redBlackTree.py
 """
 
 __author__ = "Original by John Reid, edited by Martin Thoma"
@@ -32,20 +38,30 @@ class rbnode(object):
         self._left = None   # Left child
         self._right = None  # Right child
         self._p = None      # Parent
+        self._originalRed = False
+        self._isNil = False
 
     key = property(fget=lambda self: self._key, doc="The node's key")
     red = property(fget=lambda self: self._red, doc="Is the node red?")
     left = property(fget=lambda self: self._left, doc="The node's left child")
     right = property(fget=lambda self: self._right, doc="The node's right child")
     p = property(fget=lambda self: self._p, doc="The node's parent")
+    originalRed = property(fget=lambda self: self._originalRed, doc="for internal usage")
+    isNil = property(fget=lambda self: self._isNil, doc="Is the node a NIL node?")
 
     def __str__(self):
         "String representation."
-        return str(self.key)
+        if self.isNil:
+            return "Node: NIL"
+        else:
+            return str("%s" % self.key)
 
     def __repr__(self):
         "String representation."
-        return str(self.key)
+        if self.isNil:
+            return "Node: NIL"
+        else:
+            return str("Node: %s (%s), (%s, %s)" % (self.key, repr(self.p), repr(self.left), repr(self.right)))
 
 class rbtree(object):
     """
@@ -56,6 +72,7 @@ class rbtree(object):
         "Construct."
         
         self._nil = create_node(key=None)
+        self._nil._isNil = True
         "Our nil node, used for all leaves."
         
         self._root = self.nil
@@ -87,7 +104,8 @@ class rbtree(object):
     
     def minimum(self, x=None):
         """
-        Find the minimum value of the subtree rooted at x.
+        Find the node with the minimum value of the subtree
+        rooted at x.
 
         @param x: the root where you start your search.
         @return: The minimum value in the subtree rooted at x.
@@ -188,6 +206,123 @@ class rbtree(object):
                     self._left_rotate(z.p.p)
         self.root._red = False
 
+    def _transplant(self, u, v):
+        """ 
+            * takes the parent of u and lets it point to v
+            * lets the v's parent be u's parent
+        """
+        if u.p == self.nil:     # u is the root
+            self._root = v
+        elif u == u.p.left:
+            # u is a left child
+            u.p._left = v
+        elif u == u.p.right:
+            # u is a right child
+            u.p._right = v
+        else:
+            assert True
+        v._p = u.p
+
+    def delete_key(self, key):
+        """
+        Delete a key from the tree.
+
+        @param key: the key you want to delete from the tree.
+        @return: False if the key was not in the tree, 
+                 otherwise True.
+        """
+        node = self.search(key)
+        if node == self.nil:
+            return False
+        self.delete_node(node)
+        return True
+
+    def delete_node(self, z):
+        """
+        Delete a node from the tree.
+
+        @param z: the node you want to delete from the tree.
+        """
+        print("delete: %s" % str(z))
+        y = z
+        y._originalRed = y.red
+        if z.left == self.nil:      # z has no left child; case (a)
+            x = z.right
+            self._transplant(z, z.right)
+        elif z.right == self.nil:   # z has no right child; case (b)
+            x = z.left
+            self._transplant(z, z.left)
+        else:
+            y = self.minimum(z.right)
+            y._originalRed = y.red
+            x = y.right
+            if y.p == z:
+                x._p = y
+            else:
+                self._transplant(y, y.right) 
+                y._right = z.right  # case (d) step 1
+                y.right._p = y
+            self._transplant(z, y)  # case (c)
+            y._left = z.left        # and case (d)
+            y.left._p = y           # step 2
+            y._red = z.red
+
+        if not y.originalRed:
+            self._delete_fixup(x)
+
+    def _delete_fixup(self, x):
+        while x != self.root and (not x.red):
+            if x == x.p.left:   # the current node is a left child
+                w = x.p.right   # w is the brother
+
+                assert w != self.nil
+                assert w.left is not None
+
+                if w.red:
+                    w._red = False
+                    x.p._red = True
+                    self._left_rotate(x.p)
+                    w = x.p.right
+
+                if (not w.left.red) and (not w.right.red):
+                    w._red = True
+                    x = x.p
+                else:
+                    if not w.right.red:
+                        w.left._red = False
+                        w._red = True
+                        self._right_rotate(x.p)
+                        w = x.p.right
+
+                    w._red = x.p.red
+                    x.p._red = False
+                    w.right._red = False
+                    self._left_rotate(x.p)
+                    x = self.root
+            else:
+                w = x.p.left   # w is the brother
+                if w.red:
+                    w._red = False
+                    x.p._red = True
+                    self._right_rotate(x.p)
+                    w = x.p.left
+
+                if (not w.right.red) and (not w.left.red):
+                    w._red = True
+                    x = x.p
+                else:
+                    if not w.left.red:
+                        w.right._red = False
+                        w._red = True
+                        self._left_rotate(x.p)
+                        w = x.p.left
+                    w._red = x.p.red
+                    x.p._red = False
+                    w.left._red = False
+                    self._right_rotate(x.p)
+                    x = self.root
+        x._red = False
+
     def _left_rotate(self, x):
         """ Left rotate x. """
         #      W                                  S
@@ -212,7 +347,7 @@ class rbtree(object):
         x._p = y
 
     def _right_rotate(self, y):
-        "Left rotate y."
+        """ Left rotate y. """
         x = y.left
         y._left = x.right
         if x.right != self.nil:
@@ -231,48 +366,57 @@ class rbtree(object):
         """
             @return: True if satisfies all criteria to be red-black tree.
         """
-        
-        def is_red_black_node(node):
-            "@return: num_black"
-            # check has _left and _right or neither
-            if (node.left and not node.right) or (node.right and not node.left):
-                return 0, False
 
-            # check leaves are black
-            if not node.left and not node.right and node.red:
-                return 0, False
+        def is_search_tree(node):
+            if node != None and node != self.nil:
+                if node.left != self.nil:
+                    assert(node.left.key <= node.key)
+                    is_search_tree(node.left)
+                if node.right != self.nil:
+                    assert(node.right.key >= node.key)
+                    is_search_tree(node.right)
+
+        def is_red_black_node(node):
+            """
+                @return: the number of black nodes on the way to the 
+                         leaf (node does NOT count)
+            """
+            # check has _left and _right or neither
+            assert not ((node.left and not node.right) or 
+                        (node.right and not node.left))
+
+            # leaves have to be black
+            assert not ((not node.left and not node.right) and node.red)
 
             # if node is red, check children are black
             if node.red and node.left and node.right:
-                if node.left.red or node.right.red:
-                    return 0, False
-                    
-            # descend tree and check black counts are balanced
-            if node.left and node.right:
-                
-                # check children's parents are correct
-                if self.nil != node.left and node != node.left.p:
-                    return 0, False
-                if self.nil != node.right and node != node.right.p:
-                    return 0, False
+                assert not (node.left.red or node.right.red)
 
-                # check children are ok
-                left_counts, left_ok = is_red_black_node(node.left)
-                if not left_ok:
-                    return 0, False
-                right_counts, right_ok = is_red_black_node(node.right)
-                if not right_ok:
-                    return 0, False
+            # has the current node a left child?
+            if node.left or node.right:
+                # check children's parents are correct
+                assert not (self.nil != node.right and node != node.right.p)
+                assert not (self.nil != node.left and node != node.left.p)
+
+                # check if children are ok
+                left_counts = is_red_black_node(node.left)
+                right_counts = is_red_black_node(node.right)
+
+                if not node.left.red:
+                    left_counts += 1
+                if not node.right.red:
+                    right_counts += 1
 
                 # check children's counts are ok
                 if left_counts != right_counts:
-                    return 0, False
-                return left_counts, True
-            else:
-                return 0, True
-                
-        num_black, is_ok = is_red_black_node(self.root)
-        return is_ok and not self.root._red
+                    write_tree(self, "test", show_nil=True)
+                assert left_counts == right_counts
+                return left_counts
+            return 0
+
+        is_search_tree(self.root)
+        is_red_black_node(self.root)
+        return not self.root._red
 
 def write_tree_as_dot(t, f, show_nil=False):
     """
@@ -308,18 +452,36 @@ def write_tree_as_dot(t, f, show_nil=False):
     visit_node(t.root)
     print >> f, "}"
 
-def test_tree(t, keys):
+def write_tree(t, filename, show_nil=True):
+    import os
+    "Write the tree as an SVG file."
+    f = open('%s.dot' % filename, 'w')
+    write_tree_as_dot(t, f, show_nil)
+    f.close()
+    os.system('dot %s.dot -Tsvg -o %s.svg' % (filename, filename))
+    os.system('rm %s.dot' % filename)
+
+def test_tree(t, iKeys, dKeys):
     """
-        Insert keys one by one checking invariants and membership as 
+        Insert iKeys one by one checking invariants and membership as 
         we go.
+        @param t: the tree that gets tested
+        @param iKeys: the keys that get inserted
+        @param dKeys: the keys that get deleted
     """
     assert t.check_invariants()
-    for i, key in enumerate(keys):
-        for key2 in keys[:i]:
+    for i, key in enumerate(iKeys):
+        for key2 in iKeys[:i]:
+            # make sure that the inserted nodes are still there
             assert t.nil != t.search(key2)
-        for key2 in keys[i:]:
-            assert (t.nil == t.search(key2)) ^ (key2 in keys[:i])
+        for key2 in iKeys[i:]:
+            assert (t.nil == t.search(key2)) ^ (key2 in iKeys[:i])
         t.insert_key(key)
+        assert t.check_invariants()
+
+    for i, key in enumerate(dKeys):
+        write_tree(t, "i" + str(i), True)
+        t.delete_key(key)
         assert t.check_invariants()
 
 if '__main__' == __name__:
@@ -335,20 +497,14 @@ if '__main__' == __name__:
                       help="generate an example red-black tree")
     args = parser.parse_args()
 
-    import os, sys, numpy.random as R
-    def write_tree(t, filename):
-        "Write the tree as an SVG file."
-        f = open('%s.dot' % filename, 'w')
-        write_tree_as_dot(t, f)
-        f.close()
-        os.system('dot %s.dot -Tsvg -o %s.svg' % (filename, filename))
-
+    import sys, numpy.random as R
     if args.test:
         R.seed(2)
         size = 50
-        keys = R.randint(-50, 50, size=size)
+        iKeys = R.randint(-50, 50, size=size)
+        dKeys = R.randint(-50, 50, size=size)
         t = rbtree()
-        test_tree(t, keys)
+        test_tree(t, iKeys, dKeys)
 
     if args.example:
         tree = rbtree()
@@ -356,3 +512,6 @@ if '__main__' == __name__:
         for k, el in enumerate(list):
             tree.insert_key(el)
             write_tree(tree, 'tree' + str(k))
+    t = rbtree()
+    t.insert_key(1234)
+    print(t.search(1234))
