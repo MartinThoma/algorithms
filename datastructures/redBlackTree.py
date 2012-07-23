@@ -94,6 +94,7 @@ class rbtree(object):
         """
         if None == x:
             x = self.root
+
         while x != self.nil and key != x.key:
             if key < x.key:
                 x = x.left
@@ -108,10 +109,15 @@ class rbtree(object):
         rooted at x.
 
         @param x: the root where you start your search.
-        @return: The minimum value in the subtree rooted at x.
+        @return: The node with the minimum value in the subtree 
+                rooted at x.
         """
         if None == x:
             x = self.root
+
+        if x == self.nil:
+            return self.nil
+
         while x.left != self.nil:
             x = x.left
         return x
@@ -126,6 +132,10 @@ class rbtree(object):
         """
         if None == x:
             x = self.root
+
+        if x == self.nil:
+            return self.nil
+
         while x.right != self.nil:
             x = x.right
         return x
@@ -206,23 +216,6 @@ class rbtree(object):
                     self._left_rotate(z.p.p)
         self.root._red = False
 
-    def _transplant(self, u, v):
-        """ 
-            * takes the parent of u and lets it point to v
-            * lets the v's parent be u's parent
-        """
-        if u.p == self.nil:     # u is the root
-            self._root = v
-        elif u == u.p.left:
-            # u is a left child
-            u.p._left = v
-        elif u == u.p.right:
-            # u is a right child
-            u.p._right = v
-        else:
-            assert True
-        v._p = u.p
-
     def delete_key(self, key):
         """
         Delete a key from the tree.
@@ -237,91 +230,156 @@ class rbtree(object):
         self.delete_node(node)
         return True
 
-    def delete_node(self, z):
+    def delete_node(self, n):
         """
         Delete a node from the tree.
 
-        @param z: the node you want to delete from the tree.
+        @param n: the node you want to delete from the tree.
         """
-        print("delete: %s" % str(z))
-        y = z
-        y._originalRed = y.red
-        if z.left == self.nil:      # z has no left child; case (a)
-            x = z.right
-            self._transplant(z, z.right)
-        elif z.right == self.nil:   # z has no right child; case (b)
-            x = z.left
-            self._transplant(z, z.left)
+        # The following source was "translated" from
+        # this Java source:
+        # http://en.literateprograms.org/Red-black_tree_(Java)
+        if n.left != self.nil and n.right != self.nil:
+            pred = self.maximum(n.left)
+            n._key = pred.key
+            n = pred
+
+        assert n.left == self.nil or n.right == self.nil
+
+        if n.right == self.nil:
+            child = n.left
         else:
-            y = self.minimum(z.right)
-            y._originalRed = y.red
-            x = y.right
-            if y.p == z:
-                x._p = y
+            child = n.right
+
+        if not n.red:
+            n._red = child.red
+            self._deleteCase1(n)
+        self._replaceNode(n, child)
+
+        if self.root.red:
+            self.root._red = False
+
+    def _replaceNode(self, oldn, newn):
+        if oldn.p == self.nil:
+            self._root = newn
+        else:
+            if oldn == oldn.p.left:
+                oldn.p._left = newn
             else:
-                self._transplant(y, y.right) 
-                y._right = z.right  # case (d) step 1
-                y.right._p = y
-            self._transplant(z, y)  # case (c)
-            y._left = z.left        # and case (d)
-            y.left._p = y           # step 2
-            y._red = z.red
+                oldn.p._right = newn
+        if newn != self.nil:
+            newn._p = oldn.p
 
-        if not y.originalRed:
-            self._delete_fixup(x)
+    def _deleteCase1(self, n):
+        """ In this case, N has become the root node. The deletion 
+            removed one black node from every path, so no properties 
+            are violated. 
+        """
+        if n.p == self.nil:
+            return
+        else:
+            self._deleteCase2(n)
 
-    def _delete_fixup(self, x):
-        while x != self.root and (not x.red):
-            if x == x.p.left:   # the current node is a left child
-                w = x.p.right   # w is the brother
-
-                assert w != self.nil
-                assert w.left is not None
-
-                if w.red:
-                    w._red = False
-                    x.p._red = True
-                    self._left_rotate(x.p)
-                    w = x.p.right
-
-                if (not w.left.red) and (not w.right.red):
-                    w._red = True
-                    x = x.p
-                else:
-                    if not w.right.red:
-                        w.left._red = False
-                        w._red = True
-                        self._right_rotate(x.p)
-                        w = x.p.right
-
-                    w._red = x.p.red
-                    x.p._red = False
-                    w.right._red = False
-                    self._left_rotate(x.p)
-                    x = self.root
+    def _deleteCase2(self, n):
+        """ N has a red sibling. In this case we exchange the colors 
+            of the parent and sibling, then rotate about the parent 
+            so that the sibling becomes the parent of its former 
+            parent. This does not restore the tree properties, but 
+            reduces the problem to one of the remaining cases. """
+        if self._sibling(n).red:
+            n.p.red = True
+            self._sibling(n)._red = False
+            if n == n.p.left:
+                self._left_rotate(n.p)
             else:
-                w = x.p.left   # w is the brother
-                if w.red:
-                    w._red = False
-                    x.p._red = True
-                    self._right_rotate(x.p)
-                    w = x.p.left
+                self._right_rotate(n.p)
+        self._deleteCase3(n)
 
-                if (not w.right.red) and (not w.left.red):
-                    w._red = True
-                    x = x.p
-                else:
-                    if not w.left.red:
-                        w.right._red = False
-                        w._red = True
-                        self._left_rotate(x.p)
-                        w = x.p.left
-                    w._red = x.p.red
-                    x.p._red = False
-                    w.left._red = False
-                    self._right_rotate(x.p)
-                    x = self.root
-        x._red = False
+    def _deleteCase3(self, n):
+        """ In this case N's parent, sibling, and sibling's children 
+            are black. In this case we paint the sibling red. Now 
+            all paths passing through N's parent have one less black 
+            node than before the deletion, so we must recursively run 
+            this procedure from case 1 on N's parent.
+        """
+        tmp = self._sibling(n)
+        if not n.p.red and not tmp.red and not tmp.left and not tmp.right:
+            tmp._red = True
+            self._deleteCase1(n.p)
+        else:
+            self._deleteCase4(n)
+
+    def _deleteCase4(self, n):
+        """ N's sibling and sibling's children are black, but its 
+            parent is red. We exchange the colors of the sibling and 
+            parent; this restores the tree properties. 
+        """
+        tmp = self._sibling(n)
+        if n.p.red and not tmp.red and not tmp.left.red and not tmp.right.red:
+            tmp._red = True
+            n.p._red = False
+        else:
+            self._deleteCase5(n)
+
+    def _deleteCase5(self, n):
+        """ There are two cases handled here which are mirror images 
+            of one another:
+                N's sibling S is black, S's left child is red, S's 
+                right child is black, and N is the left child of its 
+                parent. We exchange the colors of S and its left 
+                sibling and rotate right at S.
+
+                N's sibling S is black, S's right child is red, 
+                S's left child is black, and N is the right child of 
+                its parent. We exchange the colors of S and its right 
+                sibling and rotate left at S.
+                Both of these function to reduce us to the situation 
+                described in case 6. """
+        tmp = self._sibling(n)
+
+        if n == n.p.left and not tmp.red and tmp.left and not tmp.right:
+            tmp._red = True
+            tmp.left._red = False
+            self._right_rotate(tmp)
+        elif n == n.p.right and not tmp.red and tmp.right and not tmp.left:
+            tmp._red = True
+            tmp.right._red = False
+            self._left_rotate(tmp)
+
+        self._deleteCase6(n)
+
+    def _deleteCase6(self, n):
+        """ There are two cases handled here which are mirror images 
+            of one another:
+            N's sibling S is black, S's right child is red, and N is 
+            the left child of its parent. We exchange the colors of 
+            N's parent and sibling, make S's right child black, then
+            rotate left at N's parent.
+            N's sibling S is black, S's left child is red, and N is 
+            the right child of its parent. We exchange the colors of 
+            N's parent and sibling, make S's left child black, then 
+            rotate right at N's parent.
+        """
+        tmp = self._sibling(n)
+
+        tmp._red = n.p.red
+        n.p._red = False
+
+        if n == n.p.left:
+            assert tmp.right.red
+            tmp.right._red = False
+            self._left_rotate(n.p)
+        else:
+            assert tmp.left.red
+            tmp.left._red = False
+            self._right_rotate(n.p)
+
+    def _sibling(self, n):
+        assert n.p != self.nil
+        if n == n.p.left:
+            return n.p.right
+        else:
+            return n.p.left
 
     def _left_rotate(self, x):
         """ Left rotate x. """
@@ -461,6 +519,48 @@ def write_tree(t, filename, show_nil=True):
     os.system('dot %s.dot -Tsvg -o %s.svg' % (filename, filename))
     os.system('rm %s.dot' % filename)
 
+def handMadeTests():
+    t = rbtree()
+    assert t.minimum() == t.nil
+    assert t.maximum() == t.nil
+    assert t.check_invariants()
+    t.insert_key(123)
+    assert repr(t.nil) == "Node: NIL"
+    assert repr(t.search(123)) == "Node: 123 (Node: NIL), (Node: NIL, Node: NIL)"
+    assert t.minimum().key == 123
+    assert t.maximum().key == 123
+    assert t.check_invariants()
+    t.insert_key(1000)
+    assert t.minimum().key == 123
+    assert t.maximum().key == 1000
+    assert t.check_invariants()
+    t.insert_key(99)
+    assert t.minimum().key == 99
+    assert t.maximum().key == 1000
+    assert t.check_invariants()
+    t.insert_key(124)
+    assert t.minimum().key == 99
+    assert t.maximum().key == 1000
+    assert t.check_invariants()
+    t.insert_key(125)
+    assert t.minimum().key == 99
+    assert t.maximum().key == 1000
+    assert t.check_invariants()
+    t.insert_key(100)
+    assert t.minimum().key == 99
+    assert t.maximum().key == 1000
+    assert t.check_invariants()
+    write_tree(t, "testHand", show_nil=True)
+    t.delete_key(99)
+    assert t.minimum().key == 100
+    assert t.maximum().key == 1000
+    assert t.check_invariants()
+
+    t.delete_key(123)
+    assert t.minimum().key == 100
+    assert t.maximum().key == 1000
+    assert t.check_invariants()
+
 def test_tree(t, iKeys, dKeys):
     """
         Insert iKeys one by one checking invariants and membership as 
@@ -480,29 +580,29 @@ def test_tree(t, iKeys, dKeys):
         assert t.check_invariants()
 
     for i, key in enumerate(dKeys):
-        write_tree(t, "i" + str(i), True)
         t.delete_key(key)
         assert t.check_invariants()
+    handMadeTests()
 
 if '__main__' == __name__:
-    from argparse import ArgumentParser
-    parser = ArgumentParser()
-    parser.add_argument("-t", "--test",
-                      action="store_true", dest="test",
-                      default=False,
-                      help="check if the tree implementation works")
-    parser.add_argument("--example",
-                      action="store_true", dest="example",
-                      default=False,
-                      help="generate an example red-black tree")
-    args = parser.parse_args()
+    from argparse import ArgumentParser 
+    parser = ArgumentParser() 
+    parser.add_argument("-t", "--test", 
+                      action="store_true", dest="test", 
+                      default=False, 
+                      help="check if the tree implementation works") 
+    parser.add_argument("--example", 
+                      action="store_true", dest="example", 
+                      default=False, 
+                      help="generate an example red-black tree") 
+    args = parser.parse_args() 
 
-    import sys, numpy.random as R
-    if args.test:
-        R.seed(2)
+    import sys, numpy.random 
+    if args.test: 
+        numpy.random.seed(2) 
         size = 50
-        iKeys = R.randint(-50, 50, size=size)
-        dKeys = R.randint(-50, 50, size=size)
+        iKeys = numpy.random.randint(-50, 50, size=size)
+        dKeys = numpy.random.randint(-50, 50, size=size)
         t = rbtree()
         test_tree(t, iKeys, dKeys)
 
@@ -512,6 +612,3 @@ if '__main__' == __name__:
         for k, el in enumerate(list):
             tree.insert_key(el)
             write_tree(tree, 'tree' + str(k))
-    t = rbtree()
-    t.insert_key(1234)
-    print(t.search(1234))
