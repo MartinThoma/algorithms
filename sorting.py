@@ -126,7 +126,7 @@ def mergesort(list):
 
 def countingsort(A):
     """ 
-        Sort the list A.
+        Sort the list A. A has to be a list of integers.
 
         Every element of the list A has to be non-negative.
 
@@ -153,6 +153,32 @@ def countingsort(A):
 
     return B
 
+# see also: http://www.koders.com/python/fidF772268CB8176B16FFA7B81B012D0253E894DBEB.aspx?s=sort#L1
+def radixsort(list, n=10, maxLen=0):
+    """ Sort the list.
+
+        @param n: number of bins
+        @param maxLen: maximum number of digits of list elements
+    """
+
+    if len(list) == 0:
+        return []
+    elif maxLen == 0:
+        maxLen = max(map(lambda x : len(str(x)), list))
+
+    for x in range(maxLen):
+        bins = [[] for i in xrange(n)]
+
+        for el in list:
+            bins[(el / 10**x ) % n].append(el)
+
+        list = []
+
+        for section in bins:
+            list.extend(section)
+
+    return list
+
 def test(algorithm):
     """ Some testcases to make sure, that the implementations are 
         not completely wrong. """
@@ -172,3 +198,4 @@ if __name__ == "__main__":
     test(heapsort)
     test(mergesort)
     test(countingsort)
+    test(radixsort)
