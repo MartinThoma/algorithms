@@ -124,34 +124,34 @@ def mergesort(list):
 
     return sort(list)
 
-def countingSort(A, maximum=-1):
+def countingsort(A):
     """ 
         Sort the list A.
 
-        Every element of the list A has to be smaller than maximum
-        and non-negative.
+        Every element of the list A has to be non-negative.
 
-        @param maximum: has to be greater or equal to max(A)
+        @param A: the list that should get sorted
         @return the sorted list
     """
-    if maximum == -1:
-        if len(A) > 0:
-            maximum = max(A)
-        else:
-            maximum = 0
+    if len(A) == 0:
+        return []
 
-    # bestimmt Häufigkeit jeder Zahl in A
-    C = [0 for i in xrange(maximum+1)]
+    C = [0] * (max(A)+1)
+    B = [""] * len(A)
+
+    # Count the number of elements
     for el in A:
         C[el] += 1
+    # Now C[i] contains how often i is in A
 
-    result = []
-    for j in xrange(maximum+1):
-        # gibt jede Zahl j in A genau K[j]-mal aus
-        for k in xrange(C[j]):
-            result.append(j)
+    for index in xrange(1, len(C)):
+        C[index] += C[index-1]
 
-    return result
+    for el in A[::-1]:
+        B[C[el]-1] = el
+        C[el] -= 1
+
+    return B
 
 def test(algorithm):
     """ Some testcases to make sure, that the implementations are 
@@ -171,4 +171,4 @@ if __name__ == "__main__":
     test(quicksort)
     test(heapsort)
     test(mergesort)
-    test(countingSort)
+    test(countingsort)
