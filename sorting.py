@@ -124,6 +124,35 @@ def mergesort(list):
 
     return sort(list)
 
+def countingSort(A, maximum=-1):
+    """ 
+        Sort the list A.
+
+        Every element of the list A has to be smaller than maximum
+        and non-negative.
+
+        @param maximum: has to be greater or equal to max(A)
+        @return the sorted list
+    """
+    if maximum == -1:
+        if len(A) > 0:
+            maximum = max(A)
+        else:
+            maximum = 0
+
+    # bestimmt Häufigkeit jeder Zahl in A
+    C = [0 for i in xrange(maximum+1)]
+    for el in A:
+        C[el] += 1
+
+    result = []
+    for j in xrange(maximum+1):
+        # gibt jede Zahl j in A genau K[j]-mal aus
+        for k in xrange(C[j]):
+            result.append(j)
+
+    return result
+
 def test(algorithm):
     """ Some testcases to make sure, that the implementations are 
         not completely wrong. """
@@ -142,3 +171,4 @@ if __name__ == "__main__":
     test(quicksort)
     test(heapsort)
     test(mergesort)
+    test(countingSort)
