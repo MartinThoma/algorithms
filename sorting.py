@@ -164,7 +164,7 @@ def radixsort(list, n=10, maxLen=0):
     if len(list) == 0:
         return []
     elif maxLen == 0:
-        maxLen = max(map(lambda x : len(str(x)), list))
+        maxLen = max(map(lambda x : len(str(abs(x))), list))
 
     for x in range(maxLen):
         bins = [[] for i in xrange(n)]
@@ -179,7 +179,7 @@ def radixsort(list, n=10, maxLen=0):
 
     return list
 
-def test(algorithm):
+def test(algorithm, negatives=True):
     """ Some testcases to make sure, that the implementations are 
         not completely wrong. """
     assert algorithm([]) == []
@@ -189,6 +189,8 @@ def test(algorithm):
     assert algorithm([6,5,4,3,2,1]) == [1,2,3,4,5,6]
     assert algorithm([1,3,7,4,8,9]) == [1,3,4,7,8,9]
     assert algorithm([1,3,8,4,7,9]) == [1,3,4,7,8,9]
+    if negatives:
+        assert algorithm([1,-3,8,4,7,9]) == [-3,1,4,7,8,9]
 
 if __name__ == "__main__":
     test(selectionsort)
@@ -197,5 +199,5 @@ if __name__ == "__main__":
     test(quicksort)
     test(heapsort)
     test(mergesort)
-    test(countingsort)
-    test(radixsort)
+    test(countingsort, False)
+    test(radixsort, False)
