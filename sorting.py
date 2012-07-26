@@ -124,6 +124,20 @@ def mergesort(list):
 
     return sort(list)
 
+def gnomesort(list):
+    position = 0
+    while position < len(list) - 1:
+        i = position
+        if list[i] <= list[i + 1]: # correct order
+            position += 1
+        else:
+            list[i], list[i + 1] = list[i + 1], list[i] # swap
+            if position != 0:
+                position -= 1
+            else:
+                position += 1
+    return list
+
 def countingsort(A):
     """ 
         Sort the list A. A has to be a list of integers.
@@ -201,3 +215,4 @@ if __name__ == "__main__":
     test(mergesort)
     test(countingsort, False)
     test(radixsort, False)
+    test(gnomesort)
