@@ -168,26 +168,29 @@ def countingsort(A):
     return B
 
 # see also: http://www.koders.com/python/fidF772268CB8176B16FFA7B81B012D0253E894DBEB.aspx?s=sort#L1
-def radixsort(list, n=10, maxLen=0):
+def radixsort(list, n=10, d=0):
     """ Sort the list.
+        This method has been used to sort punched cards.
 
-        @param n: number of bins
-        @param maxLen: maximum number of digits of list elements
+        @param n: number different characters in a number (base)
+        @param d: maximum number of digits of list elements
     """
 
     if len(list) == 0:
         return []
-    elif maxLen == 0:
-        maxLen = max(map(lambda x : len(str(abs(x))), list))
+    elif d == 0:
+        d = max(map(lambda x : len(str(abs(x))), list))
 
-    for x in range(maxLen):
+    for x in range(d):
+        # create an empty bin for each possible digit
         bins = [[] for i in xrange(n)]
 
+        # sort the number according to the digits in the bins
         for el in list:
             bins[(el / 10**x ) % n].append(el)
 
+        # merge all bins to one list
         list = []
-
         for section in bins:
             list.extend(section)
 
