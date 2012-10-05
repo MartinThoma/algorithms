@@ -12,6 +12,8 @@ about interview questions. One of them was:
 I've added some sample files and directories for you to test if 
 your solution works.
 
+If you want to reset the directory, you can use `git checkout -f HEAD`.
+
 rm
 --
 You should read [man rm](http://unixhelp.ed.ac.uk/CGI/man-cgi?rm).
