@@ -43,11 +43,16 @@ example tree, that is generated:
 A correct command should result in:
 
 ```
- .
- |-- another folder
- |   |-- analysis.tex
- |-- index.html
- |-- README.md
+.
+|-- another folder
+|   `-- analysis.tex
+|-- index.html
+|-- README.md
+`-- sample.tmp
+    `-- subfolder
+        |-- inner2
+        `-- inner folder
+            `-- gimp.txt
 ```
 
 rm
@@ -61,4 +66,6 @@ Some options you should know are:
 Why does(n't) this work?
 ------------------------
 `rm -r *.tmp`
+
+`find . -type f -name '*.tmp' -exec rm -rf {} \;`
 
