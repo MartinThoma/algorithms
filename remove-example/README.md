@@ -14,6 +14,31 @@ your solution works.
 
 If you want to reset the directory, you can use `git checkout -f HEAD`.
 
+If you want to print the files, you can use `tree -a .`. This is the
+example tree, that is generated:
+
+.
+|-- another folder
+|   |-- analysis.tex
+|   |-- test.tmp
+|   `-- .tmp
+|-- index.html
+|-- README.md
+|-- sample.tmp
+|   |-- inner.tmp
+|   |-- subfolder
+|   |   |-- inner2
+|   |   |   `-- abc.tmp
+|   |   |-- inner folder
+|   |   |   |-- asdf.tmp
+|   |   |   `-- gimp.txt
+|   |   |-- inner.tmp
+|   |   `-- .tmp
+|   `-- .tmp
+|-- test.tmp
+`-- .tmp
+
+
 rm
 --
 You should read [man rm](http://unixhelp.ed.ac.uk/CGI/man-cgi?rm).
@@ -24,4 +49,5 @@ Some options you should know are:
 
 Why does(n't) this work?
 ------------------------
-* `rm -r *.tmp`
+`rm -r *.tmp`:
+
