@@ -17,12 +17,15 @@ if __name__ == "__main__":
     # Add more options if you like
     parser.add_argument("-f", "--file", dest="myFilenameVariable",
                       help="write report to FILE", metavar="FILE")
-    parser.add_argument("-n", metavar='N', type=int, dest="n", default=1000000,
-                        help="The number of numbers you want to generate.")
-    parser.add_argument("-min", metavar='N', type=int, dest="min", default=-1000,
-                        help="The minimum number that might get generated.")
-    parser.add_argument("-max", metavar='N', type=int, dest="max", default=1000,
-                        help="The maximum number that might get generated.")
+    parser.add_argument("-n", metavar='N', type=int, dest="n", 
+                        default=1000000, help="The number of "
+                        + "numbers you want to generate.")
+    parser.add_argument("-min", metavar='N', type=int, dest="min", 
+                        default=-1000, help="The minimum number "
+                        + "that might get generated.")
+    parser.add_argument("-max", metavar='N', type=int, dest="max", 
+                        default=1000, help="The maximum number that "
+                        + "might get generated.")
     args = parser.parse_args()
     print("Started generating")
     generateNumbers(args.min, args.max, args.n)

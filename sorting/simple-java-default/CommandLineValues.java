@@ -17,6 +17,10 @@ public class CommandLineValues {
             usage = "sorted output file")
     private File output;
 
+    @Option(name = "-m", aliases = { "--method" }, required = true,
+            usage = "which method should get used for sorting (minSearch, simple, parallel)")
+    private String method;
+
     private boolean errorFree = false;
 
     public CommandLineValues(String... args) {
@@ -61,7 +65,16 @@ public class CommandLineValues {
      *
      * @return The source file.
      */
-    public File getOuput() {
+    public File getOutput() {
         return output;
+    }
+
+    /**
+     * Returns the source file.
+     *
+     * @return The source file.
+     */
+    public String getMethod() {
+        return method;
     }
 }

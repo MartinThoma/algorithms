@@ -1,59 +1,13 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
 public class Main {
-    private static List<Integer> readNumbers(File source) {
-        List<Integer> numbers = new ArrayList<Integer>();
-        if (source.canRead()) {
-            try {
-                String line;
-                FileInputStream fis = new FileInputStream(source);
-                InputStreamReader in = new InputStreamReader(fis, "UTF-8");
-                BufferedReader br = new BufferedReader(in);
-                while ((line = br.readLine()) != null) {
-                    numbers.add(Integer.parseInt(line));
-                }
-            } catch (FileNotFoundException e) {
-                System.err.println("File was not found");
-            } catch (UnsupportedEncodingException e) {
-                System.err.println("Encoding was not supported");
-                System.err.println(e);
-            } catch (IOException e) {
-                System.err.println("IOException");
-                System.err.println(e);
-            }
-        }
-        return numbers;
-    }
+    public static String version = "1.0.7";
+    public static int fileCounter = 0;
 
-    private static void writeNumbers(List<Integer> numbers, File dest) {
-        try {
-            FileWriter writer = new FileWriter(dest);
-            for (int str : numbers) {
-                writer.write(str + "\n");
-            }
-            writer.close();
-        } catch (IOException e) {
-            System.err.println("IOException");
-            System.err.println(e);
-        }
-    }
-
-    /**
-     * @param args
-     */
     public static void main(String[] args) {
         CommandLineValues values = new CommandLineValues(args);
         CmdLineParser parser = new CmdLineParser(values);
@@ -64,11 +18,52 @@ public class Main {
             System.exit(1);
         }
 
-        System.out.println("Read numbers");
-        List<Integer> numbers = readNumbers(values.getInput());
-        Collections.sort(numbers);
-        System.out.println("Write numbers");
-        writeNumbers(numbers, values.getOuput());
+        System.out.println("Version " + version);
+
+        if (values.getMethod().equals("simple")) {
+            System.out.println("Read numbers");
+            long startTime = System.nanoTime();
+            // List<Integer> numbers = readNumbers(values.getInput());
+            int[] numbers = SimpleSorting.readNumbersInArray(values.getInput());
+            long endTime = System.nanoTime();
+            System.out.println("Needed " + (endTime - startTime) / 1000000000.0
+                    + " seconds for reading");
+
+            startTime = System.nanoTime();
+            // Collections.sort(numbers);
+            Arrays.sort(numbers);
+            endTime = System.nanoTime();
+            System.out.println("Needed " + (endTime - startTime) / 1000000000.0
+                    + " seconds for sorting");
+
+            System.out.println("Write numbers");
+            startTime = System.nanoTime();
+            SimpleSorting.writeNumbers(numbers, values.getOutput());
+            endTime = System.nanoTime();
+            System.out.println("Needed " + (endTime - startTime) / 1000000000.0
+                    + " seconds for writing");
+        } else if (values.getMethod().equals("parallel")) {
+            long startTime = System.nanoTime();
+            try {
+                ParallelMergesort.parallelSorting(values.getInput(), values.getOutput());
+            } catch (IOException e) {
+                System.err.println("IOException occured:");
+                System.err.println(e);
+            }
+            long endTime = System.nanoTime();
+            System.out.println("Needed " + (endTime - startTime) / 1000000000.0
+                    + " seconds for reading, sorting and writing.");
+        } else if (values.getMethod().equals("minSearch")) {
+            try {
+                SimpleSorting.findMinSort(values.getInput(), values.getOutput());
+            } catch (IOException e) {
+                System.err.println(e);
+            }
+        } else {
+            System.err.println("You didn't specify a valid sorting "
+                    + "procedure.");
+        }
+
         System.out.println("Finished");
     }
 }
