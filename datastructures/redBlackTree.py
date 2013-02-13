@@ -287,7 +287,7 @@ class rbtree(object):
             parent. This does not restore the tree properties, but 
             reduces the problem to one of the remaining cases. """
         if self._sibling(n).red:
-            n.p.red = True
+            n.p._red = True
             self._sibling(n)._red = False
             if n == n.p.left:
                 self._left_rotate(n.p)
