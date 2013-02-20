@@ -19,7 +19,7 @@ public class GeometryTest extends TestCase {
             for (Point p2 : l) {
                 double r1 = Geometry.crossProduct(p1, p2);
                 double r2 = Geometry.crossProduct(p2, p1);
-                boolean isAntisymmetric = Math.abs(r1 - r2) < 0.01;
+                boolean isAntisymmetric = Math.abs(r1 + r2) < 0.01;
                 assertEquals("[ " + p1 + ", " + p2 + "]", true, isAntisymmetric);
             }
         }
