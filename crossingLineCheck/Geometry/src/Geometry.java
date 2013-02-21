@@ -59,11 +59,11 @@ public class Geometry {
     }
 
     /**
-     * Check if line segment first touches or crosses the line that is defined
-     * by line segment second.
+     * Check if line segment first touches or crosses the line that is
+     * defined by line segment second.
      *
-     * @param first line segment first
-     * @param second line second
+     * @param first line segment interpreted as line
+     * @param second line segment
      * @return <code>true</code> if line segment first touches or
      *                           crosses line second,
      *         <code>false</code> otherwise.
@@ -86,11 +86,8 @@ public class Geometry {
     public static boolean doLinesIntersect(LineSegment a, LineSegment b) {
         Point[] box1 = a.getBoundingBox();
         Point[] box2 = b.getBoundingBox();
-        if (doBoundingBoxesIntersect(box1, box2)) {
-            return lineSegmentTouchesOrCrossesLine(a, b)
-                    && lineSegmentTouchesOrCrossesLine(b, a);
-        } else {
-            return false;
-        }
+        return doBoundingBoxesIntersect(box1, box2)
+                && lineSegmentTouchesOrCrossesLine(a, b)
+                && lineSegmentTouchesOrCrossesLine(b, a);
     }
 }

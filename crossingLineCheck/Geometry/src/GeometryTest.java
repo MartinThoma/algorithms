@@ -144,7 +144,13 @@ public class GeometryTest extends TestCase {
 
     public void testLinesDontIntesectF6() {
         LineSegment a = new LineSegment(new Point(0, 0), new Point(1, 1));
-        LineSegment b = new LineSegment(new Point(2, 0), new Point(2, 0.5));
+        LineSegment b = new LineSegment(new Point(2, 0), new Point(0.5, 2));
+        assertEquals(false, Geometry.doLinesIntersect(a, b));
+    }
+
+    public void testLinesDontIntesectF7() {
+        LineSegment a = new LineSegment(new Point(1, 1), new Point(4, 1));
+        LineSegment b = new LineSegment(new Point(2, 2), new Point(3, 2));
         assertEquals(false, Geometry.doLinesIntersect(a, b));
     }
 
@@ -161,8 +167,8 @@ public class GeometryTest extends TestCase {
     }
 
     public void testLinesDoIntesectT2() {
-        LineSegment a = new LineSegment(new Point(7, 7), new Point(0, 0));
-        LineSegment b = new LineSegment(new Point(3, 3), new Point(15, 2));
+        LineSegment a = new LineSegment(new Point(5, 5), new Point(0, 0));
+        LineSegment b = new LineSegment(new Point(1, 1), new Point(8, 2));
         assertEquals(true, Geometry.doLinesIntersect(a, b));
     }
 
@@ -185,8 +191,16 @@ public class GeometryTest extends TestCase {
     }
 
     public void testLinesDoIntesectT6() {
-        LineSegment a = new LineSegment(new Point(-27, 33), new Point(-7, 13));
-        LineSegment b = new LineSegment(new Point(-27, 33), new Point(-7, 13));
-        assertEquals(true, Geometry.doLinesIntersect(a, b));
+        for (int i = 0; i < 50; i++) {
+            double ax = Math.random();
+            double ay = Math.random();
+            double bx = Math.random();
+            double by = Math.random();
+            LineSegment a = new LineSegment(new Point(ax, ay),
+                    new Point(bx, by));
+            LineSegment b = new LineSegment(new Point(ax, ay),
+                    new Point(bx, by));
+            assertEquals(true, Geometry.doLinesIntersect(a, b));
+        }
     }
 }
