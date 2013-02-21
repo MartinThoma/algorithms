@@ -46,29 +46,55 @@ public class GeometryTest extends TestCase {
         assertEquals(false, Geometry.isPointRightOfLine(line, a));
     }
 
-    /* Tests for isInBoundingBox */
-    public void testOutsiteOfBoundingBox() {
-        Point[] box = new Point[2];
-        Point a = new Point(0, 0);
-        box[0] = new Point(1, 1);
-        box[1] = new Point(2, 2);
-        assertEquals(false, Geometry.isInBoundingBox(box, a));
+    /* Tests for doBoundingBoxesIntersect */
+    public void testBoundingBoxesIntersectT1() {
+        Point[] a = new Point[2];
+        Point[] b = new Point[2];
+        a[0] = new Point(0, 0);
+        a[1] = new Point(5, 5);
+        b[0] = new Point(1, 1);
+        b[1] = new Point(2, 2);
+        assertEquals(true, Geometry.doBoundingBoxesIntersect(a, b));
     }
 
-    public void testInsideOfBoundingBox() {
-        Point[] box = new Point[2];
-        Point a = new Point(1, 1);
-        box[0] = new Point(0, 0);
-        box[1] = new Point(2, 2);
-        assertEquals(true, Geometry.isInBoundingBox(box, a));
+    public void testBoundingBoxesIntersectT2() {
+        Point[] a = new Point[2];
+        Point[] b = new Point[2];
+        a[0] = new Point(0, 0);
+        a[1] = new Point(3, 3);
+        b[0] = new Point(1, -1);
+        b[1] = new Point(2, 7);
+        assertEquals(true, Geometry.doBoundingBoxesIntersect(a, b));
     }
 
-    public void testCornerOfBoundingBox() {
-        Point[] box = new Point[2];
-        Point a = new Point(0, 0);
-        box[0] = new Point(0, 0);
-        box[1] = new Point(2, 2);
-        assertEquals(true, Geometry.isInBoundingBox(box, a));
+    public void testBoundingBoxesIntersectT3() {
+        Point[] a = new Point[2];
+        Point[] b = new Point[2];
+        a[0] = new Point(0, 0);
+        a[1] = new Point(3, 3);
+        b[0] = new Point(1, -1);
+        b[1] = new Point(2, 2);
+        assertEquals(true, Geometry.doBoundingBoxesIntersect(a, b));
+    }
+
+    public void testBoundingBoxesIntersectT4() {
+        Point[] a = new Point[2];
+        Point[] b = new Point[2];
+        a[0] = new Point(0, 0);
+        a[1] = new Point(3, 3);
+        b[0] = new Point(3, 3);
+        b[1] = new Point(5, 5);
+        assertEquals(true, Geometry.doBoundingBoxesIntersect(a, b));
+    }
+
+    public void testBoundingBoxesIntersectF1() {
+        Point[] a = new Point[2];
+        Point[] b = new Point[2];
+        a[0] = new Point(0, 0);
+        a[1] = new Point(3, 3);
+        b[0] = new Point(4, 4);
+        b[1] = new Point(5, 5);
+        assertEquals(false, Geometry.doBoundingBoxesIntersect(a, b));
     }
 
     /* Tests for lineSegmentCrossesLine */
@@ -79,8 +105,7 @@ public class GeometryTest extends TestCase {
         assertEquals(true, Geometry.lineSegmentTouchesOrCrossesLine(
                 lineSegment, line));
 
-        lineSegment = new LineSegment(new Point(17, 17), new Point(
-                5, 5));
+        lineSegment = new LineSegment(new Point(17, 17), new Point(5, 5));
         line = new LineSegment(new Point(0, 0), new Point(1, 1));
         assertEquals(true, Geometry.lineSegmentTouchesOrCrossesLine(
                 lineSegment, line));

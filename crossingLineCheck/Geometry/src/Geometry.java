@@ -13,18 +13,16 @@ public class Geometry {
     }
 
     /**
-     * Checks if Point first is within first box. If first is on the end of
-     * first box, its also in the box.
-     *
-     * @param box the box. The first value is the minimum x- and y-coordinate.
-     *            The second value is the maximum x- and y-coordinate
-     * @param first the point you want to check
-     * @return <code>true</code> if first is in box, otherwise
-     *         <code>false</code>
+     * Check if bounding boxes do intersect. If one bounding box
+     * touches the other, they do intersect.
+     * @param a first bounding box
+     * @param b second bounding box
+     * @return <code>true</code> if they intersect,
+     *         <code>false</code> otherwise.
      */
-    public static boolean isInBoundingBox(Point[] box, Point a) {
-        return box[0].x <= a.x && a.x <= box[1].x && box[0].y <= a.y
-                && a.y <= box[1].y;
+    public static boolean doBoundingBoxesIntersect(Point[] a, Point[] b) {
+        return a[0].x <= b[1].x && a[1].x >= b[0].x && a[0].y <= b[1].y
+                && a[1].y >= b[0].y;
     }
 
     /**
@@ -88,9 +86,7 @@ public class Geometry {
     public static boolean doLinesIntersect(LineSegment a, LineSegment b) {
         Point[] box1 = a.getBoundingBox();
         Point[] box2 = b.getBoundingBox();
-        if (!isInBoundingBox(box1, b.first) && !isInBoundingBox(box1, b.second)
-                && !isInBoundingBox(box2, a.first)
-                && !isInBoundingBox(box2, a.second)) {
+        if (!doBoundingBoxesIntersect(box1, box2)) {
             return false;
         } else {
             // Bounding boxes do have an intersection
