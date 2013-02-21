@@ -43,6 +43,22 @@ public class Geometry {
     }
 
     /**
+     * Checks if a point is right of a line. If the point is on the
+     * line, it is not right of the line.
+     * @param a line segment interpreted as a line
+     * @param b the point
+     * @return <code>true</code> if the point is right of the line,
+     *         <code>false</code> otherwise
+     */
+    public static boolean isPointRightOfLine(LineSegment a, Point b) {
+        // Move the image, so that a.first is on (0|0)
+        LineSegment aTmp = new LineSegment(new Point(0, 0), new Point(
+                a.second.x - a.first.x, a.second.y - a.first.y));
+        Point bTmp = new Point(b.x - a.first.x, b.y - a.first.y);
+        return crossProduct(aTmp.second, bTmp) < 0;
+    }
+
+    /**
      * Check if line segment first touches or crosses the line that is defined
      * by line segment second.
      *
@@ -61,22 +77,6 @@ public class Geometry {
     }
 
     /**
-     * Checks if a point is right of a line. If the point is on the
-     * line, it is not right of the line.
-     * @param a line segment interpreted as a line
-     * @param b the point
-     * @return <code>true</code> if the point is right of the line,
-     *         <code>false</code> otherwise
-     */
-    public static boolean isPointRightOfLine(LineSegment a, Point b) {
-        // Move the image, so that a.first is on (0|0)
-        LineSegment aTmp = new LineSegment(new Point(0, 0), new Point(
-                a.second.x - a.first.x, a.second.y - a.first.y));
-        Point bTmp = new Point(b.x - a.first.x, b.y - a.first.y);
-        return crossProduct(aTmp.second, bTmp) < 0;
-    }
-
-    /**
      * Check if line segments intersect
      * @param a first line segment
      * @param b second line segment
@@ -86,23 +86,11 @@ public class Geometry {
     public static boolean doLinesIntersect(LineSegment a, LineSegment b) {
         Point[] box1 = a.getBoundingBox();
         Point[] box2 = b.getBoundingBox();
-        if (!doBoundingBoxesIntersect(box1, box2)) {
-            return false;
+        if (doBoundingBoxesIntersect(box1, box2)) {
+            return lineSegmentTouchesOrCrossesLine(a, b)
+                    && lineSegmentTouchesOrCrossesLine(b, a);
         } else {
-            // Bounding boxes do have an intersection
-            if (isPointOnLine(a, b.first) || isPointOnLine(a, b.second)
-                    || isPointOnLine(b, a.first) || isPointOnLine(b, a.second)) {
-                // An endpoint of one line is on the other line
-                return true;
-            } else {
-                if (lineSegmentTouchesOrCrossesLine(a, b)
-                        && lineSegmentTouchesOrCrossesLine(b, a)) {
-                    // real intersection
-                    return true;
-                } else {
-                    return false;
-                }
-            }
+            return false;
         }
     }
 }
