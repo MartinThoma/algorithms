@@ -302,6 +302,7 @@ public class Geometry {
      * @return the convex hull (can be rotated)
      */
     public static List<Point> getConvexHull(List<Point> points) {
+        // TODO: Doesn't work by now
         List<Point> l = new ArrayList<Point>();
 
         // find lowest point. If there is more than one lowest point
@@ -322,9 +323,10 @@ public class Geometry {
             }
 
             private double getAngle(Point p) {
+                // TODO: This is buggy
                 double deltaX = pLow.x - p.x;
                 double deltaY = pLow.y - p.y;
-                if (deltaX == 0) {
+                if (deltaX < EPSILON) {
                     return 0;
                 } else {
                     return deltaY / deltaX;
@@ -350,10 +352,19 @@ public class Geometry {
 
         // go through all points
         for (Point tmp : points) {
-            if (l.size() < 3
-                    || !isLeftBend(l.get(l.size() - 2), l.get(l.size() - 1),
-                            tmp)) {
-                l.add(tmp);
+            boolean loop = true;
+
+            while (loop) {
+                if (l.size() < 3) {
+                    l.add(tmp);
+                    loop = false;
+                } else if (!isLeftBend(l.get(l.size() - 2),
+                        l.get(l.size() - 1), tmp)) {
+                    l.add(tmp);
+                    loop = false;
+                } else {
+                    l.remove(l.size() - 1);
+                }
             }
         }
 

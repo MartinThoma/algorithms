@@ -321,11 +321,33 @@ public class GeometryTest extends TestCase {
     public void testGetConvexHullQuadratic() {
         int n = 30;
         List<Point> l = new ArrayList<Point>();
+
+        for (int i = 0; i < n; i++) {
+            l.add(new Point(i, i * i));
+        }
+
         Collections.shuffle(l);
 
-        for (int i=0;i<n;i++) {
-            l.add(new Point(i, i*i));
-        }
+        List<Point> convexHull = Geometry.getConvexHull(l);
+        System.out.println(l);
+        assertEquals(true, convexHull.equals(l));
+    }
+
+    public void testGetConvexHullMinimal() {
+        List<Point> l = new ArrayList<Point>();
+        l.add(new Point(3, 0));
+        l.add(new Point(5, 1));
+        l.add(new Point(5, 3));
+        l.add(new Point(6, 4));
+        l.add(new Point(4, 5));
+        l.add(new Point(1, 3));
+
+        List<Point> solution = new ArrayList<Point>();
+        solution.add(new Point(3, 0));
+        solution.add(new Point(5, 1));
+        solution.add(new Point(6, 4));
+        solution.add(new Point(4, 5));
+        solution.add(new Point(1, 3));
 
         List<Point> convexHull = Geometry.getConvexHull(l);
         System.out.println(l);
