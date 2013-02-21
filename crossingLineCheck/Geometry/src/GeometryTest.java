@@ -291,7 +291,7 @@ public class GeometryTest extends TestCase {
 
         assertEquals(true, intersectionsBrute.equals(intersections));
 
-        // twice [e,g], but not [[d, g], [e, c], [e, d], [e, f], [h, o]]]
+        // twice [e,g], but not [[d, g], [e, c], [e, d], [e, f]]
         assertEquals(true, intersectionsSweep.equals(intersections));
     }
 

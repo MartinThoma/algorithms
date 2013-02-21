@@ -3,6 +3,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NavigableSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -132,6 +133,26 @@ public class Geometry {
                 return sortingKey.compareTo(o.sortingKey);
             }
         }
+        ;
+
+        class SweepLineComperator implements Comparator<LineSegment> {
+            @Override
+            public int compare(LineSegment o1, LineSegment o2) {
+                double o1FirstX = o1.first.x < o1.second.x ? o1.first.y
+                        : o1.second.y;
+                double o2FirstX = o2.first.x < o2.second.x ? o2.first.y
+                        : o2.second.y;
+
+                if (Math.abs(o1FirstX - o2FirstX) < EPSILON) {
+                    return 0;
+                } else if (o1FirstX > o2FirstX) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
+        }
+        ;
 
         Set<LineSegment[]> intersections = new HashSet<LineSegment[]>();
         List<EventPointLine> eventPointSchedule = new ArrayList<EventPointLine>();
@@ -143,42 +164,8 @@ public class Geometry {
 
         Collections.sort(eventPointSchedule);
 
-        /* Check if endpoints are equal */
-
-        for (int i = 0; i < eventPointSchedule.size(); i++) {
-            int j = i + 1;
-            while (j < eventPointSchedule.size()
-                    && Math.abs(eventPointSchedule.get(i).sortingKey
-                            - eventPointSchedule.get(j).sortingKey) < EPSILON) {
-                j += 1;
-
-                LineSegment[] tmp = new LineSegment[2];
-                tmp[0] = eventPointSchedule.get(i).line;
-                tmp[1] = eventPointSchedule.get(j).line;
-                if (doLinesIntersect(tmp[0], tmp[1])) {
-                    intersections.add(tmp);
-                }
-            }
-        }
-
-        TreeSet<LineSegment> sweepLine = new TreeSet<LineSegment>(
-                new Comparator<LineSegment>() {
-                    @Override
-                    public int compare(LineSegment o1, LineSegment o2) {
-                        double o1FirstX = o1.first.x < o1.second.x ? o1.first.y
-                                : o1.second.y;
-                        double o2FirstX = o2.first.x < o2.second.x ? o2.first.y
-                                : o2.second.y;
-
-                        if (Math.abs(o1FirstX - o2FirstX) < EPSILON) {
-                            return 0;
-                        } else if (o1FirstX > o2FirstX) {
-                            return 1;
-                        } else {
-                            return -1;
-                        }
-                    }
-                });
+        SweepLineComperator comperator = new SweepLineComperator();
+        TreeSet<LineSegment> sweepLine = new TreeSet<LineSegment>(comperator);
 
         for (EventPointLine p : eventPointSchedule) {
             // TODO:
@@ -195,22 +182,69 @@ public class Geometry {
                     intersections.add(tmp);
                 }
             } else {
-                sweepLine.add(p.line);
-                // check if it intersects with line above or below
-                LineSegment above = sweepLine.higher(p.line);
-                LineSegment below = sweepLine.lower(p.line);
+                if (Math.abs(p.line.first.x - p.line.second.x) < EPSILON) {
+                    // this is a vertical line
 
-                if (above != null && doLinesIntersect(above, p.line)) {
-                    LineSegment[] tmp = new LineSegment[2];
-                    tmp[0] = above;
-                    tmp[1] = p.line;
-                    intersections.add(tmp);
+                    for (LineSegment tmpLine : sweepLine) {
+                        if (doLinesIntersect(tmpLine, p.line)) {
+                            LineSegment[] tmp = new LineSegment[2];
+                            tmp[0] = tmpLine;
+                            tmp[1] = p.line;
+                            intersections.add(tmp);
+                        }
+                    }
+                } else {
+
+                    // Get identical lines
+                    NavigableSet<LineSegment> h = sweepLine.subSet(p.line,
+                            true, p.line, true);
+
+                    for (LineSegment tmpLine : h) {
+                        if (doLinesIntersect(tmpLine, p.line)) {
+                            LineSegment[] tmp = new LineSegment[2];
+                            tmp[0] = tmpLine;
+                            tmp[1] = p.line;
+                            intersections.add(tmp);
+                        }
+
+                    }
+
+                    sweepLine.add(p.line);
+
+                    // check if it intersects with line above or below
+                    LineSegment above = sweepLine.higher(p.line);
+                    LineSegment below = sweepLine.lower(p.line);
+
+                    if (above != null && doLinesIntersect(above, p.line)) {
+                        LineSegment[] tmp = new LineSegment[2];
+                        tmp[0] = above;
+                        tmp[1] = p.line;
+                        intersections.add(tmp);
+                    }
+
+                    if (below != null && doLinesIntersect(below, p.line)) {
+                        LineSegment[] tmp = new LineSegment[2];
+                        tmp[0] = below;
+                        tmp[1] = p.line;
+                        intersections.add(tmp);
+                    }
                 }
+            }
+        }
 
-                if (below != null && doLinesIntersect(below, p.line)) {
-                    LineSegment[] tmp = new LineSegment[2];
-                    tmp[0] = below;
-                    tmp[1] = p.line;
+        /* Check if endpoints are equal */
+        for (int i = 0; i < eventPointSchedule.size(); i++) {
+            int j = i + 1;
+            while (j < eventPointSchedule.size()
+                    && Math.abs(eventPointSchedule.get(i).sortingKey
+                            - eventPointSchedule.get(j).sortingKey) < EPSILON) {
+                j += 1;
+
+                LineSegment[] tmp = new LineSegment[2];
+                tmp[0] = eventPointSchedule.get(i).line;
+                tmp[1] = eventPointSchedule.get(j).line;
+                if (doLinesIntersect(tmp[0], tmp[1])
+                        && !intersections.contains(tmp)) {
                     intersections.add(tmp);
                 }
             }
