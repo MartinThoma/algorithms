@@ -10,8 +10,7 @@ public class GeometryTest extends TestCase {
         List<Point> l = new ArrayList<Point>();
         l.add(new Point(0, 0));
         l.add(new Point(1, 1));
-        l.add(new Point(0.3, 0.3));
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 50; i++) {
             l.add(new Point(Math.random(), Math.random()));
         }
 
@@ -19,7 +18,7 @@ public class GeometryTest extends TestCase {
             for (Point p2 : l) {
                 double r1 = Geometry.crossProduct(p1, p2);
                 double r2 = Geometry.crossProduct(p2, p1);
-                boolean isAntisymmetric = Math.abs(r1 + r2) < 0.01;
+                boolean isAntisymmetric = Math.abs(r1 + r2) < Geometry.EPSILON;
                 assertEquals("[ " + p1 + ", " + p2 + "]", true, isAntisymmetric);
             }
         }
@@ -39,8 +38,11 @@ public class GeometryTest extends TestCase {
     }
 
     public void testPointOnLine() {
-        LineSegment line = new LineSegment(new Point(0, 0), new Point(5, 5));
+        LineSegment line = new LineSegment(new Point(0, 0), new Point(4, 4));
         Point a = new Point(3, 3);
+        assertEquals(false, Geometry.isPointRightOfLine(line, a));
+
+        line = new LineSegment(new Point(4, 4), new Point(0, 0));
         assertEquals(false, Geometry.isPointRightOfLine(line, a));
     }
 
@@ -74,13 +76,20 @@ public class GeometryTest extends TestCase {
         LineSegment lineSegment = new LineSegment(new Point(5, 5), new Point(
                 17, 17));
         LineSegment line = new LineSegment(new Point(0, 0), new Point(1, 1));
-        assertEquals(true, Geometry.lineSegmentCrossesLine(lineSegment, line));
+        assertEquals(true, Geometry.lineSegmentTouchesOrCrossesLine(
+                lineSegment, line));
+
+        lineSegment = new LineSegment(new Point(17, 17), new Point(
+                5, 5));
+        line = new LineSegment(new Point(0, 0), new Point(1, 1));
+        assertEquals(true, Geometry.lineSegmentTouchesOrCrossesLine(
+                lineSegment, line));
     }
 
     /* Tests for doLinesIntersect */
     public void testLinesDontIntesectF1() {
         LineSegment a = new LineSegment(new Point(0, 0), new Point(7, 7));
-        LineSegment b = new LineSegment(new Point(3, 4), new Point(4, 3));
+        LineSegment b = new LineSegment(new Point(3, 4), new Point(4, 5));
         assertEquals(false, Geometry.doLinesIntersect(a, b));
     }
 
@@ -123,36 +132,36 @@ public class GeometryTest extends TestCase {
     public void testLinesDoIntesectT1() {
         LineSegment a = new LineSegment(new Point(0, -2), new Point(0, 2));
         LineSegment b = new LineSegment(new Point(-2, 0), new Point(2, 0));
-        assertEquals(false, Geometry.doLinesIntersect(a, b));
+        assertEquals(true, Geometry.doLinesIntersect(a, b));
     }
 
     public void testLinesDoIntesectT2() {
         LineSegment a = new LineSegment(new Point(7, 7), new Point(0, 0));
         LineSegment b = new LineSegment(new Point(3, 3), new Point(15, 2));
-        assertEquals(false, Geometry.doLinesIntersect(a, b));
+        assertEquals(true, Geometry.doLinesIntersect(a, b));
     }
 
     public void testLinesDoIntesectT3() {
         LineSegment a = new LineSegment(new Point(-1, 0), new Point(0, 0));
         LineSegment b = new LineSegment(new Point(-1, -1), new Point(-1, 1));
-        assertEquals(false, Geometry.doLinesIntersect(a, b));
+        assertEquals(true, Geometry.doLinesIntersect(a, b));
     }
 
     public void testLinesDoIntesectT4() {
         LineSegment a = new LineSegment(new Point(0, 2), new Point(2, 2));
         LineSegment b = new LineSegment(new Point(2, 0), new Point(2, 4));
-        assertEquals(false, Geometry.doLinesIntersect(a, b));
+        assertEquals(true, Geometry.doLinesIntersect(a, b));
     }
 
     public void testLinesDoIntesectT5() {
         LineSegment a = new LineSegment(new Point(0, 0), new Point(5, 5));
         LineSegment b = new LineSegment(new Point(1, 1), new Point(3, 3));
-        assertEquals(false, Geometry.doLinesIntersect(a, b));
+        assertEquals(true, Geometry.doLinesIntersect(a, b));
     }
 
     public void testLinesDoIntesectT6() {
         LineSegment a = new LineSegment(new Point(-27, 33), new Point(-7, 13));
         LineSegment b = new LineSegment(new Point(-27, 33), new Point(-7, 13));
-        assertEquals(false, Geometry.doLinesIntersect(a, b));
+        assertEquals(true, Geometry.doLinesIntersect(a, b));
     }
 }

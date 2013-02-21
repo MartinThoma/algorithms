@@ -1,4 +1,7 @@
 public class Geometry {
+
+    public static final double EPSILON = 0.000001;
+
     /**
      * Calculate the cross product of two points.
      * @param a first point
@@ -25,33 +28,54 @@ public class Geometry {
     }
 
     /**
+     * Checks if a Point is on a line
+     * @param a line (interpreted as line, although given as line
+     *                segment)
+     * @param b point
+     * @return <code>true</code> if point is on line, otherwise
+     *         <code>false</code>
+     */
+    public static boolean isPointOnLine(LineSegment a, Point b) {
+        // Move the image, so that a.first is on (0|0)
+        LineSegment aTmp = new LineSegment(new Point(0, 0), new Point(
+                a.second.x - a.first.x, a.second.y - a.first.y));
+        Point bTmp = new Point(b.x - a.first.x, b.y - a.first.y);
+        double r = crossProduct(aTmp.second, bTmp);
+        return Math.abs(r) < EPSILON;
+    }
+
+    /**
      * Check if line segment first touches or crosses the line that is defined
      * by line segment second.
      *
      * @param first line segment first
      * @param second line second
-     * @return <code>true</code> if line segment first touches line second,
+     * @return <code>true</code> if line segment first touches or
+     *                           crosses line second,
      *         <code>false</code> otherwise.
      */
-    public static boolean lineSegmentCrossesLine(LineSegment a, LineSegment b) {
-        return isPointRightOfLine(a, b.first) ^ isPointRightOfLine(a, b.second);
+    public static boolean lineSegmentTouchesOrCrossesLine(LineSegment a,
+            LineSegment b) {
+        return isPointOnLine(a, b.first)
+                || isPointOnLine(a, b.second)
+                || (isPointRightOfLine(a, b.first) ^ isPointRightOfLine(a,
+                        b.second));
     }
 
     /**
      * Checks if a point is right of a line. If the point is on the
      * line, it is not right of the line.
-     * @param a the line segment
+     * @param a line segment interpreted as a line
      * @param b the point
      * @return <code>true</code> if the point is right of the line,
      *         <code>false</code> otherwise
      */
     public static boolean isPointRightOfLine(LineSegment a, Point b) {
         // Move the image, so that a.first is on (0|0)
-        LineSegment a_tmp = new LineSegment(new Point(0, 0), new Point(
+        LineSegment aTmp = new LineSegment(new Point(0, 0), new Point(
                 a.second.x - a.first.x, a.second.y - a.first.y));
-        Point b_tmp = new Point(b.x - a.first.x, b.y - a.second.y);
-        System.out.println(crossProduct(a_tmp.second, b_tmp));
-        return (crossProduct(a_tmp.second, b_tmp) < 0);
+        Point bTmp = new Point(b.x - a.first.x, b.y - a.first.y);
+        return crossProduct(aTmp.second, bTmp) < 0;
     }
 
     /**
@@ -69,8 +93,20 @@ public class Geometry {
                 && !isInBoundingBox(box2, a.second)) {
             return false;
         } else {
-            // TODO bounding box check is not enough
-            return true;
+            // Bounding boxes do have an intersection
+            if (isPointOnLine(a, b.first) || isPointOnLine(a, b.second)
+                    || isPointOnLine(b, a.first) || isPointOnLine(b, a.second)) {
+                // An endpoint of one line is on the other line
+                return true;
+            } else {
+                if (lineSegmentTouchesOrCrossesLine(a, b)
+                        && lineSegmentTouchesOrCrossesLine(b, a)) {
+                    // real intersection
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         }
     }
 }
