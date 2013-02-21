@@ -118,6 +118,7 @@ public class Geometry {
      * @return a list that contains all pairs of intersecting lines
      */
     public static Set<LineSegment[]> getAllIntersectingLines(LineSegment[] lines) {
+        // TODO: This one is buggy! See tests
         class EventPointLine implements Comparable<EventPointLine> {
             Double sortingKey;
             LineSegment line;
@@ -274,5 +275,88 @@ public class Geometry {
         }
 
         return intersections;
+    }
+
+    public static boolean isLeftBend(Point i, Point j, Point k) {
+        Point pi = new Point(i.x, i.y);
+        Point pj = new Point(j.x, j.y);
+        Point pk = new Point(k.x, k.y);
+
+        // Move pi to (0,0) and pj and pk with it
+        pj.x -= pi.x;
+        pk.x -= pi.x;
+        pj.y -= pi.y;
+        pk.y -= pi.y;
+        LineSegment s = new LineSegment(pi, pj);
+
+        // Move pj to (0,0) and pk with it
+        pk.x -= pj.x;
+        pk.y -= pj.y;
+
+        return !(isPointRightOfLine(s, pk) || isPointOnLine(s, pk));
+    }
+
+    /**
+     * Calculate the convex hull of points with Graham Scan
+     * @param points a list of points in any order
+     * @return the convex hull (can be rotated)
+     */
+    public static List<Point> getConvexHull(List<Point> points) {
+        List<Point> l = new ArrayList<Point>();
+
+        // find lowest point. If there is more than one lowest point
+        // take the one that is left
+        Point pLow = new Point(0, Double.POSITIVE_INFINITY);
+        for (Point point : points) {
+            if (point.y < pLow.y || (point.y == pLow.y && point.x < pLow.x)) {
+                pLow = point;
+            }
+        }
+
+        // Order all other points by angle
+        class PointComparator implements Comparator<Point> {
+            Point pLow;
+
+            public PointComparator(Point pLow) {
+                this.pLow = pLow;
+            }
+
+            private double getAngle(Point p) {
+                double deltaX = pLow.x - p.x;
+                double deltaY = pLow.y - p.y;
+                if (deltaX == 0) {
+                    return 0;
+                } else {
+                    return deltaY / deltaX;
+                }
+            }
+
+            @Override
+            public int compare(Point o1, Point o2) {
+                double a1 = getAngle(o1);
+                double a2 = getAngle(o2);
+                if (Math.abs(a1 - a2) < EPSILON) {
+                    return 0;
+                } else {
+                    return a1 < a2 ? -1 : 1;
+                }
+            }
+        }
+        ;
+
+        PointComparator comparator = new PointComparator(pLow);
+
+        Collections.sort(points, comparator);
+
+        // go through all points
+        for (Point tmp : points) {
+            if (l.size() < 3
+                    || !isLeftBend(l.get(l.size() - 2), l.get(l.size() - 1),
+                            tmp)) {
+                l.add(tmp);
+            }
+        }
+
+        return l;
     }
 }

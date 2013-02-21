@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -314,5 +315,20 @@ public class GeometryTest extends TestCase {
         System.out.println("Brute: " + intersectionsBrute.size());
         System.out.println("Sweep: " + intersectionsSweep.size());
         assertEquals(true, intersectionsBrute.equals(intersectionsSweep));
+    }
+
+    /* test getConvexHull */
+    public void testGetConvexHullQuadratic() {
+        int n = 30;
+        List<Point> l = new ArrayList<Point>();
+        Collections.shuffle(l);
+
+        for (int i=0;i<n;i++) {
+            l.add(new Point(i, i*i));
+        }
+
+        List<Point> convexHull = Geometry.getConvexHull(l);
+        System.out.println(l);
+        assertEquals(true, convexHull.equals(l));
     }
 }
