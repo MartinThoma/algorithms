@@ -1,6 +1,7 @@
 public class LineSegment {
     Point first;
     Point second;
+    String name;
 
     /**
      * @param first the first point of this line
@@ -9,6 +10,13 @@ public class LineSegment {
     public LineSegment(Point a, Point b) {
         this.first = a;
         this.second = b;
+        this.name = "LineSegment";
+    }
+
+    public LineSegment(Point a, Point b, String name) {
+        this.first = a;
+        this.second = b;
+        this.name = name;
     }
 
     /**
@@ -28,6 +36,10 @@ public class LineSegment {
 
     @Override
     public String toString() {
-        return "LineSegment [" + first + " to " + second + "]";
+        if (name.equals("LineSegment")) {
+            return "LineSegment [" + first + " to " + second + "]";
+        } else {
+            return name;
+        }
     }
 }

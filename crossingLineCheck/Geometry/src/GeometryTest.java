@@ -1,5 +1,8 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
@@ -202,5 +205,114 @@ public class GeometryTest extends TestCase {
                     new Point(bx, by));
             assertEquals(true, Geometry.doLinesIntersect(a, b));
         }
+    }
+
+    /* check getAllIntersectingLines() */
+    public void testBlogExample() {
+        LineSegment[] lines = new LineSegment[15];
+        lines[0] = new LineSegment(new Point(1, 4), new Point(6, 1), "a");
+        lines[1] = new LineSegment(new Point(2, 1), new Point(5, 4), "b");
+        lines[2] = new LineSegment(new Point(3, 1), new Point(6, 4), "c");
+        lines[3] = new LineSegment(new Point(4, 1), new Point(8, 5), "d");
+        lines[4] = new LineSegment(new Point(3, 4), new Point(9, 3), "e");
+        lines[5] = new LineSegment(new Point(7, 2), new Point(9, 3), "f");
+        lines[6] = new LineSegment(new Point(6, 7), new Point(9, 1), "g");
+        lines[7] = new LineSegment(new Point(11, 1), new Point(16, 5), "h");
+        lines[8] = new LineSegment(new Point(13, 3), new Point(13, 4), "i");
+        lines[9] = new LineSegment(new Point(15, 3), new Point(15, 4), "j");
+        lines[10] = new LineSegment(new Point(13, 2), new Point(14, 2), "k");
+        lines[11] = new LineSegment(new Point(14, 1), new Point(14, 2), "l");
+        lines[12] = new LineSegment(new Point(17, 3), new Point(21, 3), "m");
+        lines[13] = new LineSegment(new Point(19, 5), new Point(19, 1), "n");
+        lines[14] = new LineSegment(new Point(11, 1), new Point(16, 5), "o");
+
+        Set<LineSegment[]> intersections = new LinkedHashSet<LineSegment[]>();
+        LineSegment[] add = new LineSegment[2];
+        add[0] = lines[0];
+        add[1] = lines[1];
+        intersections.add(add);
+        add = new LineSegment[2];
+        add[0] = lines[0];
+        add[1] = lines[2];
+        intersections.add(add);
+        add = new LineSegment[2];
+        add[0] = lines[0];
+        add[1] = lines[3];
+        intersections.add(add);
+        add = new LineSegment[2];
+        add[0] = lines[3];
+        add[1] = lines[6];
+        intersections.add(add);
+        add = new LineSegment[2];
+        add[0] = lines[4];
+        add[1] = lines[1];
+        intersections.add(add);
+        add = new LineSegment[2];
+        add[0] = lines[4];
+        add[1] = lines[2];
+        intersections.add(add);
+        add = new LineSegment[2];
+        add[0] = lines[4];
+        add[1] = lines[3];
+        intersections.add(add);
+        add = new LineSegment[2];
+        add[0] = lines[4];
+        add[1] = lines[5];
+        intersections.add(add);
+        add = new LineSegment[2];
+        add[0] = lines[4];
+        add[1] = lines[6];
+        intersections.add(add);
+        add = new LineSegment[2];
+        add[0] = lines[5];
+        add[1] = lines[6];
+        intersections.add(add);
+        add = new LineSegment[2];
+        add[0] = lines[10];
+        add[1] = lines[11];
+        intersections.add(add);
+        add = new LineSegment[2];
+        add[0] = lines[12];
+        add[1] = lines[13];
+        intersections.add(add);
+        add = new LineSegment[2];
+        add[0] = lines[7];
+        add[1] = lines[14];
+        intersections.add(add);
+
+        Set<LineSegment[]> intersectionsBrute = Geometry
+                .getAllIntersectingLinesByBruteForce(lines);
+        Set<LineSegment[]> intersectionsSweep = Geometry
+                .getAllIntersectingLines(lines);
+
+        System.out.println(Arrays.deepToString(intersections.toArray()));
+        System.out.println(Arrays.deepToString(intersectionsBrute.toArray()));
+        System.out.println(Arrays.deepToString(intersectionsSweep.toArray()));
+
+        assertEquals(true, intersectionsBrute.equals(intersections));
+
+        // twice [e,g], but not [[d, g], [e, c], [e, d], [e, f], [h, o]]]
+        assertEquals(true, intersectionsSweep.equals(intersections));
+    }
+
+    public void testCompareToBruteForce() {
+        int n = 30;
+        int maxIntersections = (n * n - n) / 2;
+
+        LineSegment[] lines = new LineSegment[n];
+        for (int i = 0; i < n; i++) {
+            Point a = new Point(Math.random(), Math.random());
+            Point b = new Point(Math.random(), Math.random());
+            lines[i] = new LineSegment(a, b);
+        }
+
+        Set<LineSegment[]> intersectionsBrute = Geometry
+                .getAllIntersectingLinesByBruteForce(lines);
+        Set<LineSegment[]> intersectionsSweep = Geometry
+                .getAllIntersectingLines(lines);
+        assertEquals(true, intersectionsBrute.size() <= maxIntersections);
+        System.out.println("Brute: " + intersectionsBrute.size());
+        System.out.println("Sweep: " + intersectionsSweep.size());
+        assertEquals(true, intersectionsBrute.equals(intersectionsSweep));
     }
 }
