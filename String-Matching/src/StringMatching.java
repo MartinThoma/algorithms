@@ -1,5 +1,7 @@
 // you can get this from here:
 // https://code.google.com/p/guava-libraries/
+import java.util.HashMap;
+
 import com.google.common.base.CharMatcher;
 
 public class StringMatching {
@@ -76,7 +78,7 @@ public class StringMatching {
     public int rabinKarp(String pattern, int q) {
         // TODO: Doesn't work by now.
         int m = pattern.length();
-        long pTmp = getLongFromString(pattern);
+        long pTmp = getLongFromString(pattern) % q;
         long tTmp = getLongFromString(text.substring(0, m)) % q;
 
         for (int s = 0; s < n - m; s++) {
@@ -109,6 +111,21 @@ public class StringMatching {
     }
 
     /**
+     * Check if b is a suffix of a
+     * @param a
+     * @param b
+     * @return <code>true</code> iff b is a suffix of a.
+     */
+    private boolean isSuffix(String a, String b) {
+        if (a.length() < b.length()) {
+            return false;
+        } else {
+            String endOfA = a.substring(a.length() - b.length(), a.length());
+            return endOfA.equals(b);
+        }
+    }
+
+    /**
      * Search for pattern in text with an automaton
      * @param pattern the string you want to search
      * @return The position of the first character of pattern in the
@@ -116,6 +133,36 @@ public class StringMatching {
      *         If pattern is not in the text, then -1.
      */
     public int stringMatchingAutomaton(String pattern) {
+        // Initialise state transition function
+        @SuppressWarnings("unchecked")
+        HashMap<Character, Integer>[] stateTransition = new HashMap[pattern
+                .length()];
+
+        for (int q = 0; q <= pattern.length(); q++) {
+            stateTransition[q] = new HashMap<Character, Integer>();
+            for (int i = 0; i < 128; i++) {
+                int k = Math.min(pattern.length(), q + 1);
+                char a = (char) i;
+                // TODO: is this supposed to work?
+                // shouldn't k be inside of while?
+                String patternPrefix = pattern.substring(0, k);
+                while (isSuffix(pattern.substring(0, q + 1) + a,
+                        patternPrefix)) {
+                    k--;
+                }
+                stateTransition[q].put(a, k);
+            }
+        }
+
+        // Now begin
+        int q = 0;
+        for (int i = 0; i < n; i++) {
+            q = stateTransition[q].get(text.indexOf(i));
+            if (q == pattern.length()) {
+                return i - pattern.length() + 1;
+            }
+        }
+
         return -1;
     }
 }

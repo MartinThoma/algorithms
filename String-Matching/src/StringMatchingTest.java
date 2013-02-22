@@ -118,4 +118,52 @@ public class StringMatchingTest {
             System.err.println(e);
         }
     }
+
+    /* Test isSuffix */
+    @Test
+    public void testIsSuffix() {
+        // It's private, so make it public first
+        try {
+            Class myTarget = Class.forName("StringMatching");
+            java.lang.reflect.Method method = myTarget.getDeclaredMethod(
+                    "isSuffix", String.class, String.class);
+            method.setAccessible(true);
+
+            String text = "Ich habe hier einen Text.";
+            StringMatching s = new StringMatching(text);
+            assertEquals(false, method.invoke(s, text, "Ich"));
+            assertEquals(true, method.invoke(s, text, "Text."));
+            assertEquals(true, method.invoke(s, text, "."));
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+    }
+
+    /* Test stringMatchingAutomaton */
+    @Test
+    public void testStringMatchingAutomaton() {
+        StringMatching s = new StringMatching(text);
+        assertEquals(7, s.stringMatchingAutomaton("beginning"));
+    }
+
+    @Test
+    public void testStringMatchingAutomatonMiddle() {
+        StringMatching s = new StringMatching(text);
+        assertEquals(1226144, s.stringMatchingAutomaton("whom David"));
+    }
+
+    @Test
+    public void testStringMatchingAutomatonEnd() {
+        StringMatching s = new StringMatching(text);
+        assertEquals(
+                4047354,
+                s
+                        .stringMatchingAutomaton("Jesus Christ be with you all. Amen. END."));
+    }
+
+    @Test
+    public void testStringMatchingAutomatonNo() {
+        StringMatching s = new StringMatching(text);
+        assertEquals(-1, s.stringMatchingAutomaton("Fuck."));
+    }
 }
