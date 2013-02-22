@@ -143,11 +143,9 @@ public class StringMatching {
             for (int i = 0; i < 128; i++) {
                 int k = Math.min(pattern.length(), q + 1);
                 char a = (char) i;
-                // TODO: is this supposed to work?
-                // shouldn't k be inside of while?
-                String patternPrefix = pattern.substring(0, k);
-                while (isSuffix(pattern.substring(0, q + 1) + a,
-                        patternPrefix)) {
+                while (k >= 0
+                        && isSuffix(pattern.substring(0, q + 1) + a, pattern
+                                .substring(0, k))) {
                     k--;
                 }
                 stateTransition[q].put(a, k);
