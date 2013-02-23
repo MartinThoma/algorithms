@@ -124,7 +124,6 @@ public class Geometry {
             LineSegment line;
 
             public EventPointLine(double sortingKey, LineSegment line) {
-                super();
                 this.sortingKey = sortingKey;
                 this.line = line;
             }
@@ -134,7 +133,6 @@ public class Geometry {
                 return sortingKey.compareTo(o.sortingKey);
             }
         }
-        ;
 
         class SweepLineComperator implements Comparator<LineSegment> {
             @Override
@@ -153,7 +151,6 @@ public class Geometry {
                 }
             }
         }
-        ;
 
         Set<LineSegment[]> intersections = new HashSet<LineSegment[]>();
         List<EventPointLine> eventPointSchedule = new ArrayList<EventPointLine>();
@@ -169,7 +166,8 @@ public class Geometry {
         TreeSet<LineSegment> sweepLine = new TreeSet<LineSegment>(comperator);
 
         for (EventPointLine p : eventPointSchedule) {
-            // TODO:
+            // TODO: an schnittpunkten aendert sich die Reihenfolge
+            // der Kanten
             if (isRightEnd(p.sortingKey, p.line)) {
                 LineSegment above = sweepLine.higher(p.line);
                 LineSegment below = sweepLine.lower(p.line);
@@ -344,7 +342,6 @@ public class Geometry {
                 }
             }
         }
-        ;
 
         PointComparator comparator = new PointComparator(pLow);
 
