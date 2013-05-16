@@ -31,6 +31,16 @@ transparentGif:
 	convert $(SOURCE).pdf -transparent white result.gif
 	make clean
 
+RToPNG:
+	R -f analyze.R
+	pdf2svg Rplots.pdf Rplots.svg
+	# Necessary, as pdf2svg does not always create valid svgs:
+	inkscape Rplots.svg --export-plain-svg=Rplots.svg
+	rsvg-convert -a -w $(WIDTH) -f svg Rplots.svg -o Rplots2.svg
+	inkscape Rplots2.svg --export-plain-svg=Rplots.svg
+	rm Rplots2.svg
+	inkscape Rplots.svg -w $(WIDTH) --export-png=Rplots.png
+
 svg:
 	make
 	#inkscape $(SOURCE).pdf --export-plain-svg=$(SOURCE).svg

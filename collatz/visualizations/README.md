@@ -15,3 +15,11 @@ were not possible:
 ![Example](gnuplot-22300-only-crosses.png)
 
 ![Example](gnuplot-comb-22300-with-impulses.png)
+
+Plotted with R:
+
+![Example](collatz-sequence-steps.png)
+
+Plotted with GraphViz:
+
+![Example](collatz-graph.png)
