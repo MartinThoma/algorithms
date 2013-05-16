@@ -14,7 +14,7 @@ clean:
 gnuplot:
 	gnuplot plot.gnuplot
 	pdflatex gnuplot-comb.tex -output-format=pdf
-	rm gnuplot-comb.tex
+	rm plot-tmp.tex
 	make clean
 
 gif:
