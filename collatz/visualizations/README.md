@@ -13,3 +13,5 @@ were not possible:
 Comb plot created with pgfplots and 22300 data points. More than 22350
 were not possible:
 ![Example](gnuplot-22300-only-crosses.png)
+
+![Example](gnuplot-comb-22300-with-impulses.png)
