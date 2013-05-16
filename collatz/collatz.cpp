@@ -5,7 +5,6 @@
 #include <climits> // get maximum value of unsigned long long
 #include <cstdlib> // exit
 
-#define MAX_COLLATZ 4100
 #define SURPRESS_OUTPUT true
 #define SHOW_DICT_CREATION false
  
@@ -103,20 +102,22 @@ void printCollatz() {
     }
 }
 
-void printSteps() {
+void printSteps(unsigned long long max) {
     cout << "n,steps" << endl;
-    for(unsigned long long i=1;i<=MAX_COLLATZ;i++) {
+    for(unsigned long long i=1;i<=max;i++) {
         cout << i << "," << collatz[i].steps << endl;
     }
 }
 
-int main(void) {
+int main(int argc, char* argv[]) {
     struct element e;
     e.next = 4;
     e.steps = 0;
     collatz[1] = e;
+
+    unsigned long long maxCollatz = (unsigned long long) atoi(argv[1]);
  
-    for (unsigned long long i = 2; i <= MAX_COLLATZ; i++) {
+    for (unsigned long long i = 2; i <= maxCollatz; i++) {
         insertCollatz(i);
         saveULong = i;
         if (i % 1000000 == 0) {
@@ -130,7 +131,7 @@ int main(void) {
     cerr << "entries: " << collatz.size() << endl;
     
     //printCollatz();
-    printSteps();
+    printSteps(maxCollatz);
 
     return 0;
 }
