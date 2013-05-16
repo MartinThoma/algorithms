@@ -1,0 +1,23 @@
+\documentclass[varwidth=true, border=2pt]{standalone}
+\usepackage[margin=2.5cm]{geometry} %layout
+
+\usepackage{pgfplots}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{axis}[
+            axis x line=middle,
+            axis y line=middle,
+            enlarge y limits=true,
+            scaled y ticks = false,
+            width=15cm, height=8cm, % size of the image
+            grid = major,
+            grid style={dashed, gray!30},
+            ylabel=$c^{27}_i$,
+            xlabel=$i$,
+            legend style={at={(0.1,-0.1)}, anchor=north}
+         ]
+          \addplot[sharp plot, mark=x, blue] table [x=steps, y=n, col sep=comma] {../collatz27.csv};
+    \end{axis}
+\end{tikzpicture}
+\end{document}

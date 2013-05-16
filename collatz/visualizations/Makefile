@@ -1,10 +1,9 @@
-SOURCE = gnuplot-comb
+SOURCE = collatz-27
 DELAY = 80
 DENSITY = 300
 WIDTH = 512
 
 make:
-	gnuplot plot.gnuplot
 	pdflatex $(SOURCE).tex -output-format=pdf
 	make clean
 
