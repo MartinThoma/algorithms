@@ -9,3 +9,7 @@ Created with 4100 data points, more than 4150 were not possible:
 Comb plot created with pgfplots and 7150 data points. More than 7200
 were not possible:
 ![Example](pgfplots-comb-plot-7150.png)
+
+Comb plot created with pgfplots and 22300 data points. More than 22350
+were not possible:
+![Example](gnuplot-22300-only-crosses.png)

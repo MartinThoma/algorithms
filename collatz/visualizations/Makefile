@@ -1,14 +1,21 @@
-SOURCE = collatz-steps
+SOURCE = gnuplot-comb
 DELAY = 80
 DENSITY = 300
 WIDTH = 512
 
 make:
+	gnuplot plot.gnuplot
 	pdflatex $(SOURCE).tex -output-format=pdf
 	make clean
 
 clean:
-	rm -rf  $(TARGET) *.class *.html *.log *.aux *.data *.gnuplot
+	rm -rf  *.class *.html *.log *.aux *.data
+
+gnuplot:
+	gnuplot plot.gnuplot
+	pdflatex gnuplot-comb.tex -output-format=pdf
+	rm gnuplot-comb.tex
+	make clean
 
 gif:
 	pdfcrop $(SOURCE).pdf
