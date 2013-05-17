@@ -4,6 +4,7 @@
 #include <vector>
 #include <climits> // get maximum value of unsigned long long
 #include <cstdlib> // exit
+#include <algorithm> // std::max
 
 #define SURPRESS_OUTPUT true
 #define SHOW_DICT_CREATION false
@@ -16,6 +17,10 @@ struct element {
     
     /** How many steps does it take until you reach 1? */
     unsigned long long steps;
+
+    /** When you follow the collatz sequence of this number,
+        what is the maximum you will get? */
+    unsigned long long maxNumberInSequence;
 };
 
 map<unsigned long long, struct element> collatz;
@@ -67,6 +72,7 @@ void insertCollatz(unsigned long long i){
             struct element el;
             el.next = current;
             el.steps = collatz[current].steps + 1;
+            el.maxNumberInSequence = max(collatz[el.next].maxNumberInSequence, *it);
             collatz[*it] = el;
 
             if (el.steps > maxStepsToOne) {
@@ -109,10 +115,18 @@ void printSteps(unsigned long long max) {
     }
 }
 
+void printMaximum(unsigned long long max) {
+    cout << "n,maximum" << endl;
+    for(unsigned long long i=1;i<=max;i++) {
+        cout << i << "," << collatz[i].maxNumberInSequence << endl;
+    }
+}
+
 int main(int argc, char* argv[]) {
     struct element e;
     e.next = 4;
     e.steps = 0;
+    e.maxNumberInSequence = 4;
     collatz[1] = e;
 
     unsigned long long maxCollatz = (unsigned long long) atoi(argv[1]);
@@ -131,7 +145,7 @@ int main(int argc, char* argv[]) {
     cerr << "entries: " << collatz.size() << endl;
     
     //printCollatz();
-    printSteps(maxCollatz);
+    printMaximum(maxCollatz);
 
     return 0;
 }

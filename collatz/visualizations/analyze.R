@@ -1,5 +1,4 @@
 library(ggplot2)
-memory.limit(4000)
 
 mydata = read.csv("/home/moose/Downloads/algorithms/collatz/steps.csv")
 
