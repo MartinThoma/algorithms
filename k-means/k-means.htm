@@ -2,12 +2,40 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>K - Means</title>
+        <title>k-means interactive example</title>
+        <!-- Piwik -->
+        <script type="text/javascript">
+          var _paq = _paq || [];
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          (function() {
+            var u=(("https:" == document.location.protocol) ? "https" : "http") + "://martin-thoma.com/piwik//";
+            _paq.push(['setTrackerUrl', u+'piwik.php']);
+            _paq.push(['setSiteId', 1]);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+            g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+          })();
+        </script>
+        <!-- End Piwik Code -->
     </head>
 
     <body>
-        k: <input type="number" step="1" value="2" id="k"/>
-        <a href="k-means.htm">clear board</a><br/>
+        <table>
+            <tr>
+                <td>display circle</td>
+                <td><input type="checkbox" checked="checked" id="circle" onchange="updateBoard()"/></td>
+                <td>k</td>
+                <td><input type="number" step="1" value="2" id="k" min="1" onchange="updateBoard()"/></td>
+                <td><a href="k-means.htm">clear board</a></td>
+            </tr>
+            <tr>
+                <td>display voronoi</td>
+                <td><input type="checkbox" id="voronoi" onchange="updateBoard()"/></td>
+                <td>density</td>
+                <td><input type="number" step="1" value="5" id="density" min="1" onchange="updateBoard()"/></td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
         <canvas id = "myCanvas"
                 width = "512" height = "600" 
                 style = "border:1px solid #000;"
@@ -23,7 +51,7 @@
         }
 
         /** Returns a dictionary with a class and a radius*/
-        function getKMeansRadius(k, mouseX, mouseY) {
+        function getKMeansInfo(k, mouseX, mouseY) {
             if (points.length == 0) {
                 return {"class":0, "radius":INITIAL_RADIUS};
             }
@@ -42,7 +70,14 @@
 
             Distances.sort(numberSort);
             if (Distances.length < k) {
-                return {"class":0, "radius":Distances.slice(-1)[0]["dist"]};
+                var ClassCount = new Array(2);
+                ClassCount[0] = 0;
+                ClassCount[1] = 0;
+                for(var i = 0; i < Distances.length; i++) {
+                    ClassCount[Distances[i]["class"]]++;
+                }
+                maxClass = ClassCount[0] > ClassCount[1] ? 0 : 1;
+                return {"class":maxClass, "radius":Distances.slice(-1)[0]["dist"]};
             } else {
                 var ClassCount = new Array(2);
                 ClassCount[0] = 0;
@@ -50,43 +85,59 @@
                 for(var i = 0; i < k; i++) {
                     ClassCount[Distances[i]["class"]]++;
                 }
-                maxClass = ClassCount[0] > ClassCount[1] ? 0 : 1;
+                maxClass = ClassCount[0] >= ClassCount[1] ? 0 : 1;
                 return {"class":maxClass, 
                         "radius":Distances[k-1]["dist"]};
             }
         }
 
-        /** Display current value of K */
-        function drawK(k) {
-            var context = canvas.getContext('2d');
-            context.font = '18pt Calibri';
-            context.fillStyle = 'black';
-            context.fillText(k, 10, 25);
-        }
-
         function drawBoard(canvas, centerX, centerY, radius) {
             var context = canvas.getContext('2d');
-            context.canvas.width  = window.innerWidth - 50;
-            context.canvas.height = window.innerHeight - 50;
-            context.clearRect(0, 0, canvas.width, canvas.height);
             var k = parseInt(kElement.value);
-            drawK(k);
+            context.canvas.width  = window.innerWidth - 50;
+            context.canvas.height = window.innerHeight - 90;
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (document.getElementById("voronoi").checked) {
+                var add = parseInt(document.getElementById("density").value);
+                for (x=0; x < canvas.width; x+=add) {
+                    for (y=0; y < canvas.height; y+=add) {
+                        var kMeansInfo = getKMeansInfo(k, x, y);
+                        if (kMeansInfo["class"] == 0) {
+                            var r = 0;
+                            var g = 255;
+                            var b = 0;
+                            var a = 150;
+                        } else {
+                            var r = 0;
+                            var g = 0;
+                            var b = 255;
+                            var a = 150;
+                        }
+                        context.fillStyle = "rgba("+r+","+g+","+b+","+(a/255)+")";
+                        context.fillRect(x, y, add/2, add/2);
+                    }
+                }
+            }
+
             drawPoints(canvas);
 
-            kMeansResult = getKMeansRadius(k, centerX, centerY);
-            context.beginPath();
-            context.arc(centerX, centerY, kMeansResult["radius"], 
-                        0, 2 * Math.PI, false);
-            if (kMeansResult["class"] == 0) {
-                context.fillStyle = 'rgba(100,255,100,0.5)';
-                context.strokeStyle = '#003300';
-            } else {
-                context.fillStyle = 'rgba(100,100,255,0.5)';
-                context.strokeStyle = '#000033';
+            if (document.getElementById("circle").checked) {
+                kMeansResult = getKMeansInfo(k, centerX, centerY);
+                context.beginPath();
+                context.arc(centerX, centerY, kMeansResult["radius"], 
+                            0, 2 * Math.PI, false);
+                if (kMeansResult["class"] == 0) {
+                    context.fillStyle = 'rgba(100,255,100,0.5)';
+                    context.strokeStyle = '#003300';
+                } else {
+                    context.fillStyle = 'rgba(100,100,255,0.5)';
+                    context.strokeStyle = '#000033';
+                }
+                context.lineWidth = 2;
+                context.fill();
+                context.stroke();
             }
-            context.lineWidth = 2;
-            context.fill();
-            context.stroke();
         }
 
         /** permanently add a point */
@@ -130,6 +181,11 @@
                 x: evt.clientX - rect.left,
                 y: evt.clientY - rect.top
             };
+        }
+
+        function updateBoard(){
+            var canvas = document.getElementById("myCanvas");var canvas = document.getElementById("myCanvas");
+            drawBoard(canvas, 0, 0, INITIAL_RADIUS);
         }
       
         /** global variables */
