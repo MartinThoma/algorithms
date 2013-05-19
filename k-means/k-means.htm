@@ -17,7 +17,7 @@
         /** Returns a dictionary with a class and a radius*/
         function getKMeansRadius(k, mouseX, mouseY) {
             if (points.length == 0) {
-                return {"class":0, "radius":initialRadius};
+                return {"class":0, "radius":INITIAL_RADIUS};
             }
 
             var Distances = new Array();
@@ -125,24 +125,25 @@
         }
       
         /** global variables */
-        var initialRadius = 20;
+        var INITIAL_RADIUS = 20;
+        var POINT_RADIUS = 5;
         var points = new Array();
         var canvas = document.getElementById("myCanvas");
         var kElement = document.getElementById("k");
         var context = canvas.getContext("2d");
-        drawBoard(canvas, 0, 0, initialRadius);
+        drawBoard(canvas, 0, 0, INITIAL_RADIUS);
 
         /** event listeners */
         canvas.addEventListener('mousemove', 
             function(evt) {
                 var mousePos = getMousePos(canvas, evt);
-                drawBoard(canvas, mousePos.x, mousePos.y, initialRadius);
+                drawBoard(canvas, mousePos.x, mousePos.y, INITIAL_RADIUS);
             }, false);
 
         canvas.addEventListener("mousedown", 
             function(event) {
                 var mousePos = getMousePos(canvas, event);
-                addPoint(event, canvas, mousePos.x, mousePos.y, 5);
+                addPoint(event, canvas, mousePos.x, mousePos.y, POINT_RADIUS);
             }, false);
     </script>
 </body>
