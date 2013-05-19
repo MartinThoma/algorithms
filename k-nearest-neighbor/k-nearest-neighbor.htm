@@ -33,7 +33,12 @@
                 <td><input type="checkbox" id="voronoi" onchange="updateBoard()"/></td>
                 <td>density</td>
                 <td><input type="number" step="1" value="5" id="density" min="1" onchange="updateBoard()"/></td>
-                <td>&nbsp;</td>
+                <td>
+                    <select id="algorithm">
+                        <option>k-means</option>
+                        <option>k-nearest-neighbor</option>
+                    </select>
+                </td>
             </tr>
         </table>
         <canvas id = "myCanvas"
@@ -50,18 +55,85 @@
             }
         }
 
-        /** Returns a dictionary with a class and a radius*/
+        function euklideanDist(p1, p2) {
+            return Math.sqrt(
+                          Math.pow(p1["x"]-p2["x"], 2) 
+                        + Math.pow(p1["y"]-p2["y"], 2));
+        }
+
         function getKMeansInfo(k, mouseX, mouseY) {
+            var context = canvas.getContext('2d');
+            var width = context.canvas.width;
+            var height = context.canvas.height;
+
+            // randomly choose cluster centers
+            var clusterCenters = new Array(k);
+            for (i=0; i<k; i++) {
+                clusterCenters[i] = {
+                    "x": Math.floor(Math.random()*width),
+                    "y": Math.floor(Math.random()*height)
+                };
+            }
+
+            for (iteration=0;iteration< 20;iteration++) {
+                // for each object, check which cluster is nearest
+                for (i=0; i<points.length; i++) {
+                    var distMin = width+height+10;
+                    var clusterMin = 0;
+                    for(j=0; j<k; j++) {
+                        var dist = euklideanDist(clusterCenters[j], points[i]);
+                        if (dist < distMin) {
+                            distMin = dist;
+                            clusterMin = j
+                        }
+                    }
+                    points[i]["cluster"] = clusterMin;
+                }
+
+                // calculate center of cluster
+                var clusterSum = new Array(k);
+                for (i=0; i<k; i++) {
+                    clusterSum[i] = {"x":0, "y":0, "n":0};
+                }
+                for (i=0; i<points.length; i++) {
+                    clusterSum[points[i]["cluster"]]["x"] += points[i]["cluster"]["x"];
+                    clusterSum[points[i]["cluster"]]["y"] += points[i]["cluster"]["y"];
+                    clusterSum[points[i]["cluster"]]["n"] += 1;
+                }
+                for (i=0; i<k; i++) {
+                    clusterCenters[i] = {
+                        "x":clusterSum[i]["x"]/clusterSum[i]["n"],
+                        "y":clusterSum[i]["y"]/clusterSum[i]["n"]};
+                }
+            }
+
+            // for mouse, check which cluster is nearest
+            var mouseCoords = {"x": mouseX, "y": mouseY};
+            var distMin = width+height+10;
+            var clusterMin = 0;
+            for(j=0; j<k; j++) {
+                var dist = euklideanDist(clusterCenters[j], mouseCoords);
+                if (dist < distMin) {
+                    distMin = dist;
+                    clusterMin = j
+                }
+            }
+
+            return {"cluster":clusterMin, 
+                    "radius":distMin};
+        }
+
+        /** Returns a dictionary with a cluster and a radius*/
+        function getKNearestNeighbor(k, mouseX, mouseY) {
             if (points.length == 0) {
-                return {"class":0, "radius":INITIAL_RADIUS};
+                return {"cluster":0, "radius":INITIAL_RADIUS};
             }
 
             var Distances = new Array();
             for(var i = 0; i < points.length; i++) {
-                var dist = Math.sqrt(
-                            Math.pow(points[i]["centerX"]-mouseX, 2) 
-                          + Math.pow(points[i]["centerY"]-mouseY, 2));
-                Distances.push({"dist":dist, "class":points[i]["class"]});
+                var mouseCoords = {"x": mouseX, "y": mouseY};
+                var dist = euklideanDist(points[i], mouseCoords);
+                Distances.push({"dist":dist, "cluster":points[i]["cluster"]});
             } 
 
             numberSort = function (a,b) {
@@ -70,23 +142,23 @@
 
             Distances.sort(numberSort);
             if (Distances.length < k) {
-                var ClassCount = new Array(2);
-                ClassCount[0] = 0;
-                ClassCount[1] = 0;
+                var clusterCount = new Array(2);
+                clusterCount[0] = 0;
+                clusterCount[1] = 0;
                 for(var i = 0; i < Distances.length; i++) {
-                    ClassCount[Distances[i]["class"]]++;
+                    clusterCount[Distances[i]["cluster"]]++;
                 }
-                maxClass = ClassCount[0] > ClassCount[1] ? 0 : 1;
-                return {"class":maxClass, "radius":Distances.slice(-1)[0]["dist"]};
+                maxCluster = clusterCount[0] > clusterCount[1] ? 0 : 1;
+                return {"cluster":maxCluster, "radius":Distances.slice(-1)[0]["dist"]};
             } else {
-                var ClassCount = new Array(2);
-                ClassCount[0] = 0;
-                ClassCount[1] = 0;
+                var clusterCount = new Array(2);
+                clusterCount[0] = 0;
+                clusterCount[1] = 0;
                 for(var i = 0; i < k; i++) {
-                    ClassCount[Distances[i]["class"]]++;
+                    clusterCount[Distances[i]["cluster"]]++;
                 }
-                maxClass = ClassCount[0] >= ClassCount[1] ? 0 : 1;
-                return {"class":maxClass, 
+                maxCluster = clusterCount[0] >= clusterCount[1] ? 0 : 1;
+                return {"cluster":maxCluster, 
                         "radius":Distances[k-1]["dist"]};
             }
         }
@@ -98,12 +170,18 @@
             context.canvas.height = window.innerHeight - 90;
             context.clearRect(0, 0, canvas.width, canvas.height);
 
+            if(document.getElementById("algorithm").value == "k-means") {
+                var algorithm = getKMeansInfo;
+            } else {
+                var algorithm = getKNearestNeighbor;
+            }
+
             if (document.getElementById("voronoi").checked) {
                 var add = parseInt(document.getElementById("density").value);
                 for (x=0; x < canvas.width; x+=add) {
                     for (y=0; y < canvas.height; y+=add) {
-                        var kMeansInfo = getKMeansInfo(k, x, y);
-                        if (kMeansInfo["class"] == 0) {
+                        var kMeansInfo = getKNearestNeighbor(k, x, y);
+                        if (kMeansInfo["cluster"] == 0) {
                             var r = 0;
                             var g = 255;
                             var b = 0;
@@ -123,11 +201,11 @@
             drawPoints(canvas);
 
             if (document.getElementById("circle").checked) {
-                kMeansResult = getKMeansInfo(k, centerX, centerY);
+                kMeansResult = getKNearestNeighbor(k, centerX, centerY);
                 context.beginPath();
                 context.arc(centerX, centerY, kMeansResult["radius"], 
                             0, 2 * Math.PI, false);
-                if (kMeansResult["class"] == 0) {
+                if (kMeansResult["cluster"] == 0) {
                     context.fillStyle = 'rgba(100,255,100,0.5)';
                     context.strokeStyle = '#003300';
                 } else {
@@ -143,28 +221,28 @@
         /** permanently add a point */
         function addPoint(event, canvas, centerX, centerY, radius) {
             if(event.ctrlKey)  {
-                pointClass = 1;
+                pointCluster = 1;
             } else {
-                pointClass = 0;
+                pointCluster = 0;
             }
 
-            points.push({"centerX" : centerX,
-                         "centerY" : centerY,
+            points.push({"x" : centerX,
+                         "y" : centerY,
                          "radius"  : radius,
-                         "class"   : pointClass});
+                         "cluster"   : pointCluster});
         }
 
         /** draw all permanently added points */
         function drawPoints(canvas) {
             for(var i = 0; i < points.length; i++) {
                 context.beginPath();
-                context.arc(points[i]["centerX"], 
-                            points[i]["centerY"], 
+                context.arc(points[i]["x"], 
+                            points[i]["y"], 
                             points[i]["radius"], 
                             0, 2 * Math.PI, false);
                 context.lineWidth = 1;
                 context.strokeStyle = '#003300';
-                if (points[i]["class"] == 0) {
+                if (points[i]["cluster"] == 0) {
                     context.fillStyle = 'green';
                 } else {
                     context.fillStyle = 'blue';
