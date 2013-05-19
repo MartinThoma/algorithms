@@ -30,6 +30,7 @@ unsigned long long CRITICAL_VALUE = (ULLONG_MAX-1) / 3;
 unsigned long long maxAddFromOneEntry = 0;
 unsigned long long maxEntry = 0;
 unsigned long long maxStepsToOne = 0;
+unsigned long long producesMaxStepsToOne = 1;
 unsigned long long saveULong = 0;
 
 /** n >= 1 */
@@ -77,6 +78,7 @@ void insertCollatz(unsigned long long i){
 
             if (el.steps > maxStepsToOne) {
                 maxStepsToOne = el.steps;
+                producesMaxStepsToOne = i;
             }
 
             if (*it > maxEntry) {
@@ -108,17 +110,12 @@ void printCollatz() {
     }
 }
 
-void printSteps(unsigned long long max) {
-    cout << "n,steps" << endl;
+void print(unsigned long long max) {
+    cout << "n,maximum,steps" << endl;
     for(unsigned long long i=1;i<=max;i++) {
-        cout << i << "," << collatz[i].steps << endl;
-    }
-}
-
-void printMaximum(unsigned long long max) {
-    cout << "n,maximum" << endl;
-    for(unsigned long long i=1;i<=max;i++) {
-        cout << i << "," << collatz[i].maxNumberInSequence << endl;
+        cout << i << "," 
+             << collatz[i].maxNumberInSequence << "," 
+             << collatz[i].steps << endl;
     }
 }
 
@@ -140,12 +137,12 @@ int main(int argc, char* argv[]) {
     }
 
     cerr << "maxAddFromOneEntry: " << maxAddFromOneEntry << endl;
-    cerr << "maxStepsToOne: " << maxStepsToOne << endl;
+    cerr << "maxStepsToOne: " << maxStepsToOne  
+         << " (" << producesMaxStepsToOne << ")"<< endl;
     cerr << "maxEntry: " << maxEntry << endl;
     cerr << "entries: " << collatz.size() << endl;
-    
-    //printCollatz();
-    printMaximum(maxCollatz);
+
+    print(maxCollatz);
 
     return 0;
 }
