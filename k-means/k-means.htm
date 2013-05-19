@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>K - Means</title>
+    </head>
+
+    <body>
+        k: <input type="number" step="1" value="2" id="k"/>
+        <a href="k-means.htm">clear board</a><br/>
+        <canvas id = "myCanvas"
+                width = "512" height = "600" 
+                style = "border:1px solid #000;"
+        > </canvas>
+    
+    <script>
+        /** Returns a dictionary with a class and a radius*/
+        function getKMeansRadius(k, mouseX, mouseY) {
+            if (points.length == 0) {
+                return {"class":0, "radius":initialRadius};
+            }
+
+            var Distances = new Array();
+            for(var i = 0; i < points.length; i++) {
+                var dist = Math.sqrt(
+                            Math.pow(points[i]["centerX"]-mouseX, 2) 
+                          + Math.pow(points[i]["centerY"]-mouseY, 2));
+                Distances.push({"dist":dist, "class":points[i]["class"]});
+            } 
+
+            numberSort = function (a,b) {
+                return a["dist"] - b["dist"];
+            };
+
+            Distances.sort(numberSort);
+            if (Distances.length < k) {
+                return {"class":0, "radius":Distances.slice(-1)[0]["dist"]};
+            } else {
+                var ClassCount = new Array(2);
+                ClassCount[0] = 0;
+                ClassCount[1] = 0;
+                for(var i = 0; i < k; i++) {
+                    ClassCount[Distances[i]["class"]]++;
+                }
+                maxClass = ClassCount[0] > ClassCount[1] ? 0 : 1;
+                return {"class":maxClass, 
+                        "radius":Distances[k-1]["dist"]};
+            }
+        }
+
+        /** Display current value of K */
+        function drawK(k) {
+            var context = canvas.getContext('2d');
+            context.font = '18pt Calibri';
+            context.fillStyle = 'black';
+            context.fillText(k, 10, 25);
+        }
+
+        function drawBoard(canvas, centerX, centerY, radius) {
+            var context = canvas.getContext('2d');
+            context.canvas.width  = window.innerWidth - 50;
+            context.canvas.height = window.innerHeight - 50;
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            var k = parseInt(kElement.value);
+            drawK(k);
+            drawPoints(canvas);
+
+            kMeansResult = getKMeansRadius(k, centerX, centerY);
+            context.beginPath();
+            context.arc(centerX, centerY, kMeansResult["radius"], 
+                        0, 2 * Math.PI, false);
+            if (kMeansResult["class"] == 0) {
+                context.fillStyle = 'rgba(100,255,100,0.5)';
+                context.strokeStyle = '#003300';
+            } else {
+                context.fillStyle = 'rgba(100,100,255,0.5)';
+                context.strokeStyle = '#000033';
+            }
+            context.lineWidth = 2;
+            context.fill();
+            context.stroke();
+        }
+
+        /** permanently add a point */
+        function addPoint(event, canvas, centerX, centerY, radius) {
+            if(event.ctrlKey)  {
+                pointClass = 1;
+            } else {
+                pointClass = 0;
+            }
+
+            points.push({"centerX" : centerX,
+                         "centerY" : centerY,
+                         "radius"  : radius,
+                         "class"   : pointClass});
+        }
+
+        /** draw all permanently added points */
+        function drawPoints(canvas) {
+            for(var i = 0; i < points.length; i++) {
+                context.beginPath();
+                context.arc(points[i]["centerX"], 
+                            points[i]["centerY"], 
+                            points[i]["radius"], 
+                            0, 2 * Math.PI, false);
+                context.lineWidth = 1;
+                context.strokeStyle = '#003300';
+                if (points[i]["class"] == 0) {
+                    context.fillStyle = 'green';
+                } else {
+                    context.fillStyle = 'blue';
+                }
+                context.fill();
+                context.stroke();
+            }
+        }
+      
+        /** get the current position of the mouse */
+        function getMousePos(canvas, evt) {
+            var rect = canvas.getBoundingClientRect();
+            return {
+                x: evt.clientX - rect.left,
+                y: evt.clientY - rect.top
+            };
+        }
+      
+        /** global variables */
+        var initialRadius = 20;
+        var points = new Array();
+        var canvas = document.getElementById("myCanvas");
+        var kElement = document.getElementById("k");
+        var context = canvas.getContext("2d");
+        drawBoard(canvas, 0, 0, initialRadius);
+
+        /** event listeners */
+        canvas.addEventListener('mousemove', 
+            function(evt) {
+                var mousePos = getMousePos(canvas, evt);
+                drawBoard(canvas, mousePos.x, mousePos.y, initialRadius);
+            }, false);
+
+        canvas.addEventListener("mousedown", 
+            function(event) {
+                var mousePos = getMousePos(canvas, event);
+                addPoint(event, canvas, mousePos.x, mousePos.y, 5);
+            }, false);
+    </script>
+</body>
+</html>
