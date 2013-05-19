@@ -14,6 +14,14 @@
         > </canvas>
     
     <script>
+        function setCursorByID(id,cursorStyle) {
+            var elem;
+            if (document.getElementById &&
+            (elem=document.getElementById(id)) ) {
+                if (elem.style) elem.style.cursor=cursorStyle;
+            }
+        }
+
         /** Returns a dictionary with a class and a radius*/
         function getKMeansRadius(k, mouseX, mouseY) {
             if (points.length == 0) {
@@ -132,6 +140,7 @@
         var kElement = document.getElementById("k");
         var context = canvas.getContext("2d");
         drawBoard(canvas, 0, 0, INITIAL_RADIUS);
+        setCursorByID("myCanvas", "crosshair");
 
         /** event listeners */
         canvas.addEventListener('mousemove', 
