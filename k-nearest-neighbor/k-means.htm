@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>k-means interactive example</title>
+    </head>
+
+    <body>
+        <canvas id = "myCanvas"
+                width = "512" height = "600" 
+                style = "border:1px solid #000;"
+        > </canvas>
+    
+    <script>
+        function euklideanDist(p1, p2) {
+            return Math.sqrt(
+                          Math.pow(p1["x"]-p2["x"], 2) 
+                        + Math.pow(p1["y"]-p2["y"], 2));
+        }
+
+        function getColor(i, k, transparency) {
+            var t = (i+1)*(360/k);
+            var color = 'hsla('+t+', 100%, 50%, '+transparency+')';
+            return color;
+        }
+
+        function getKMeansInfo(k, mouseX, mouseY) {
+            var context = canvas.getContext('2d');
+            var width = canvas.width;
+            var height = canvas.height;
+
+            // choose cluster centers
+            var clusterCenters = [{"x": 1,"y": 1},{"x": 10,"y": 10}];
+            console.log(clusterCenters);
+
+            for (iteration=0;iteration< 20;iteration++) {
+                // for each object, check which cluster is nearest
+                for (i=0; i<points.length; i++) {
+                    var distMin = width+height+10;
+                    var clusterMin = 0;
+                    for(j=0; j<k; j++) {
+                        var dist = euklideanDist(clusterCenters[j], points[i]);
+                        if (dist < distMin) {
+                            distMin = dist;
+                            clusterMin = j
+                        }
+                    }
+                    points[i]["cluster"] = clusterMin;
+                }
+
+                // calculate center of cluster
+                var clusterSum = new Array(k);
+                for (i=0; i<k; i++) {
+                    clusterSum[i] = {"x":0, "y":0, "n":0};
+                }
+                for (i=0; i<points.length; i++) {
+                    clusterSum[points[i]["cluster"]]["x"] += points[i]["cluster"]["x"];
+                    clusterSum[points[i]["cluster"]]["y"] += points[i]["cluster"]["y"];
+                    clusterSum[points[i]["cluster"]]["n"] += 1;
+                }
+                for (i=0; i<k; i++) {
+                    if (clusterSum[i]["n"] > 0) {
+                        clusterCenters[i] = {
+                            "x":clusterSum[i]["x"]/clusterSum[i]["n"],
+                            "y":clusterSum[i]["y"]/clusterSum[i]["n"]};
+                    }
+                }
+            }
+
+            return {"cluster":1, 
+                    "radius":10};
+        }
+
+        function drawBoard(canvas, centerX, centerY, radius) {
+            var context = canvas.getContext('2d');
+            var k = 2;
+            context.canvas.width  = window.innerWidth - 50;
+            context.canvas.height = window.innerHeight - 90;
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            drawPoints(canvas);
+
+            kMeansResult = getKMeansInfo(k, centerX, centerY);
+            context.beginPath();
+            context.arc(centerX, centerY, kMeansResult["radius"], 
+                        0, 2 * Math.PI, false);
+            context.fillStyle = getColor(kMeansResult["cluster"], 2, 0.4);
+            context.strokeStyle = getColor(kMeansResult["cluster"], 2, 1);
+
+            context.lineWidth = 2;
+            context.fill();
+            context.stroke();
+        }
+
+        /** permanently add a point */
+        function addPoint(event, canvas, centerX, centerY, radius) {
+            updateBoard();
+
+            if(event.ctrlKey)  {
+                pointCluster = 1;
+            } else {
+                pointCluster = 0;
+            }
+
+            points.push({"x": centerX,
+                         "y": centerY,
+                         "radius": radius,
+                         "cluster": pointCluster});
+        }
+
+        /** draw all permanently added points */
+        function drawPoints(canvas) {
+            for(var i = 0; i < points.length; i++) {
+                context.beginPath();
+                context.arc(points[i]["x"], 
+                            points[i]["y"], 
+                            points[i]["radius"], 
+                            0, 2 * Math.PI, false);
+                context.lineWidth = 1;
+                context.strokeStyle = 'black';
+                context.fillStyle = getColor(points[i]["cluster"], 2, 0.9);
+                context.fill();
+                context.stroke();
+            }
+        }
+      
+        /** get the current position of the mouse */
+        function getMousePos(canvas, evt) {
+            var rect = canvas.getBoundingClientRect();
+            return {
+                x: evt.clientX - rect.left,
+                y: evt.clientY - rect.top
+            };
+        }
+
+        function updateBoard(){
+            var canvas = document.getElementById("myCanvas");var canvas = document.getElementById("myCanvas");
+            drawBoard(canvas, 0, 0, INITIAL_RADIUS);
+        }
+      
+        /** global variables */
+        var INITIAL_RADIUS = 20;
+        var POINT_RADIUS = 5;
+        var points = new Array();
+        var canvas = document.getElementById("myCanvas");
+        var context = canvas.getContext("2d");
+        drawBoard(canvas, 0, 0, INITIAL_RADIUS);
+
+        /** event listeners */
+        canvas.addEventListener('mousemove', 
+            function(evt) {
+                var mousePos = getMousePos(canvas, evt);
+                drawBoard(canvas, mousePos.x, mousePos.y, INITIAL_RADIUS);
+            }, false);
+
+        canvas.addEventListener("mousedown", 
+            function(event) {
+                var mousePos = getMousePos(canvas, event);
+                addPoint(event, canvas, mousePos.x, mousePos.y, POINT_RADIUS);
+            }, false);
+    </script>
+</body>
+</html>
