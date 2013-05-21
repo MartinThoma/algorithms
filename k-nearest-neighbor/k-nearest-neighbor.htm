@@ -36,7 +36,7 @@
                 <td>
                     <select id="algorithm">
                         <option>k-nearest-neighbor</option>
-                        <option>k-means</option>
+                        <option selected="selected">k-means</option>
                     </select>
                 </td>
             </tr>
@@ -69,17 +69,17 @@
 
         function getKMeansInfo(k, mouseX, mouseY) {
             var context = canvas.getContext('2d');
-            var width = context.canvas.width;
-            var height = context.canvas.height;
+            var width = canvas.width;
+            var height = canvas.height;
 
             // randomly choose cluster centers
             var clusterCenters = new Array(k);
             for (i=0; i<k; i++) {
-                clusterCenters[i] = {
-                    "x": Math.floor(Math.random()*width),
-                    "y": Math.floor(Math.random()*height)
-                };
+                var x = parseInt(Math.floor(Math.random()*width));
+                var y = parseInt(Math.floor(Math.random()*height));
+                clusterCenters.push({"x": x,"y": y});
             }
+            console.log(clusterCenters);
 
             for (iteration=0;iteration< 20;iteration++) {
                 // for each object, check which cluster is nearest
@@ -107,9 +107,11 @@
                     clusterSum[points[i]["cluster"]]["n"] += 1;
                 }
                 for (i=0; i<k; i++) {
-                    clusterCenters[i] = {
-                        "x":clusterSum[i]["x"]/clusterSum[i]["n"],
-                        "y":clusterSum[i]["y"]/clusterSum[i]["n"]};
+                    if (clusterSum[i]["n"] > 0) {
+                        clusterCenters[i] = {
+                            "x":clusterSum[i]["x"]/clusterSum[i]["n"],
+                            "y":clusterSum[i]["y"]/clusterSum[i]["n"]};
+                    }
                 }
             }
 
@@ -179,6 +181,7 @@
 
             if(document.getElementById("algorithm").value == "k-means") {
                 var algorithm = getKMeansInfo;
+                getKMeansInfo(k, 0, 0);
             } else {
                 var algorithm = getKNearestNeighbor;
             }
@@ -212,6 +215,8 @@
 
         /** permanently add a point */
         function addPoint(event, canvas, centerX, centerY, radius) {
+            updateBoard();
+
             if(event.ctrlKey)  {
                 pointCluster = 1;
             } else {
