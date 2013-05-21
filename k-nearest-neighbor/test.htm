@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>k-means interactive example</title>
+    </head>
+
+    <body>
+        <canvas id = "myCanvas"
+                width = "512" height = "600" 
+                style = "border:1px solid #000;"
+        > </canvas>
+    
+    <script>
+        function euklideanDist(p1, p2) {
+            return Math.sqrt(Math.pow(p1["x"]-p2["x"],2)+ Math.pow(p1["y"]-p2["y"],2));
+        }
+
+        function getColor(i, k, transparency) {
+            var t = (i+1)*(360/k);
+            return 'hsla('+t+', 100%, 50%, '+transparency+')';
+        }
+
+        function getKMeansInfo(k, mouseX, mouseY) {
+            var clusterCenters = [{"x": 1,"y": 1},{"x": 10,"y": 10}];
+            console.log(clusterCenters);
+            return {"cluster":1, "radius":10};
+        }
+
+        function drawBoard(canvas, centerX, centerY, radius) {
+            var k = 2;
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            kMeansResult = getKMeansInfo(k, centerX, centerY);
+            context.beginPath();
+            context.arc(centerX, centerY, kMeansResult["radius"], 
+                        0, 2 * Math.PI, false);
+            context.fillStyle = getColor(kMeansResult["cluster"], 2, 0.4);
+            context.strokeStyle = getColor(kMeansResult["cluster"], 2, 1);
+
+            context.lineWidth = 2;
+            context.fill();
+            context.stroke();
+        }
+      
+        /** get the current position of the mouse */
+        function getMousePos(canvas, evt) {
+            var rect = canvas.getBoundingClientRect();
+            return {
+                x: evt.clientX - rect.left,
+                y: evt.clientY - rect.top
+            };
+        }
+      
+        /** global variables */
+        var points = new Array();
+        var canvas = document.getElementById("myCanvas");
+        var context = canvas.getContext("2d");
+
+        /** event listeners */
+        canvas.addEventListener('mousemove', 
+            function(evt) {
+                var mousePos = getMousePos(canvas, evt);
+                drawBoard(canvas, mousePos.x, mousePos.y, 20);
+            }, false);
+    </script>
+</body>
+</html>

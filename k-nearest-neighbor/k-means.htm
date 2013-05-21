@@ -13,22 +13,15 @@
     
     <script>
         function euklideanDist(p1, p2) {
-            return Math.sqrt(
-                          Math.pow(p1["x"]-p2["x"], 2) 
-                        + Math.pow(p1["y"]-p2["y"], 2));
+            return Math.sqrt(Math.pow(p1["x"]-p2["x"],2)+ Math.pow(p1["y"]-p2["y"],2));
         }
 
         function getColor(i, k, transparency) {
             var t = (i+1)*(360/k);
-            var color = 'hsla('+t+', 100%, 50%, '+transparency+')';
-            return color;
+            return 'hsla('+t+', 100%, 50%, '+transparency+')';
         }
 
         function getKMeansInfo(k, mouseX, mouseY) {
-            var context = canvas.getContext('2d');
-            var width = canvas.width;
-            var height = canvas.height;
-
             // choose cluster centers
             var clusterCenters = [{"x": 1,"y": 1},{"x": 10,"y": 10}];
             console.log(clusterCenters);
@@ -36,7 +29,7 @@
             for (iteration=0;iteration< 20;iteration++) {
                 // for each object, check which cluster is nearest
                 for (i=0; i<points.length; i++) {
-                    var distMin = width+height+10;
+                    var distMin = 1000000;
                     var clusterMin = 0;
                     for(j=0; j<k; j++) {
                         var dist = euklideanDist(clusterCenters[j], points[i]);
@@ -67,15 +60,11 @@
                 }
             }
 
-            return {"cluster":1, 
-                    "radius":10};
+            return {"cluster":1, "radius":10};
         }
 
         function drawBoard(canvas, centerX, centerY, radius) {
-            var context = canvas.getContext('2d');
             var k = 2;
-            context.canvas.width  = window.innerWidth - 50;
-            context.canvas.height = window.innerHeight - 90;
             context.clearRect(0, 0, canvas.width, canvas.height);
 
             drawPoints(canvas);
@@ -94,8 +83,6 @@
 
         /** permanently add a point */
         function addPoint(event, canvas, centerX, centerY, radius) {
-            updateBoard();
-
             if(event.ctrlKey)  {
                 pointCluster = 1;
             } else {
@@ -132,31 +119,23 @@
                 y: evt.clientY - rect.top
             };
         }
-
-        function updateBoard(){
-            var canvas = document.getElementById("myCanvas");var canvas = document.getElementById("myCanvas");
-            drawBoard(canvas, 0, 0, INITIAL_RADIUS);
-        }
       
         /** global variables */
-        var INITIAL_RADIUS = 20;
-        var POINT_RADIUS = 5;
         var points = new Array();
         var canvas = document.getElementById("myCanvas");
         var context = canvas.getContext("2d");
-        drawBoard(canvas, 0, 0, INITIAL_RADIUS);
 
         /** event listeners */
         canvas.addEventListener('mousemove', 
             function(evt) {
                 var mousePos = getMousePos(canvas, evt);
-                drawBoard(canvas, mousePos.x, mousePos.y, INITIAL_RADIUS);
+                drawBoard(canvas, mousePos.x, mousePos.y, 20);
             }, false);
 
         canvas.addEventListener("mousedown", 
             function(event) {
                 var mousePos = getMousePos(canvas, event);
-                addPoint(event, canvas, mousePos.x, mousePos.y, POINT_RADIUS);
+                addPoint(event, canvas, mousePos.x, mousePos.y, 5);
             }, false);
     </script>
 </body>
