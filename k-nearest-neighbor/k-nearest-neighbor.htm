@@ -75,9 +75,9 @@
             // randomly choose cluster centers
             var clusterCenters = new Array(k);
             for (i=0; i<k; i++) {
-                var x = parseInt(Math.floor(Math.random()*width));
-                var y = parseInt(Math.floor(Math.random()*height));
-                clusterCenters.push({"x": x,"y": y});
+                var x = Math.floor(Math.random()*width);
+                var y = Math.floor(Math.random()*height);
+                clusterCenters[i] = {"x": x,"y": y};
             }
             console.log(clusterCenters);
 
@@ -87,6 +87,7 @@
                     var distMin = width+height+10;
                     var clusterMin = 0;
                     for(j=0; j<k; j++) {
+                        console.log(clusterCenters[j]);
                         var dist = euklideanDist(clusterCenters[j], points[i]);
                         if (dist < distMin) {
                             distMin = dist;
