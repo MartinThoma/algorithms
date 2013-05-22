@@ -36,7 +36,7 @@
                 <td>
                     <select id="algorithm">
                         <option>k-nearest-neighbor</option>
-                        <option selected="selected">k-means</option>
+                        <option>k-means</option>
                     </select>
                 </td>
             </tr>
@@ -190,26 +190,26 @@
                 var algorithm = getKNearestNeighbor;
             }
 
-            if (document.getElementById("voronoi").checked) {
+            if (document.getElementById("voronoi").checked && algorithm != getKMeansInfo) {
                 var add = parseInt(document.getElementById("density").value);
                 for (x=0; x < canvas.width; x+=add) {
                     for (y=0; y < canvas.height; y+=add) {
                         var algorithmResult = algorithm(k, {"x":x, "y":y});
-                        context.fillStyle = getColor(algorithmResult["cluster"],2,1);
+                        context.fillStyle = getColor(algorithmResult["cluster"], k,1);
                         context.fillRect(x, y, add/2, add/2);
                     }
                 }
             }
 
-            drawPoints(canvas);
+            drawPoints(canvas, k);
 
-            if (document.getElementById("circle").checked) {
+            if (document.getElementById("circle").checked && algorithm != getKMeansInfo) {
                 var algorithmResult = algorithm(k, mouseCoords);
                 context.beginPath();
                 context.arc(mouseCoords["x"], mouseCoords["y"], algorithmResult["radius"], 
                             0, 2 * Math.PI, false);
-                context.fillStyle = getColor(algorithmResult["cluster"], 2, 0.4);
-                context.strokeStyle = getColor(algorithmResult["cluster"], 2, 1);
+                context.fillStyle = getColor(algorithmResult["cluster"], k, 0.4);
+                context.strokeStyle = getColor(algorithmResult["cluster"], k, 1);
 
                 context.lineWidth = 2;
                 context.fill();
@@ -235,7 +235,7 @@
         }
 
         /** draw all permanently added points */
-        function drawPoints(canvas) {
+        function drawPoints(canvas, k) {
             for(var i = 0; i < points.length; i++) {
                 context.beginPath();
                 context.arc(points[i]["x"], 
@@ -244,7 +244,7 @@
                             0, 2 * Math.PI, false);
                 context.lineWidth = 1;
                 context.strokeStyle = 'black';
-                context.fillStyle = getColor(points[i]["cluster"], 2, 0.9);
+                context.fillStyle = getColor(points[i]["cluster"], k, 0.9);
                 context.fill();
                 context.stroke();
             }
