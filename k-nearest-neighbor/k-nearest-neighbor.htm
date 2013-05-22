@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>k-nearest-neighbor interactive example</title>
+        <title>k-nearest-neighbor and k-means interactive example</title>
         <!-- Piwik -->
         <script type="text/javascript">
           var _paq = _paq || [];
@@ -194,8 +194,8 @@
                 var add = parseInt(document.getElementById("density").value);
                 for (x=0; x < canvas.width; x+=add) {
                     for (y=0; y < canvas.height; y+=add) {
-                        var kMeansInfo = algorithm(k, x, y);
-                        context.fillStyle = getColor(kMeansInfo["cluster"],2,1);
+                        var algorithmResult = algorithm(k, {"x":x, "y":y});
+                        context.fillStyle = getColor(algorithmResult["cluster"],2,1);
                         context.fillRect(x, y, add/2, add/2);
                     }
                 }
@@ -204,12 +204,12 @@
             drawPoints(canvas);
 
             if (document.getElementById("circle").checked) {
-                kMeansResult = algorithm(k, mouseCoords);
+                var algorithmResult = algorithm(k, mouseCoords);
                 context.beginPath();
-                context.arc(mouseCoords["x"], mouseCoords["y"], kMeansResult["radius"], 
+                context.arc(mouseCoords["x"], mouseCoords["y"], algorithmResult["radius"], 
                             0, 2 * Math.PI, false);
-                context.fillStyle = getColor(kMeansResult["cluster"], 2, 0.4);
-                context.strokeStyle = getColor(kMeansResult["cluster"], 2, 1);
+                context.fillStyle = getColor(algorithmResult["cluster"], 2, 0.4);
+                context.strokeStyle = getColor(algorithmResult["cluster"], 2, 1);
 
                 context.lineWidth = 2;
                 context.fill();
