@@ -40,7 +40,7 @@
             </tr>
             <tr>
                 <td><span class="hint" title="the next point you insert will have class number...">class</span></td>
-                <td><input type="number" step="1" value="1" id="class" min="1"/></td>
+                <td><input type="number" step="1" value="0" id="class" min="0"/></td>
                 <td><span class="hint" title="number of iterations it took until k-means was stable">iterations</span></td>
                 <td><input type="number" value="0" id="iterations" disabled="disabled" /></td>
                 <td>&nbsp;</td>
@@ -274,11 +274,7 @@
         function addPoint(event, canvas, mouseCoords, radius) {
             updateBoard();
 
-            if(event.ctrlKey)  {
-                pointCluster = 1;
-            } else {
-                pointCluster = parseInt(document.getElementById("class").value);
-            }
+            pointCluster = parseInt(document.getElementById("class").value);
 
             if (pointCluster > maxKnearestNeighborClasses) {
                 maxKnearestNeighborClasses = pointCluster;
