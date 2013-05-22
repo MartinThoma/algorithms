@@ -17,28 +17,40 @@
           })();
         </script>
         <!-- End Piwik Code -->
+        <style type="text/css">
+            span.hint {
+	            border-bottom:1px dotted #666;
+            }
+        </style>
     </head>
 
     <body>
         <table>
             <tr>
-                <td>display circle</td>
+                <td><span class="hint" title="number of iterations it took until k-means was stable">circle</span></td>
                 <td><input type="checkbox" checked="checked" id="circle" onchange="updateBoard()"/></td>
                 <td>k</td>
                 <td><input type="number" step="1" value="2" id="k" min="1" onchange="updateBoard()"/></td>
-                <td><a href="k-nearest-neighbor.htm">clear board</a></td>
-            </tr>
-            <tr>
-                <td>display voronoi</td>
-                <td><input type="checkbox" id="voronoi" onchange="updateBoard()"/></td>
-                <td>density</td>
-                <td><input type="number" step="1" value="5" id="density" min="1" onchange="updateBoard()"/></td>
                 <td>
-                    <select id="algorithm">
+                    <select id="algorithm" onchange="updateBoard()">
                         <option>k-nearest-neighbor</option>
                         <option>k-means</option>
                     </select>
                 </td>
+            </tr>
+            <tr>
+                <td><span class="hint" title="the next point you insert will have class number...">class</span></td>
+                <td><input type="number" step="1" value="1" id="class" min="1"/></td>
+                <td><span class="hint" title="number of iterations it took until k-means was stable">iterations</span></td>
+                <td><input type="number" value="0" id="iterations" disabled="disabled" /></td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td><span class="hint" title="display a voronoi diagram">voronoi</span></td>
+                <td><input type="checkbox" id="voronoi" onchange="updateBoard()"/></td>
+                <td><span class="hint" title="How much will points be spread for voronoi? USE 1 WITH CAUTION! The bigger the value, the quicker the computation.">spread</span></td>
+                <td><input type="number" step="1" value="5" id="density" min="1" onchange="updateBoard()"/></td>
+                <td><a href="k-nearest-neighbor.htm">clear board</a></td>
             </tr>
         </table>
         <canvas id = "myCanvas"
@@ -60,8 +72,16 @@
                         + Math.pow(p1["y"]-p2["y"], 2));
         }
 
-        function getColor(i, k, transparency) {
-            var t = (i+1)*(360/k);
+        function getNrOfClusters() {
+            if(document.getElementById("algorithm").value == "k-means") {
+                return k;
+            } else if (document.getElementById("algorithm").value == "k-nearest-neighbor") {
+                return maxKnearestNeighborClasses;
+            }
+        }
+
+        function getColor(i, transparency) {
+            var t = (i+1)*(360/getNrOfClusters());
             var color = 'hsla('+t+', 100%, 50%, '+transparency+')';
             return color;
         }
@@ -79,7 +99,12 @@
                 clusterCenters[i] = {"x": x,"y": y};
             }
 
-            for (iteration=0;iteration< 20;iteration++) {
+            var iteration=0;
+            var minChange=true;
+            while (iteration < 2000 && minChange) {
+                iteration++;
+                minChange=false;
+
                 // for each object, check which cluster is nearest
                 for (i=0; i<points.length; i++) {
                     var distMin = width+height+10;
@@ -107,12 +132,15 @@
                 }
                 for (i=0; i<k; i++) {
                     if (clusterSum[i]["n"] > 0) {
-                        clusterCenters[i] = {
-                            "x":clusterSum[i]["x"]/clusterSum[i]["n"],
-                            "y":clusterSum[i]["y"]/clusterSum[i]["n"]};
+                        var newCenterVar = {"x":clusterSum[i]["x"]/clusterSum[i]["n"],"y":clusterSum[i]["y"]/clusterSum[i]["n"]};
+                        if (euklideanDist(clusterCenters[i], newCenterVar) > 2) {
+                            minChange = true;
+                        }
+                        clusterCenters[i] =  {"x":clusterSum[i]["x"]/clusterSum[i]["n"],"y":clusterSum[i]["y"]/clusterSum[i]["n"]};
                     }
                 }
             }
+            document.getElementById("iterations").value = iteration;
 
             // show where clusters are
             var clusterCenterImage = new Image();
@@ -155,22 +183,48 @@
 
             Distances.sort(numberSort);
             if (Distances.length < k) {
-                var classCount = new Array(2);
-                classCount[0] = 0;
-                classCount[1] = 0;
+                /* initialise array to count */
+                var classCount = new Array(maxKnearestNeighborClasses);
+                for(var i=0;i<maxKnearestNeighborClasses;i++) {
+                    classCount[i] = 0;
+                }
+                
+                /* count classes */
                 for(var i = 0; i < Distances.length; i++) {
                     classCount[Distances[i]["class"]]++;
                 }
-                maxClass = classCount[0] > classCount[1] ? 0 : 1;
+
+                /* find maximum */
+                maxClass = 0;
+                maxClassCount = 0;
+                for(var i =0; i <maxKnearestNeighborClasses;i++) {
+                    if(maxClassCount < classCount[i]) {
+                        maxClassCount = classCount[i];
+                        maxClass = i;
+                    }
+                }
                 return {"cluster":maxClass, "radius":Distances.slice(-1)[0]["dist"]};
             } else {
-                var classCount = new Array(2);
-                classCount[0] = 0;
-                classCount[1] = 0;
+                /* initialise array to count */
+                var classCount = new Array(maxKnearestNeighborClasses);
+                for(var i=0;i<maxKnearestNeighborClasses;i++) {
+                    classCount[i] = 0;
+                }
+
+
                 for(var i = 0; i < k; i++) {
                     classCount[Distances[i]["class"]]++;
                 }
-                maxClass = classCount[0] >= classCount[1] ? 0 : 1;
+
+                /* find maximum */
+                maxClass = 0;
+                maxClassCount = 0;
+                for(var i =0; i <maxKnearestNeighborClasses;i++) {
+                    if(maxClassCount < classCount[i]) {
+                        maxClassCount = classCount[i];
+                        maxClass = i;
+                    }
+                }
                 return {"cluster":maxClass, 
                         "radius":Distances[k-1]["dist"]};
             }
@@ -180,7 +234,7 @@
             var context = canvas.getContext('2d');
             var k = parseInt(kElement.value);
             context.canvas.width  = window.innerWidth - 50;
-            context.canvas.height = window.innerHeight - 90;
+            context.canvas.height = window.innerHeight - 120;
             context.clearRect(0, 0, canvas.width, canvas.height);
 
             if(document.getElementById("algorithm").value == "k-means") {
@@ -195,7 +249,7 @@
                 for (x=0; x < canvas.width; x+=add) {
                     for (y=0; y < canvas.height; y+=add) {
                         var algorithmResult = algorithm(k, {"x":x, "y":y});
-                        context.fillStyle = getColor(algorithmResult["cluster"], k,1);
+                        context.fillStyle = getColor(algorithmResult["cluster"],1);
                         context.fillRect(x, y, add/2, add/2);
                     }
                 }
@@ -208,9 +262,8 @@
                 context.beginPath();
                 context.arc(mouseCoords["x"], mouseCoords["y"], algorithmResult["radius"], 
                             0, 2 * Math.PI, false);
-                context.fillStyle = getColor(algorithmResult["cluster"], k, 0.4);
-                context.strokeStyle = getColor(algorithmResult["cluster"], k, 1);
-
+                context.fillStyle = getColor(algorithmResult["cluster"], 0.4);
+                context.strokeStyle = getColor(algorithmResult["cluster"], 1);
                 context.lineWidth = 2;
                 context.fill();
                 context.stroke();
@@ -224,7 +277,11 @@
             if(event.ctrlKey)  {
                 pointCluster = 1;
             } else {
-                pointCluster = 0;
+                pointCluster = parseInt(document.getElementById("class").value);
+            }
+
+            if (pointCluster > maxKnearestNeighborClasses) {
+                maxKnearestNeighborClasses = pointCluster;
             }
 
             points.push({"x": mouseCoords["x"],
@@ -244,7 +301,7 @@
                             0, 2 * Math.PI, false);
                 context.lineWidth = 1;
                 context.strokeStyle = 'black';
-                context.fillStyle = getColor(points[i]["cluster"], k, 0.9);
+                context.fillStyle = getColor(points[i]["cluster"], getNrOfClusters(), 0.9);
                 context.fill();
                 context.stroke();
             }
@@ -265,6 +322,7 @@
         }
       
         /** global variables */
+        var maxKnearestNeighborClasses = 1;
         var INITIAL_RADIUS = 20;
         var POINT_RADIUS = 5;
         var points = new Array();
