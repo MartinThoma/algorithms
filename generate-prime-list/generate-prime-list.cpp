@@ -6,15 +6,15 @@ using namespace std;
 
 void sieveOfEratosthenes(unsigned int n) {
     FILE* pFile;
-    pFile = fopen("huge-prime-list.txt", "wb");
+    pFile = fopen("huge-prime-list.bin", "wb");
     vector<bool> primesEratosthenes (n+1, true);
 
     for (unsigned int i=3; i<n; i+=2) {
-        if (primesEratosthenes[i] == true) {
-            fwrite(&i, sizeof(unsigned int),1, pFile);
+        if (primesEratosthenes[i]) {
+            fwrite(&i, sizeof(unsigned int), 1, pFile);
      
-            for (unsigned int j=2; j*i<=n; j++) {
-                primesEratosthenes[j*i] = false;
+            for (unsigned int j=i*i; j<=n; j+=i) {
+                primesEratosthenes[j] = false;
             }
         }
     }
