@@ -4,12 +4,15 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
-    ifstream myFile (argv[1], ios::in | ios::binary);
+    FILE* pFile;
+    pFile = fopen(argv[1], "rb");
 
-    unsigned int x;
-    while (!myFile.eof()) {
-        myFile.read((char*)&x, sizeof(int));
+    long long x;
+    size_t read;
+    while (!feof(pFile)) {
+        read = fread(&x, sizeof(long long), 1, pFile);
+        (void) read;
         cout << x << endl;
     }
-    myFile.close();
+    fclose(pFile);
 }

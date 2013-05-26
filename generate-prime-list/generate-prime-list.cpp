@@ -4,16 +4,16 @@
 
 using namespace std;
 
-void sieveOfEratosthenes(unsigned int n) {
+void sieveOfEratosthenes(long long n) {
     FILE* pFile;
     pFile = fopen("huge-prime-list.bin", "wb");
     vector<bool> primesEratosthenes (n+1, true);
 
-    for (unsigned int i=3; i<n; i+=2) {
+    for (long long i=3; i<n; i+=2) {
         if (primesEratosthenes[i]) {
-            fwrite(&i, sizeof(unsigned int), 1, pFile);
+            fwrite(&i, sizeof(long long), 1, pFile);
      
-            for (unsigned int j=i*i; j<=n; j+=i) {
+            for (long long j=i*i; j<=n; j+=i) {
                 primesEratosthenes[j] = false;
             }
         }
@@ -23,7 +23,7 @@ void sieveOfEratosthenes(unsigned int n) {
 }
 
 int main(int argc, char* argv[]) {
-    unsigned int n = (unsigned int) atoi(argv[1]);
+    long long  n = (long long) atoi(argv[1]);
     sieveOfEratosthenes(n);
     return 0;
 }
