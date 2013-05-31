@@ -13,4 +13,4 @@ debug:
 	g++ $(CFLAGS) $(DEBUGFLAGS) $(PROBLEM).cpp -o $(PROBLEM).out
 
 clean:
-	rm -rf  $(TARGET) *.class *.html *.log *.aux *.out
+	rm -rf  $(TARGET) *.class *.html *.log *.aux *.out *.bin
