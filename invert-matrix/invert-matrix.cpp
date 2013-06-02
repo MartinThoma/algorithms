@@ -18,7 +18,7 @@ void print(vector< vector<double> > A) {
     cout << endl;
 }
 
-vector<double> calculateInverse(vector< vector<double> >& A) {
+void calculateInverse(vector< vector<double> >& A) {
     int n = A.size();
 
     for (int i=0; i<n; i++) {
@@ -53,14 +53,21 @@ vector<double> calculateInverse(vector< vector<double> >& A) {
     }
 
     // Solve equation Ax=b for an upper triangular matrix A
-    vector<double> x(n);
     for (int i=n-1; i>=0; i--) {
-        x[i] = A[i][n]/A[i][i];
-        for (int k=i-1;k>=0; k--) {
-            A[k][n] -= A[k][i] * x[i];
+        for (int k=n; k<2*n;k++) {
+            A[i][k] /= A[i][i];
+        }
+        // this is not necessary, but the output looks nicer:
+        A[i][i] = 1; 
+
+        for (int rowModify=i-1;rowModify>=0; rowModify--) {
+            for (int columModify=n;columModify<2*n;columModify++) {
+                A[rowModify][columModify] -= A[i][columModify] * A[rowModify][i];
+            }
+            // this is not necessary, but the output looks nicer:
+            A[rowModify][i] = 0;
         }
     }
-    return x;
 }
 
 int main() {
@@ -90,5 +97,4 @@ int main() {
     // Print result
     cout << "Result:" << endl;
     print(A);
-    cout << endl;
 }
