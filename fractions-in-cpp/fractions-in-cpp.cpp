@@ -62,6 +62,14 @@ Fraction operator+(const Fraction& lhs, const Fraction& rhs) {
     return tmp;
 }
 
+Fraction operator+=(Fraction& lhs, const Fraction& rhs) {
+    Fraction tmp(lhs.numerator*rhs.denominator
+                +rhs.numerator*lhs.denominator,
+                lhs.denominator*rhs.denominator);
+    lhs = tmp;
+    return lhs;
+}
+
 Fraction operator-(const Fraction& lhs, const Fraction& rhs) {
     Fraction tmp(lhs.numerator*rhs.denominator
                 -rhs.numerator*lhs.denominator,
@@ -69,10 +77,25 @@ Fraction operator-(const Fraction& lhs, const Fraction& rhs) {
     return tmp;
 }
 
+Fraction operator-=(Fraction& lhs, const Fraction& rhs) {
+    Fraction tmp(lhs.numerator*rhs.denominator
+                -rhs.numerator*lhs.denominator,
+                lhs.denominator*rhs.denominator);
+    lhs = tmp;
+    return lhs;
+}
+
 Fraction operator*(const Fraction& lhs, const Fraction& rhs) {
     Fraction tmp(lhs.numerator*rhs.numerator,
                lhs.denominator*rhs.denominator);
     return tmp;
+}
+
+Fraction operator*=(Fraction& lhs, const Fraction& rhs) {
+    Fraction tmp(lhs.numerator*rhs.numerator,
+               lhs.denominator*rhs.denominator);
+    lhs = tmp;
+    return lhs;
 }
 
 Fraction operator*(int lhs, const Fraction& rhs) {
@@ -105,28 +128,31 @@ int main() {
     Fraction b(3,28);
     Fraction c;
 
-    c = a + b; // Result: 37/84
-    cout << c << endl;
+    c = a + b;
+    cout << c << "\t(should be 37/84)" << endl;
 
-    c = a - b; // Result: 19/84
-    cout << c << endl;
+    c = a - b;
+    cout << c << "\t(should be 19/84)" << endl;
 
-    c = a * b; // Result: 1/28
-    cout << c << endl;
+    c = a * b;
+    cout << c << "\t(should be 1/28)" << endl;
 
-    c = a / b; // Result: 28/9
-    cout << c << endl;
+    c = a / b;
+    cout << c << "\t(should be 28/9)" << endl;
 
-    c = -1 * b; // Result: -3/28
-    cout << c << endl;
+    c = -1 * b;
+    cout << c << "\t(should be -3/28)" << endl;
 
-    c = b * (-1); // Result: -3/28
-    cout << c << endl;
+    c = b * (-1);
+    cout << c << "\t(should be -3/28)" << endl;
 
     c = Fraction(-100,3);
-    cout << (int)c << endl;
-    cout << (float)c << endl;
-    cout << (double)c << endl;
+    cout <<    (int)c << "\t(should be -33)" << endl;
+    cout <<  (float)c << "\t(should be -33.3...)" << endl;
+    cout << (double)c << "\t(should be -33.3...)" << endl;
+
+    a -= b;
+    cout << a << "\t(should be 19/84)" << endl;
 
     return 0;
 }
