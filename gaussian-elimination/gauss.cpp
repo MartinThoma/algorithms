@@ -18,7 +18,7 @@ void print(vector< vector<double> > A) {
     cout << endl;
 }
 
-vector<double> gauss(vector< vector<double> > A) {
+vector<double> gauss(vector< vector<double> >& A) {
     int n = A.size();
 
     for (int i=0; i<n; i++) {
