@@ -62,7 +62,8 @@ void calculateInverse(vector< vector<double> >& A) {
 
         for (int rowModify=i-1;rowModify>=0; rowModify--) {
             for (int columModify=n;columModify<2*n;columModify++) {
-                A[rowModify][columModify] -= A[i][columModify] * A[rowModify][i];
+                A[rowModify][columModify] -= A[i][columModify] 
+                                             * A[rowModify][i];
             }
             // this is not necessary, but the output looks nicer:
             A[rowModify][i] = 0;
