@@ -21,7 +21,15 @@ def getScore(program, a, n):
             points += 1
         else:
             break
+    if points >= 2:
+        points -= 1 # decimal point
     return points
+
+def generateCSV(program):
+    print("a,n,digits")
+    for a in range(2, 20):
+        for n in range(1, 40):
+            print("%i,%i,%i" % (a,n,getScore(program, a, n)))
 
 
 if __name__ == "__main__":
@@ -36,7 +44,13 @@ if __name__ == "__main__":
                       help="calculate squre root of a")
     parser.add_argument("-n", metavar='N', type=int, required=True,
                       help="maximum n iterations")
+    parser.add_argument("-g", 
+                  action="store_true", dest="generateCSV", default=False,
+                  help="don't print status messages to stdout")
      
     args = parser.parse_args()
- 
-print("Points for a=%i and n=%i: %i" % (args.a, args.n, getScore(args.program, args.a, args.n)))
+
+if args.generateCSV:
+    generateCSV(args.program)
+else:
+    print("Points for a=%i and n=%i: %i" % (args.a, args.n, getScore(args.program, args.a, args.n)))

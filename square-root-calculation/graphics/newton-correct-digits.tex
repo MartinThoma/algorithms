@@ -1,0 +1,31 @@
+\documentclass[varwidth=true, border=2pt]{standalone}
+\usepackage[utf8]{inputenc} % this is needed for umlauts
+\usepackage[ngerman]{babel} % this is needed for umlauts
+\usepackage[T1]{fontenc}    % this is needed for correct output of umlauts in pdf
+\usepackage[margin=2.5cm]{geometry} %layout
+
+\usepackage{pgfplots}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{axis}[
+            axis x line=middle,
+            axis y line=middle,
+            enlarge y limits=true,
+            xmin=0, xmax=15,
+            ymin=0, ymax=25,
+            width=15cm, height=8cm,     % size of the image
+            grid = major,
+            grid style={dashed, gray!30},
+            ylabel=correct digits,
+            xlabel=$n$,
+            legend style={at={(0.4,0.6)}, anchor=north}
+         ]
+          \addplot table [x=n, y=digits, col sep=comma] {newton-2.csv};
+          \addplot table [x=n, y=digits, col sep=comma] {newton-3.csv};
+          \addplot table [x=n, y=digits, col sep=comma] {newton-5.csv};
+          \addplot table [x=n, y=digits, col sep=comma] {newton-6.csv};
+          \legend{$a=2$,$a=3$,$a=5$,$a=6$}
+    \end{axis}
+\end{tikzpicture}
+\end{document}
