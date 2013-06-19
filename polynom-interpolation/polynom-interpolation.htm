@@ -3,12 +3,12 @@
     <head>
         <meta charset="UTF-8">
         <title>Polynom interpolation</title>
-        <script type="text/x-mathjax-config">
+        <!--<script type="text/x-mathjax-config">
           MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
         </script>
         <script type="text/javascript"
           src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-        </script>
+        </script>-->
         <!-- Piwik -->
         <script type="text/javascript">
           var _paq = _paq || [];
@@ -30,13 +30,13 @@
         </style>
     </head>
     <body>
-        <mspace id="polynomial">$p(x) = x^5$</mspace>
+        <span id="polynomial">$p(x) = x^5$</span>
         <br/>
         <canvas id = "myCanvas"
                 width = "512" height = "600" 
                 style = "border:1px solid #000;"
         > </canvas>
-        <textarea id="pointlist"></textarea>
+        <textarea id="pointlist" style="width:256px"></textarea>
     <script type="text/javascript">
         function setCursorByID(id,cursorStyle) {
             var elem;
@@ -76,24 +76,71 @@
             context.closePath();
             context.stroke();
 
+            // x-ticks
+            for (var x=xMin;x<xMax;x++){
+                if (x % 10 == 0) {
+                    context.beginPath();
+                    context.moveTo(c(x,true),c(-5));
+                    context.lineTo(c(x,true),c(5));
+                    context.closePath();
+                    context.stroke();
+                }
+            }
+
+            // y-ticks
+            for (var y=yMin;y<yMax;y++){
+                if (y % 10 == 0) {
+                    context.beginPath();
+                    context.moveTo(c(-5,true),c(y));
+                    context.lineTo(c(+5,true),c(y));
+                    context.closePath();
+                    context.stroke();
+                }
+            }
+
+            // arrow x
+            context.beginPath();
+            context.moveTo(c(xMax-5,true),c(-7));
+            context.lineTo(c(xMax,true),c(0));
+            context.lineTo(c(xMax-5,true),c(+7));
+            context.stroke();
+
+            // arrow y
+            context.beginPath();
+            context.moveTo(c(-7,true),c(yMax-5));
+            context.lineTo(c(+0,true),c(yMax));
+            context.lineTo(c(+7,true),c(yMax-5));
+            context.stroke();
+
             drawPoints(canvas);
             writePointList();
-            drawPolynomial(canvas, {0:2,1:3});
+            drawPolynomial(canvas, {0:0,1:0, 2:1});
         }
 
         function drawPolynomial(canvas, polynomial) {
             var context = canvas.getContext('2d');
             context.beginPath();
-            context.moveTo(c(xMin,true),c(0));
+            context.strokeStyle = 'blue';
             for (var x=xMin;x<xMax;x++){
                 var y=0;
                 for (var power in polynomial) {
                     y += polynomial[power] * Math.pow(x,power);
                 }
-                context.lineTo(c(x,true),c(y,false));
-                context.closePath();
-                context.stroke();
+                if (x==xMin) {
+                    context.moveTo(c(x,true),c(y,false));
+                } else {
+                    context.lineTo(c(x,true),c(y,false));
+                }
             }
+            context.closePath();
+            context.stroke();
+
+            var mathEl = document.getElementById("polynomial");
+            mathEl.innerHTML = '$p(x) = ';
+            for (var power in polynomial) {
+                mathEl.innerHTML += '+x^' + power + ' ';
+            }
+            mathEl.innerHTML+= '$';
         }
 
         /** permanently add a point */
@@ -122,7 +169,7 @@
             var tArea = document.getElementById("pointlist");
             tArea.value = '';
             for(var i = 0; i < points.length; i++) {
-                tArea.value += "(" + points[i]["x"] + "|" + points[i]["y"] + ")\n";
+                tArea.value += "(" + points[i]["x"] + "|" + points[i]["y"] + "), ";
             }
         }
       
