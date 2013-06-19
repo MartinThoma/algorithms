@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Polynom interpolation</title>
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+        </script>
+        <script type="text/javascript"
+          src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+        <!-- Piwik -->
+        <script type="text/javascript">
+          var _paq = _paq || [];
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          (function() {
+            var u=(("https:" == document.location.protocol) ? "https" : "http") + "://martin-thoma.com/piwik//";
+            _paq.push(['setTrackerUrl', u+'piwik.php']);
+            _paq.push(['setSiteId', 1]);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+            g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+          })();
+        </script>
+        <!-- End Piwik Code -->
+        <style type="text/css">
+            span.hint {
+	            border-bottom:1px dotted #666;
+            }
+        </style>
+    </head>
+    <body>
+        <mspace id="polynomial">$p(x) = x^5$</mspace>
+        <br/>
+        <canvas id = "myCanvas"
+                width = "512" height = "600" 
+                style = "border:1px solid #000;"
+        > </canvas>
+        <textarea id="pointlist"></textarea>
+    <script type="text/javascript">
+        function setCursorByID(id,cursorStyle) {
+            var elem;
+            if (document.getElementById &&
+            (elem=document.getElementById(id)) ) {
+                if (elem.style) elem.style.cursor=cursorStyle;
+            }
+        }
+        
+
+        /* calculate coordinates */
+        function c(x,isX) {
+            if(isX) {
+                return x+xOffset;    
+            } else {
+                return -x+yOffset;
+            }
+        }
+
+        function drawBoard(canvas) {
+            var context = canvas.getContext('2d');
+            context.canvas.width  = window.innerWidth - 50;
+            context.canvas.height = window.innerHeight - 120;
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            // x-axis
+            context.beginPath();
+            context.moveTo(c(xMin,true),c(0));
+            context.lineTo(c(xMax,true),c(0));
+            context.closePath();
+            context.stroke();
+
+            // y-axis
+            context.beginPath();
+            context.moveTo(c(0,true),c(yMin));
+            context.lineTo(c(0,true),c(yMax));
+            context.closePath();
+            context.stroke();
+
+            drawPoints(canvas);
+            writePointList();
+            drawPolynomial(canvas, {0:2,1:3});
+        }
+
+        function drawPolynomial(canvas, polynomial) {
+            var context = canvas.getContext('2d');
+            context.beginPath();
+            context.moveTo(c(xMin,true),c(0));
+            for (var x=xMin;x<xMax;x++){
+                var y=0;
+                for (var power in polynomial) {
+                    y += polynomial[power] * Math.pow(x,power);
+                }
+                context.lineTo(c(x,true),c(y,false));
+                context.closePath();
+                context.stroke();
+            }
+        }
+
+        /** permanently add a point */
+        function addPoint(event, canvas, mouseCoords, radius) {
+            points.push({"x": parseInt(mouseCoords["x"]),
+                         "y": parseInt(mouseCoords["y"])});
+        }
+
+        /** draw all permanently added points */
+        function drawPoints(canvas) {
+            for(var i = 0; i < points.length; i++) {
+                context.beginPath();
+                context.arc(points[i]["x"], 
+                            points[i]["y"], 
+                            2, /*radius*/
+                            0, 2 * Math.PI, false);
+                context.lineWidth = 1;
+                context.strokeStyle = 'black';
+                context.fillStyle = "rgb(0,0,0)";
+                context.fill();
+                context.stroke();
+            }
+        }
+
+        function writePointList() {
+            var tArea = document.getElementById("pointlist");
+            tArea.value = '';
+            for(var i = 0; i < points.length; i++) {
+                tArea.value += "(" + points[i]["x"] + "|" + points[i]["y"] + ")\n";
+            }
+        }
+      
+        /** get the current position of the mouse */
+        function getMouseCoords(canvas, evt) {
+            var rect = canvas.getBoundingClientRect();
+            return {
+                "x": evt.clientX - rect.left,
+                "y": evt.clientY - rect.top
+            };
+        }
+      
+        /** global variables */
+        var xMin = -200;
+        var xMax = +200;
+        var yMin = -150;
+        var yMax = +150;
+        var xOffset = 256;
+        var yOffset = 200;
+        var points = new Array();
+        var canvas = document.getElementById("myCanvas");
+        var context = canvas.getContext("2d");
+        drawBoard(canvas, {"x":0,"y":0}, 10);
+        setCursorByID("myCanvas", "crosshair");
+
+        /** event listeners */
+        canvas.addEventListener('mousemove', 
+            function(evt) {
+                var mouseCoords = getMouseCoords(canvas, evt);
+                drawBoard(canvas, mouseCoords, 10);
+            }, false);
+
+        canvas.addEventListener("mousedown", 
+            function(event) {
+                var mouseCoords = getMouseCoords(canvas, event);
+                addPoint(event, canvas, mouseCoords, 10);
+            }, false);
+    </script>
+</body>
+</html>
