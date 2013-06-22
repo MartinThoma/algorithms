@@ -79,8 +79,8 @@
 
             // x-axis
             context.beginPath();
-            context.moveTo(c(X_MIN,true),c(0));
-            context.lineTo(c(X_MAX,true),c(0));
+            context.moveTo(c(X_MIN,true),c(0,false));
+            context.lineTo(c(X_MAX,true),c(0,false));
             context.closePath();
             context.stroke();
 
@@ -129,7 +129,25 @@
 
             drawPoints(canvas);
             writePointList();
-            drawPolynomial(canvas, {0:0,1:0, 2:1});
+            polynomial = {};
+            for (var power=0;power<points.length;power++) {
+                polynomial[power] = 0;
+            }
+
+            // calculate coefficients for monom
+            var a = new Array(points.length+1);
+            for (var k=0;k<points.length;k++) {
+                a[k] = points[k]["y"];
+            }
+            for (var k=1;k<points.length;k++) {
+                for(var i=points.length-1;i>=k;i--) {
+                    a[i] = (a[i] - a[i-1])/(points[i]["x"] - points[i-k]["x"]);
+                }
+            }
+
+            polynomial[0] = a[points.length-1];
+
+            drawPolynomial(canvas, polynomial);
         }
 
         function drawPolynomial(canvas, polynomial) {
