@@ -30,13 +30,14 @@
         </style>
     </head>
     <body>
-        <p><span id="polynomial">$p(x) = x^2$</span></p>
+        <p><span id="polynomial">$p(x) = x^2$</span>
+        <a href="polynom-interpolation.htm">reset</a>
+        </p>
         <canvas id = "myCanvas"
                 width = "512" height = "600" 
                 style = "border:1px solid #000;"
         > </canvas>
-        <textarea id="pointlist" style="width:256px"></textarea>    
-        <p>Remove points with Ctrl+click.</p>
+        <textarea id="pointlist" style="width:550px"></textarea>    
 
     <script type="text/javascript">
         function setCursorByID(id,cursorStyle) {
@@ -51,7 +52,7 @@
         /* calculate coordinates */
         function c(x,isX) {
             if(isX) {
-                return STRETCH_X*(x+X_OFFSET);    
+                return STRETCH_X*(x+X_OFFSET);
             } else {
                 return STRETCH_Y*(-x+Y_OFFSET);
             }
@@ -70,12 +71,28 @@
             var context = canvas.getContext('2d');
             // make canvas as big as possible
             context.canvas.width  = window.innerWidth - 50;
-            context.canvas.height = window.innerHeight - 120;
+            context.canvas.height = window.innerHeight - 160;
             context.clearRect(0, 0, canvas.width, canvas.height);
 
             // Adjust general settings to canvas size
             X_OFFSET = context.canvas.width/(STRETCH_X*2);
             Y_OFFSET = context.canvas.height/(STRETCH_Y*2);
+
+            // grid
+            context.strokeStyle="#CDCDCD";
+            for (var x=X_MIN;x<X_MAX;x+=10){
+                context.beginPath();
+                context.moveTo(c(x,true), c(Y_MIN,false));
+                context.lineTo(c(x,true), c(Y_MAX,false));
+                context.stroke();
+            }
+            for (var y=Y_MIN;y<Y_MAX;y+=10){
+                context.beginPath();
+                context.moveTo(c(X_MIN,true), c(y,false));
+                context.lineTo(c(X_MAX,true), c(y,false));
+                context.stroke();
+            }
+            context.strokeStyle="#000000";
 
             // x-axis
             context.beginPath();
@@ -254,7 +271,7 @@
                 if (points.length >= 1) {
                     nearestMouseCIndex = 0;
                     nearestDist = euklideanDist(mouseCoords, points[0]);
-                    var mCoords = {"x": r(parseInt(mouseCoords["x"]), true), "y": r(parseInt(mouseCoords["y"]), false)};
+                    var mCoords = {"x": r(mouseCoords["x"], true), "y": r(mouseCoords["y"], false)};
                     for(var i = 1; i < points.length; i++) {
                         var tmpDist = euklideanDist(mCoords, points[i]);
                         if (tmpDist < nearestDist) {
@@ -265,8 +282,8 @@
                     points.splice(nearestMouseCIndex,1);
                 }
             } else {
-                points.push({"x": r(parseInt(mouseCoords["x"]), true),
-                         "y": r(parseInt(mouseCoords["y"]), false)});
+                points.push({"x": r(mouseCoords["x"], true),
+                         "y": r(mouseCoords["y"], false)});
             }
         }
 
@@ -323,6 +340,12 @@
             function(evt) {
                 var mouseCoords = getMouseCoords(canvas, evt);
                 drawBoard(canvas, mouseCoords, 10);
+                // draw coordinates next to mouse
+                context.fillStyle = "blue";
+                context.font = "bold 16px Arial";
+                var x = r(mouseCoords["x"], true).toFixed(3);
+                var y = r(mouseCoords["y"], false).toFixed(3);
+                context.fillText("("+x+", "+y+")", mouseCoords["x"]+5, mouseCoords["y"]-5);
             }, false);
 
         canvas.addEventListener("mousedown", 
