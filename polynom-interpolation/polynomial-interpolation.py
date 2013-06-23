@@ -30,7 +30,7 @@ def pprintPolynomial(A):
     print(line)
 
 def gauss(A):
-    """ Solve a linear sysem of equations given by a n×n matrix 
+    """ Solve a system of linear equations given by a n×n matrix 
         with a result vector n×1. """
     n = len(A)
   
@@ -40,7 +40,7 @@ def gauss(A):
         maxRow = i
         for k in range(i+1,n):
             if abs(A[k][i]) > maxEl:
-                maxEl = A[k][i]
+                maxEl = abs(A[k][i])
                 maxRow = k
   
         # Swap maximum row with current row (column by column)
@@ -77,17 +77,73 @@ def setGauss(points):
             A[i][j] = x**j
         A[i][n+1] = points[i]["y"]
     return A
-  
+
+def evaluatePolynomial(p, x):
+    y = 0
+    xi = 1
+    for i, a in enumerate(p):
+        y += a * xi
+        xi *= x
+    return y
+
+def lagrangeInterpolation(points):
+    p = []
+    for i in range(len(points)):
+        Li = {"y": points[i]["y"], "polynomial":[]}
+        for j in range(len(points)):
+            if j == i:
+                continue
+            Li["polynomial"].append({
+                "sub": points[j]["x"], 
+                "divisor": points[i]["x"] - points[j]["x"]
+            })
+        p.append(Li)
+    return p
+
+def evaluateLagrangePolynomial(p, x):
+    y = 0
+    for Li in p:
+        prod = 1
+        for term in Li["polynomial"]:
+            prod *= (x - term["sub"])/term["divisor"]
+        y += Li["y"]*prod
+    return y
+
+def getGaussSystemForNewton(points):
+    n = len(points) - 1
+    A = [[0 for i in range(n+2)] for j in range(n+1)]
+    for j in range(0,n+2):
+        for i in range(j,n+1):
+            if j == 0:
+                A[i][j] = 1
+            else:
+                A[i][j] = A[i][j-1]*(points[i]["x"]-points[j-1]["x"])
+        if j == n+1:
+            for i in range(0, n):
+                A[i][j] = points[i]["y"]
+    return A
+
 if __name__ == "__main__":
     from fractions import Fraction
   
     # Read input data
     points = []
-    points.append({"x": Fraction(-1), "y": Fraction(1)})
-    points.append({"x": Fraction(1), "y": Fraction(1)})
-    points.append({"x": Fraction(2), "y": Fraction(2)})
+    points.append({"x": Fraction(-1,1), "y": Fraction(1,26)})
+    points.append({"x": Fraction(-1,2), "y": Fraction(4,29)})
+    points.append({"x": Fraction(+0,1), "y": Fraction(1)})
+    points.append({"x": Fraction(+1,2), "y": Fraction(4,29)})
+    points.append({"x": Fraction(+1,1), "y": Fraction(1,26)})
+
+    A = getGaussSystemForNewton(points)
+    pprintGaus(A)
+    x = gauss(A)
+    print(x)
 
     A = setGauss(points)
+    p = lagrangeInterpolation(points)
+    print("Lagrange at x=0: %.2f" % evaluateLagrangePolynomial(p,0))
+    print("Lagrange at x=1: %.2f" % evaluateLagrangePolynomial(p,1))
+    print("Lagrange at x=2: %.2f" % evaluateLagrangePolynomial(p,2))
   
     # Print input
     pprintGaus(A)
@@ -97,3 +153,6 @@ if __name__ == "__main__":
   
     # Print result
     pprintPolynomial(x)
+    print("Gauss at x=0: %.2f" % evaluatePolynomial(x,0))
+    print("Gauss at x=1: %.2f" % evaluatePolynomial(x,1))
+    print("Gauss at x=2: %.2f" % evaluatePolynomial(x,2))
