@@ -31,6 +31,7 @@
     </head>
     <body>
         <p><span id="polynomial">$p(x) = x^2$</span>
+        <input type="text" value="Math.sin(x*50)*50" id="function"/>
         <a href="polynom-interpolation.htm">reset</a>
         </p>
         <canvas id = "myCanvas"
@@ -154,13 +155,14 @@
             // calculate coefficients for monom
             var A = setGauss(points);
             var x = gauss(A);
-            console.log(x);
 
             for (var power=0;power<points.length;power++) {
                 polynomial[power] = x[power];
             }
 
             drawPolynomial(canvas, polynomial);
+            var f = document.getElementById("function").value;
+            drawFunction(f, 'red');
         }
 
         function setGauss(points) {
@@ -224,6 +226,29 @@
             return x;
         }
 
+        function drawFunction(f, color) {
+            var context = canvas.getContext('2d');
+            context.beginPath();
+            context.strokeStyle = color;
+            f = 'var y='+f;
+            for (var x=X_MIN;x<X_MAX;x++){
+                eval(f);
+                if (x==X_MIN) {
+                    context.moveTo(c(x,true),c(y,false));
+                } else {
+                    context.lineTo(c(x,true),c(y,false));
+                }
+            }
+            context.stroke();
+        }
+
+        function evaluatePolynomial(polynomial) {
+            var y=0;
+            for (var power in polynomial) {
+                y += polynomial[power] * Math.pow(x,power);
+            }
+            return y;
+        }
 
         function drawPolynomial(canvas, polynomial) {
             var context = canvas.getContext('2d');
@@ -240,7 +265,6 @@
                     context.lineTo(c(x,true),c(y,false));
                 }
             }
-            //context.closePath();
             context.stroke();
 
             // Write polynomial to document
