@@ -128,11 +128,12 @@ if __name__ == "__main__":
   
     # Read input data
     points = []
-    points.append({"x": Fraction(-1,1), "y": Fraction(1,26)})
-    points.append({"x": Fraction(-1,2), "y": Fraction(4,29)})
-    points.append({"x": Fraction(+0,1), "y": Fraction(1)})
-    points.append({"x": Fraction(+1,2), "y": Fraction(4,29)})
-    points.append({"x": Fraction(+1,1), "y": Fraction(1,26)})
+    points.append({"x": Fraction(-80), "y": Fraction(10)})
+    points.append({"x": Fraction(-70), "y": Fraction(20)})
+    points.append({"x": Fraction(-30), "y": Fraction(10)})
+    points.append({"x": Fraction(-10), "y": Fraction(-20)})
+    points.append({"x": Fraction(+10), "y": Fraction(20)})
+    points.append({"x": Fraction(+20), "y": Fraction(20)})
 
     A = getGaussSystemForNewton(points)
     pprintGaus(A)
