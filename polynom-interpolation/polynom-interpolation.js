@@ -1,10 +1,21 @@
-"use strict";
+'use strict';
+
+/** global variables */
+var STRETCH_X = 1;
+var STRETCH_Y = 1;
+var X_MIN = -10;
+var X_MAX = +10;
+var Y_MIN = -10;
+var Y_MAX = +10;
+var X_OFFSET = 256;
+var Y_OFFSET = 100;
+var points = [];
+var canvas = document.getElementById("myCanvas");
+var context = canvas.getContext("2d");
+
 function setCursorByID(id, cursorStyle) {
-    var elem;
-    if (document.getElementById &&
-        (elem = document.getElementById(id))) {
-        if (elem.style) elem.style.cursor = cursorStyle;
-    }
+    var elem = document.getElementById(id);
+    elem.style.cursor = cursorStyle;
 }
 
 
@@ -13,9 +24,9 @@ function setCursorByID(id, cursorStyle) {
 function c(x, isX) {
     if (isX) {
         return STRETCH_X * (x + X_OFFSET);
-    } else {
-        return STRETCH_Y * (-x + Y_OFFSET);
     }
+
+    return STRETCH_Y * (-x + Y_OFFSET);
 }
 
 /* calculate coordinates - reversed */
@@ -23,17 +34,17 @@ function c(x, isX) {
 function r(x, isX) {
     if (isX) {
         return x / STRETCH_X - X_OFFSET;
-    } else {
-        return -x / STRETCH_Y + Y_OFFSET;
     }
+
+    return -x / STRETCH_Y + Y_OFFSET;
 }
 
 function drawBoard(canvas) {
     var context = canvas.getContext('2d');
-    X_MIN = parseInt(document.getElementById("X_MIN").value);
-    X_MAX = parseInt(document.getElementById("X_MAX").value);
-    Y_MIN = parseInt(document.getElementById("Y_MIN").value);
-    Y_MAX = parseInt(document.getElementById("Y_MAX").value);
+    X_MIN = parseInt(document.getElementById("X_MIN").value, 10);
+    X_MAX = parseInt(document.getElementById("X_MAX").value, 10);
+    Y_MIN = parseInt(document.getElementById("Y_MIN").value, 10);
+    Y_MAX = parseInt(document.getElementById("Y_MAX").value, 10);
 
     // make canvas as big as possible
     context.canvas.width = window.innerWidth - 50;
@@ -155,16 +166,18 @@ function drawBoard(canvas) {
     }
 
     // calculate coefficients for monom
-    var A = setGauss(points);
-    var x = gauss(A);
+    {
+        var A = setGauss(points);
+        var x = gauss(A);
 
-    for (var power = 0; power < points.length; power++) {
-        polynomial[power] = x[power];
+        for (var power = 0; power < points.length; power++) {
+            polynomial[power] = x[power];
+        }
+
+        drawPolynomial(canvas, polynomial, 'blue');
+        var f = document.getElementById("function").value;
+        drawFunction(f, 'red');
     }
-
-    drawPolynomial(canvas, polynomial, 'blue');
-    var f = document.getElementById("function").value;
-    drawFunction(f, 'red');
 
     // equally spaced
     if (document.getElementById("SHOW_EQUALLY_SPACED").checked) {
@@ -198,9 +211,9 @@ function drawEquallySpacedPoints(f, color) {
     context.beginPath();
     context.strokeStyle = color;
     f = 'y=' + f;
-    var n = parseInt(document.getElementById("n").value);
-    var X_FROM = parseInt(document.getElementById("X_FROM").value);
-    var X_TO = parseInt(document.getElementById("X_TO").value);
+    var n = parseInt(document.getElementById("n").value, 10);
+    var X_FROM = parseInt(document.getElementById("X_FROM").value, 10);
+    var X_TO = parseInt(document.getElementById("X_TO").value, 10);
     var evaluationSteps = (X_TO - X_FROM) / n;
     var pointList = new Array(n + 1);
     if (evaluationSteps > 0) {
@@ -224,14 +237,14 @@ function drawTschebyscheffSpacedPoints(f, color) {
     context.beginPath();
     context.strokeStyle = color;
     f = 'y=' + f;
-    var n = parseInt(document.getElementById("n").value);
+    var n = parseInt(document.getElementById("n").value, 10);
     var evaluationSteps = (X_MAX - X_MIN) / n;
     var pointList = new Array(n + 1);
     if (evaluationSteps > 0) {
         var i = 0;
         for (var i = 0; i <= n; i++) {
             var x = Math.cos((2.0 * i + 1) / (2 * n + 2) * Math.PI);
-            x = affineTransformation(x, parseInt(document.getElementById("X_FROM").value), parseInt(document.getElementById("X_TO").value));
+            x = affineTransformation(x, parseInt(document.getElementById("X_FROM").value, 10), parseInt(document.getElementById("X_TO").value, 10));
             var y = 0;
             eval(f);
             pointList[i] = {
@@ -377,7 +390,7 @@ function drawPolynomial(canvas, polynomial, color) {
     var mathEl = document.getElementById("polynomial");
     mathEl.innerHTML = '$p(x) = ';
     for (var power in polynomial) {
-        if (polynomial[power] != 0) {
+        if (polynomial[power] !== 0) {
             if (polynomial[power] == 1) {
                 mathEl.innerHTML += '+x^' + power + ' ';
             } else {
@@ -469,56 +482,49 @@ function modifyURL() {
     document.getElementById("newWindow").href = "polynom-interpolation.htm?f=" + f + "&e=" + e + "&l=" + l + "&r=" + r + "&t=" + t + "&b=" + b + "&xt=" + xt + "&yt=" + yt + "&points=" + encodeURIComponent(JSON.stringify(points));
 }
 
-/** global variables */
-var STRETCH_X = 1;
-var STRETCH_Y = 1;
-var X_MIN = -10;
-var X_MAX = +10;
-var Y_MIN = -10;
-var Y_MAX = +10;
-var X_OFFSET = 256;
-var Y_OFFSET = 100;
-var points = new Array();
-var canvas = document.getElementById("myCanvas");
-var context = canvas.getContext("2d");
-
 window.onload = function WindowLoad(event) {
     var qs = (function (a) {
-        if (a == "") return {};
+        if (a === ""){
+            return {};
+        }
+
         var b = {};
         for (var i = 0; i < a.length; ++i) {
             var p = a[i].split('=');
-            if (p.length != 2) continue;
+            if (p.length != 2){
+                continue;
+            }
+
             b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
         }
         return b;
     })(window.location.search.substr(1).split('&'));
 
-    if (qs["f"] != null) {
+    if (qs["f"] != undefined) {
         document.getElementById("function").value = qs["f"];
     }
-    if (qs["l"] != null) {
+    if (qs["l"] != undefined) {
         document.getElementById("X_MIN").value = qs["l"];
     }
-    if (qs["r"] != null) {
+    if (qs["r"] != undefined) {
         document.getElementById("X_MAX").value = qs["r"];
     }
-    if (qs["t"] != null) {
+    if (qs["t"] != undefined) {
         document.getElementById("Y_MAX").value = qs["t"];
     }
-    if (qs["b"] != null) {
+    if (qs["b"] != undefined) {
         document.getElementById("Y_MIN").value = qs["b"];
     }
-    if (qs["xt"] != null) {
+    if (qs["xt"] != undefined) {
         document.getElementById("X_TICKS_STEPS").value = qs["xt"];
     }
-    if (qs["yt"] != null) {
+    if (qs["yt"] != undefined) {
         document.getElementById("Y_TICKS_STEPS").value = qs["yt"];
     }
-    if (qs["e"] != null) {
+    if (qs["e"] != undefined) {
         document.getElementById("evaluationSteps").value = qs["e"];
     }
-    if (qs["points"] != null) {
+    if (qs["points"] != undefined) {
         points = JSON.parse(qs["points"]);
     }
 
@@ -534,19 +540,19 @@ window.onload = function WindowLoad(event) {
 
         var mousex = event.clientX - canvas.offsetLeft;
         var mousey = event.clientY - canvas.offsetTop;
-        var wheel = parseInt(event.wheelDelta) / 120; //n or -n
+        var wheel = parseInt(event.wheelDelta, 10) / 120; //n or -n
 
         var zoom = 1 + wheel / 2;
 
-        document.getElementById("X_MIN").value = parseInt(document.getElementById("X_MIN").value) + wheel;
-        document.getElementById("X_MAX").value = parseInt(document.getElementById("X_MAX").value) - wheel;
-        document.getElementById("Y_MIN").value = parseInt(document.getElementById("Y_MIN").value) + wheel;
-        document.getElementById("Y_MAX").value = parseInt(document.getElementById("Y_MAX").value) - wheel;
+        document.getElementById("X_MIN").value = parseInt(document.getElementById("X_MIN").value, 10) + wheel;
+        document.getElementById("X_MAX").value = parseInt(document.getElementById("X_MAX").value, 10) - wheel;
+        document.getElementById("Y_MIN").value = parseInt(document.getElementById("Y_MIN").value, 10) + wheel;
+        document.getElementById("Y_MAX").value = parseInt(document.getElementById("Y_MAX").value, 10) - wheel;
         drawBoard(canvas, {
             "x": 0,
             "y": 0
         }, 10);
-    }
+    };
 
     /** event listeners */
     canvas.addEventListener('mousemove',
@@ -566,4 +572,4 @@ window.onload = function WindowLoad(event) {
             var mouseCoords = getMouseCoords(canvas, event);
             addPoint(event, canvas, mouseCoords, 10);
         }, false);
-}
+};
