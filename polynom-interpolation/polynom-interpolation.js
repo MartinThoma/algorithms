@@ -211,7 +211,7 @@ function drawEquallySpacedPoints(f, color) {
     context.beginPath();
     context.strokeStyle = color;
     f = 'y=' + f;
-    var n = parseInt(document.getElementById("n").value, 10);
+    var n = parseInt(document.getElementById("N_EVALUATION_POINTS").value, 10);
     var X_FROM = parseInt(document.getElementById("X_FROM").value, 10);
     var X_TO = parseInt(document.getElementById("X_TO").value, 10);
     var evaluationSteps = (X_TO - X_FROM) / n;
@@ -237,7 +237,7 @@ function drawTschebyscheffSpacedPoints(f, color) {
     context.beginPath();
     context.strokeStyle = color;
     f = 'y=' + f;
-    var n = parseInt(document.getElementById("n").value, 10);
+    var n = parseInt(document.getElementById("N_EVALUATION_POINTS").value, 10);
     var evaluationSteps = (X_MAX - X_MIN) / n;
     var pointList = new Array(n + 1);
     if (evaluationSteps > 0) {
@@ -264,10 +264,14 @@ function affineTransformation(y, a, b) {
 function drawPointsGeneral(pointList, color) {
     for (var i = 0; i < pointList.length; i++) {
         context.beginPath();
+        if (pointList[i] != undefined) {
         context.arc(c(pointList[i]["x"], true),
             c(pointList[i]["y"], false),
             2, /*radius*/
             0, 2 * Math.PI, false);
+        } else {
+            console.log("point i="+i+" was undefined! fix!");
+        }
         context.lineWidth = 1;
         context.strokeStyle = 'black';
         context.fillStyle = color;
@@ -281,11 +285,15 @@ function setGauss(points) {
     var A = new Array(n + 1);
     for (var i = 0; i < n + 1; i++) {
         A[i] = new Array(n + 2);
-        var x = points[i]["x"];
-        for (var j = 0; j < n + 1; j++) {
-            A[i][j] = Math.pow(x, j);
+        if (points[i] != undefined) {
+            var x = points[i]["x"];
+            for (var j = 0; j < n + 1; j++) {
+                A[i][j] = Math.pow(x, j);
+            }
+            A[i][n + 1] = points[i]["y"];
+        } else {
+            console.log("point i="+i+" was undefined! fix!");
         }
-        A[i][n + 1] = points[i]["y"];
     }
     return A;
 }
@@ -472,14 +480,17 @@ function getMouseCoords(canvas, evt) {
 
 function modifyURL() {
     var f = encodeURIComponent(document.getElementById("function").value);
-    var e = encodeURIComponent(document.getElementById("evaluationSteps").value);
-    var l = encodeURIComponent(document.getElementById("X_MIN").value);
-    var r = encodeURIComponent(document.getElementById("X_MAX").value);
-    var t = encodeURIComponent(document.getElementById("Y_MAX").value);
-    var b = encodeURIComponent(document.getElementById("Y_MIN").value);
+    var evaluationSteps = encodeURIComponent(document.getElementById("evaluationSteps").value);
+    var X_MIN = encodeURIComponent(document.getElementById("X_MIN").value);
+    var X_MAX = encodeURIComponent(document.getElementById("X_MAX").value);
+    var Y_MAX = encodeURIComponent(document.getElementById("Y_MAX").value);
+    var Y_MIN = encodeURIComponent(document.getElementById("Y_MIN").value);
     var xt = encodeURIComponent(document.getElementById("X_TICKS_STEPS").value);
     var yt = encodeURIComponent(document.getElementById("Y_TICKS_STEPS").value);
-    document.getElementById("newWindow").href = "polynom-interpolation.htm?f=" + f + "&e=" + e + "&l=" + l + "&r=" + r + "&t=" + t + "&b=" + b + "&xt=" + xt + "&yt=" + yt + "&points=" + encodeURIComponent(JSON.stringify(points));
+    var X_FROM = encodeURIComponent(document.getElementById("X_FROM").value);
+    var X_TO = encodeURIComponent(document.getElementById("X_TO").value);
+    var N_EVALUATION_POINTS = encodeURIComponent(document.getElementById("N_EVALUATION_POINTS").value);
+    document.getElementById("newWindow").href = "polynom-interpolation.htm?function=" + f + "&evaluationSteps=" + evaluationSteps + "&X_MIN=" + X_MIN + "&X_MAX=" + X_MAX + "&Y_MAX=" + Y_MAX + "&Y_MIN=" + Y_MIN + "&X_TICKS_STEPS=" + xt + "&Y_TICKS_STEPS=" + yt + "&X_FROM=" +X_FROM+"&X_TO=" +X_TO+"&N_EVALUATION_POINTS=" +N_EVALUATION_POINTS+ "&points=" + encodeURIComponent(JSON.stringify(points));
 }
 
 window.onload = function WindowLoad(event) {
@@ -500,30 +511,13 @@ window.onload = function WindowLoad(event) {
         return b;
     })(window.location.search.substr(1).split('&'));
 
-    if (qs["f"] != undefined) {
-        document.getElementById("function").value = qs["f"];
+    var parameters = ["function", "X_TICKS_STEPS", "Y_TICKS_STEPS", "X_MIN", "X_MAX", "Y_MIN", "Y_MAX", "evaluationSteps", "X_FROM", "X_TO", "N_EVALUATION_POINTS"];
+    for (var i = 0; i < parameters.length; i++) {
+        if (qs[parameters[i]] != undefined) {
+            document.getElementById(parameters[i]).value = qs[parameters[i]];
+        }
     }
-    if (qs["l"] != undefined) {
-        document.getElementById("X_MIN").value = qs["l"];
-    }
-    if (qs["r"] != undefined) {
-        document.getElementById("X_MAX").value = qs["r"];
-    }
-    if (qs["t"] != undefined) {
-        document.getElementById("Y_MAX").value = qs["t"];
-    }
-    if (qs["b"] != undefined) {
-        document.getElementById("Y_MIN").value = qs["b"];
-    }
-    if (qs["xt"] != undefined) {
-        document.getElementById("X_TICKS_STEPS").value = qs["xt"];
-    }
-    if (qs["yt"] != undefined) {
-        document.getElementById("Y_TICKS_STEPS").value = qs["yt"];
-    }
-    if (qs["e"] != undefined) {
-        document.getElementById("evaluationSteps").value = qs["e"];
-    }
+
     if (qs["points"] != undefined) {
         points = JSON.parse(qs["points"]);
     }
