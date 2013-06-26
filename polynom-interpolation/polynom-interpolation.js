@@ -412,8 +412,8 @@ function addPoint(event, canvas, mouseCoords, radius) {
     if (event.ctrlKey) {
         // remove point that is nearest to mouse coords
         if (points.length >= 1) {
-            nearestMouseCIndex = 0;
-            nearestDist = euklideanDist(mouseCoords, points[0]);
+            var nearestMouseCIndex = 0;
+            var nearestDist = euklideanDist(mouseCoords, points[0]);
             var mCoords = {
                 "x": r(mouseCoords["x"], true),
                 "y": r(mouseCoords["y"], false)
