@@ -68,7 +68,7 @@
                 <td><label for="function" style="color:red;">f(x) =</label> <input type="text" value="Math.sin(x)" id="function"/> <span class="hint" title="Hier kann jede von JavaScript auswertbare Funktion stehen. Der User muss selbst aufpassen, dass er nicht durch 0 teilt.">?</span></td>
             </tr>
             <tr>
-                <td>evaluation steps: <input type="number" step="0.1" value="0.2" id="evaluationSteps" style="width:50px;" oninput="drawBoard(canvas)"/></td>
+                <td>evaluation steps: <input type="number" step="0.1" value="0.1" id="evaluationSteps" style="width:50px;" oninput="drawBoard(canvas)"/></td>
             </tr>
             <tr>
                 <td><a href="polynom-interpolation.htm">reset</a> - <a href="polynom-interpolation.htm" target="_blank" id="newWindow" onclick="modifyURL()">open in window</a></td>
@@ -93,22 +93,32 @@
             <tr>
                 <th><label for="X_FROM">from</label></th>
                 <td><input type="number" id="X_FROM" value="-10" style="width:50px;" oninput="drawBoard(canvas)"></td>
+                <td>&nbsp;</td>
             </tr>
             <tr>
                 <th><label for="X_TO">to</label></th>
                 <td><input type="number" id="X_TO" value="10" style="width:50px;" oninput="drawBoard(canvas)"></td>
+                <td>&nbsp;</td>
             </tr>
             <tr>
                 <th><label for="N_EVALUATION_POINTS">n</label></th>
                 <td><input type="number" id="N_EVALUATION_POINTS" value="10" style="width:50px;" oninput="drawBoard(canvas)"></td>
+                <td>&nbsp;</td>
             </tr>
             <tr>
-                <th><label for="SHOW_EQUALLY_SPACED" style="color:lime">equally spaced</label></th>
+                <th><label for="SHOW_EQUALLY_SPACED" style="color:#00FF00" id="EQUALLY_SPACED_LABEL">equally spaced</label></th>
                 <td><input type="checkbox" id="SHOW_EQUALLY_SPACED" value="10" style="width:50px;" onchange="drawBoard(canvas)"></td>
+                <td><input type="color" id="EQUALLY_SPACED_COLOR" value="#00FF00" style="width:50px;" onchange="drawBoard(canvas)"></td>
             </tr>
             <tr>
-                <th><label for="SHOW_TSCHEBYSCHEFF_SPACED" style="color:#FF00FF">tschebyscheff spaced</label></th>
+                <th><label for="SHOW_TSCHEBYSCHEFF_SPACED" style="color:#FF00FF" id="TSCHEBYSCHEFF_SPACED_LABEL">tschebyscheff spaced</label></th>
                 <td><input type="checkbox" id="SHOW_TSCHEBYSCHEFF_SPACED" value="10" style="width:50px;" onchange="drawBoard(canvas)"></td>
+                <td><input type="color" id="TSCHEBYSCHEFF_SPACED_COLOR" value="#FF00FF" style="width:50px;" onchange="drawBoard(canvas)"></td>
+            </tr>
+            <tr>
+                <th><label for="SHOW_SPLINE_EQUALLY_SPACED" style="color:#FFBB00" id="SPLINE_LABEL">spline interpolation, equally spaced</label></th>
+                <td><input type="checkbox" id="SHOW_SPLINE_EQUALLY_SPACED" value="10" style="width:50px;" onchange="drawBoard(canvas)"></td>
+                <td><input type="color" id="SPLINE_COLOR" value="#FFBB00" style="width:50px;" onchange="drawBoard(canvas)"></td>
             </tr>
         </table>
 

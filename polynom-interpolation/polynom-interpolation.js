@@ -165,7 +165,7 @@ function drawBoard(canvas) {
         polynomial[power] = 0;
     }
 
-    // calculate coefficients for monom
+    // calculate coefficients for monom and draw
     {
         var A = setGauss(points);
         var x = gauss(A);
@@ -179,9 +179,18 @@ function drawBoard(canvas) {
         drawFunction(f, 'red');
     }
 
+    // calculate and draw spline
+    if (document.getElementById("SHOW_SPLINE_EQUALLY_SPACED").checked) {
+        var SPLINE_COLOR = document.getElementById("SPLINE_COLOR").value;
+        document.getElementById("SPLINE_LABEL").style.color = SPLINE_COLOR;
+        spline(f, SPLINE_COLOR);
+    }
+
     // equally spaced
     if (document.getElementById("SHOW_EQUALLY_SPACED").checked) {
-        var pointList = drawEquallySpacedPoints(f, 'lime');
+        var EQUALLY_SPACED_COLOR = document.getElementById("EQUALLY_SPACED_COLOR").value;
+        document.getElementById("EQUALLY_SPACED_LABEL").style.color = EQUALLY_SPACED_COLOR;
+        var pointList = drawEquallySpacedPoints(f, EQUALLY_SPACED_COLOR);
         var A = setGauss(pointList);
         var x = gauss(A);
 
@@ -189,12 +198,14 @@ function drawBoard(canvas) {
             polynomial[power] = x[power];
         }
 
-        drawPolynomial(canvas, polynomial, 'lime');
+        drawPolynomial(canvas, polynomial, EQUALLY_SPACED_COLOR);
     }
 
     // tschebyscheff spaced
     if (document.getElementById("SHOW_TSCHEBYSCHEFF_SPACED").checked) {
-        var pointList = drawTschebyscheffSpacedPoints(f, '#FF00FF');
+        var TSCHEBYSCHEFF_SPACED_COLOR = document.getElementById("TSCHEBYSCHEFF_SPACED_COLOR").value;
+        document.getElementById("TSCHEBYSCHEFF_SPACED_LABEL").style.color = TSCHEBYSCHEFF_SPACED_COLOR;
+        var pointList = drawTschebyscheffSpacedPoints(f, TSCHEBYSCHEFF_SPACED_COLOR);
         var A = setGauss(pointList);
         var x = gauss(A);
 
@@ -202,8 +213,61 @@ function drawBoard(canvas) {
             polynomial[power] = x[power];
         }
 
-        drawPolynomial(canvas, polynomial, '#FF00FF');
+        drawPolynomial(canvas, polynomial, TSCHEBYSCHEFF_SPACED_COLOR);
     }
+}
+
+function spline(f, color) {
+    // done like in http://code.activestate.com/recipes/457658-cubic-spline-interpolator/
+    var x,y;
+
+    var points = drawEquallySpacedPoints(f, color);
+
+    var intervals = new Array(points.length-1);
+    f = 'y=' + f;
+    for(var i=0; i<points.length-1; i++) {
+        var u = points[i]["x"];
+        x = u;
+        eval(f)
+        var FU = y;
+        var j=i+1;
+
+        var v = points[j]["x"];
+        x = v;
+        eval(f);
+        var FV = y;
+
+        // I don't have a derivate :-/
+        var h = 0.01;
+        x = u+h;
+        eval(f);
+        var DU = (y - FU) / h;
+        x = v + h;
+        eval(f);
+        var DV = (y - FV) / h;
+
+        var denom = Math.pow((u - v),3);
+        var A = ((-DV - DU) * v + (DV + DU) * u + 2 * FV - 2 * FU) / denom;
+        var B = -((-DV - 2 * DU) * Math.pow(v,2)  + u * ((DU - DV) * v + 3 * FV - 3 * FU) + 3 * FV * v - 3 * FU * v + (2 * DV + DU) * Math.pow(u,2)) / denom;
+        var C = (- DU * Math.pow(v,3)  + u * ((- 2 * DV - DU) * Math.pow(v,2)  + 6 * FV * v  - 6 * FU * v) + (DV + 2 * DU) * Math.pow(u,2) * v + DV * Math.pow(u,3)) / denom;
+        var D = -(u *(-DU * Math.pow(v,3)  - 3 * FU * Math.pow(v,2)) + FU * Math.pow(v,3) + Math.pow(u,2) * ((DU - DV) * Math.pow(v,2) + 3 * FV * v) +  Math.pow(u,3) * (DV * v - FV)) / denom;
+        var m = {'a': A, 'b': B, 'c': C, 'd': D, 'u':u, 'v':v};
+
+        context.strokeStyle = color;
+        context.beginPath();
+        var isFirst = true;
+        for (var x = u; x <= v; x += 0.01) {
+            y = A*x*x*x + B*x*x + C*x + D;
+            if (isFirst) {
+                context.moveTo(c(x, true), c(y, false));
+                isFirst = false;
+            } else {
+                context.lineTo(c(x, true), c(y, false));
+            }
+        }
+        context.stroke();
+    }
+    
 }
 
 function drawEquallySpacedPoints(f, color) {
@@ -356,6 +420,16 @@ function drawFunction(f, color) {
         var y = 0;
         for (var x = X_MIN; x < X_MAX; x += evaluationSteps) {
             eval(f);
+
+            if(c(y,false) > canvas.height) {
+                y=r(canvas.height, false);
+            }
+
+            if(c(y,false) < 0) {
+                y=r(0, false);
+            }
+
+
             if (x == X_MIN) {
                 context.moveTo(c(x, true), c(y, false));
             } else {
@@ -364,14 +438,6 @@ function drawFunction(f, color) {
         }
         context.stroke();
     }
-}
-
-function evaluatePolynomial(polynomial) {
-    var y = 0;
-    for (var power in polynomial) {
-        y += polynomial[power] * Math.pow(x, power);
-    }
-    return y;
 }
 
 function drawPolynomial(canvas, polynomial, color) {
@@ -385,6 +451,16 @@ function drawPolynomial(canvas, polynomial, color) {
             for (var power in polynomial) {
                 y += polynomial[power] * Math.pow(x, power);
             }
+
+            if(c(y,false) > canvas.height) {
+                y=r(canvas.height, false);
+            }
+
+            if(c(y,false) < 0) {
+                y=r(0, false);
+            }
+
+
             if (x == X_MIN) {
                 context.moveTo(c(x, true), c(y, false));
             } else {
@@ -489,8 +565,10 @@ function modifyURL() {
     var yt = encodeURIComponent(document.getElementById("Y_TICKS_STEPS").value);
     var X_FROM = encodeURIComponent(document.getElementById("X_FROM").value);
     var X_TO = encodeURIComponent(document.getElementById("X_TO").value);
+    var equallySwitch = encodeURIComponent(document.getElementById("SHOW_EQUALLY_SPACED").checked);
+    var tschebyscheffSwitch = encodeURIComponent(document.getElementById("SHOW_TSCHEBYSCHEFF_SPACED").checked);
     var N_EVALUATION_POINTS = encodeURIComponent(document.getElementById("N_EVALUATION_POINTS").value);
-    document.getElementById("newWindow").href = "polynom-interpolation.htm?function=" + f + "&evaluationSteps=" + evaluationSteps + "&X_MIN=" + X_MIN + "&X_MAX=" + X_MAX + "&Y_MAX=" + Y_MAX + "&Y_MIN=" + Y_MIN + "&X_TICKS_STEPS=" + xt + "&Y_TICKS_STEPS=" + yt + "&X_FROM=" +X_FROM+"&X_TO=" +X_TO+"&N_EVALUATION_POINTS=" +N_EVALUATION_POINTS+ "&points=" + encodeURIComponent(JSON.stringify(points));
+    document.getElementById("newWindow").href = "polynom-interpolation.htm?function=" + f + "&evaluationSteps=" + evaluationSteps + "&X_MIN=" + X_MIN + "&X_MAX=" + X_MAX + "&Y_MAX=" + Y_MAX + "&Y_MIN=" + Y_MIN + "&X_TICKS_STEPS=" + xt + "&Y_TICKS_STEPS=" + yt + "&X_FROM=" +X_FROM+"&X_TO=" +X_TO+"&N_EVALUATION_POINTS=" +N_EVALUATION_POINTS+ "&points=" + encodeURIComponent(JSON.stringify(points)) + "&tschebyscheffSwitch="+tschebyscheffSwitch+"&equallySwitch="+equallySwitch;
 }
 
 window.onload = function WindowLoad(event) {
@@ -522,6 +600,14 @@ window.onload = function WindowLoad(event) {
         points = JSON.parse(qs["points"]);
     }
 
+    if (qs["equallySwitch"] != undefined) {
+        document.getElementById("SHOW_EQUALLY_SPACED").checked = (qs["equallySwitch"] === 'true');
+    }
+
+    if (qs["tschebyscheffSwitch"] != undefined) {
+        document.getElementById("SHOW_TSCHEBYSCHEFF_SPACED").checked = (qs["tschebyscheffSwitch"] === 'true');
+    }
+
     drawBoard(canvas, {
         "x": 0,
         "y": 0
@@ -529,23 +615,35 @@ window.onload = function WindowLoad(event) {
     setCursorByID("myCanvas", "crosshair");
 
     /** scroll */
-    canvas.onmousewheel = function (event) {
-        event.preventDefault();
+    var mousewheelevt=(/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
 
+    if (canvas.attachEvent){ //if IE (and Opera depending on user setting)
+            canvas.attachEvent("on"+mousewheelevt, scroll)
+    } else if (document.addEventListener) { //WC3 browsers
+        canvas.addEventListener(mousewheelevt, scroll, false)
+    }
+
+    function scroll(event) {
+        event.preventDefault();
         var mousex = event.clientX - canvas.offsetLeft;
         var mousey = event.clientY - canvas.offsetTop;
-        var wheel = parseInt(event.wheelDelta, 10) / 120; //n or -n
 
-        var zoom = 1 + wheel / 2;
+        if (event.wheelDelta !== undefined) {
+            var wheel = parseInt(event.wheelDelta, 10) / 120; //n or -n
+        } else {
+            var wheel = parseInt(event.detail, 10) * (-1/3);
+        }
 
-        document.getElementById("X_MIN").value = parseInt(document.getElementById("X_MIN").value, 10) + wheel;
-        document.getElementById("X_MAX").value = parseInt(document.getElementById("X_MAX").value, 10) - wheel;
-        document.getElementById("Y_MIN").value = parseInt(document.getElementById("Y_MIN").value, 10) + wheel;
-        document.getElementById("Y_MAX").value = parseInt(document.getElementById("Y_MAX").value, 10) - wheel;
-        drawBoard(canvas, {
-            "x": 0,
-            "y": 0
-        }, 10);
+        if (parseInt(document.getElementById("X_MAX").value, 10) - wheel > 0) {
+            document.getElementById("X_MIN").value = parseInt(document.getElementById("X_MIN").value, 10) + wheel;
+            document.getElementById("X_MAX").value = parseInt(document.getElementById("X_MAX").value, 10) - wheel;
+            document.getElementById("Y_MIN").value = parseInt(document.getElementById("Y_MIN").value, 10) + wheel;
+            document.getElementById("Y_MAX").value = parseInt(document.getElementById("Y_MAX").value, 10) - wheel;
+            drawBoard(canvas, {
+                "x": 0,
+                "y": 0
+            }, 10);
+        }
     };
 
     /** event listeners */
