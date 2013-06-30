@@ -41,10 +41,10 @@ function r(x, isX) {
 
 function drawBoard(canvas) {
     var context = canvas.getContext('2d');
-    X_MIN = parseInt(document.getElementById("X_MIN").value, 10);
-    X_MAX = parseInt(document.getElementById("X_MAX").value, 10);
-    Y_MIN = parseInt(document.getElementById("Y_MIN").value, 10);
-    Y_MAX = parseInt(document.getElementById("Y_MAX").value, 10);
+    X_MIN = parseFloat(document.getElementById("X_MIN").value, 10);
+    X_MAX = parseFloat(document.getElementById("X_MAX").value, 10);
+    Y_MIN = parseFloat(document.getElementById("Y_MIN").value, 10);
+    Y_MAX = parseFloat(document.getElementById("Y_MAX").value, 10);
 
     // make canvas as big as possible
     context.canvas.width = window.innerWidth - 50;
@@ -276,8 +276,8 @@ function drawEquallySpacedPoints(f, color) {
     context.strokeStyle = color;
     f = 'y=' + f;
     var n = parseInt(document.getElementById("N_EVALUATION_POINTS").value, 10);
-    var X_FROM = parseInt(document.getElementById("X_FROM").value, 10);
-    var X_TO = parseInt(document.getElementById("X_TO").value, 10);
+    var X_FROM = parseFloat(document.getElementById("X_FROM").value, 10);
+    var X_TO = parseFloat(document.getElementById("X_TO").value, 10);
     var evaluationSteps = (X_TO - X_FROM) / n;
     var pointList = new Array(n + 1);
     if (evaluationSteps > 0) {
@@ -308,7 +308,7 @@ function drawTschebyscheffSpacedPoints(f, color) {
         var i = 0;
         for (var i = 0; i <= n; i++) {
             var x = Math.cos((2.0 * i + 1) / (2 * n + 2) * Math.PI);
-            x = affineTransformation(x, parseInt(document.getElementById("X_FROM").value, 10), parseInt(document.getElementById("X_TO").value, 10));
+            x = affineTransformation(x, parseFloat(document.getElementById("X_FROM").value, 10), parseFloat(document.getElementById("X_TO").value, 10));
             var y = 0;
             eval(f);
             pointList[i] = {
@@ -634,11 +634,11 @@ window.onload = function WindowLoad(event) {
             var wheel = parseInt(event.detail, 10) * (-1/3);
         }
 
-        if (parseInt(document.getElementById("X_MAX").value, 10) - wheel > 0) {
-            document.getElementById("X_MIN").value = parseInt(document.getElementById("X_MIN").value, 10) + wheel;
-            document.getElementById("X_MAX").value = parseInt(document.getElementById("X_MAX").value, 10) - wheel;
-            document.getElementById("Y_MIN").value = parseInt(document.getElementById("Y_MIN").value, 10) + wheel;
-            document.getElementById("Y_MAX").value = parseInt(document.getElementById("Y_MAX").value, 10) - wheel;
+        if (parseFloat(document.getElementById("X_MAX").value, 10) - wheel > 0) {
+            document.getElementById("X_MIN").value = parseFloat(document.getElementById("X_MIN").value, 10) + wheel;
+            document.getElementById("X_MAX").value = parseFloat(document.getElementById("X_MAX").value, 10) - wheel;
+            document.getElementById("Y_MIN").value = parseFloat(document.getElementById("Y_MIN").value, 10) + wheel;
+            document.getElementById("Y_MAX").value = parseFloat(document.getElementById("Y_MAX").value, 10) - wheel;
             drawBoard(canvas, {
                 "x": 0,
                 "y": 0
