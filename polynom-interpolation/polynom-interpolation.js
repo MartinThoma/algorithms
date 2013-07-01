@@ -225,8 +225,14 @@ function drawBoard(canvas) {
     }
 }
 
+/**
+ * Calculate spline and draw it to canvas.
+ * done like in http://code.activestate.com/recipes/457658-cubic-spline-interpolator/
+ * @param {function as string} f
+ * @param {string} color
+ * @return {undefined}
+ */
 function spline(f, color) {
-    // done like in http://code.activestate.com/recipes/457658-cubic-spline-interpolator/
     var x,y;
     var points = drawEquallySpacedPoints(f, color);
 
@@ -276,6 +282,13 @@ function spline(f, color) {
     
 }
 
+/**
+ * Calculated positions of equally spaced points and draw them to
+ * canvas.
+ * @param {function as string} f
+ * @param {string} color
+ * @return {Array} list of equally spaced points as list of maps
+ */
 function drawEquallySpacedPoints(f, color) {
     var context = canvas.getContext('2d');
     context.beginPath();
