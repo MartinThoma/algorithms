@@ -1,6 +1,6 @@
 'use strict';
 
-/** global variables */
+/* global variables */
 var STRETCH_X = 1;
 var STRETCH_Y = 1;
 var X_MIN = -10;
@@ -46,6 +46,11 @@ function r(x, isX) {
     return -x / STRETCH_Y + Y_OFFSET;
 }
 
+/**
+ * Draw everything on canvas.
+ * @param {DOMElement} canvas
+ * @return {undefined}
+ */
 function drawBoard(canvas) {
     var context = canvas.getContext('2d');
     X_MIN = parseFloat(document.getElementById("X_MIN").value, 10);
@@ -315,6 +320,17 @@ function drawEquallySpacedPoints(f, color) {
     return pointList;
 }
 
+function affineTransformation(y, a, b) {
+    return (0.5 * y) * (b - a); // - (a+b)/(b-a);
+}
+
+/**
+ * Calculated positions of tschebyscheff spaced points and draw them to
+ * canvas.
+ * @param {function as string} f
+ * @param {string} color
+ * @return {Array} list of equally spaced points as list of maps
+ */
 function drawTschebyscheffSpacedPoints(f, color) {
     var context = canvas.getContext('2d');
     context.beginPath();
@@ -340,10 +356,12 @@ function drawTschebyscheffSpacedPoints(f, color) {
     return pointList;
 }
 
-function affineTransformation(y, a, b) {
-    return (0.5 * y) * (b - a); // - (a+b)/(b-a);
-}
-
+/**
+ * Draw points to canvas.
+ * @param {Array} pointList
+ * @param {string} color
+ * @return {undefined}
+ */
 function drawPointsGeneral(pointList, color) {
     for (var i = 0; i < pointList.length; i++) {
         context.beginPath();
@@ -362,6 +380,12 @@ function drawPointsGeneral(pointList, color) {
     }
 }
 
+/**
+ * Generate a linear system of equations and store them to a 
+ * n×(n+1) matrix.
+ * @param {Array} points
+ * @return {Array} 
+ */
 function setGauss(points) {
     var n = points.length - 1;
     var A = new Array(n + 1);
@@ -429,6 +453,12 @@ function gauss(A) {
     return x;
 }
 
+/** 
+ * Draw an arbitrary function.
+ * @param {function as string} f
+ * @param {string} color
+ * @return {undefined}
+ */
 function drawFunction(f, color) {
     var context = canvas.getContext('2d');
     context.beginPath();
@@ -459,6 +489,13 @@ function drawFunction(f, color) {
     }
 }
 
+/**
+ * Draw polynomial and write it to the document.
+ * @param {DOMElement} canvas
+ * @param {Array} polynomial
+ * @param {string} color
+ * @return {undefined}
+ */
 function drawPolynomial(canvas, polynomial, color) {
     var context = canvas.getContext('2d');
     context.beginPath();
@@ -504,13 +541,24 @@ function drawPolynomial(canvas, polynomial, color) {
     mathEl.innerHTML += '$';
 }
 
+/**
+ * Calcualte euklidean distance of two points.
+ * @param {Map} p1
+ * @param {Map} p2
+ * @return {Number} euklidean distance of p1 and p2
+ */
 function euklideanDist(p1, p2) {
     return Math.sqrt(
         Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
 }
 
-/** add or remove a point */
-
+/** 
+ * Add or remove a point.
+ * @param {event} event
+ * @param {DOMElement} canvas
+ * @param {map} mouseCoords
+ * @return {undefined}
+ */
 function addPoint(event, canvas, mouseCoords) {
     if (event.ctrlKey) {
         // remove point that is nearest to mouse coords
@@ -538,8 +586,10 @@ function addPoint(event, canvas, mouseCoords) {
     }
 }
 
-/** draw all permanently added points */
-
+/** 
+ * Draw all permanently added points.
+ * @return {undefined}
+ */
 function drawPoints() {
     for (var i = 0; i < points.length; i++) {
         context.beginPath();
@@ -555,6 +605,10 @@ function drawPoints() {
     }
 }
 
+/**
+ * Write all points to textarea
+ * @return {undefined}
+ */
 function writePointList() {
     var tArea = document.getElementById("pointlist");
     tArea.value = '';
@@ -563,16 +617,24 @@ function writePointList() {
     }
 }
 
-/** get the current position of the mouse */
-
-function getMouseCoords(canvas, evt) {
+/** 
+ * Get current position of mouse.
+ * @param {DOMElement} canvas
+ * @param {event} event
+ * @return {map}
+ */
+function getMouseCoords(canvas, event) {
     var rect = canvas.getBoundingClientRect();
     return {
-        "x": evt.clientX - rect.left,
-        "y": evt.clientY - rect.top
+        "x": event.clientX - rect.left,
+        "y": event.clientY - rect.top
     };
 }
 
+/**
+ * Modify url so that I can later read all information from it.
+ * @return {undefined}
+ */
 function modifyURL() {
     var f = encodeURIComponent(document.getElementById("function").value);
     var evaluationSteps = encodeURIComponent(document.getElementById("evaluationSteps").value);
