@@ -241,26 +241,21 @@ function spline(f, color) {
     var x,y;
     var points = drawEquallySpacedPoints(f, color);
 
-    f = 'y=' + f;
     for(var i=0; i<points.length-1; i++) {
         var u = points[i].x;
-        x = u;
-        eval(f);
+        y = math.eval(f, {x: u});
         var FU = y;
         var j=i+1;
 
         var v = points[j].x;
-        x = v;
-        eval(f);
+        y = math.eval(f, {x: v});
         var FV = y;
 
         // I don't have a derivate :-/
         var h = 0.01;
-        x = u+h;
-        eval(f);
+        y = math.eval(f, {x: u+h});
         var DU = (y - FU) / h;
-        x = v + h;
-        eval(f);
+        y = math.eval(f, {x: v+h});
         var DV = (y - FV) / h;
 
         var denom = Math.pow((u - v),3);
@@ -298,7 +293,6 @@ function drawEquallySpacedPoints(f, color) {
     var context = canvas.getContext('2d');
     context.beginPath();
     context.strokeStyle = color;
-    f = 'y=' + f;
     var n = parseInt(document.getElementById("N_EVALUATION_POINTS").value, 10);
     var X_FROM = parseFloat(document.getElementById("X_FROM").value, 10);
     var X_TO = parseFloat(document.getElementById("X_TO").value, 10);
@@ -308,7 +302,7 @@ function drawEquallySpacedPoints(f, color) {
         var i = 0;
         var y = 0;
         for (var x = X_FROM; x <= X_TO; x += evaluationSteps) {
-            eval(f);
+            y = math.eval(f, {x: x});
             pointList[i] = {
                 "x": x,
                 "y": y
@@ -335,7 +329,6 @@ function drawTschebyscheffSpacedPoints(f, color) {
     var context = canvas.getContext('2d');
     context.beginPath();
     context.strokeStyle = color;
-    f = 'y=' + f;
     var n = parseInt(document.getElementById("N_EVALUATION_POINTS").value, 10);
     var evaluationSteps = (X_MAX - X_MIN) / n;
     var pointList = new Array(n + 1);
@@ -345,7 +338,7 @@ function drawTschebyscheffSpacedPoints(f, color) {
             var x = Math.cos((2.0 * i + 1) / (2 * n + 2) * Math.PI);
             x = affineTransformation(x, parseFloat(document.getElementById("X_FROM").value, 10), parseFloat(document.getElementById("X_TO").value, 10));
             var y = 0;
-            eval(f);
+            y = math.eval(f, {x: x});
             pointList[i] = {
                 "x": x,
                 "y": y
@@ -463,12 +456,11 @@ function drawFunction(f, color) {
     var context = canvas.getContext('2d');
     context.beginPath();
     context.strokeStyle = color;
-    f = 'y=' + f;
     var evaluationSteps = parseFloat(document.getElementById("evaluationSteps").value);
     if (evaluationSteps > 0) {
         var y = 0;
         for (var x = X_MIN; x < X_MAX; x += evaluationSteps) {
-            eval(f);
+            y = math.eval(f, {x: x});
 
             if(c(y,false) > canvas.height) {
                 y=r(canvas.height, false);
