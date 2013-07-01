@@ -18,9 +18,12 @@ function setCursorByID(id, cursorStyle) {
     elem.style.cursor = cursorStyle;
 }
 
-
-/* calculate coordinates */
-
+/** 
+ * Calculates coordinates from worldspace to screenspace
+ * @param {Number} x the coordinate you want to transform
+ * @param {bool} isX true iff x is a x-coordinate, otherwise false
+ * @return {Number} transformed coordinate
+ */
 function c(x, isX) {
     if (isX) {
         return STRETCH_X * (x + X_OFFSET);
@@ -29,8 +32,12 @@ function c(x, isX) {
     return STRETCH_Y * (-x + Y_OFFSET);
 }
 
-/* calculate coordinates - reversed */
-
+/** 
+ * Calculates coordinates from screenspace to worldspace
+ * @param {Number} x the coordinate you want to transform
+ * @param {bool} isX true iff x is a x-coordinate, otherwise false
+ * @return {Number} transformed coordinate
+ */
 function r(x, isX) {
     if (isX) {
         return x / STRETCH_X - X_OFFSET;
@@ -158,12 +165,14 @@ function drawBoard(canvas) {
     context.stroke();
     context.fill();
 
-    drawPoints(canvas);
+    drawPoints();
     writePointList();
     var polynomial = {};
     for (var power = 0; power < points.length; power++) {
         polynomial[power] = 0;
     }
+
+    var f = document.getElementById("function").value;
 
     // calculate coefficients for monom and draw
     {
@@ -175,7 +184,6 @@ function drawBoard(canvas) {
         }
 
         drawPolynomial(canvas, polynomial, 'blue');
-        var f = document.getElementById("function").value;
         drawFunction(f, 'red');
     }
 
@@ -220,19 +228,17 @@ function drawBoard(canvas) {
 function spline(f, color) {
     // done like in http://code.activestate.com/recipes/457658-cubic-spline-interpolator/
     var x,y;
-
     var points = drawEquallySpacedPoints(f, color);
 
-    var intervals = new Array(points.length-1);
     f = 'y=' + f;
     for(var i=0; i<points.length-1; i++) {
-        var u = points[i]["x"];
+        var u = points[i].x;
         x = u;
-        eval(f)
+        eval(f);
         var FU = y;
         var j=i+1;
 
-        var v = points[j]["x"];
+        var v = points[j].x;
         x = v;
         eval(f);
         var FV = y;
@@ -251,7 +257,7 @@ function spline(f, color) {
         var B = -((-DV - 2 * DU) * Math.pow(v,2)  + u * ((DU - DV) * v + 3 * FV - 3 * FU) + 3 * FV * v - 3 * FU * v + (2 * DV + DU) * Math.pow(u,2)) / denom;
         var C = (- DU * Math.pow(v,3)  + u * ((- 2 * DV - DU) * Math.pow(v,2)  + 6 * FV * v  - 6 * FU * v) + (DV + 2 * DU) * Math.pow(u,2) * v + DV * Math.pow(u,3)) / denom;
         var D = -(u *(-DU * Math.pow(v,3)  - 3 * FU * Math.pow(v,2)) + FU * Math.pow(v,3) + Math.pow(u,2) * ((DU - DV) * Math.pow(v,2) + 3 * FV * v) +  Math.pow(u,3) * (DV * v - FV)) / denom;
-        var m = {'a': A, 'b': B, 'c': C, 'd': D, 'u':u, 'v':v};
+        //var m = {'a': A, 'b': B, 'c': C, 'd': D, 'u':u, 'v':v};
 
         context.strokeStyle = color;
         context.beginPath();
@@ -328,14 +334,13 @@ function affineTransformation(y, a, b) {
 function drawPointsGeneral(pointList, color) {
     for (var i = 0; i < pointList.length; i++) {
         context.beginPath();
-        if (pointList[i] != undefined) {
-        context.arc(c(pointList[i]["x"], true),
-            c(pointList[i]["y"], false),
+        if (pointList[i] !== undefined) {
+        context.arc(c(pointList[i].x, true),
+            c(pointList[i].y, false),
             2, /*radius*/
             0, 2 * Math.PI, false);
-        } else {
-            console.log("point i="+i+" was undefined! fix!");
         }
+
         context.lineWidth = 1;
         context.strokeStyle = 'black';
         context.fillStyle = color;
@@ -350,21 +355,22 @@ function setGauss(points) {
     for (var i = 0; i < n + 1; i++) {
         A[i] = new Array(n + 2);
         if (points[i] != undefined) {
-            var x = points[i]["x"];
+            var x = points[i].x;
             for (var j = 0; j < n + 1; j++) {
                 A[i][j] = Math.pow(x, j);
             }
-            A[i][n + 1] = points[i]["y"];
-        } else {
-            console.log("point i="+i+" was undefined! fix!");
+            A[i][n + 1] = points[i].y;
         }
     }
     return A;
 }
 
-/** Solve a linear system of equations given by a n×n matrix 
-    with a result vector n×1. */
-
+/** 
+ * Solve a linear system of equations given by a n×n matrix A 
+ * with a n×1 result vector b. 
+ * @param {matrix} A|b
+ * @return {array} x
+ */
 function gauss(A) {
     var n = A.length;
 
@@ -487,20 +493,20 @@ function drawPolynomial(canvas, polynomial, color) {
 
 function euklideanDist(p1, p2) {
     return Math.sqrt(
-        Math.pow(p1["x"] - p2["x"], 2) + Math.pow(p1["y"] - p2["y"], 2));
+        Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
 }
 
 /** add or remove a point */
 
-function addPoint(event, canvas, mouseCoords, radius) {
+function addPoint(event, canvas, mouseCoords) {
     if (event.ctrlKey) {
         // remove point that is nearest to mouse coords
         if (points.length >= 1) {
             var nearestMouseCIndex = 0;
             var nearestDist = euklideanDist(mouseCoords, points[0]);
             var mCoords = {
-                "x": r(mouseCoords["x"], true),
-                "y": r(mouseCoords["y"], false)
+                "x": r(mouseCoords.x, true),
+                "y": r(mouseCoords.y, false)
             };
             for (var i = 1; i < points.length; i++) {
                 var tmpDist = euklideanDist(mCoords, points[i]);
@@ -513,19 +519,19 @@ function addPoint(event, canvas, mouseCoords, radius) {
         }
     } else {
         points.push({
-            "x": r(mouseCoords["x"], true),
-            "y": r(mouseCoords["y"], false)
+            "x": r(mouseCoords.x, true),
+            "y": r(mouseCoords.y, false)
         });
     }
 }
 
 /** draw all permanently added points */
 
-function drawPoints(canvas) {
+function drawPoints() {
     for (var i = 0; i < points.length; i++) {
         context.beginPath();
-        context.arc(c(points[i]["x"], true),
-            c(points[i]["y"], false),
+        context.arc(c(points[i].x, true),
+            c(points[i].y, false),
             2, /*radius*/
             0, 2 * Math.PI, false);
         context.lineWidth = 1;
@@ -540,7 +546,7 @@ function writePointList() {
     var tArea = document.getElementById("pointlist");
     tArea.value = '';
     for (var i = 0; i < points.length; i++) {
-        tArea.value += "(" + points[i]["x"] + "|" + points[i]["y"] + "), ";
+        tArea.value += "(" + points[i].x + "|" + points[i].y + "), ";
     }
 }
 
@@ -596,16 +602,16 @@ window.onload = function WindowLoad(event) {
         }
     }
 
-    if (qs["points"] != undefined) {
-        points = JSON.parse(qs["points"]);
+    if (qs.points !== undefined) {
+        points = JSON.parse(qs.points);
     }
 
-    if (qs["equallySwitch"] != undefined) {
-        document.getElementById("SHOW_EQUALLY_SPACED").checked = (qs["equallySwitch"] === 'true');
+    if (qs.equallySwitch !== undefined) {
+        document.getElementById("SHOW_EQUALLY_SPACED").checked = (qs.equallySwitch === 'true');
     }
 
-    if (qs["tschebyscheffSwitch"] != undefined) {
-        document.getElementById("SHOW_TSCHEBYSCHEFF_SPACED").checked = (qs["tschebyscheffSwitch"] === 'true');
+    if (qs.tschebyscheffSwitch !== undefined) {
+        document.getElementById("SHOW_TSCHEBYSCHEFF_SPACED").checked = (qs.tschebyscheffSwitch === 'true');
     }
 
     drawBoard(canvas, {
@@ -615,23 +621,17 @@ window.onload = function WindowLoad(event) {
     setCursorByID("myCanvas", "crosshair");
 
     /** scroll */
-    var mousewheelevt=(/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
-
-    if (canvas.attachEvent){ //if IE (and Opera depending on user setting)
-            canvas.attachEvent("on"+mousewheelevt, scroll)
-    } else if (document.addEventListener) { //WC3 browsers
-        canvas.addEventListener(mousewheelevt, scroll, false)
-    }
-
     function scroll(event) {
+        var wheel;
+
         event.preventDefault();
-        var mousex = event.clientX - canvas.offsetLeft;
-        var mousey = event.clientY - canvas.offsetTop;
+        //var mousex = event.clientX - canvas.offsetLeft;
+        //var mousey = event.clientY - canvas.offsetTop;
 
         if (event.wheelDelta !== undefined) {
-            var wheel = parseInt(event.wheelDelta, 10) / 120; //n or -n
+            wheel = parseInt(event.wheelDelta, 10) / 120; //n or -n
         } else {
-            var wheel = parseInt(event.detail, 10) * (-1/3);
+            wheel = parseInt(event.detail, 10) * (-1/3);
         }
 
         if (parseFloat(document.getElementById("X_MAX").value, 10) - wheel > 0) {
@@ -644,7 +644,15 @@ window.onload = function WindowLoad(event) {
                 "y": 0
             }, 10);
         }
-    };
+    }
+
+    var mousewheelevt=(/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel"; //FF doesn't recognize mousewheel as of FF3.x
+
+    if (canvas.attachEvent){ //if IE (and Opera depending on user setting)
+            canvas.attachEvent("on"+mousewheelevt, scroll);
+    } else if (document.addEventListener) { //WC3 browsers
+        canvas.addEventListener(mousewheelevt, scroll, false);
+    }
 
     /** event listeners */
     canvas.addEventListener('mousemove',
@@ -654,14 +662,14 @@ window.onload = function WindowLoad(event) {
             // draw coordinates next to mouse
             context.fillStyle = "blue";
             context.font = "bold 16px Arial";
-            var x = r(mouseCoords["x"], true).toFixed(3);
-            var y = r(mouseCoords["y"], false).toFixed(3);
-            context.fillText("(" + x + ", " + y + ")", mouseCoords["x"] + 5, mouseCoords["y"] - 5);
+            var x = r(mouseCoords.x, true).toFixed(3);
+            var y = r(mouseCoords.y, false).toFixed(3);
+            context.fillText("(" + x + ", " + y + ")", mouseCoords.x + 5, mouseCoords.y - 5);
         }, false);
 
     canvas.addEventListener("mousedown",
         function (event) {
             var mouseCoords = getMouseCoords(canvas, event);
-            addPoint(event, canvas, mouseCoords, 10);
+            addPoint(event, canvas, mouseCoords);
         }, false);
 };
