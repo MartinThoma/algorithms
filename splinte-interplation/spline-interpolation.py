@@ -1,11 +1,32 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+def niceCubicPolynomial(p):
+    tmp = ""
+    if p["a"] == 1:
+        tmp += " x^3"
+    elif p["a"] != 0:
+        tmp += "%.2fx^3" % p["a"]
+    if p["b"] == 1:
+        tmp += "\t+ x^2"
+    elif p["b"] != 0:
+        tmp += "\t+ %.2fx^2" % p["b"]
+    else:
+        tmp += "\t\t"
+    if p["c"] == 1:
+        tmp += "\t+ x"
+    elif p["c"] != 0:
+        tmp += "\t+ %.2fx" % p["c"]
+    else:
+        tmp += "\t\t"
+    if p["d"] != 0:
+        tmp += "\t+ %.2f" % p["d"]
+    return tmp
+
 def getSpline(points):
     """ points should be a list of maps, 
         where each map represents a point and has "x" and "y" """
-    import numpy
-    import scipy.linalg
+    import numpy, scipy.linalg
 
     # sort points by x value
     points = sorted(points, key=lambda point: point["x"])
@@ -47,7 +68,6 @@ def getSpline(points):
         A[3*n+(i-1)][4*(i-1)+0+4] = -6*points[i]["x"]
         A[3*n+(i-1)][4*(i-1)+1+4] = -2
         b[3*n+(i-1)] = 0
-
     # Natural spline:
     A[3*n-1+0][0+0] += 6*points[0]["x"]
     A[3*n-1+0][0+1] += 2
@@ -57,8 +77,15 @@ def getSpline(points):
     A[3*n+n-1][4*(n-1)+1] += 2
     b[3*n+n-1] += 0
 
-    print A
-    return scipy.linalg.solve(A, b)
+    x = scipy.linalg.solve(A, b)
+    spline = []
+    for i in range(0, n):
+        spline.append({"u": points[i]["x"], "v": points[i+1]["x"],
+                        "a": float(x[4*i+0]),
+                        "b": float(x[4*i+1]),
+                        "c": float(x[4*i+2]),
+                        "d": float(x[4*i+3])})
+    return spline
 
 if __name__ == "__main__":
     points = []
@@ -66,4 +93,8 @@ if __name__ == "__main__":
     points.append({"x": 1.0, "y": 9})
     points.append({"x": 2.0, "y": 35})
     points.append({"x": 3.0, "y": 70})
-    print(getSpline(points))
+    spline = getSpline(points)
+    for p in spline:
+        tmp = "[%.2f, %.2f]:" % (p["u"], p["v"])
+        tmp += niceCubicPolynomial(p)
+        print(tmp)
