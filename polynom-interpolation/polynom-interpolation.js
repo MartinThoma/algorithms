@@ -243,33 +243,30 @@ function spline(f, color) {
 
     for(var i=0; i<points.length-1; i++) {
         var u = points[i].x;
-        y = math.eval(f, {x: u});
-        var FU = y;
-        var j=i+1;
+        var v = points[i+1].x;
 
-        var v = points[j].x;
-        y = math.eval(f, {x: v});
-        var FV = y;
+        var FU = math.eval(f, {x: u});
+        var FV = math.eval(f, {x: v});
 
-        // I don't have a derivate :-/
-        var h = 0.01;
+        // Poor mans derivate :-/
+        var h = parseFloat(document.getElementById("evaluationSteps").value);
         y = math.eval(f, {x: u+h});
         var DU = (y - FU) / h;
         y = math.eval(f, {x: v+h});
         var DV = (y - FV) / h;
 
         var denom = Math.pow((u - v),3);
-        var A = ((-DV - DU) * v + (DV + DU) * u + 2 * FV - 2 * FU) / denom;
-        var B = -((-DV - 2 * DU) * Math.pow(v,2)  + u * ((DU - DV) * v + 3 * FV - 3 * FU) + 3 * FV * v - 3 * FU * v + (2 * DV + DU) * Math.pow(u,2)) / denom;
-        var C = (- DU * Math.pow(v,3)  + u * ((- 2 * DV - DU) * Math.pow(v,2)  + 6 * FV * v  - 6 * FU * v) + (DV + 2 * DU) * Math.pow(u,2) * v + DV * Math.pow(u,3)) / denom;
-        var D = -(u *(-DU * Math.pow(v,3)  - 3 * FU * Math.pow(v,2)) + FU * Math.pow(v,3) + Math.pow(u,2) * ((DU - DV) * Math.pow(v,2) + 3 * FV * v) +  Math.pow(u,3) * (DV * v - FV)) / denom;
-        //var m = {'a': A, 'b': B, 'c': C, 'd': D, 'u':u, 'v':v};
+        var a = ((-DV - DU) * v + (DV + DU) * u + 2 * FV - 2 * FU) / denom;
+        var b = -((-DV - 2 * DU) * Math.pow(v,2)  + u * ((DU - DV) * v + 3 * FV - 3 * FU) + 3 * FV * v - 3 * FU * v + (2 * DV + DU) * Math.pow(u,2)) / denom;
+        var c = (- DU * Math.pow(v,3)  + u * ((- 2 * DV - DU) * Math.pow(v,2)  + 6 * FV * v  - 6 * FU * v) + (DV + 2 * DU) * Math.pow(u,2) * v + DV * Math.pow(u,3)) / denom;
+        var d = -(u *(-DU * Math.pow(v,3)  - 3 * FU * Math.pow(v,2)) + FU * Math.pow(v,3) + Math.pow(u,2) * ((DU - DV) * Math.pow(v,2) + 3 * FV * v) +  Math.pow(u,3) * (DV * v - FV)) / denom;
+        //var m = {'a': a, 'b': b, 'c': c, 'd': d, 'u':u, 'v':v};
 
         context.strokeStyle = color;
         context.beginPath();
         var isFirst = true;
         for (var x = u; x <= v; x += 0.01) {
-            y = A*x*x*x + B*x*x + C*x + D;
+            y = a*x*x*x + b*x*x + c*x + d;
             if (isFirst) {
                 context.moveTo(c(x, true), c(y, false));
                 isFirst = false;
@@ -279,7 +276,6 @@ function spline(f, color) {
         }
         context.stroke();
     }
-    
 }
 
 /**
