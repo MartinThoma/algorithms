@@ -42,7 +42,8 @@
     </head>
     <body>
 
-
+	<form action="#" method="post" onsubmit="return false;">
+		<input type="submit" style="visibility:hidden;">
         <table class="setting">
             <caption>coordinate range</caption>
             <tr>
@@ -69,7 +70,7 @@
                 <td><label for="function" style="color:red;">f(x) =</label> <input type="text" value="sin(x)" id="function"/> <span class="hint" title="Hier kann jede von math.js auswertbare Funktion stehen. Der User muss selbst aufpassen, dass er nicht durch 0 teilt.">?</span></td>
             </tr>
             <tr>
-                <td>evaluation steps: <input type="number" step="0.1" value="0.1" id="evaluationSteps" style="width:50px;" oninput="drawBoard(canvas)"/></td>
+                <td>evaluation steps: <input type="number" min="0" step="0.1" value="0.1" id="evaluationSteps" style="width:50px;" oninput="drawBoard(canvas)"/></td>
             </tr>
             <tr>
                 <td><a href="polynom-interpolation.htm">reset</a> - <a href="polynom-interpolation.htm" target="_blank" id="newWindow" onclick="modifyURL()">open in window</a></td>
@@ -81,11 +82,11 @@
             <caption>ticks</caption>
             <tr>
                 <th><label for="X_TICKS_STEPS">x</label></th>
-                <td><input type="number" id="X_TICKS_STEPS" value="1" style="width:50px;" oninput="drawBoard(canvas)"></td>
+                <td><input type="number" min="0" id="X_TICKS_STEPS" value="1" style="width:50px;" oninput="drawBoard(canvas)"></td>
             </tr>
             <tr>
                 <th><label for="Y_TICKS_STEPS">y</label></th>
-                <td><input type="number" id="Y_TICKS_STEPS" value="1" style="width:50px;" oninput="drawBoard(canvas)"></td>
+                <td><input type="number" min="0" id="Y_TICKS_STEPS" value="1" style="width:50px;" oninput="drawBoard(canvas)"></td>
             </tr>
         </table>
 
@@ -103,7 +104,7 @@
             </tr>
             <tr>
                 <th><label for="N_EVALUATION_POINTS">n</label></th>
-                <td><input type="number" id="N_EVALUATION_POINTS" value="10" style="width:50px;" oninput="drawBoard(canvas)"></td>
+                <td><input type="number" min="1" id="N_EVALUATION_POINTS" value="10" style="width:50px;" oninput="drawBoard(canvas)"></td>
                 <td>&nbsp;</td>
             </tr>
             <tr>
@@ -122,6 +123,7 @@
                 <td><input type="color" id="SPLINE_COLOR" value="#FFBB00" style="width:50px;" onchange="drawBoard(canvas)"></td>
             </tr>
         </table>
+	</form>
 
         <canvas id = "myCanvas"
                 width = "512" height = "600" 
