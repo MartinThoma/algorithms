@@ -153,9 +153,10 @@ function drawBoard(canvas) {
 
     // arrow x
     context.beginPath();
-    context.moveTo(context.canvas.width - 15, context.canvas.height / 2 - 15);
+    context.moveTo(context.canvas.width - 30, context.canvas.height / 2 - 10);
     context.lineTo(context.canvas.width, context.canvas.height / 2);
-    context.lineTo(context.canvas.width - 15, context.canvas.height / 2 + 15);
+    context.lineTo(context.canvas.width - 30, context.canvas.height / 2 + 10);
+    context.lineTo(context.canvas.width - 25, context.canvas.height / 2);
     context.closePath();
     context.stroke();
     context.fill();
@@ -163,9 +164,10 @@ function drawBoard(canvas) {
 
     // arrow y
     context.beginPath();
-    context.moveTo(context.canvas.width / 2 - 15, 15);
+    context.moveTo(context.canvas.width / 2 - 10, 30);
     context.lineTo(context.canvas.width / 2, 0);
-    context.lineTo(context.canvas.width / 2 + 15, 15);
+    context.lineTo(context.canvas.width / 2 + 10, 30);
+    context.lineTo(context.canvas.width / 2, 25);
     context.closePath();
     context.stroke();
     context.fill();
