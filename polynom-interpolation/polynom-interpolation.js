@@ -258,7 +258,7 @@ function spline(f, color) {
         var denom = Math.pow((u - v),3);
         var a = ((-DV - DU) * v + (DV + DU) * u + 2 * FV - 2 * FU) / denom;
         var b = -((-DV - 2 * DU) * Math.pow(v,2)  + u * ((DU - DV) * v + 3 * FV - 3 * FU) + 3 * FV * v - 3 * FU * v + (2 * DV + DU) * Math.pow(u,2)) / denom;
-        var c = (- DU * Math.pow(v,3)  + u * ((- 2 * DV - DU) * Math.pow(v,2)  + 6 * FV * v  - 6 * FU * v) + (DV + 2 * DU) * Math.pow(u,2) * v + DV * Math.pow(u,3)) / denom;
+        var C = (- DU * Math.pow(v,3)  + u * ((- 2 * DV - DU) * Math.pow(v,2)  + 6 * FV * v  - 6 * FU * v) + (DV + 2 * DU) * Math.pow(u,2) * v + DV * Math.pow(u,3)) / denom; // ATTENTION! THERE IS A FUNCTION CALLED 'c'!!!!
         var d = -(u *(-DU * Math.pow(v,3)  - 3 * FU * Math.pow(v,2)) + FU * Math.pow(v,3) + Math.pow(u,2) * ((DU - DV) * Math.pow(v,2) + 3 * FV * v) +  Math.pow(u,3) * (DV * v - FV)) / denom;
         //var m = {'a': a, 'b': b, 'c': c, 'd': d, 'u':u, 'v':v};
 
@@ -266,7 +266,7 @@ function spline(f, color) {
         context.beginPath();
         var isFirst = true;
         for (var x = u; x <= v; x += 0.01) {
-            y = a*x*x*x + b*x*x + c*x + d;
+            y = a*x*x*x + b*x*x + C*x + d;
             if (isFirst) {
                 context.moveTo(c(x, true), c(y, false));
                 isFirst = false;
@@ -619,6 +619,11 @@ function getMouseCoords(canvas, event) {
     };
 }
 
+function store() {
+	var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // here is the most important part because if you dont replace you will get a DOM 18 exception.
+	window.location.href=image; // it will save locally
+}
+
 /**
  * Modify url so that I can later read all information from it.
  * @return {undefined}
@@ -637,7 +642,8 @@ function modifyURL() {
     var equallySwitch = encodeURIComponent(document.getElementById("SHOW_EQUALLY_SPACED").checked);
     var tschebyscheffSwitch = encodeURIComponent(document.getElementById("SHOW_TSCHEBYSCHEFF_SPACED").checked);
     var N_EVALUATION_POINTS = encodeURIComponent(document.getElementById("N_EVALUATION_POINTS").value);
-    document.getElementById("newWindow").href = "polynom-interpolation.htm?function=" + f + "&evaluationSteps=" + evaluationSteps + "&X_MIN=" + X_MIN + "&X_MAX=" + X_MAX + "&Y_MAX=" + Y_MAX + "&Y_MIN=" + Y_MIN + "&X_TICKS_STEPS=" + xt + "&Y_TICKS_STEPS=" + yt + "&X_FROM=" +X_FROM+"&X_TO=" +X_TO+"&N_EVALUATION_POINTS=" +N_EVALUATION_POINTS+ "&points=" + encodeURIComponent(JSON.stringify(points)) + "&tschebyscheffSwitch="+tschebyscheffSwitch+"&equallySwitch="+equallySwitch;
+	var SHOW_SPLINE_EQUALLY_SPACED = encodeURIComponent(document.getElementById("SHOW_SPLINE_EQUALLY_SPACED").checked);
+    document.getElementById("newWindow").href = "polynom-interpolation.htm?function=" + f + "&evaluationSteps=" + evaluationSteps + "&X_MIN=" + X_MIN + "&X_MAX=" + X_MAX + "&Y_MAX=" + Y_MAX + "&Y_MIN=" + Y_MIN + "&X_TICKS_STEPS=" + xt + "&Y_TICKS_STEPS=" + yt + "&X_FROM=" +X_FROM+"&X_TO=" +X_TO+"&N_EVALUATION_POINTS=" +N_EVALUATION_POINTS+ "&points=" + encodeURIComponent(JSON.stringify(points)) + "&tschebyscheffSwitch="+tschebyscheffSwitch+"&equallySwitch="+equallySwitch+"&SHOW_SPLINE_EQUALLY_SPACED="+SHOW_SPLINE_EQUALLY_SPACED;
 }
 
 window.onload = function WindowLoad(event) {
@@ -675,6 +681,10 @@ window.onload = function WindowLoad(event) {
 
     if (qs.tschebyscheffSwitch !== undefined) {
         document.getElementById("SHOW_TSCHEBYSCHEFF_SPACED").checked = (qs.tschebyscheffSwitch === 'true');
+    }
+
+    if (qs.SHOW_SPLINE_EQUALLY_SPACED !== undefined) {
+        document.getElementById("SHOW_SPLINE_EQUALLY_SPACED").checked = (qs.SHOW_SPLINE_EQUALLY_SPACED === 'true');
     }
 
     drawBoard(canvas, {
