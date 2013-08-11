@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Graphic filters - an interactive example</title>
+        <!-- Piwik -->
+        <script type="text/javascript">
+          var _paq = _paq || [];
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          (function() {
+            var u=(("https:" == document.location.protocol) ? "https" : "http") + "://martin-thoma.com/piwik//";
+            _paq.push(['setTrackerUrl', u+'piwik.php']);
+            _paq.push(['setSiteId', 1]);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+            g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+          })();
+        </script>
+        <!-- End Piwik Code -->
+        <style type="text/css">
+            span.hint {
+	            border-bottom:1px dotted #666;
+            }
+
+            table.setting {
+                margin: 5px;
+                float:left;
+            }
+
+            table.setting caption {
+                background-color: #e0e0e0;
+                font-weight:bold;
+            }
+        </style>
+    </head>
+    <body>
+
+		Apply filter:
+		<select  id="filter">
+			<optgroup label="Grayscale">
+				<option value="None">None</option>
+				<option value="prewitt-x">Prewitt-x</option>
+				<option value="prewitt-y">Prewitt-y</option>
+				<option value="sobel-x">Sobel-x</option>
+				<option value="sobel-y">Sobel-y</option>
+				<option value="kirsh-x">Kirsh-x</option>
+				<option value="kirsh-y">Kirsh-y</option>
+				<option value="laplace">Laplace</option>
+				<option value="canny-edge-detector">Canny edge detector</option>
+			</optgroup>
+		</select><br/>
+		<video autoplay id="vid" style="display:none;"></video>
+		<canvas id="canvas" width="640" height="480" style="border:1px solid #d3d3d3;"></canvas>
+		<script type="text/javascript" src="graphic-filter.js"></script>
+	</body>
+</html>
