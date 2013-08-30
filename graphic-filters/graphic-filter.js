@@ -45,6 +45,22 @@ function applyMatrix(imgData, matrix) {
 	context.putImageData(imgData, 0, 0);
 }
 
+function harrisCornerDetector(imgData) {
+    var imgDataNormal = context.getImageData(0, 0, 
+				context.canvas.width, context.canvas.height);
+    var n = 3;
+    for (var x=n-1; x<context.canvas.width - n; x++) {
+        for (var y=n-1; y<context.canvas.height - n; y++) {
+            var a = 0;
+            var b = 0;
+            var c = 0;
+            var d = 0;
+            // TODO
+        }
+    }
+	context.putImageData(imgData, 0, 0);
+}
+
 setInterval(function snapshot() {
     if (localMediaStream) {
         context.drawImage(video, 0, 0);
@@ -79,31 +95,36 @@ setInterval(function snapshot() {
         }
 
 		var filter = document.getElementById('filter').value;
-		console.log(filter);
-		var matrix;
-		if (filter === 'prewitt-x') {
-			matrix = [[-1,0,1],[-1,0,1],[-1,0,1]];
-		} else if (filter == 'prewitt-y') {
-			matrix = [[-1,-1,-1],[0,0,0],[1,1,1]];
-		} else if (filter == 'sobel-x') {
-			matrix = [[1,0,-1],[2,0,-2],[1,0,-1]];
-		} else if (filter == 'sobel-y') {
-			matrix = [[1,2,1],[0,0,0],[-1,-2,-1]];
-		} else if (filter == 'kirsh-x') {
-			matrix = [[5,-3,-3],[5,0,-3],[5,-3,-3]];
-		} else if (filter == 'kirsh-y') {
-			matrix = [[5,5,5],[-3,0,-3],[-3,-3,-3]];
-		} else if (filter == 'laplace') {
-			matrix = [[0,1,0],[1,-4,1],[0,1,0]];
-		} else if (filter == 'canny-edge-detector') {
-			matrix = [[2.0/159,4.0/159,5.0/159,4.0/159,2.0/159],[4.0/159,9.0/159,12.0/159,9.0/159,4.0/159],[5.0/159,12.0/159,15.0/159,12.0/159,5.0/159],[4.0/159,9.0/159,12.0/159,9.0/159,4.0/159],[2.0/159,4.0/159,5.0/159,4.0/159,2.0/159]];
-		} else {
-			matrix = [[1]];
-		}
 
-        context.putImageData(imgData, 0, 0);
+        if(filter != 'harris') {
+		    var matrix;
+		    if (filter === 'prewitt-x') {
+			    matrix = [[-1,0,1],[-1,0,1],[-1,0,1]];
+		    } else if (filter == 'prewitt-y') {
+			    matrix = [[-1,-1,-1],[0,0,0],[1,1,1]];
+		    } else if (filter == 'sobel-x') {
+			    matrix = [[1,0,-1],[2,0,-2],[1,0,-1]];
+		    } else if (filter == 'sobel-y') {
+			    matrix = [[1,2,1],[0,0,0],[-1,-2,-1]];
+		    } else if (filter == 'kirsh-x') {
+			    matrix = [[5,-3,-3],[5,0,-3],[5,-3,-3]];
+		    } else if (filter == 'kirsh-y') {
+			    matrix = [[5,5,5],[-3,0,-3],[-3,-3,-3]];
+		    } else if (filter == 'laplace') {
+			    matrix = [[0,1,0],[1,-4,1],[0,1,0]];
+		    } else if (filter == 'canny-edge-detector') {
+			    matrix = [[2.0/159,4.0/159,5.0/159,4.0/159,2.0/159],[4.0/159,9.0/159,12.0/159,9.0/159,4.0/159],[5.0/159,12.0/159,15.0/159,12.0/159,5.0/159],[4.0/159,9.0/159,12.0/159,9.0/159,4.0/159],[2.0/159,4.0/159,5.0/159,4.0/159,2.0/159]];
+		    } else {
+			    matrix = [[1]];
+		    }
 
-		applyMatrix(imgData, matrix);
+            context.putImageData(imgData, 0, 0);
+
+		    applyMatrix(imgData, matrix);
+        } else {
+            context.putImageData(imgData, 0, 0);
+            applyMatrix(imgData);
+        }
     }
 }, 500);
 

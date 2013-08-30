@@ -37,8 +37,8 @@
 
 		Apply filter:
 		<select  id="filter">
-			<optgroup label="Grayscale">
-				<option value="None">None</option>
+		    <option value="None">None</option>
+			<optgroup label="Edge detection">
 				<option value="prewitt-x">Prewitt-x</option>
 				<option value="prewitt-y">Prewitt-y</option>
 				<option value="sobel-x">Sobel-x</option>
@@ -48,6 +48,9 @@
 				<option value="laplace">Laplace</option>
 				<option value="canny-edge-detector">Canny edge detector</option>
 			</optgroup>
+		<!--not ready yet	<optgroup label="Corner detection">
+				<option value="harris">Harris</option>
+			</optgroup> -->
 		</select><br/>
 		<video autoplay id="vid" style="display:none;"></video>
 		<canvas id="canvas" width="640" height="480" style="border:1px solid #d3d3d3;"></canvas>
