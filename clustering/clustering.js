@@ -21,7 +21,11 @@ function getNrOfClusters() {
 }
 
 function getColor(i, transparency) {
-    var t = (i+1)*(360/getNrOfClusters());
+    return getColorGeneral(i, getNrOfClusters(), transparency);
+}
+
+function getColorGeneral(i, k, transparency) {
+    var t = (i+1)*(360/k);
     var color = 'hsla('+t+', 100%, 50%, '+transparency+')';
     return color;
 }
@@ -94,7 +98,7 @@ function getKMeansInfo(k, mouseCoords) {
 		    }
 		}
 	// check if a cluster center has no points
-	} while (points.length > k && doesCenterWithoutPointsExist(clusterCenters, k));
+	} while (points.length >= k && doesCenterWithoutPointsExist(clusterCenters, k));
     document.getElementById("iterations").value = iteration;
 
     // show where clusters are
@@ -277,6 +281,14 @@ function updateBoard(){
     drawBoard(canvas, {"x":0,"y":0}, INITIAL_RADIUS);
 }
 
+function updateNumberBgColor(){
+	var domEl = document.getElementById("class");
+	if(parseInt(domEl.value) > getNrOfClusters()+1) {
+		domEl.value = getNrOfClusters()+1;
+	}
+	domEl.style.backgroundColor = getColorGeneral(parseInt(domEl.value), Math.max(parseInt(domEl.value), getNrOfClusters()), 0.5);
+}
+
 /** global variables */
 var maxKnearestNeighborClasses = 1;
 var INITIAL_RADIUS = 20;
@@ -286,6 +298,7 @@ var canvas = document.getElementById("myCanvas");
 var kElement = document.getElementById("k");
 var context = canvas.getContext("2d");
 drawBoard(canvas, {"x":0,"y":0}, INITIAL_RADIUS);
+updateNumberBgColor();
 setCursorByID("myCanvas", "crosshair");
 
 /** event listeners */
