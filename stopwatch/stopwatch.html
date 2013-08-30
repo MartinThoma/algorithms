@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>00:00:00</title>
+	<style type="text/css">
+	#time {
+		font-size: 120pt;
+	}
+
+    #milli {
+		font-size: 30pt;
+	}
+
+    #outerBox {
+		text-align: center;
+    }
+
+	#start, #clear {
+		width:40%;height:150px;
+	}
+	</style>
+  </head>
+  <body>
+	<div id="outerBox">
+		<span id="time"><span id="hh">00</span>:<span id="mm">00</span>:<span id="ss">00</span> <span id="milli">00</span></span>
+		<div id="box">
+		  <input type="button" id="start" onclick="toggle();" value="Start"/>
+		  <input type="button" id="clear" onclick="clearTime();" value="Clear"/>
+		</div>
+	</div>
+	<script type="text/javascript" src="stoppwatch.js"></script>
+  </body>
+</html>
