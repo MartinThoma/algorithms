@@ -26,60 +26,75 @@ function getColor(i, transparency) {
     return color;
 }
 
+function doesCenterWithoutPointsExist(clusterCenters, k) {
+	for (i=0; i<k; i++) {
+		if (clusterCenters[i]["points"] == 0) {
+			return true;
+		}
+	}
+	return false;
+}
+
 function getKMeansInfo(k, mouseCoords) {
     var context = canvas.getContext('2d');
     var width = canvas.width;
     var height = canvas.height;
 
-    // randomly choose cluster centers
-    var clusterCenters = new Array(k);
-    for (i=0; i<k; i++) {
-        var x = Math.floor(Math.random()*width);
-        var y = Math.floor(Math.random()*height);
-        clusterCenters[i] = {"x": x,"y": y};
-    }
+	do {
+		// randomly choose cluster centers
+		var clusterCenters = new Array(k);
+		for (i=0; i<k; i++) {
+		    var x = Math.floor(Math.random()*width);
+		    var y = Math.floor(Math.random()*height);
+		    clusterCenters[i] = {"x": x,"y": y, "points": 0};
+		}
 
-    var iteration=0;
-    var minChange=true;
-    while (iteration < 2000 && minChange) {
-        iteration++;
-        minChange=false;
+		var iteration=0;
+		var minChange=true;
+		while (iteration < 2000 && minChange) {
 
-        // for each object, check which cluster is nearest
-        for (i=0; i<points.length; i++) {
-            var distMin = width+height+10;
-            var clusterMin = 0;
-            for(j=0; j<k; j++) {
-                var dist = euklideanDist(clusterCenters[j], points[i]);
-                if (dist < distMin) {
-                    distMin = dist;
-                    clusterMin = j
-                }
-            }
-            points[i]["cluster"] = clusterMin;
-        }
+			iteration++;
+			minChange=false;
 
-        // calculate center of cluster
-        var clusterSum = new Array(k);
-        for (i=0; i<k; i++) {
-            clusterSum[i] = {"x":0, "y":0, "n":0};
-        }
-        for (i=0; i<points.length; i++) {
-    
-            clusterSum[points[i]["cluster"]]["x"] += points[i]["x"];
-            clusterSum[points[i]["cluster"]]["y"] += points[i]["y"];
-            clusterSum[points[i]["cluster"]]["n"] += 1;
-        }
-        for (i=0; i<k; i++) {
-            if (clusterSum[i]["n"] > 0) {
-                var newCenterVar = {"x":clusterSum[i]["x"]/clusterSum[i]["n"],"y":clusterSum[i]["y"]/clusterSum[i]["n"]};
-                if (euklideanDist(clusterCenters[i], newCenterVar) > 2) {
-                    minChange = true;
-                }
-                clusterCenters[i] =  {"x":clusterSum[i]["x"]/clusterSum[i]["n"],"y":clusterSum[i]["y"]/clusterSum[i]["n"]};
-            }
-        }
-    }
+			// for each object, check which cluster is nearest
+			for (i=0; i<points.length; i++) {
+			    var distMin = width+height+10;
+			    var clusterMin = 0;
+			    for(j=0; j<k; j++) {
+			        var dist = euklideanDist(clusterCenters[j], points[i]);
+			        if (dist < distMin) {
+			            distMin = dist;
+			            clusterMin = j
+			        }
+			    }
+			    points[i]["cluster"] = clusterMin;
+				clusterCenters[clusterMin]["points"]++;
+			}
+
+
+		    // calculate center of cluster
+		    var clusterSum = new Array(k);
+		    for (i=0; i<k; i++) {
+		        clusterSum[i] = {"x":0, "y":0, "n":0};
+		    }
+		    for (i=0; i<points.length; i++) {
+		
+		        clusterSum[points[i]["cluster"]]["x"] += points[i]["x"];
+		        clusterSum[points[i]["cluster"]]["y"] += points[i]["y"];
+		        clusterSum[points[i]["cluster"]]["n"] += 1;
+		    }
+		    for (i=0; i<k; i++) {
+		        if (clusterSum[i]["n"] > 0) {
+		            var newCenterVar = {"x":clusterSum[i]["x"]/clusterSum[i]["n"],"y":clusterSum[i]["y"]/clusterSum[i]["n"]};
+		            if (euklideanDist(clusterCenters[i], newCenterVar) > 2) {
+		                minChange = true;
+		            }
+		            clusterCenters[i] =  {"x":clusterSum[i]["x"]/clusterSum[i]["n"],"y":clusterSum[i]["y"]/clusterSum[i]["n"]};
+		        }
+		    }
+		}
+	// check if a cluster center has no points
+	} while (points.length > k && doesCenterWithoutPointsExist(clusterCenters, k));
     document.getElementById("iterations").value = iteration;
 
     // show where clusters are
