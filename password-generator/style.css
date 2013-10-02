@@ -1,0 +1,18 @@
+span.hint {
+    border-bottom:1px dotted #666;
+}
+
+table.setting {
+    margin: 5px;
+    float:left;
+}
+
+table.setting caption {
+    background-color: #e0e0e0;
+    font-weight:bold;
+}
+
+#password{
+    width: 500px;
+    font-family:monospace,Courier;
+}
