@@ -102,6 +102,8 @@ setInterval(function snapshot() {
 			    matrix = [[-1,0,1],[-1,0,1],[-1,0,1]];
 		    } else if (filter == 'prewitt-y') {
 			    matrix = [[-1,-1,-1],[0,0,0],[1,1,1]];
+		    } else if (filter == 'prewitt-y-switched') {
+			    matrix = [[1,1,1],[0,0,0],[-1,-1,-1]];
 		    } else if (filter == 'sobel-x') {
 			    matrix = [[1,0,-1],[2,0,-2],[1,0,-1]];
 		    } else if (filter == 'sobel-y') {
@@ -114,6 +116,10 @@ setInterval(function snapshot() {
 			    matrix = [[0,1,0],[1,-4,1],[0,1,0]];
 		    } else if (filter == 'canny-edge-detector') {
 			    matrix = [[2.0/159,4.0/159,5.0/159,4.0/159,2.0/159],[4.0/159,9.0/159,12.0/159,9.0/159,4.0/159],[5.0/159,12.0/159,15.0/159,12.0/159,5.0/159],[4.0/159,9.0/159,12.0/159,9.0/159,4.0/159],[2.0/159,4.0/159,5.0/159,4.0/159,2.0/159]];
+		    } else if (filter == 'roberts-1') {
+			    matrix = [[-1,0],[0,1]];
+		    } else if (filter == 'roberts-2') {
+			    matrix = [[0,-1],[1,0]];
 		    } else {
 			    matrix = [[1]];
 		    }
