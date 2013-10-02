@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Clustering - interactive example</title>
+        <!-- Piwik -->
+        <script type="text/javascript">
+          var _paq = _paq || [];
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          (function() {
+            var u=(("https:" == document.location.protocol) ? "https" : "http") + "://martin-thoma.com/piwik//";
+            _paq.push(['setTrackerUrl', u+'piwik.php']);
+            _paq.push(['setSiteId', 1]);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+            g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+          })();
+        </script>
+        <!-- End Piwik Code -->
+        <style type="text/css">
+            span.hint {
+	            border-bottom:1px dotted #666;
+            }
+        </style>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <td><a href="regression.htm">clear board</a></td>
+            </tr>
+        </table>
+        <canvas id = "myCanvas"
+                width = "512" height = "600" 
+                style = "border:1px solid #000;"
+        > </canvas>
+    <script type="text/javascript" src="regression.js">
+
+    </script>
+</body>
+</html>
