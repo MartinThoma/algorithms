@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Route planning - an interactive example</title>
+        <style type="text/css">
+        </style>
+    </head>
+    <body>
+        <label for="polygonNumber">Add next point to polygon nr</label>
+        <input type="number" id="polygonNumber" min="0" max="0" value="0"/><br/>
+        <select id="nextClickType">
+            <option>obstacle</option>
+            <option>start</option>
+            <option>target</option>
+        </select><br/>
+
+		<canvas id="myCanvas" width="640" height="480" style="border:1px solid #d3d3d3;"></canvas>
+		<script type="text/javascript" src="route-planning.js"></script>
+	</body>
+</html>
