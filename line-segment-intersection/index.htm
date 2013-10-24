@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Finding intersection of two line segments - an interactive example</title>
+        <style type="text/css">
+        </style>
+    </head>
+    <body>
+        <label for="movePoint">Move Point</label>
+        <select id="movePoint">
+            <option value="0">A1</option>
+            <option value="1">A2</option>
+            <option value="2">B1</option>
+            <option value="3">B2</option>
+        </select>
+        <label for="lineWidth">Line width</label>
+        <input type="number" min="1" max="50" step="1" value="5" id="lineWidth" onchange="updateBoard()"/>
+        <br/>
+        <table>
+            <tr>
+                <td id="boundingBoxInd">Bounding boxes intersect</td>
+                <td id="lineSegementABInd">lineSegmentTouchesOrCrossesLine(a, b)</td>
+                <td id="lineSegementBAInd">lineSegmentTouchesOrCrossesLine(b, a)</td>
+            </tr>
+        </table>
+		<canvas id="myCanvas" width="640" height="480" style="border:1px solid #d3d3d3;"></canvas>
+		<script type="text/javascript" src="line-segment-intersection.js"></script>
+	</body>
+</html>
