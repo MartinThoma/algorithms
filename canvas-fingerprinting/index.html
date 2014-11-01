@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Canvas Fingerprinting</title>
+</head>
+<body>
+    <h1>Canvas Fingerprinting</h1>
+
+    <h2>1: Times New Roman Only (displayed canvas)</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
+    <p>Left <canvas id="canvas1" width="90px" height="18px"></canvas> right.</p>
+    <h3>Read</h3>
+    <p>I get '2092207885' here. You get: <span id="canvas1output"></span>.</p>
+
+    <h2>2: Times New Roman Only (1x1 canvas)</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
+    <p>Left <canvas id="canvas2" width="1px" height="1px"></canvas> right.</p>
+    <h3>Read</h3>
+    <p>I get '-968581968' here. You get: <span id="canvas2output"></span>.</p>
+
+    <h2>3: Corbel (displayed canvas)</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
+    <p>Left <canvas id="canvas3" width="90px" height="18px"></canvas> right.</p>
+    <h3>Read</h3>
+    <p>I get '2092207885' here. You get: <span id="canvas3output"></span>.</p>
+
+    <h2>4: Gadugi (displayed canvas)</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
+    <p>Left <canvas id="canvas4" width="90px" height="18px"></canvas> right.</p>
+    <h3>Read</h3>
+    <p>I get '-153503577' here. You get: <span id="canvas4output"></span>.</p>
+
+    <h2>5: Zapfino (displayed canvas)</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
+    <p>Left <canvas id="canvas5" width="90px" height="18px"></canvas> right.</p>
+    <h3>Read</h3>
+    <p>I get '' here. You get: <span id="canvas5output"></span>.</p>
+
+    <script>
+        var experiment_results = [];
+        String.prototype.hashCode = function(){
+            var hash = 0;
+            if (this.length == 0) return hash;
+            for (i = 0; i < this.length; i++) {
+                char = this.charCodeAt(i);
+                hash = ((hash<<5)-hash)+char;
+                hash = hash & hash; // Convert to 32bit integer
+            }
+            return hash;
+        }
+
+        // Experiment 1
+        var canvas = document.getElementById("canvas1");
+        var context = canvas.getContext("2d");
+        context.font = "16px Times New Roman";
+        context.fillText("This is canvas", 0, 18);
+        // Get the CanvasPixelArray from the given coordinates and dimensions.
+        var imgd = context.getImageData(0, 0, 90, 18);
+        var pix = imgd.data;
+        // Write the canvas out
+        var ptag = document.getElementById("canvas1output");
+        /*console.log(pix);*/
+        var canvasstring = "";
+        for (var i = 3; i < pix.length; i+=4) {
+            //ptag.innerHTML += pix[i] + " ";
+            canvasstring += pix[i]+",";
+        };
+        ptag.innerHTML = canvasstring.hashCode();
+        experiment_results.push(canvasstring);
+
+        // Experiment 2
+        var canvas = document.getElementById("canvas2");
+        var context = canvas.getContext("2d");
+        context.font = "16px Times New Roman";
+        context.fillText("This is canvas", 0, 18);
+        // Get the CanvasPixelArray from the given coordinates and dimensions.
+        var imgd = context.getImageData(0, 0, 90, 18);
+        var pix = imgd.data;
+        // Write the canvas out
+        var ptag = document.getElementById("canvas2output");
+        var canvasstring = "";
+        for (var i = 3; i < pix.length; i+=4) {
+            canvasstring += pix[i]+",";
+        };
+        ptag.innerHTML = canvasstring.hashCode();
+        experiment_results.push(canvasstring);
+
+        // Experiment 3
+        var canvas = document.getElementById("canvas3");
+        var context = canvas.getContext("2d");
+        context.font = "16px Corbel";
+        context.fillText("This is canvas", 0, 18);
+        // Get the CanvasPixelArray from the given coordinates and dimensions.
+        var imgd = context.getImageData(0, 0, 90, 18);
+        var pix = imgd.data;
+        // Write the canvas out
+        var ptag = document.getElementById("canvas3output");
+        var canvasstring = "";
+        for (var i = 3; i < pix.length; i+=4) {
+            canvasstring += pix[i]+",";
+        };
+        ptag.innerHTML = canvasstring.hashCode();
+        experiment_results.push(canvasstring);
+
+        // Experiment 4
+        var canvas = document.getElementById("canvas4");
+        var context = canvas.getContext("2d");
+        context.font = "16px Gadugi";
+        context.fillText("This is canvas", 0, 18);
+        // Get the CanvasPixelArray from the given coordinates and dimensions.
+        var imgd = context.getImageData(0, 0, 90, 18);
+        var pix = imgd.data;
+        // Write the canvas out
+        var ptag = document.getElementById("canvas4output");
+        var canvasstring = "";
+        for (var i = 3; i < pix.length; i+=4) {
+            canvasstring += pix[i]+",";
+        };
+        ptag.innerHTML = canvasstring.hashCode();
+        experiment_results.push(canvasstring);
+
+        // Experiment 5
+        var canvas = document.getElementById("canvas4");
+        var context = canvas.getContext("2d");
+        context.font = "16px Zapfino";
+        context.fillText("This is canvas", 0, 18);
+        // Get the CanvasPixelArray from the given coordinates and dimensions.
+        var imgd = context.getImageData(0, 0, 90, 18);
+        var pix = imgd.data;
+        // Write the canvas out
+        var ptag = document.getElementById("canvas4output");
+        var canvasstring = "";
+        for (var i = 3; i < pix.length; i+=4) {
+            canvasstring += pix[i]+",";
+        };
+        ptag.innerHTML = canvasstring.hashCode();
+        experiment_results.push(canvasstring);
+    </script>
+</body>
+</html>
