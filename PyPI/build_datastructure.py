@@ -48,6 +48,9 @@ def insert_package_info(package_name, package_info, mysql):
     :param package_info: dictionary
     :param mysql: dictionary with mysql database connection information
     """
+    releases = package_info['releases']
+    url_entries = package_info['urls']
+    package_info = package_info['info']
     connection = pymysql.connect(host=mysql['host'],
                                  user=mysql['user'],
                                  passwd=mysql['passwd'],
@@ -57,6 +60,13 @@ def insert_package_info(package_name, package_info, mysql):
     for key in package_info:
         package_info[key] = str(package_info[key])
         package_info[key] = connection.escape_string(package_info[key])
+        if key in ['cheesecake_installability_id',
+                   'cheesecake_documentation_id',
+                   'cheesecake_code_kwalitee_id']:
+            package_info[key] = package_info[key].replace('None', 'NULL')
+        if key == '_pypi_hidden':
+            package_info[key] = package_info[key].replace('True', '1')
+            package_info[key] = package_info[key].replace('False', '0')
     cursor = connection.cursor()
     sql = ("INSERT INTO `packages` (`maintainer`, "
            "`docs_url`, `requires_python`, `maintainer_email`, "
@@ -67,23 +77,94 @@ def insert_package_info(package_name, package_info, mysql):
            "`license`, `summary`, `home_page`, `stable_version`, "
            "`cheesecake_installability_id`) VALUES "
            "('{maintainer}', '{docs_url}', '{requires_python}', "
-           "'{maintainer_email}', '{cheesecake_code_kwalitee_id}', "
+           "'{maintainer_email}', {cheesecake_code_kwalitee_id}, "
            "'{keywords}', '{package_url}', '{author}', '{author_email}', "
            "'{download_url}', '{platform}', '{version}', "
-           "'{cheesecake_documentation_id}', '{_pypi_hidden}', "
+           "{cheesecake_documentation_id}, '{_pypi_hidden}', "
            "'{description}', '{release_url}', '{_pypi_ordering}', '{name}', "
            "'{bugtrack_url}', '{license}', '{summary}', '{home_page}', "
-           "'{stable_version}', '{cheesecake_installability_id}');").format(
+           "'{stable_version}', {cheesecake_installability_id});").format(
         **package_info)
     try:
         cursor.execute(sql)
         connection.commit()
+        was_successful = True
     except pymysql.err.IntegrityError as e:
         logging.warning(("Package '%s' is probably already in the database "
                          "as '%s'"),
                         package_name, package_info['name'])
         if 'Duplicate entry' not in str(e):
             logging.warning(e)
+        was_successful = False
+
+    if was_successful:
+        # Get id
+        db_package_id = is_package_in_database(package_info['name'], mysql)
+
+        # Enter releases
+        for release_number, release_all in releases.items():
+            for release in release_all:
+                # e.g.
+                # https://pypi.python.org/pypi/agoraplex.themes.sphinx/json
+                # has one release number, but multiple releases for that
+                # number ... strange
+                for key in release:
+                    release[key] = str(release[key])
+                    release[key] = connection.escape_string(release[key])
+                    if key == 'has_sig':
+                        release[key] = release[key].replace('True', '1')
+                        release[key] = release[key].replace('False', '0')
+                release['package_id'] = db_package_id
+                release['release_number'] = release_number
+                sql = ("INSERT INTO `releases` (`package_id`, `release_number`, "
+                       "`has_sig`, `upload_time`, `comment_text`, "
+                       "`python_version`, `url`, `md5_digest`, `downloads`, "
+                       "`filename`, `packagetype`, `size`) VALUES "
+                       "('{package_id}', '{release_number}', {has_sig}, "
+                       "'{upload_time}', '{comment_text}', '{python_version}', "
+                       "'{url}', '{md5_digest}', '{downloads}', '{filename}', "
+                       "'{packagetype}', '{size}');").format(**release)
+                cursor.execute(sql)
+        connection.commit()
+
+        # Enter URLs
+        for url_entry in url_entries:
+            for key in url_entry:
+                url_entry[key] = str(url_entry[key])
+                url_entry[key] = connection.escape_string(url_entry[key])
+                if key == 'has_sig':
+                    url_entry[key] = url_entry[key].replace('True', '1')
+                    url_entry[key] = url_entry[key].replace('False', '0')
+            url_entry['package_id'] = db_package_id
+            sql = ("INSERT INTO `urls` (`package_id`, `has_sig`, "
+                   "`upload_time`, `comment_text`, `python_version`, `url`, "
+                   "`md5_digest`, `downloads`, `filename`, `packagetype`, "
+                   "`size`) VALUES "
+                   "('{package_id}', {has_sig}, '{upload_time}', "
+                   "'{comment_text}', '{python_version}', '{url}', "
+                   "'{md5_digest}', '{downloads}', '{filename}', "
+                   "'{packagetype}', '{size}');").format(**url_entry)
+            cursor.execute(sql)
+        connection.commit()
+
+        # Enter classifiers:
+        try:
+            package_info['classifiers'] = \
+                package_info['classifiers'].replace("\\'", '"')
+            package_info['classifiers'] = json.loads(
+                package_info['classifiers'])
+        except ValueError:
+            logging.error("Could not parse classifier of package '%s'",
+                          package_name)
+            logging.error("Classifier: %s", package_info['classifiers'])
+        for classifier in package_info['classifiers']:
+            classifier = connection.escape_string(classifier)
+            sql = ("INSERT INTO `package_classifiers` (`package_id`, "
+                   "`classifier`) VALUES ('{package_id}', "
+                   "'{classifier}');").format(package_id=db_package_id,
+                                              classifier=classifier)
+            cursor.execute(sql)
+        connection.commit()
     connection.close()
 
 
@@ -91,6 +172,7 @@ def is_package_in_database(name, mysql):
     """
     :param package_name: string
     :param mysql: dictionary with mysql database connection information
+    :returns: Either ``None`` or an integer (the ID in the database)
     """
     connection = pymysql.connect(host=mysql['host'],
                                  user=mysql['user'],
@@ -102,14 +184,16 @@ def is_package_in_database(name, mysql):
     escaped_name = connection.escape_string(name)
     sql = "SELECT id FROM `packages` WHERE `name` = '%s'" % escaped_name
     cursor.execute(sql)
-    ids = cursor.fetchall()
+    id_number = cursor.fetchone()
     connection.close()
-    return ids
+    if id_number is not None and 'id' in id_number:
+        id_number = id_number['id']
+    return id_number
 
 
 def handle_package(package_name_link, package_name, mysql):
-    answer = is_package_in_database(package_name, mysql)
-    if len(answer) == 1:
+    package_id = is_package_in_database(package_name, mysql)
+    if package_id is not None:
         logging.info("Package '%s' already in database. Continue.",
                      package_name)
         return
@@ -117,7 +201,7 @@ def handle_package(package_name_link, package_name, mysql):
     package_info = get_package_info(package_name_link)
     if package_info is None:
         return
-    insert_package_info(package_name, package_info['info'], mysql)
+    insert_package_info(package_name, package_info, mysql)
 
 
 def main():

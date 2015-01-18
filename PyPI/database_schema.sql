@@ -3,33 +3,16 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 18. Jan 2015 um 15:20
+-- Erstellungszeit: 18. Jan 2015 um 20:13
 -- Server Version: 5.5.40-0ubuntu1
 -- PHP-Version: 5.5.12-2ubuntu4.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
 --
 -- Datenbank: `pypi`
 --
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `classifiers`
---
-
-CREATE TABLE IF NOT EXISTS `classifiers` (
-`id` int(11) NOT NULL,
-  `name` varchar(255) COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -63,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `packages` (
   `cheesecake_code_kwalitee_id` smallint(255) DEFAULT NULL,
   `cheesecake_documentation_id` smallint(255) DEFAULT NULL,
   `cheesecake_installability_id` smallint(255) DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=56242 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -74,8 +57,8 @@ CREATE TABLE IF NOT EXISTS `packages` (
 CREATE TABLE IF NOT EXISTS `package_classifiers` (
 `id` int(11) NOT NULL,
   `package_id` int(11) NOT NULL,
-  `classifier_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+  `classifier` varchar(255) COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -87,17 +70,17 @@ CREATE TABLE IF NOT EXISTS `releases` (
 `id` int(11) NOT NULL,
   `package_id` int(11) NOT NULL,
   `release_number` varchar(255) COLLATE utf8_bin NOT NULL,
-  `has_sig` varchar(255) COLLATE utf8_bin NOT NULL,
+  `has_sig` tinyint(1) NOT NULL,
   `upload_time` varchar(255) COLLATE utf8_bin NOT NULL,
   `comment_text` varchar(255) COLLATE utf8_bin NOT NULL,
   `python_version` varchar(255) COLLATE utf8_bin NOT NULL,
   `url` varchar(255) COLLATE utf8_bin NOT NULL,
   `md5_digest` varchar(255) COLLATE utf8_bin NOT NULL,
-  `downloads` varchar(255) COLLATE utf8_bin NOT NULL,
+  `downloads` int(255) NOT NULL,
   `filename` varchar(255) COLLATE utf8_bin NOT NULL,
   `packagetype` varchar(255) COLLATE utf8_bin NOT NULL,
-  `size` varchar(255) COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+  `size` int(255) NOT NULL
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -108,27 +91,21 @@ CREATE TABLE IF NOT EXISTS `releases` (
 CREATE TABLE IF NOT EXISTS `urls` (
 `id` int(11) NOT NULL,
   `package_id` int(11) NOT NULL,
-  `has_sig` varchar(255) COLLATE utf8_bin NOT NULL,
+  `has_sig` tinyint(1) NOT NULL,
   `upload_time` varchar(255) COLLATE utf8_bin NOT NULL,
   `comment_text` varchar(255) COLLATE utf8_bin NOT NULL,
   `python_version` varchar(255) COLLATE utf8_bin NOT NULL,
   `url` varchar(255) COLLATE utf8_bin NOT NULL,
   `md5_digest` varchar(255) COLLATE utf8_bin NOT NULL,
-  `downloads` varchar(255) COLLATE utf8_bin NOT NULL,
+  `downloads` int(255) NOT NULL,
   `filename` varchar(255) COLLATE utf8_bin NOT NULL,
   `packagetype` varchar(255) COLLATE utf8_bin NOT NULL,
   `size` varchar(255) COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `classifiers`
---
-ALTER TABLE `classifiers`
- ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `name` (`name`);
 
 --
 -- Indexes for table `packages`
@@ -140,7 +117,7 @@ ALTER TABLE `packages`
 -- Indexes for table `package_classifiers`
 --
 ALTER TABLE `package_classifiers`
- ADD PRIMARY KEY (`id`), ADD KEY `package_id` (`package_id`), ADD KEY `classifier_id` (`classifier_id`);
+ ADD PRIMARY KEY (`id`), ADD KEY `package_id` (`package_id`);
 
 --
 -- Indexes for table `releases`
@@ -159,15 +136,10 @@ ALTER TABLE `urls`
 --
 
 --
--- AUTO_INCREMENT for table `classifiers`
---
-ALTER TABLE `classifiers`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
 -- AUTO_INCREMENT for table `packages`
 --
 ALTER TABLE `packages`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=56242;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `package_classifiers`
 --
@@ -191,15 +163,16 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 -- Constraints der Tabelle `package_classifiers`
 --
 ALTER TABLE `package_classifiers`
-ADD CONSTRAINT `package_classifiers_ibfk_2` FOREIGN KEY (`classifier_id`) REFERENCES `classifiers` (`id`),
-ADD CONSTRAINT `package_classifiers_ibfk_1` FOREIGN KEY (`package_id`) REFERENCES `packages` (`id`);
+ADD CONSTRAINT `package_classifiers_ibfk_1` FOREIGN KEY (`package_id`) REFERENCES `packages` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints der Tabelle `releases`
 --
 ALTER TABLE `releases`
-ADD CONSTRAINT `belongs_to_package` FOREIGN KEY (`package_id`) REFERENCES `packages` (`id`);
+ADD CONSTRAINT `belongs_to_package` FOREIGN KEY (`package_id`) REFERENCES `packages` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+--
+-- Constraints der Tabelle `urls`
+--
+ALTER TABLE `urls`
+ADD CONSTRAINT `urls_ibfk_1` FOREIGN KEY (`package_id`) REFERENCES `packages` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
