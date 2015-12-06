@@ -11,7 +11,6 @@ logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     level=logging.DEBUG,
                     stream=sys.stdout)
 import json
-import pymysql
 import pymysql.cursors
 import threading
 import time
@@ -92,7 +91,6 @@ def insert_package_info(package_name, package_info, mysql):
 
     if 'stable_version' not in package_info:
         package_info['stable_version'] = "UNKNOWN"
-        print(package_info.keys())
 
     cursor = connection.cursor()
     sql = ("INSERT INTO `packages` (`maintainer`, "
