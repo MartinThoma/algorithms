@@ -103,6 +103,43 @@ CREATE TABLE IF NOT EXISTS `urls` (
   `size` varchar(255) COLLATE utf8_bin NOT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `dependencies`
+--
+
+CREATE TABLE IF NOT EXISTS `dependencies` (
+  `id` int(11) NOT NULL,
+  `package` int(11) NOT NULL,
+  `needs_package` int(11) NOT NULL,
+  `req_type` enum('requirements.txt','imported') COLLATE utf8_bin NOT NULL,
+  `times` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Indizes der exportierten Tabellen
+--
+
+--
+-- Indizes für die Tabelle `dependencies`
+--
+ALTER TABLE `dependencies`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `package` (`package`),
+  ADD KEY `needs_package` (`needs_package`);
+
+--
+-- AUTO_INCREMENT für exportierte Tabellen
+--
+
+--
+-- AUTO_INCREMENT für Tabelle `dependencies`
+--
+ALTER TABLE `dependencies`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- Indexes for dumped tables
 --
