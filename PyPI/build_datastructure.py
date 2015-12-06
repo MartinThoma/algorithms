@@ -26,6 +26,12 @@ def in_parallel(target, job_list, mysql):
 
 
 def get_package_names(simple_index='https://pypi.python.org/simple/'):
+    """
+    Returns
+    -------
+    list
+        Names of all packages.
+    """
     f = urlopen(simple_index)
     tree = ElementTree.parse(f)
     f.close()
@@ -33,6 +39,17 @@ def get_package_names(simple_index='https://pypi.python.org/simple/'):
 
 
 def get_package_info(package_name='numpy'):
+    """
+    Parameters
+    ----------
+    package_name : str
+        Name of a Python package
+
+    Returns
+    -------
+    dict
+        Package meta information
+    """
     try:
         f = urlopen("https://pypi.python.org/pypi/%s/json" % package_name)
     except urllib.error.HTTPError as e:
@@ -45,8 +62,13 @@ def get_package_info(package_name='numpy'):
 
 def insert_package_info(package_name, package_info, mysql):
     """
-    :param package_info: dictionary
-    :param mysql: dictionary with mysql database connection information
+    Insert the package information into a MySQL database.
+
+    Parameters
+    ----------
+    package_info : dict
+    mysql : dict
+        MySQL database connection information
     """
     releases = package_info['releases']
     url_entries = package_info['urls']
@@ -67,6 +89,11 @@ def insert_package_info(package_name, package_info, mysql):
         if key == '_pypi_hidden':
             package_info[key] = package_info[key].replace('True', '1')
             package_info[key] = package_info[key].replace('False', '0')
+
+    if 'stable_version' not in package_info:
+        package_info['stable_version'] = "UNKNOWN"
+        print(package_info.keys())
+
     cursor = connection.cursor()
     sql = ("INSERT INTO `packages` (`maintainer`, "
            "`docs_url`, `requires_python`, `maintainer_email`, "
@@ -116,12 +143,14 @@ def insert_package_info(package_name, package_info, mysql):
                         release[key] = release[key].replace('False', '0')
                 release['package_id'] = db_package_id
                 release['release_number'] = release_number
-                sql = ("INSERT INTO `releases` (`package_id`, `release_number`, "
+                sql = ("INSERT INTO `releases` (`package_id`, "
+                       "`release_number`, "
                        "`has_sig`, `upload_time`, `comment_text`, "
                        "`python_version`, `url`, `md5_digest`, `downloads`, "
                        "`filename`, `packagetype`, `size`) VALUES "
                        "('{package_id}', '{release_number}', {has_sig}, "
-                       "'{upload_time}', '{comment_text}', '{python_version}', "
+                       "'{upload_time}', '{comment_text}', "
+                       "'{python_version}', "
                        "'{url}', '{md5_digest}', '{downloads}', '{filename}', "
                        "'{packagetype}', '{size}');").format(**release)
                 cursor.execute(sql)
@@ -170,9 +199,17 @@ def insert_package_info(package_name, package_info, mysql):
 
 def is_package_in_database(name, mysql):
     """
-    :param package_name: string
-    :param mysql: dictionary with mysql database connection information
-    :returns: Either ``None`` or an integer (the ID in the database)
+    Check if a package is in the database.
+
+    Parameters
+    ----------
+    package_name : str
+    mysql : dict
+        MySQL database connection information
+
+    Returns
+    -------
+    Either ``None`` or an integer (the ID in the database)
     """
     connection = pymysql.connect(host=mysql['host'],
                                  user=mysql['user'],
@@ -192,6 +229,16 @@ def is_package_in_database(name, mysql):
 
 
 def handle_package(package_name_link, package_name, mysql):
+    """
+    Load package information and store it in the database.
+
+    Parameters
+    ----------
+    package_name_link : str
+    package_name : str
+    mysql : dict
+        MySQL database connection information
+    """
     package_id = is_package_in_database(package_name, mysql)
     if package_id is not None:
         logging.info("Package '%s' already in database. Continue.",
