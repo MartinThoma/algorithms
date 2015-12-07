@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 07, 2015 at 09:23 AM
+-- Generation Time: Dec 07, 2015 at 09:30 AM
 -- Server version: 5.6.27-0ubuntu1
 -- PHP Version: 5.6.11-1ubuntu3.1
 
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `dependencies` (
   `id` int(11) NOT NULL,
   `package` int(11) NOT NULL,
   `needs_package` int(11) NOT NULL,
-  `req_type` enum('requirements.txt','imported') COLLATE utf8_bin NOT NULL,
+  `req_type` enum('requirements.txt','imported','setup.py') COLLATE utf8_bin NOT NULL,
   `times` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
