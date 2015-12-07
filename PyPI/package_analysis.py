@@ -8,6 +8,7 @@ import os
 from os import walk
 import pymysql.cursors
 import re
+import shutil
 import tarfile
 import logging
 import sys
@@ -31,7 +32,9 @@ def main(package_name, package_url):
         Path to a Python package.
     """
     pkg_name = package_name
-    filepaths = download(package_url)
+    filepaths, download_dir = download(package_url)
+    if download_dir is None:
+        return
     with open("secret.json") as f:
         mysql = json.load(f)
     package_id = get_pkg_id_by_name(pkg_name, mysql)
@@ -46,6 +49,7 @@ def main(package_name, package_url):
                        required_packages,
                        imported_packages,
                        setup_packages)
+    remove_unpacked(download_dir)
 
 
 def store_dependencies(mysql,
@@ -123,7 +127,8 @@ def insert_dependency_db(imported_packages,
                 if 'Duplicate entry' not in str(e):
                     logging.warning(e)
         else:
-            logging.info("Package '%s' was not found. Skip.", pkg)
+            with open("not-found.csv", "a") as f:
+                f.write("%s\n" % pkg)
 
 
 def get_pkg_id_by_name(pkg_name, mysql):
@@ -167,10 +172,21 @@ def get_pkg_extension(package_url):
     """
     if package_url.endswith(".tar.gz"):
         return ".tar.gz"
+    elif package_url.endswith(".tar.bz"):
+        return ".tar.bz"
+    elif package_url.endswith(".tar.bz2"):
+        return ".tar.bz2"
     elif package_url.endswith(".whl"):
         return ".whl"
+    elif package_url.endswith(".zip"):
+        return ".zip"
+    elif package_url.endswith(".egg"):
+        return ".egg"
+    elif package_url.endswith(".exe"):
+        logging.info("Skip '%s' for safty reasons.", package_url)
+        return None
     else:
-        raise NotImplementedError()
+        raise NotImplementedError(package_url)
 
 
 def download(package_url):
@@ -182,12 +198,14 @@ def download(package_url):
 
     Returns
     -------
-    list
-        Paths to all unpackaged files
+    tuple
+        (List of paths to all unpackaged files, folder where it got extracted)
     """
-    file_ending_len = len(get_pkg_extension(package_url))
+    extension = get_pkg_extension(package_url)
+    if extension is None:
+        return ([], None)
+    file_ending_len = len(extension)
 
-    # TODO: What about .whl
     target_dir = "pypipackages"
     if not os.path.exists(target_dir):
         os.makedirs(target_dir)
@@ -201,20 +219,37 @@ def download(package_url):
         logging.info("Package '%s' was already downloaded.", pkg_name)
 
     if not os.path.exists(target[:-file_ending_len]):
-        if package_url.endswith("tar.gz"):
-            with tarfile.open(target) as tar:
-                tar.extractall(target[:-file_ending_len])
-        elif package_url.endswith(".whl"):
+        if (package_url.endswith(".tar.gz") or package_url.endswith(".tar.bz")
+            or package_url.endswith(".tar.bz2")):
+            try:
+                with tarfile.open(target) as tar:
+                    tar.extractall(target[:-file_ending_len])
+            except:
+                # Something is wrong with the tar file
+                return ([], None)
+        elif (package_url.endswith(".whl") or package_url.endswith(".zip") or
+              package_url.endswith(".egg")):
             import zipfile
-            with zipfile.ZipFile(target) as tar:
-                tar.extractall(target[:-file_ending_len])
+            try:
+                with zipfile.ZipFile(target) as tar:
+                    tar.extractall(target[:-file_ending_len])
+            except:
+                # Something is wrong with the zip file
+                return ([], None)
         else:
             raise NotImplementedError
 
     filepaths = []
     for (dirpath, dirnames, filenames) in walk(target[:-file_ending_len]):
         filepaths.extend([os.path.join(dirpath, f) for f in filenames])
-    return filepaths
+    return (filepaths, target[:-file_ending_len])
+
+
+def remove_unpacked(download_dir):
+    """
+    Clean up the folders to prevent HDD of getting full.
+    """
+    shutil.rmtree(download_dir)
 
 
 def get_requirements(filepaths, pkg_name):
@@ -239,11 +274,11 @@ def get_requirements(filepaths, pkg_name):
 
     if len(requirements_file) > 0:
         requirements_file = requirements_file[0]
-        logging.info(requirements_file)
         # TODO: parse requirements.txt
     else:
-        logging.debug("Package '%s' has no requirements.txt.",
-                      pkg_name)
+        # logging.debug("Package '%s' has no requirements.txt.",
+        #               pkg_name)
+        pass
     return imports
 
 
@@ -272,7 +307,11 @@ def get_imports(filepaths, pkg_name):
     imports = {}
     for filep in filepaths:
         with open(filep) as f:
-            content = f.read()
+            try:
+                content = f.read()
+            except UnicodeDecodeError:
+                # there is something wrong with a file encoding. Ignore it.
+                return imports
 
         imported = (simple_pattern.findall(content) +
                     from_pattern.findall(content))
@@ -304,14 +343,20 @@ def get_setup_packages(filepaths, pkg_name):
     imports = {}
     if len(setup_py_file) > 0:
         setup_py_file = setup_py_file[0]
-        logging.info(setup_py_file)
+        # logging.info(setup_py_file)
         # TODO: parse setup.py
         # can be dangerous
         # look for 'install_requires'
         # ... may the force be with you
+
+        # RegEx is complicated:
+        # setup\(.*?(install_requires\s*=\s*\[.*?").*?\)  <--- doesn't work,
+        # as you can have variables
     else:
-        logging.debug("Package '%s' has no setup.py.",
-                      pkg_name)
+        # logging.debug("Package '%s' has no setup.py.",
+        #               pkg_name)
+        pass
+    logging.debug
     return imports
 
 
