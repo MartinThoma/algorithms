@@ -14,6 +14,11 @@ import package_analysis
 
 
 def main():
+    """
+    Load the edges of the dependency graph by downloading PyPI.
+
+    Yep. All of it. Make sure you have at least 50GB disk space.
+    """
     with open("secret.json") as f:
         mysql = json.load(f)
 
