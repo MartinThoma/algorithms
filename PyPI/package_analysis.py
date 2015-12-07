@@ -186,7 +186,9 @@ def get_pkg_extension(package_url):
         logging.info("Skip '%s' for safty reasons.", package_url)
         return None
     else:
-        raise NotImplementedError(package_url)
+        with open("todo-unknown-pkg-extension.csv", "a") as f:
+            f.write(package_url)
+        return None
 
 
 def download(package_url):
@@ -213,8 +215,11 @@ def download(package_url):
     target = os.path.join(target_dir, pkg_name)
 
     if not os.path.exists(target):
-        urlretrieve(package_url, target)
-        logging.info("Package '%s' downloaded.", pkg_name)
+        try:
+            urlretrieve(package_url, target)
+            logging.info("Package '%s' downloaded.", pkg_name)
+        except:
+            return ([], None)
     else:
         logging.info("Package '%s' was already downloaded.", pkg_name)
 
@@ -306,12 +311,14 @@ def get_imports(filepaths, pkg_name):
                               re.MULTILINE)
     imports = {}
     for filep in filepaths:
-        with open(filep) as f:
-            try:
+        try:
+            with open(filep) as f:
                 content = f.read()
-            except UnicodeDecodeError:
-                # there is something wrong with a file encoding. Ignore it.
-                return imports
+        except:
+            # there is something wrong with a file encoding. Or the file cannot
+            # be opened
+            # Ignore it.
+            return imports
 
         imported = (simple_pattern.findall(content) +
                     from_pattern.findall(content))
@@ -346,7 +353,7 @@ def get_setup_packages(filepaths, pkg_name):
         # logging.info(setup_py_file)
         # TODO: parse setup.py
         # can be dangerous
-        # look for 'install_requires'
+        # look for 'install_requires' and 'dependency_links'
         # ... may the force be with you
 
         # RegEx is complicated:
