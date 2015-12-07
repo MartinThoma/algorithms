@@ -13,6 +13,10 @@ To fill the database, run
 5. `./build_datastructure.py` (takes several hours)
 6. `./add_system_packages.py` (takes a few seconds)
 
+If you have at least 50GB of disc space free, you can run
+
+7. `./build_dependency_db.py` (takes many many hours - probably even several days)
+
 
 ## See also
 https://pypi.python.org/pypi/bandersnatch
