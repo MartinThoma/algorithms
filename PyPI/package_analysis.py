@@ -92,6 +92,17 @@ def insert_dependency_db(imported_packages,
                          package_id,
                          mysql,
                          connection):
+    """
+    Parameters
+    ----------
+    imported_packages : list
+    req_type : str
+        'setup.py', 'requirements.txt' or 'imported'
+    package_id : int
+    mysql : dict
+        credentials for the connection
+    connection : pymysql connection object
+    """
     cursor = connection.cursor()
     for pkg, times in imported_packages.items():
         package_info = {'package': package_id,

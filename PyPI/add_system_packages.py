@@ -6,6 +6,9 @@ import pymysql
 
 
 def main():
+    """
+    Add system modules. Please run 'build_datastructure.py' before.
+    """
     with open("secret.json") as f:
         mysql = json.load(f)
     sys_modules = get_system_modules()
