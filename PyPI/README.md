@@ -8,6 +8,12 @@ If you want to use these scripts, please
 4. Install Python requirements via `sudo pip install -r requirements.txt`
    or `sudo pip3 install -r requirements.txt`
 
+To fill the database, run
+
+5. `./build_datastructure.py` (takes several hours)
+6. `./add_system_packages.py` (takes a few seconds)
+
+
 ## See also
 https://pypi.python.org/pypi/bandersnatch
 
