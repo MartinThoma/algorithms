@@ -187,7 +187,7 @@ def get_pkg_extension(package_url):
         return None
     else:
         with open("todo-unknown-pkg-extension.csv", "a") as f:
-            f.write(package_url)
+            f.write("%s\n" % package_url)
         return None
 
 
