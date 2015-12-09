@@ -7,15 +7,17 @@ If you want to use these scripts, please
 3. Add the MySQL database scheme from `database_schema.sql`
 4. Install Python requirements via `sudo pip install -r requirements.txt`
    or `sudo pip3 install -r requirements.txt`
+5. Copy `secret.template.json` to `secret.json` in the same folder and adjust
+   the values.
 
 To fill the database, run
 
-5. `./build_datastructure.py` (takes several hours)
-6. `./add_system_packages.py` (takes a few seconds)
+6. `./build_datastructure.py` (takes several hours)
+7. `./add_system_packages.py` (takes a few seconds)
 
 If you have at least 50GB of disc space free, you can run
 
-7. `./build_dependency_db.py` (takes many many hours - probably even several days)
+8. `./build_dependency_db.py` (takes many many hours - probably even several days)
 
 
 ## See also
