@@ -1,9 +1,19 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import bisect
-import itertools
-import operator
 
 
 class _BNode(object):
+    """
+    Node of a B-Tree.
+
+    Parameters
+    ----------
+    tree : BTree
+    contents
+    children
+    """
     __slots__ = ["tree", "contents", "children"]
 
     def __init__(self, tree, contents=None, children=None):
@@ -39,24 +49,28 @@ class _BNode(object):
             if parent_index:
                 left_sib = parent.children[parent_index - 1]
                 if len(left_sib.contents) < self.tree.order:
-                    self.lateral(
-                            parent, parent_index, left_sib, parent_index - 1)
+                    self.lateral(parent,
+                                 parent_index,
+                                 left_sib,
+                                 parent_index - 1)
                     return
 
             # try the right neighbor
             if parent_index + 1 < len(parent.children):
                 right_sib = parent.children[parent_index + 1]
                 if len(right_sib.contents) < self.tree.order:
-                    self.lateral(
-                            parent, parent_index, right_sib, parent_index + 1)
+                    self.lateral(parent,
+                                 parent_index,
+                                 right_sib,
+                                 parent_index + 1)
                     return
 
         center = len(self.contents) // 2
         sibling, push = self.split()
 
         if not parent:
-            parent, parent_index = self.tree.BRANCH(
-                    self.tree, children=[self]), 0
+            parent, parent_index = self.tree.BRANCH(self.tree,
+                                                    children=[self]), 0
             self.tree._root = parent
 
         # pass the median up to the parent
@@ -112,10 +126,9 @@ class _BNode(object):
     def split(self):
         center = len(self.contents) // 2
         median = self.contents[center]
-        sibling = type(self)(
-                self.tree,
-                self.contents[center + 1:],
-                self.children[center + 1:])
+        sibling = type(self)(self.tree,
+                             self.contents[center + 1:],
+                             self.children[center + 1:])
         self.contents = self.contents[:center]
         self.children = self.children[:center + 1]
         return sibling, median
@@ -146,8 +159,8 @@ class _BNode(object):
             additional_ancestors = [(self, index)]
             descendent = self.children[index]
             while descendent.children:
-                additional_ancestors.append(
-                        (descendent, len(descendent.children) - 1))
+                additional_ancestors.append((descendent,
+                                             len(descendent.children) - 1))
                 descendent = descendent.children[-1]
             ancestors.extend(additional_ancestors)
             self.contents[index] = descendent.contents[-1]
@@ -157,7 +170,15 @@ class _BNode(object):
             if len(self.contents) < minimum and ancestors:
                 self.grow(ancestors)
 
+
 class BTree(object):
+    """
+    B-Tree
+
+    Parameters
+    ----------
+    order : int
+    """
     BRANCH = LEAF = _BNode
 
     def __init__(self, order):
@@ -301,6 +322,9 @@ import unittest
 
 
 class BTreeTests(unittest.TestCase):
+    """
+    Tests for the B-Tree class.
+    """
     def test_additions(self):
         bt = BTree(20)
         l = range(2000)
@@ -328,12 +352,12 @@ class BTreeTests(unittest.TestCase):
     def test_insert_regression(self):
         bt = BTree.bulkload(range(2000), 50)
 
-        for i in xrange(100000):
+        for i in range(100000):
             bt.insert(random.randrange(2000))
 
 if __name__ == '__main__':
-    #unittest.main()
+    # unittest.main()
     b = BTree(2)
-    for i in xrange(0,20):
+    for i in range(0, 20):
         b.insert(i)
-    print b
+    print(b)

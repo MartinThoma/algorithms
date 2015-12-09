@@ -4,7 +4,8 @@
 
 from fractions import Fraction
 
-def standardMatrixProduct(A, B):
+
+def standard_matrix_product(A, B):
     """Returns A*B for two square matrices A, B in R^(nxn)."""
     n = len(A)
     C = [[Fraction(0) for i in range(n)] for j in range(n)]
@@ -13,7 +14,8 @@ def standardMatrixProduct(A, B):
             for k in range(n):
                 C[i][j] += A[i][k] * B[k][j]
     return C
- 
+
+
 def pivotize(A):
     """Creates the pivoting matrix P for A."""
     n = len(A)
@@ -25,13 +27,14 @@ def pivotize(A):
             P[j], P[row] = P[row], P[j]
     return P
 
-def luDecomposition(A):
+
+def lu_decomposition(A):
     """Decomposes a nxn matrix A by PA=LU and returns L, U and P."""
     n = len(A)
     L = [[Fraction(0)] * n for i in range(n)]
     U = [[Fraction(0)] * n for i in range(n)]
     P = pivotize(A)
-    A2 = standardMatrixProduct(P, A)
+    A2 = standard_matrix_product(P, A)
     for j in range(n):
         L[j][j] = Fraction(1)
 
@@ -44,19 +47,28 @@ def luDecomposition(A):
             L[i][j] = (A2[i][j] - s2) / U[j][j]
     return (L, U, P)
 
-def pprint(A, name=""):  
+
+def pprint(A, name=""):
+    """
+    Pretty-Print matrix A.
+
+    Parameters
+    ----------
+    A : matrix
+    name : string
+    """
     n = len(A)
     for x, line in enumerate(A):
-        pLine = ""
+        p_line = ""
         for i, el in enumerate(line):
             if i == 0:
                 if x == n/2:
-                    pLine += name + " = "
-                pLine += "\t" + str(el)
+                    p_line += name + " = "
+                p_line += "\t" + str(el)
             else:
-                pLine += "\t" + str(el)
-        print pLine
-    print ""
+                p_line += "\t" + str(el)
+        print(p_line)
+    print("")
 
 if __name__ == "__main__":
     A = [[10, 9, 8, 7, 6],
@@ -64,9 +76,9 @@ if __name__ == "__main__":
          [7, 1, 1, 0, 1],
          [8, 2, 8, 2, 3],
          [1, 8, 2, 8, 4]]
-    A =[map(Fraction, line) for line in A]
-    L, U, P = luDecomposition(A)
+    A = [list(map(Fraction, line)) for line in A]
+    L, U, P = lu_decomposition(A)
     pprint(L, "L")
     pprint(U, "U")
     pprint(P, "P")
-    pprint(standardMatrixProduct(L, U),"L*U")
+    pprint(standard_matrix_product(L, U), "L*U")

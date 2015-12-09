@@ -1,7 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-def niceCubicPolynomial(p):
+
+def nice_cubic_polynomial(p):
+    """
+    Get a nice string representation of the cubic polynomial `p`.
+
+    Parameters
+    ----------
+    p : list
+        cubic polynomial
+
+    Returns
+    -------
+    str
+    """
     tmp = ""
     if p["a"] == 1:
         tmp += " x^3"
@@ -23,10 +36,14 @@ def niceCubicPolynomial(p):
         tmp += "\t+ %.2f" % p["d"]
     return tmp
 
-def getSpline(points):
-    """ points should be a list of maps, 
-        where each map represents a point and has "x" and "y" """
-    import numpy, scipy.linalg
+
+def get_spline(points):
+    """
+    points should be a list of maps, where each map represents a point and has
+    "x" and "y"
+    """
+    import numpy
+    import scipy.linalg
 
     # sort points by x value
     points = sorted(points, key=lambda point: point["x"])
@@ -34,8 +51,8 @@ def getSpline(points):
     n = len(points) - 1
 
     # Set up a system of equations of form Ax=b
-    A = numpy.zeros(shape=(4*n,4*n))
-    b = numpy.zeros(shape=(4*n,1))
+    A = numpy.zeros(shape=(4*n, 4*n))
+    b = numpy.zeros(shape=(4*n, 1))
 
     for i in range(0, n):
         # 2n equations from condtions (S2)
@@ -81,10 +98,10 @@ def getSpline(points):
     spline = []
     for i in range(0, n):
         spline.append({"u": points[i]["x"], "v": points[i+1]["x"],
-                        "a": float(x[4*i+0]),
-                        "b": float(x[4*i+1]),
-                        "c": float(x[4*i+2]),
-                        "d": float(x[4*i+3])})
+                       "a": float(x[4*i+0]),
+                       "b": float(x[4*i+1]),
+                       "c": float(x[4*i+2]),
+                       "d": float(x[4*i+3])})
     return spline
 
 if __name__ == "__main__":
@@ -93,8 +110,8 @@ if __name__ == "__main__":
     points.append({"x": 1.0, "y": 9})
     points.append({"x": 2.0, "y": 35})
     points.append({"x": 3.0, "y": 70})
-    spline = getSpline(points)
+    spline = get_spline(points)
     for p in spline:
         tmp = "[%.2f, %.2f]:" % (p["u"], p["v"])
-        tmp += niceCubicPolynomial(p)
+        tmp += nice_cubic_polynomial(p)
         print(tmp)
