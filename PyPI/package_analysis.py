@@ -23,15 +23,18 @@ logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     stream=sys.stdout)
 
 
-def main(package_name, package_url):
+def main(package_name, package_url, release_id=None):
     """
     Parameters
     ----------
     package_name : str
     package_url : str
         Path to a Python package.
+    package_id : int, optional
     """
     pkg_name = package_name
+    if release_id is None:
+        raise NotImplementedError("Look up the release id.")
     filepaths, download_dir = download(package_url)
     if download_dir is None:
         return
@@ -39,7 +42,7 @@ def main(package_name, package_url):
         mysql = json.load(f)
     package_id = get_pkg_id_by_name(pkg_name, mysql)
     if package_id is None:
-        logging.info("Package id could not be determined")
+        logging.info("Package id of '%s' could not be determined", pkg_name)
         sys.exit(1)
     required_packages = get_requirements(filepaths, pkg_name)
     imported_packages = get_imports(filepaths, pkg_name)
@@ -48,7 +51,9 @@ def main(package_name, package_url):
                        package_id,
                        required_packages,
                        imported_packages,
-                       setup_packages)
+                       setup_packages,
+                       package_url,
+                       release_id)
     remove_unpacked(download_dir)
 
 
@@ -56,7 +61,9 @@ def store_dependencies(mysql,
                        package_id,
                        required_packages,
                        imported_packages,
-                       setup_packages):
+                       setup_packages,
+                       package_url,
+                       release_id):
     """
     Parameters
     ----------
@@ -66,6 +73,8 @@ def store_dependencies(mysql,
     required_packages : list
     imported_packages : list
     setup_packages : list
+    package_url : str
+    release_id : int
     """
     connection = pymysql.connect(host=mysql['host'],
                                  user=mysql['user'],
@@ -89,6 +98,18 @@ def store_dependencies(mysql,
                          package_id,
                          mysql,
                          connection)
+    # Store that the package was downloaded
+    # and analyzed
+    cursor = connection.cursor()
+    sql = "UPDATE `releases` SET `downloaded_bytes` = %s WHERE `id` = %s;"
+    pkg_name = os.path.basename(package_url)
+    target_dir = "pypipackages"
+    target = os.path.join(target_dir, pkg_name)
+    downloaded_bytes = os.path.getsize(target)
+    res = cursor.execute(sql, (downloaded_bytes, release_id))
+    connection.commit()
+    cursor.close()
+    connection.close()
 
 
 def insert_dependency_db(imported_packages,
@@ -221,8 +242,10 @@ def download(package_url):
         except:
             return ([], None)
     else:
-        logging.info("Package '%s' was already downloaded.", pkg_name)
+        pass
+        # logging.info("Package '%s' was already downloaded.", pkg_name)
 
+    # Unpack it
     if not os.path.exists(target[:-file_ending_len]):
         if (package_url.endswith(".tar.gz") or package_url.endswith(".tar.bz")
             or package_url.endswith(".tar.bz2")):

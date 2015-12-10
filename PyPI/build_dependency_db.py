@@ -29,19 +29,33 @@ def main():
                                  cursorclass=pymysql.cursors.DictCursor,
                                  charset='utf8')
     cursor = connection.cursor()
-    sql = "SELECT `packages`.`id`, `name` FROM `packages` ORDER BY `id` ASC"
+
+    sql = ("""SELECT
+    `o`.`id`,
+    `packages`.`name`,
+    `o`.`url`,
+    `o`.`upload_time`,
+    `o`.`release_number`,
+    `o`.`downloaded_bytes`
+FROM
+    `releases` o
+LEFT JOIN
+    `releases` b  ON `o`.`package_id` = `b`.`package_id`
+    AND `o`.`upload_time` < `b`.`upload_time`
+Left JOIN
+    `packages` ON `packages`.`id` = `o`.`package_id`
+WHERE
+    `b`.`upload_time` is NULL
+    AND `o`.`downloaded_bytes` = 0
+ORDER BY
+    `packages`.`name`
+""")
     cursor.execute(sql)
     packages = cursor.fetchall()
+    logging.info("Fetched %i packages.", len(packages))
     for pkg in packages:
-        sql = ("SELECT `url` FROM `releases` "
-               "WHERE `package_id` = %s "
-               "ORDER BY `upload_time` DESC LIMIT 1")
-        cursor.execute(sql, (pkg['id'], ))
-        url = cursor.fetchone()
-        if url is not None and 'url' in url:
-            package_url = url['url']
-            package_analysis.main(pkg['name'], package_url)
-            logging.info("Package '%s' done.", pkg['name'])
+        package_analysis.main(pkg['name'], pkg['url'], pkg['id'])
+        logging.info("Package '%s' done.", pkg['name'])
 
 
 if __name__ == '__main__':
