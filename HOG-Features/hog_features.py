@@ -152,6 +152,7 @@ def is_valid_file(parser, arg):
 
 
 def get_parser():
+    """Get parser object for hog_features."""
     from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)

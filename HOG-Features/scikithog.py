@@ -47,8 +47,17 @@ def main(filename):
 
 
 def is_valid_file(parser, arg):
-    """Check if arg is a valid file that already exists on the file
-       system.
+    """
+    Check if arg is a valid file that already exists on the file system.
+
+    Parameters
+    ----------
+    parser : argparse object
+    arg : str
+
+    Returns
+    -------
+    arg
     """
     arg = os.path.abspath(arg)
     if not os.path.exists(arg):
@@ -58,6 +67,7 @@ def is_valid_file(parser, arg):
 
 
 def get_parser():
+    """Get parser object for scikithog"""
     from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
