@@ -78,6 +78,7 @@ def store_json(filename,
 
 
 def get_parser():
+    """Get the parser object for the store_json script."""
     from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
