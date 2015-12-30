@@ -4,7 +4,7 @@ If you're only interested in the data, have a look at
 [`MartinThoma/pypi-dependencies`](https://github.com/MartinThoma/pypi-dependencies)
 
 
-## Install
+## Install and execute
 
 If you want to use these scripts, please
 
@@ -25,6 +25,12 @@ If you have at least 50GB of disc space free, you can run
 
 8. `./build_dependency_db.py` (takes many many hours - probably even several days)
 
+You might want to examine the files:
+
+* `not-found.csv`: Imports which were not found on PyPI.
+   (try `sort not-found.csv | uniq > not-found-sorted.csv`)
+* `todo-unknown-pkg-extension.csv`: Package extensions which were not analyzed
+  AND not seen before.
 
 ## See also
 https://pypi.python.org/pypi/bandersnatch

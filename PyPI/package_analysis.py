@@ -106,7 +106,7 @@ def store_dependencies(mysql,
     target_dir = "pypipackages"
     target = os.path.join(target_dir, pkg_name)
     downloaded_bytes = os.path.getsize(target)
-    res = cursor.execute(sql, (downloaded_bytes, release_id))
+    cursor.execute(sql, (downloaded_bytes, release_id))
     connection.commit()
     cursor.close()
     connection.close()
@@ -148,6 +148,12 @@ def insert_dependency_db(imported_packages,
                 if 'Duplicate entry' not in str(e):
                     logging.warning(e)
         else:
+            # Packages which were imported, but not found on PyPI
+            # TODO: This still needs work. 21737 imports were not found on PyPI
+            # amongst them:
+            # mysqlDB
+            # mySQLdb
+            # MySQLdb
             with open("not-found.csv", "a") as f:
                 f.write("%s\n" % pkg)
 
@@ -191,6 +197,7 @@ def get_pkg_extension(package_url):
     str
         File extension of the package given by url
     """
+    not_implemented_fileending = [".msi", ".rpm", ".deb", ".tgz", ".dmg"]
     if package_url.endswith(".tar.gz"):
         return ".tar.gz"
     elif package_url.endswith(".tar.bz"):
@@ -206,6 +213,8 @@ def get_pkg_extension(package_url):
     elif package_url.endswith(".exe"):
         logging.info("Skip '%s' for safty reasons.", package_url)
         return None
+    elif any(package_url.endswith(x) for x in not_implemented_fileending):
+        pass  # TODO: Implement
     else:
         with open("todo-unknown-pkg-extension.csv", "a") as f:
             f.write("%s\n" % package_url)
@@ -247,8 +256,10 @@ def download(package_url):
 
     # Unpack it
     if not os.path.exists(target[:-file_ending_len]):
-        if (package_url.endswith(".tar.gz") or package_url.endswith(".tar.bz")
-            or package_url.endswith(".tar.bz2")):
+        is_tarfile = (package_url.endswith(".tar.gz")
+                      or package_url.endswith(".tar.bz")
+                      or package_url.endswith(".tar.bz2"))
+        if is_tarfile:
             try:
                 with tarfile.open(target) as tar:
                     tar.extractall(target[:-file_ending_len])
