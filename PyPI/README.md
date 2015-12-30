@@ -1,3 +1,9 @@
+## Get the data
+
+If you're only interested in the data, have a look at
+[`MartinThoma/pypi-dependencies`](https://github.com/MartinThoma/pypi-dependencies)
+
+
 ## Install
 
 If you want to use these scripts, please
