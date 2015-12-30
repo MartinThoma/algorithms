@@ -109,6 +109,7 @@ def prefix_analysis(pkg_names):
 
 
 def main():
+    """Orchestrate the package name analysis."""
     logging.info("Get package names...")
     with open("secret.json") as f:
         mysql = json.load(f)
