@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 07, 2015 at 09:30 AM
+-- Generation Time: Jan 02, 2016 at 11:19 AM
 -- Server version: 5.6.27-0ubuntu1
 -- PHP Version: 5.6.11-1ubuntu3.1
 
@@ -11,7 +11,7 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 --
--- Database: `pypi`
+-- Database: `PyPI`
 --
 
 -- --------------------------------------------------------
@@ -26,6 +26,19 @@ CREATE TABLE IF NOT EXISTS `dependencies` (
   `needs_package` int(11) NOT NULL,
   `req_type` enum('requirements.txt','imported','setup.py') COLLATE utf8_bin NOT NULL,
   `times` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `github`
+--
+
+CREATE TABLE IF NOT EXISTS `github` (
+  `id` int(11) NOT NULL,
+  `stargazers_count` int(11) NOT NULL DEFAULT '-1',
+  `watchers_count` int(11) NOT NULL DEFAULT '-1',
+  `forks_count` int(11) NOT NULL DEFAULT '-1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
@@ -78,6 +91,30 @@ CREATE TABLE IF NOT EXISTS `package_classifiers` (
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `package_github`
+--
+CREATE TABLE IF NOT EXISTS `package_github` (
+`id` int(11)
+,`name` varchar(255)
+,`home_page` varchar(255)
+,`stargazers_count` int(11)
+,`watchers_count` int(11)
+,`forks_count` int(11)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `package_names`
+--
+CREATE TABLE IF NOT EXISTS `package_names` (
+`id` int(11)
+,`name` varchar(255)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `releases`
 --
 
@@ -94,8 +131,20 @@ CREATE TABLE IF NOT EXISTS `releases` (
   `downloads` int(255) NOT NULL,
   `filename` varchar(255) COLLATE utf8_bin NOT NULL,
   `packagetype` varchar(255) COLLATE utf8_bin NOT NULL,
-  `size` int(255) NOT NULL
+  `size` int(255) NOT NULL,
+  `downloaded_bytes` int(255) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `small_dependencies`
+--
+CREATE TABLE IF NOT EXISTS `small_dependencies` (
+`package` int(11)
+,`needs_package` int(11)
+,`times` int(11)
+);
 
 -- --------------------------------------------------------
 
@@ -118,6 +167,33 @@ CREATE TABLE IF NOT EXISTS `urls` (
   `size` varchar(255) COLLATE utf8_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+-- --------------------------------------------------------
+
+--
+-- Structure for view `package_github`
+--
+DROP TABLE IF EXISTS `package_github`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `package_github` AS select `packages`.`id` AS `id`,`packages`.`name` AS `name`,`packages`.`home_page` AS `home_page`,`github`.`stargazers_count` AS `stargazers_count`,`github`.`watchers_count` AS `watchers_count`,`github`.`forks_count` AS `forks_count` from (`packages` left join `github` on((`packages`.`id` = `github`.`id`))) where ((`packages`.`license` like '%MIT%') and (`packages`.`summary` <> '') and (`packages`.`home_page` like 'https://github.com/%') and (`github`.`stargazers_count` is not null)) order by `packages`.`name`;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `package_names`
+--
+DROP TABLE IF EXISTS `package_names`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `package_names` AS select `packages`.`id` AS `id`,`packages`.`name` AS `name` from `packages` order by `packages`.`name`;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `small_dependencies`
+--
+DROP TABLE IF EXISTS `small_dependencies`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `small_dependencies` AS select `dependencies`.`package` AS `package`,`dependencies`.`needs_package` AS `needs_package`,`dependencies`.`times` AS `times` from `dependencies`;
+
 --
 -- Indexes for dumped tables
 --
@@ -130,6 +206,13 @@ ALTER TABLE `dependencies`
   ADD UNIQUE KEY `no_multiedges` (`package`,`needs_package`),
   ADD KEY `package` (`package`),
   ADD KEY `needs_package` (`needs_package`);
+
+--
+-- Indexes for table `github`
+--
+ALTER TABLE `github`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id` (`id`);
 
 --
 -- Indexes for table `packages`
