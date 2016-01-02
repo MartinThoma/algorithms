@@ -15,7 +15,8 @@ def get_package_names(mysql):
     """
     Parameters
     ----------
-    mysql: connection string
+    mysql: str
+        connection string
 
     Returns
     -------
