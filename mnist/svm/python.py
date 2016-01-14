@@ -83,6 +83,10 @@ def get_data():
         y = digits.target
 
         # Scale data to [-1, 1] - This is of mayor importance!!!
+        # In this case, I know the range and thus I can (and should) scale
+        # manually. However, this might not always be the case.
+        # Then try sklearn.preprocessing.MinMaxScaler or
+        # sklearn.preprocessing.StandardScaler
         x = x/255.0*2 - 1
 
         x, y = shuffle(x, y, random_state=0)
