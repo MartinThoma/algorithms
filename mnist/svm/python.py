@@ -6,6 +6,7 @@ import numpy as np
 
 
 def main():
+    """Orchestrate the retrival of data, training and testing."""
     data = get_data()
 
     # Get classifier
