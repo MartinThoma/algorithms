@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+# -*- coding: utf-8 -*-
 
 """Coding challenge to find all conflicts of a list of appointments."""
 
