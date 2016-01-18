@@ -1,28 +1,51 @@
 #!/usr/bin/env python
 
-"""Train a SVM to categorize 28x28 pixel images into digits (MNIST dataset)."""
+"""Train classifiers to predict MNIST data."""
 
 import numpy as np
+import time
+
+# Classifiers
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 
 
 def main():
     data = get_data()
 
-    # Get classifier
-    # from sklearn.svm import SVC
-    # clf = SVC(probability=False,  # cache_size=200,
-    #           kernel="rbf", C=2.8, gamma=.0073)
-    from sklearn.ensemble import RandomForestClassifier
-    clf = RandomForestClassifier(n_estimators=10, n_jobs=2)
+    # Get classifiers
+    classifiers = [
+        ('adj. SVM', SVC(probability=False, kernel="rbf", C=2.8, gamma=.0073)),
+        ('linear SVM', SVC(kernel="linear", C=0.025)),
+        ('RBF SVM', SVC(gamma=2, C=1)),
+        ('Random Forest', RandomForestClassifier(n_estimators=50, n_jobs=10)),
+        ('k nn', KNeighborsClassifier(3)),
+        ('Decision Tree', DecisionTreeClassifier(max_depth=5)),
+        ('Random Forest 2', RandomForestClassifier(max_depth=5,
+                                                   n_estimators=10,
+                                                   max_features=1)),
+        ('AdaBoost', AdaBoostClassifier()),
+        ('Naive Bayes', GaussianNB()),
+        ('LDA', LinearDiscriminantAnalysis()),
+        ('QDA', QuadraticDiscriminantAnalysis())
+    ]
 
-    print("Start fitting. This may take a while")
-    examples = 100000
-    clf.fit(data['train']['X'][:examples], data['train']['y'][:examples])
+    # Fit them all
+    for clf_name, clf in classifiers:
+        print("Start fitting. This may take a while")
+        examples = 100000
+        t0 = time.time()
+        clf.fit(data['train']['X'][:examples], data['train']['y'][:examples])
+        t1 = time.time()
+        analyze(clf, data, t1 - t0)
 
-    analyze(clf, data)
 
-
-def analyze(clf, data):
+def analyze(clf, data, fit_time):
     """
     Analyze how well a classifier performs on data.
 
@@ -30,10 +53,12 @@ def analyze(clf, data):
     ----------
     clf : classifier object
     data : dict
+    fit_time : float
     """
     # Get confusion matrix
     from sklearn import metrics
     predicted = clf.predict(data['test']['X'])
+    print("Fit time: %0.4f" % fit_time)
     print("Confusion matrix:\n%s" %
           metrics.confusion_matrix(data['test']['y'],
                                    predicted))
