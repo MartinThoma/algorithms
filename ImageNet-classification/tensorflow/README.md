@@ -9,6 +9,8 @@ I've just added the Flask webserver to make it more convenient to use
 * werkzeug
 * [Pillow](https://python-pillow.github.io/)
 * [Tensorflow](https://www.tensorflow.org/versions/master/get_started/os_setup.html#pip-installation)
+* [numpy](http://docs.scipy.org/doc/numpy-1.10.1/user/install.html)
+
 
 ## Run
 
