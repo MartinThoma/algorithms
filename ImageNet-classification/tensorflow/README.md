@@ -14,6 +14,6 @@ I've just added the Flask webserver to make it more convenient to use
 
 ## Run
 
-```python
+```bash
 $ python classify_image.py
 ```
