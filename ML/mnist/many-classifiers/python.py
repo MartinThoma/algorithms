@@ -22,10 +22,9 @@ def main():
     classifiers = [
         ('adj. SVM', SVC(probability=False, kernel="rbf", C=2.8, gamma=.0073)),
         ('linear SVM', SVC(kernel="linear", C=0.025)),
-        ('RBF SVM', SVC(gamma=2, C=1)),
-        ('Random Forest', RandomForestClassifier(n_estimators=50, n_jobs=10)),
         ('k nn', KNeighborsClassifier(3)),
         ('Decision Tree', DecisionTreeClassifier(max_depth=5)),
+        ('Random Forest', RandomForestClassifier(n_estimators=50, n_jobs=10)),
         ('Random Forest 2', RandomForestClassifier(max_depth=5,
                                                    n_estimators=10,
                                                    max_features=1)),
@@ -37,15 +36,16 @@ def main():
 
     # Fit them all
     for clf_name, clf in classifiers:
-        print("Start fitting. This may take a while")
+        print("Start fitting '%s' classifier. This may take a while." %
+              clf_name)
         examples = 100000
         t0 = time.time()
         clf.fit(data['train']['X'][:examples], data['train']['y'][:examples])
         t1 = time.time()
-        analyze(clf, data, t1 - t0)
+        analyze(clf, data, t1 - t0, clf_name=clf_name)
 
 
-def analyze(clf, data, fit_time):
+def analyze(clf, data, fit_time, clf_name=''):
     """
     Analyze how well a classifier performs on data.
 
@@ -54,11 +54,16 @@ def analyze(clf, data, fit_time):
     clf : classifier object
     data : dict
     fit_time : float
+    clf_name : str
     """
     # Get confusion matrix
     from sklearn import metrics
+    t0 = time.time()
     predicted = clf.predict(data['test']['X'])
-    print("Fit time: %0.4f" % fit_time)
+    t1 = time.time()
+    print("Classifier: %s" % clf_name)
+    print("Fit time: %0.4fs" % fit_time)
+    print("Predict time: %0.4fs" % (t1 - t0))
     print("Confusion matrix:\n%s" %
           metrics.confusion_matrix(data['test']['y'],
                                    predicted))
@@ -69,9 +74,9 @@ def analyze(clf, data, fit_time):
     try_id = 1
     out = clf.predict(data['test']['X'][try_id])  # clf.predict_proba
     print("out: %s" % out)
-    size = int(len(data['test']['X'][try_id])**(0.5))
-    view_image(data['test']['X'][try_id].reshape((size, size)),
-               data['test']['y'][try_id])
+    # size = int(len(data['test']['X'][try_id])**(0.5))
+    # view_image(data['test']['X'][try_id].reshape((size, size)),
+    #            data['test']['y'][try_id])
 
 
 def view_image(image, label=""):
