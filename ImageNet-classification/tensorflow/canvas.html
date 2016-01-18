@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Title</title>
+</head>
+<body>
+    <h1>Classify images with ImageNet 2012</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" id="file" />
+        <input type="submit" value="Upload"/>
+    </form>
+
+{% if ret %}
+  <h2>Result</h2>
+  <p>Time: {{'%0.5f'| format(time|float)}}</p>
+  <table>
+    <tr>
+       <th colspan="2">
+         <image src="{{img_src}}" height="300px"/>
+       </th>
+    </tr>
+  {% for el in ret %}
+    <tr>
+        <th>{{el.human_string}}</th>
+        <td>{{'%0.2f'| format(el.score * 100|float)}}%</td>
+    </tr>
+  {% endfor %}
+  </table>
+{% endif %}
+</body>
+</html>
