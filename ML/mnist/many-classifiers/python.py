@@ -31,16 +31,31 @@ import tensorflow as tf
 
 
 def max_pool_2x2(tensor_in):
+    """
+    Max pooling of 2x2 patches with padding at the borders and stride of 2.
+    """
     return tf.nn.max_pool(tensor_in,
                           ksize=[1, 2, 2, 1],
                           strides=[1, 2, 2, 1],
                           padding='SAME')
 
 
-def conv_model(X, y):
-    X = tf.reshape(X, [-1, 28, 28, 1])
+def conv_model(x, y):
+    """
+    Create a convolutional neural network model.
+
+    Parameters
+    ----------
+    x : features
+    y : labels
+
+    Returns
+    -------
+    model object
+    """
+    x = tf.reshape(x, [-1, 28, 28, 1])
     with tf.variable_scope('conv_layer1'):
-        h_conv1 = skflow.ops.conv2d(X, n_filters=32, filter_shape=[5, 5],
+        h_conv1 = skflow.ops.conv2d(x, n_filters=32, filter_shape=[5, 5],
                                     bias=True, activation=tf.nn.relu)
         h_pool1 = max_pool_2x2(h_conv1)
     with tf.variable_scope('conv_layer2'):
