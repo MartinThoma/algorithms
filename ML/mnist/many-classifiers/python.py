@@ -14,20 +14,74 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 
+import skflow
+
+
+def dropout_model(x, y):
+    """
+    This is DNN with 500, 200 hidden layers, and dropout of 0.5 probability.
+    """
+    layers = skflow.ops.dnn(x, [500, 200], keep_prob=0.5)
+    return skflow.models.logistic_regression(layers, y)
+
+
+# Convolutional network, see
+# https://github.com/tensorflow/skflow/blob/master/examples/mnist.py
+import tensorflow as tf
+
+
+def max_pool_2x2(tensor_in):
+    return tf.nn.max_pool(tensor_in,
+                          ksize=[1, 2, 2, 1],
+                          strides=[1, 2, 2, 1],
+                          padding='SAME')
+
+
+def conv_model(X, y):
+    X = tf.reshape(X, [-1, 28, 28, 1])
+    with tf.variable_scope('conv_layer1'):
+        h_conv1 = skflow.ops.conv2d(X, n_filters=32, filter_shape=[5, 5],
+                                    bias=True, activation=tf.nn.relu)
+        h_pool1 = max_pool_2x2(h_conv1)
+    with tf.variable_scope('conv_layer2'):
+        h_conv2 = skflow.ops.conv2d(h_pool1, n_filters=64, filter_shape=[5, 5],
+                                    bias=True, activation=tf.nn.relu)
+        h_pool2 = max_pool_2x2(h_conv2)
+        h_pool2_flat = tf.reshape(h_pool2, [-1, 7 * 7 * 64])
+    h_fc1 = skflow.ops.dnn(h_pool2_flat,
+                           [1024],
+                           activation=tf.nn.relu,
+                           keep_prob=0.5)
+    return skflow.models.logistic_regression(h_fc1, y)
+
 
 def main():
     data = get_data()
 
     # Get classifiers
     classifiers = [
-        ('adj. SVM', SVC(probability=False, kernel="rbf", C=2.8, gamma=.0073)),
-        ('linear SVM', SVC(kernel="linear", C=0.025)),
+        ('NN 500:200', skflow.TensorFlowDNNClassifier(hidden_units=[500, 200],
+                                                      n_classes=10)),
+        ('NN 500:200 dropout',
+         skflow.TensorFlowEstimator(model_fn=dropout_model, n_classes=10)),
+        ('CNN', skflow.TensorFlowEstimator(model_fn=conv_model,
+                                           n_classes=10,
+                                           batch_size=100,
+                                           steps=20000,
+                                           learning_rate=0.001)),
+        ('adj. SVM', SVC(probability=False,
+                         kernel="rbf",
+                         C=2.8,
+                         gamma=.0073,
+                         cache_size=2000)),
+        ('linear SVM', SVC(kernel="linear", C=0.025, cache_size=2000)),
         ('k nn', KNeighborsClassifier(3)),
         ('Decision Tree', DecisionTreeClassifier(max_depth=5)),
         ('Random Forest', RandomForestClassifier(n_estimators=50, n_jobs=10)),
         ('Random Forest 2', RandomForestClassifier(max_depth=5,
                                                    n_estimators=10,
-                                                   max_features=1)),
+                                                   max_features=1,
+                                                   n_jobs=10)),
         ('AdaBoost', AdaBoostClassifier()),
         ('Naive Bayes', GaussianNB()),
         ('LDA', LinearDiscriminantAnalysis()),
@@ -36,8 +90,8 @@ def main():
 
     # Fit them all
     for clf_name, clf in classifiers:
-        print("Start fitting '%s' classifier. This may take a while." %
-              clf_name)
+        print("#" * 80)
+        print("Start fitting '%s' classifier." % clf_name)
         examples = 100000
         t0 = time.time()
         clf.fit(data['train']['X'][:examples], data['train']['y'][:examples])
@@ -71,9 +125,9 @@ def analyze(clf, data, fit_time, clf_name=''):
                                                      predicted))
 
     # Print example
-    try_id = 1
-    out = clf.predict(data['test']['X'][try_id])  # clf.predict_proba
-    print("out: %s" % out)
+    # try_id = 1
+    # out = clf.predict(data['test']['X'][try_id])  # clf.predict_proba
+    # print("out: %s" % out)
     # size = int(len(data['test']['X'][try_id])**(0.5))
     # view_image(data['test']['X'][try_id].reshape((size, size)),
     #            data['test']['y'][try_id])
