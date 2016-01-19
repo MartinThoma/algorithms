@@ -76,24 +76,24 @@ def main():
 
     # Get classifiers
     classifiers = [
-        ('NN 500:200', skflow.TensorFlowDNNClassifier(hidden_units=[500, 200],
-                                                      n_classes=10,
-                                                      steps=20000)),
-        ('NN 500:200 dropout',
-         skflow.TensorFlowEstimator(model_fn=dropout_model,
-                                    n_classes=10,
-                                    steps=20000)),
-        ('CNN', skflow.TensorFlowEstimator(model_fn=conv_model,
-                                           n_classes=10,
-                                           batch_size=100,
-                                           steps=20000,
-                                           learning_rate=0.001)),
-        ('adj. SVM', SVC(probability=False,
-                         kernel="rbf",
-                         C=2.8,
-                         gamma=.0073,
-                         cache_size=2000)),
-        ('linear SVM', SVC(kernel="linear", C=0.025, cache_size=2000)),
+        ('NN 20:5', skflow.TensorFlowDNNClassifier(hidden_units=[20, 5],
+                                                   n_classes=data['n_classes'],
+                                                   steps=500)),
+        # ('NN 500:200 dropout',
+        #  skflow.TensorFlowEstimator(model_fn=dropout_model,
+        #                             n_classes=10,
+        #                             steps=20000)),
+        # ('CNN', skflow.TensorFlowEstimator(model_fn=conv_model,
+        #                                    n_classes=10,
+        #                                    batch_size=100,
+        #                                    steps=20000,
+        #                                    learning_rate=0.001)),
+        ('SVM, adj.', SVC(probability=False,
+                          kernel="rbf",
+                          C=2.8,
+                          gamma=.0073,
+                          cache_size=200)),
+        ('SVM, linear', SVC(kernel="linear", C=0.025, cache_size=200)),
         ('k nn', KNeighborsClassifier(3)),
         ('Decision Tree', DecisionTreeClassifier(max_depth=5)),
         ('Random Forest', RandomForestClassifier(n_estimators=50, n_jobs=10)),
@@ -104,8 +104,8 @@ def main():
         ('AdaBoost', AdaBoostClassifier()),
         ('Naive Bayes', GaussianNB()),
         ('Gradient Boosting', GradientBoostingClassifier()),
-        # ('LDA', LinearDiscriminantAnalysis()),
-        # ('QDA', QuadraticDiscriminantAnalysis())
+        ('LDA', LinearDiscriminantAnalysis()),
+        ('QDA', QuadraticDiscriminantAnalysis())
     ]
 
     # Fit them all
@@ -134,7 +134,7 @@ def print_website(data):
     data : dict
         Keys are names of classifiers
     """
-    print("""<table>
+    print("""<table class="table">
   <thead>
     <tr>
         <th>Classifier</th>
@@ -145,6 +145,11 @@ def print_website(data):
   </thead>
   <tbody>""")
     danger_msg = 'class="danger"'
+    best_time = 10**10
+    best_acc = -1
+    for _, clf_data in sorted(data.items()):
+        best_time = min(clf_data['testing_time'], best_time)
+        best_acc = max(clf_data['accuracy'], best_acc)
     for clf_name, clf_data in sorted(data.items()):
         acc_msg = ''
         test_msg = ''
@@ -152,14 +157,22 @@ def print_website(data):
             acc_msg = danger_msg
         if clf_data['testing_time'] > 5:
             test_msg = danger_msg
-        print("<tr>")
-        print("\t<td>%s</td>" % clf_name)
-        print('\t<td align="right" %s>%s%%</td>' % (acc_msg,
-                                                    clf_data['accuracy']))
-        print('\t<td align="right">%ss</td>' % clf_data['training_time'])
-        print('\t<td align="right" %s>%ss</td>' % (test_msg,
-                                                   clf_data['testing_time']))
-        print("</tr>")
+        print("    <tr>")
+        print("\t\t<td>%s</td>" % clf_name)
+        if clf_data['accuracy'] == best_acc:
+            print('\t\t<td align="right" %s><b>%0.2f%%</b></td>' %
+                  (acc_msg, clf_data['accuracy']*100))
+        else:
+            print('\t\t<td align="right" %s>%0.2f%%</td>' %
+                  (acc_msg, clf_data['accuracy']*100))
+        print('\t\t<td align="right">%0.4fs</td>' % clf_data['training_time'])
+        if clf_data['testing_time'] == best_time:
+            print('\t\t<td align="right" %s><b>%0.4fs</b></td>' %
+                  (test_msg, clf_data['testing_time']))
+        else:
+            print('\t\t<td align="right" %s>%0.4fs</td>' %
+                  (test_msg, clf_data['testing_time']))
+        print("    </tr>")
     print("</tbody>")
     print("</table>")
 
@@ -234,8 +247,36 @@ def get_data():
     -------
     dict
     """
-    simple = False
-    if simple:  # Load the simple, but similar digits dataset
+    dataset = 'iris'
+    if dataset == 'iris':
+        import sklearn
+        from sklearn.datasets import fetch_mldata
+        from sklearn.utils import shuffle
+        mnist = fetch_mldata('iris')
+
+        x = mnist.data
+        y = mnist.target
+
+        le = sklearn.preprocessing.LabelEncoder()
+        le.fit(y)
+        y = le.transform(y)
+
+        x, y = shuffle(x, y, random_state=0)
+
+        from sklearn.cross_validation import train_test_split
+        x_train, x_test, y_train, y_test = train_test_split(x, y,
+                                                            test_size=0.33,
+                                                            random_state=42)
+        data = {'train': {'X': x_train,
+                          'y': y_train},
+                'test': {'X': x_test,
+                         'y': y_test},
+                'n_classes': len(np.unique(y_train))}
+        scaler = sklearn.preprocessing.StandardScaler().fit(data['train']['X'])
+        data['train']['X'] = scaler.transform(data['train']['X'])
+        data['test']['X'] = scaler.transform(data['test']['X'])
+    elif dataset == 'mnist_simple':
+        # Load the simple, but similar digits dataset
         from sklearn.datasets import load_digits
         from sklearn.utils import shuffle
         digits = load_digits()
@@ -255,7 +296,7 @@ def get_data():
                           'y': y_train},
                 'test': {'X': x_test,
                          'y': y_test}}
-    else:  # Load the original dataset
+    elif dataset == 'mnist':  # Load the original dataset
         from sklearn.datasets import fetch_mldata
         from sklearn.utils import shuffle
         mnist = fetch_mldata('MNIST original')
@@ -276,6 +317,8 @@ def get_data():
                           'y': y_train},
                 'test': {'X': x_test,
                          'y': y_test}}
+    else:
+        raise NotImplemented()
     return data
 
 
