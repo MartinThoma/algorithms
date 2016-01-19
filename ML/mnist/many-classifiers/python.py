@@ -10,6 +10,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
@@ -75,35 +76,37 @@ def main():
 
     # Get classifiers
     classifiers = [
-        ('NN 500:200', skflow.TensorFlowDNNClassifier(hidden_units=[500, 200],
-                                                      n_classes=10)),
-        ('NN 500:200 dropout',
-         skflow.TensorFlowEstimator(model_fn=dropout_model, n_classes=10)),
-        ('CNN', skflow.TensorFlowEstimator(model_fn=conv_model,
-                                           n_classes=10,
-                                           batch_size=100,
-                                           steps=20000,
-                                           learning_rate=0.001)),
-        ('adj. SVM', SVC(probability=False,
-                         kernel="rbf",
-                         C=2.8,
-                         gamma=.0073,
-                         cache_size=2000)),
-        ('linear SVM', SVC(kernel="linear", C=0.025, cache_size=2000)),
-        ('k nn', KNeighborsClassifier(3)),
-        ('Decision Tree', DecisionTreeClassifier(max_depth=5)),
-        ('Random Forest', RandomForestClassifier(n_estimators=50, n_jobs=10)),
-        ('Random Forest 2', RandomForestClassifier(max_depth=5,
-                                                   n_estimators=10,
-                                                   max_features=1,
-                                                   n_jobs=10)),
-        ('AdaBoost', AdaBoostClassifier()),
+        # ('NN 500:200', skflow.TensorFlowDNNClassifier(hidden_units=[500, 200],
+        #                                               n_classes=10)),
+        # ('NN 500:200 dropout',
+        #  skflow.TensorFlowEstimator(model_fn=dropout_model, n_classes=10)),
+        # ('CNN', skflow.TensorFlowEstimator(model_fn=conv_model,
+        #                                    n_classes=10,
+        #                                    batch_size=100,
+        #                                    steps=20000,
+        #                                    learning_rate=0.001)),
+        # ('adj. SVM', SVC(probability=False,
+        #                  kernel="rbf",
+        #                  C=2.8,
+        #                  gamma=.0073,
+        #                  cache_size=2000)),
+        # ('linear SVM', SVC(kernel="linear", C=0.025, cache_size=2000)),
+        # ('k nn', KNeighborsClassifier(3)),
+        # ('Decision Tree', DecisionTreeClassifier(max_depth=5)),
+        # ('Random Forest', RandomForestClassifier(n_estimators=50, n_jobs=10)),
+        # ('Random Forest 2', RandomForestClassifier(max_depth=5,
+        #                                            n_estimators=10,
+        #                                            max_features=1,
+        #                                            n_jobs=10)),
+        # ('AdaBoost', AdaBoostClassifier()),
         ('Naive Bayes', GaussianNB()),
-        ('LDA', LinearDiscriminantAnalysis()),
-        ('QDA', QuadraticDiscriminantAnalysis())
+        ('Gradient Boosting', GradientBoostingClassifier()),
+        # ('LDA', LinearDiscriminantAnalysis()),
+        # ('QDA', QuadraticDiscriminantAnalysis())
     ]
 
     # Fit them all
+    classifier_data = {}
     for clf_name, clf in classifiers:
         print("#" * 80)
         print("Start fitting '%s' classifier." % clf_name)
@@ -111,7 +114,12 @@ def main():
         t0 = time.time()
         clf.fit(data['train']['X'][:examples], data['train']['y'][:examples])
         t1 = time.time()
-        analyze(clf, data, t1 - t0, clf_name=clf_name)
+        an_data = analyze(clf, data, t1 - t0, clf_name=clf_name)
+        classifier_data[clf_name] = {'training_time': t1-t0,
+                                     'testing_time': an_data['testing_time'],
+                                     'accuracy': an_data['accuracy']}
+
+    print_website(classifier_data)
 
 
 def analyze(clf, data, fit_time, clf_name=''):
@@ -124,20 +132,28 @@ def analyze(clf, data, fit_time, clf_name=''):
     data : dict
     fit_time : float
     clf_name : str
+
+    Returns
+    -------
+    dict
+        accuracy and testing_time
     """
+    results = {}
+
     # Get confusion matrix
     from sklearn import metrics
     t0 = time.time()
     predicted = clf.predict(data['test']['X'])
     t1 = time.time()
+    results['testing_time'] = t1 - t0
     print("Classifier: %s" % clf_name)
-    print("Fit time: %0.4fs" % fit_time)
-    print("Predict time: %0.4fs" % (t1 - t0))
+    print("Training time: %0.4fs" % fit_time)
+    print("Testing time: %0.4fs" % results['testing_time'])
     print("Confusion matrix:\n%s" %
           metrics.confusion_matrix(data['test']['y'],
                                    predicted))
-    print("Accuracy: %0.4f" % metrics.accuracy_score(data['test']['y'],
-                                                     predicted))
+    results['accuracy'] = metrics.accuracy_score(data['test']['y'], predicted)
+    print("Accuracy: %0.4f" % results['accuracy'])
 
     # Print example
     # try_id = 1
@@ -146,6 +162,7 @@ def analyze(clf, data, fit_time, clf_name=''):
     # size = int(len(data['test']['X'][try_id])**(0.5))
     # view_image(data['test']['X'][try_id].reshape((size, size)),
     #            data['test']['y'][try_id])
+    return results
 
 
 def view_image(image, label=""):
@@ -216,6 +233,44 @@ def get_data():
                          'y': y_test}}
     return data
 
+
+def print_website(data):
+    """
+    Print dictionary as HTML for website
+
+    Parameters
+    ----------
+    data : dict
+        Keys are names of classifiers
+    """
+    print("""<table>
+  <thead>
+    <tr>
+        <th>Classifier</th>
+        <th>Accuracy</th>
+        <th>Training Time</th>
+        <th>Testing Time</th>
+    </tr>
+  </thead>
+  <tbody>""")
+    danger_msg = 'class="danger"'
+    for clf_name, clf_data in sorted(data.items()):
+        acc_msg = ''
+        test_msg = ''
+        if clf_data['accuracy'] < 0.9:
+            acc_msg = danger_msg
+        if clf_data['testing_time'] > 5:
+            test_msg = danger_msg
+        print("<tr>")
+        print("\t<td>%s</td>" % clf_name)
+        print('\t<td align="right" %s>%s%%</td>' % (acc_msg,
+                                                    clf_data['accuracy']))
+        print('\t<td align="right">%ss</td>' % clf_data['training_time'])
+        print('\t<td align="right" %s>%ss</td>' % (test_msg,
+                                                   clf_data['testing_time']))
+        print("</tr>")
+    print("</tbody>")
+    print("</table>")
 
 if __name__ == '__main__':
     main()
