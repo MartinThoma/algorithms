@@ -29,7 +29,10 @@ def f(x):
     """
     Function which gets approximated
     """
-    return x**2
+
+    noise = [np.random.normal(loc=0.0, scale=1.0) for _ in range(len(list(x)))]
+    noise = np.atleast_2d(noise).T
+    return x**2 + noise
     # Totally fails for that one:
     # y = []
     # for el in x:
