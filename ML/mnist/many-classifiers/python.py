@@ -125,6 +125,45 @@ def main():
     print_website(classifier_data)
 
 
+def print_website(data):
+    """
+    Print dictionary as HTML for website
+
+    Parameters
+    ----------
+    data : dict
+        Keys are names of classifiers
+    """
+    print("""<table>
+  <thead>
+    <tr>
+        <th>Classifier</th>
+        <th>Accuracy</th>
+        <th>Training Time</th>
+        <th>Testing Time</th>
+    </tr>
+  </thead>
+  <tbody>""")
+    danger_msg = 'class="danger"'
+    for clf_name, clf_data in sorted(data.items()):
+        acc_msg = ''
+        test_msg = ''
+        if clf_data['accuracy'] < 0.9:
+            acc_msg = danger_msg
+        if clf_data['testing_time'] > 5:
+            test_msg = danger_msg
+        print("<tr>")
+        print("\t<td>%s</td>" % clf_name)
+        print('\t<td align="right" %s>%s%%</td>' % (acc_msg,
+                                                    clf_data['accuracy']))
+        print('\t<td align="right">%ss</td>' % clf_data['training_time'])
+        print('\t<td align="right" %s>%ss</td>' % (test_msg,
+                                                   clf_data['testing_time']))
+        print("</tr>")
+    print("</tbody>")
+    print("</table>")
+
+
 def analyze(clf, data, fit_time, clf_name=''):
     """
     Analyze how well a classifier performs on data.
