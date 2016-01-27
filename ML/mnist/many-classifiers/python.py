@@ -14,6 +14,9 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+from sklearn.neural_network import BernoulliRBM
+from sklearn.pipeline import Pipeline
+from sklearn import linear_model
 
 import skflow
 
@@ -74,8 +77,28 @@ def conv_model(x, y):
 def main():
     data = get_data()
 
+    print("Got %i training samples and %i test samples." %
+          (len(data['train']['X']), len(data['test']['X'])))
+
+    logistic = linear_model.LogisticRegression()
+    logistic.C = 6000.0
+
     # Get classifiers
     classifiers = [
+        ('RBM 10', Pipeline(steps=[('rbm', BernoulliRBM(n_components=10)),
+                                   ('logistic', logistic)])),
+        ('RBM 100', Pipeline(steps=[('rbm', BernoulliRBM(n_components=100)),
+                                    ('logistic', logistic)])),
+        ('RBM 100, n_iter=20', Pipeline(steps=[('rbm',
+                                                BernoulliRBM(n_components=100,
+                                                             n_iter=20)),
+                                               ('logistic', logistic)])),
+        ('RBM 256', Pipeline(steps=[('rbm', BernoulliRBM(n_components=256)),
+                                    ('logistic', logistic)])),
+        ('RBM 512, n_iter=100', Pipeline(steps=[('rbm',
+                                                 BernoulliRBM(n_components=512,
+                                                              n_iter=10)),
+                                                ('logistic', logistic)])),
         ('NN 20:5', skflow.TensorFlowDNNClassifier(hidden_units=[20, 5],
                                                    n_classes=data['n_classes'],
                                                    steps=500)),
