@@ -16,7 +16,7 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 from sklearn.neural_network import BernoulliRBM
 from sklearn.pipeline import Pipeline
-from sklearn import linear_model
+from sklearn.linear_model import LogisticRegression
 
 import skflow
 
@@ -80,25 +80,32 @@ def main():
     print("Got %i training samples and %i test samples." %
           (len(data['train']['X']), len(data['test']['X'])))
 
-    logistic = linear_model.LogisticRegression()
-    logistic.C = 6000.0
-
     # Get classifiers
     classifiers = [
-        ('RBM 10', Pipeline(steps=[('rbm', BernoulliRBM(n_components=10)),
-                                   ('logistic', logistic)])),
+        ('Logistic Regression (C=1)', LogisticRegression(C=1)),
+        ('Logistic Regression (C=1000)', LogisticRegression(C=10000)),
+        ('RBM 200, n_iter=40, LR=0.01, Reg: C=1',
+         Pipeline(steps=[('rbm', BernoulliRBM(n_components=200,
+                                              n_iter=40,
+                                              learning_rate=0.01,
+                                              verbose=True)),
+                         ('logistic', LogisticRegression(C=1))])),
+        ('RBM 200, n_iter=40, LR=0.01, Reg: C=10000',
+         Pipeline(steps=[('rbm', BernoulliRBM(n_components=200,
+                                              n_iter=40,
+                                              learning_rate=0.01,
+                                              verbose=True)),
+                         ('logistic', LogisticRegression(C=10000))])),
         ('RBM 100', Pipeline(steps=[('rbm', BernoulliRBM(n_components=100)),
-                                    ('logistic', logistic)])),
-        ('RBM 100, n_iter=20', Pipeline(steps=[('rbm',
-                                                BernoulliRBM(n_components=100,
-                                                             n_iter=20)),
-                                               ('logistic', logistic)])),
+                                    ('logistic', LogisticRegression(C=1))])),
+        ('RBM 100, n_iter=20',
+         Pipeline(steps=[('rbm', BernoulliRBM(n_components=100, n_iter=20)),
+                         ('logistic', LogisticRegression(C=1))])),
         ('RBM 256', Pipeline(steps=[('rbm', BernoulliRBM(n_components=256)),
-                                    ('logistic', logistic)])),
-        ('RBM 512, n_iter=100', Pipeline(steps=[('rbm',
-                                                 BernoulliRBM(n_components=512,
-                                                              n_iter=10)),
-                                                ('logistic', logistic)])),
+                                    ('logistic', LogisticRegression(C=1))])),
+        ('RBM 512, n_iter=100',
+         Pipeline(steps=[('rbm', BernoulliRBM(n_components=512, n_iter=10)),
+                         ('logistic', LogisticRegression(C=1))])),
         ('NN 20:5', skflow.TensorFlowDNNClassifier(hidden_units=[20, 5],
                                                    n_classes=data['n_classes'],
                                                    steps=500)),
@@ -183,17 +190,17 @@ def print_website(data):
         print("    <tr>")
         print("\t\t<td>%s</td>" % clf_name)
         if clf_data['accuracy'] == best_acc:
-            print('\t\t<td align="right" %s><b>%0.2f%%</b></td>' %
+            print('\t\t<td style="text-align: right" %s><b>%0.2f%%</b></td>' %
                   (acc_msg, clf_data['accuracy']*100))
         else:
-            print('\t\t<td align="right" %s>%0.2f%%</td>' %
+            print('\t\t<td style="text-align: right" %s>%0.2f%%</td>' %
                   (acc_msg, clf_data['accuracy']*100))
-        print('\t\t<td align="right">%0.4fs</td>' % clf_data['training_time'])
+        print('\t\t<td style="text-align: right" >%0.4fs</td>' % clf_data['training_time'])
         if clf_data['testing_time'] == best_time:
-            print('\t\t<td align="right" %s><b>%0.4fs</b></td>' %
+            print('\t\t<td style="text-align: right" %s><b>%0.4fs</b></td>' %
                   (test_msg, clf_data['testing_time']))
         else:
-            print('\t\t<td align="right" %s>%0.4fs</td>' %
+            print('\t\t<td style="text-align: right" %s>%0.4fs</td>' %
                   (test_msg, clf_data['testing_time']))
         print("    </tr>")
     print("</tbody>")
@@ -262,7 +269,7 @@ def view_image(image, label=""):
     show()
 
 
-def get_data():
+def get_data(dataset='iris'):
     """
     Get data ready to learn with.
 
@@ -270,7 +277,6 @@ def get_data():
     -------
     dict
     """
-    dataset = 'iris'
     if dataset == 'iris':
         import sklearn
         from sklearn.datasets import fetch_mldata
