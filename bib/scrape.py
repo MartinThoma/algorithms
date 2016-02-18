@@ -97,11 +97,13 @@ def get_data(location, weeks=1, nr_type='seatestimate'):
 
     """
     url = ("http://seatfinder.bibliothek.kit.edu/karlsruhe/getdata.php?"
-           "values[0]=%s"
-           "&location[0]=%s"
-           "&after[0]=-%iweeks"  # ' OR 1=1 OR '
+           "values[0]={table}"
+           "&location[0]={location}"
+           "&after[0]=-{weeks}weeks"
            "&limit[0]=20000"
-           "&legend[0]=true") % (nr_type, location, weeks)
+           "&legend[0]=true").format(table=nr_type,
+                                     location=location,
+                                     weeks=weeks)
     loaded = json.load(urllib2.urlopen(url))[0][nr_type]
     return loaded[location]
 
@@ -136,7 +138,8 @@ def add_data(path_to_db, data, table):
                    "`location_name`, `{row_counter}`) "
                    "VALUES ('{date}', '{timezone_type}', "
                    "'{timezone}', '{location_name}',"
-                   "'{counter}');").format(table=table,
+                   "'{counter}');"
+                   "").format(table=table,
                               row_counter=row_counter,
                               date=el['timestamp']['date'],
                               timezone_type=el['timestamp']['timezone_type'],

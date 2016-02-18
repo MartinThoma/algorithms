@@ -28,3 +28,4 @@ htmlcov
 .mr.developer.cfg
 
 secret.json
+*.db
