@@ -22,7 +22,11 @@
 
     <ul>
         {% for publication in publications %}
-        <li>{{ publication.year }}: {{ publication.title }}. <a href=""><span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> {% if publication.pdf %}<a href="{{ publication.pdf }}"><span class="glyphicon glyphicon-download" aria-hidden="true"></span></a>{% endif %}</li>
+        <li><span class="h-cite"><time class="dt-published">{{ publication.year }}</time>: <cite>{{ publication.title }}</cite>. <a class="u-url p-name" href="{{ publication.link }}"><span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a>
+            {% if publication.pdf %}
+                <a href="{{ publication.pdf }}"><span class="glyphicon glyphicon-download" aria-hidden="true"></span></a>
+            {% endif %}</span>
+        </li>
         {% endfor %}
     </ul>
 
