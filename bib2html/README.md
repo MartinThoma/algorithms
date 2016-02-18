@@ -36,3 +36,8 @@ optional arguments:
 ## Output
 
 See [out.html](https://github.com/MartinThoma/algorithms/blob/master/bib2html/out.html)
+
+
+## Known Issues
+
+* https://github.com/sciunto-org/python-bibtexparser/issues/116
