@@ -7,7 +7,7 @@ from jinja2 import Template
 import pprint
 
 
-def main(bibtexfile_path):
+def main(bibtexfile_path, output_path):
     """Orchestrate the creation process."""
     # Read the HTML template
     with open("template.html") as f:
@@ -23,7 +23,7 @@ def main(bibtexfile_path):
 
     # Create and store the HTML
     out_str = t.render(publications=publications)
-    with open("out.html", "wb") as f:
+    with open(output_path, "wb") as f:
         f.write(out_str.encode('utf-8'))
 
 
@@ -67,9 +67,14 @@ def get_parser():
                         default="example.bib",
                         help="read bibtex file from this location",
                         metavar="BIBTEXFILE")
+    parser.add_argument("-o", "--out",
+                        dest="output_path",
+                        default="out.html",
+                        help="path where to write generated HTML code",
+                        metavar="OUTPUTHTML")
     return parser
 
 
 if __name__ == '__main__':
     args = get_parser().parse_args()
-    main(args.bibtexfile_path)
+    main(args.bibtexfile_path, args.output_path)

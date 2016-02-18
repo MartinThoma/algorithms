@@ -17,7 +17,7 @@ Install the requirements by `pip install -r requirements.txt`
 ```bash
 $ ./create_html.py --help
 
-usage: create_html.py [-h] [-b BIBTEXFILE]
+usage: create_html.py [-h] [-b BIBTEXFILE] [-o OUTPUTHTML]
 
 Create a HTML file from a .bibtex file.
 
@@ -26,6 +26,9 @@ optional arguments:
   -b BIBTEXFILE, --bibtex BIBTEXFILE
                         read bibtex file from this location (default:
                         example.bib)
+  -o OUTPUTHTML, --out OUTPUTHTML
+                        path where to write generated HTML code (default:
+                        out.html)
 
 ```
 
