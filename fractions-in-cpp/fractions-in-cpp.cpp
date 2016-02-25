@@ -4,7 +4,7 @@ using namespace std;
 
 class Fraction {
     private:
-        // Calculates the greates common divisor with 
+        // Calculates the greates common divisor with
         // Euclid's algorithm
         // both arguments have to be positive
         long long gcd(long long a, long long b) {
