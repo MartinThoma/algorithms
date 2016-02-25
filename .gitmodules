@@ -1,0 +1,3 @@
+[submodule "OpenGL-Examples"]
+	path = OpenGL-Examples
+	url = https://github.com/progschj/OpenGL-Examples
