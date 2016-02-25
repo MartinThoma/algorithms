@@ -1,3 +1,6 @@
 [submodule "OpenGL-Examples"]
 	path = OpenGL-Examples
 	url = https://github.com/progschj/OpenGL-Examples
+[submodule "glsl/modern-tutorials"]
+	path = glsl/modern-tutorials
+	url = https://gitlab.com/wikibooks-opengl/modern-tutorials.git
