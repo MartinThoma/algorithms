@@ -43,6 +43,15 @@ def bernstein_value(n, i, u):
     """
     Calculate value of the i-the Bernstein polynomial at u.
 
+    Parameters
+    ----------
+    n : int
+        Degree of the Bernstein polynomial
+    b : list of tuples of floats
+        Controll points
+    u : float in [0, 1]
+        Place where to evaluate the Bernstein polynomial
+
     Examples
     --------
     >>> bernstein_value(3, 0, 0)
@@ -57,6 +66,15 @@ def exact(n, b, u):
     """
     Calculate the exact value of the Bernstein polynomial b at u.
 
+    Parameters
+    ----------
+    n : int
+        Degree of the Bernstein polynomial
+    b : list of tuples of floats
+        Controll points
+    u : float in [0, 1]
+        Place where to evaluate the Bernstein polynomial
+
     Examples
     --------
     >>> exact(3, [(0, 0), (1, 0), (0, 1), (1, 1)], 0)
@@ -68,24 +86,31 @@ def exact(n, b, u):
     return tuple(res)
 
 
-def plot():
-    """Show a plot of a polynomial."""
+def plot(b, interpolation_points=50):
+    """
+    Show a plot of a polynomial.
+
+    Parameters
+    ----------
+    b : list of tuples of floats
+        Controll points
+    """
     import matplotlib.pyplot as plt
-    us = np.linspace(0, 1, 500)
-    controll_points = [(0, 0), (200, 100), (-100, 100), (100, 0)]
-    points = [de_casteljau(3, controll_points, u) for u in us]
+    us = np.linspace(0, 1, interpolation_points)
+    points = [de_casteljau(3, b, u) for u in us]
     xs = [point[0] for point in points]
     ys = [point[1] for point in points]
     plt.plot(xs, ys, 'ro')
 
     # Plot control points
-    xs = [point[0] for point in controll_points]
-    ys = [point[1] for point in controll_points]
+    xs = [point[0] for point in b]
+    ys = [point[1] for point in b]
     plt.plot(xs, ys, 'bo')
     plt.show()
 
 
 if __name__ == '__main__':
-    plot()
+    controll_points = [(0, 0), (200, 100), (-100, 100), (100, 0)]
+    plot(controll_points)
     import doctest
     doctest.testmod()
