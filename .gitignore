@@ -29,3 +29,4 @@ htmlcov
 
 secret.json
 *.db
+OpenGL/basic-info/info
