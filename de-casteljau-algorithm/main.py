@@ -30,11 +30,18 @@ def de_casteljau(n, b, u):
     assert 0 <= u <= 1
     assert len(b) == n+1
     b = np.array(b)
+
+    # Initialize p with the values of b
     p = []
     p.append([b[i] for i in range(n + 1)])
+
+    # Get the value by a series of linear interpolations.
     for j in range(1, n+1):
         p.append([])
         for i in range(n-j+1):
+            # Put a line through the i-th and the (i+1)-th point.
+            # Take the point which is u% of the distance between i and i+1
+            # on the line.
             p[j].append((1.0-u)*p[j-1][i] + u*p[j-1][i+1])
     return tuple(p[n][0])
 
