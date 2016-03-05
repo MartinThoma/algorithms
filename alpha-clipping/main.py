@@ -18,7 +18,7 @@ def main():
     print(alpha_clipping(rectangle, Line(p3, p5)))
 
 
-class Point:
+class Point(object):
     """A point identified by (x,y) coordinates."""
 
     def __init__(self, x=0.0, y=0.0):
@@ -52,7 +52,7 @@ class Point:
         return Point(other * self.x, other * self.y)
 
 
-class Rectangle:
+class Rectangle(object):
     """A rectangle identified by two points."""
 
     def __init__(self, p1, p2):
@@ -119,7 +119,7 @@ class Rectangle:
             return self.y_max - p.y
 
 
-class Line:
+class Line(object):
     """A line identified by two points."""
 
     def __init__(self, p1, p2):
