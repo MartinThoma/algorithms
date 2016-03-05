@@ -107,8 +107,8 @@ class Rectangle:
         -------
         float
         """
-        assert e in [0, 1, 2, 3], "%s is not in [0, 1, 2, 3]" % str(e)
-        assert isinstance(p, Point), "%r is not a point" % p
+        assert e in [0, 1, 2, 3], "e=%s is not in [0, 1, 2, 3]" % str(e)
+        assert isinstance(p, Point), "p=%r is not a point" % p
         if e == 0:  # left
             return p.x - self.x_min
         elif e == 1:  # right
@@ -131,8 +131,8 @@ class Line:
         p1 : Point
         p2 : Point
         """
-        assert isinstance(p1, Point), "%r is not a point" % p1
-        assert isinstance(p2, Point), "%r is not a point" % p2
+        assert isinstance(p1, Point), "p1=%r is not a point" % p1
+        assert isinstance(p2, Point), "p2=%r is not a point" % p2
         self.p1 = p1
         self.p2 = p2
 
@@ -145,7 +145,7 @@ class Line:
 
 def alpha_clipping(rectangle, line):
     """
-    Make alpha-clipping.
+    Apply alpha-clipping of `line` according to `rectangle`.
 
     Parameters
     ----------
@@ -154,7 +154,8 @@ def alpha_clipping(rectangle, line):
 
     Returns
     -------
-    `None` or a dictionary containing the line segment
+    `None` or a dictionary containing the line segment which is inside of
+    `rectangle`
     """
     a_min = 0.0
     a_max = 1.0
