@@ -154,8 +154,7 @@ def alpha_clipping(rectangle, line):
 
     Returns
     -------
-    `None` or a dictionary containing the line segment which is inside of
-    `rectangle`
+    `None` or Line within rectangle
     """
     a_min = 0.0
     a_max = 1.0
@@ -176,7 +175,7 @@ def alpha_clipping(rectangle, line):
     if a_min > a_max:
         return None  # non-trivial reject
     else:
-        # Ok, now we have a line which is parametrized like this:
+        # Now we have a line which is parametrized like this:
         # P1 + a * (P2 - P1) with a in [a_min, a_max]
         # We want a line which is parametrized like this:
         # P1' + a * (P2' - P1') with a in [0, 1]
