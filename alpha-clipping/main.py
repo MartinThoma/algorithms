@@ -5,17 +5,20 @@
 
 def main():
     """Test some simple examples."""
-    p1 = Point(0.0, 0.0)
-    p2 = Point(10.0, 4.0)
+    pl = Point(0.0, 0.0)
+    pr = Point(10.0, 6.0)
+    p0 = Point(-3.0, 4.0)
+    p1 = Point(6.0, -2.0)
     p3 = Point(-1.0, -1.0)
     p4 = Point(4.0, 4.0)
     p5 = Point(1.0, 100.0)
-    rectangle = Rectangle(p1, p2)
-    print(alpha_clipping(rectangle, Line(p1, p2)))
-    print(alpha_clipping(rectangle, Line(p3, p2)))
+    rectangle = Rectangle(pl, pr)
+    print(alpha_clipping(rectangle, Line(p1, pr)))
+    print(alpha_clipping(rectangle, Line(p3, pr)))
     print(alpha_clipping(rectangle, Line(p3, p4)))
     print(alpha_clipping(rectangle, Line(p1, p3)))
     print(alpha_clipping(rectangle, Line(p3, p5)))
+    print(alpha_clipping(rectangle, Line(p0, p1)))
 
 
 class Point(object):
@@ -179,6 +182,8 @@ def alpha_clipping(rectangle, line):
         # P1 + a * (P2 - P1) with a in [a_min, a_max]
         # We want a line which is parametrized like this:
         # P1' + a * (P2' - P1') with a in [0, 1]
+        print("a_min=%0.2f" % a_min)
+        print("a_max=%0.2f" % a_max)
         p1s = line.p1 + a_min * (line.p2 - line.p1)
         p2s = line.p1 + a_max * (line.p2 - line.p1)
         return Line(p1s, p2s)
