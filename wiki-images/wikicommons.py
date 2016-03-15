@@ -16,6 +16,71 @@ logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     stream=sys.stdout)
 
 
+def create_filelist(category):
+    """
+    Create a list of files in a category.
+
+    Parameters
+    ----------
+    category : string
+
+    Returns
+    -------
+    list
+
+    Examples
+    --------
+    >> wikicommons.create_filelist('Category:Unidentified Convolvulaceae')
+    """
+    filelist = []
+    cats_to_explore = [category]
+
+    catsub = len("Category:")
+
+    while len(cats_to_explore) > 0:
+        sub_cat = cats_to_explore.pop()  # Get next category
+        sub_filelist = get_direct_files(sub_cat)  # Get direct members
+        for el in sub_filelist:
+            entry = {'filename': el['filename'],
+                     'category': os.path.join(category[catsub:],
+                                              el['category'][catsub:])}
+            filelist.append(entry)
+        # get subcategories
+        sub_categories = get_subcategories(sub_cat)
+        for el in sub_categories:
+            cats_to_explore.append(el)
+        logging.info("Done with sub_category '%s' (%i files)",
+                     sub_cat,
+                     len(sub_filelist))
+    return filelist
+
+
+def get_direct_files(category):
+    """Get a list of all files in category."""
+    filelist = []
+    has_continue = True
+    data = {}
+    while has_continue:
+        base_url = "https://commons.wikimedia.org/w/api.php"
+        url = ("{base_url}?action=query&list=categorymembers&cmtype=file"
+               "&format=json"
+               "&cmtitle={category}"
+               .format(base_url=base_url,
+                       category=urllib.quote_plus(category.encode('utf-8'))))
+        if 'continue' in data:
+            url += "&cmcontinue=%s" % data['continue']['cmcontinue']
+        response = urllib2.urlopen(url)
+        jsondata = response.read()
+        data = json.loads(jsondata)
+        for el in data['query']['categorymembers']:
+            filename = el['title'][len("File:"):]
+            filelist.append({'filename': filename,
+                             'category': category})
+        has_continue = 'continue' in data
+
+    return filelist
+
+
 def get_image(commons_name, pixels, local_filename):
     """
     Get a single image from Wikipedia Commons.
@@ -94,7 +159,7 @@ def download_category_files(category, pixels, local_folder='.'):
            "&format=json"
            "&cmtitle={category}"
            .format(base_url=base_url,
-                   category=urllib.quote_plus(category)))
+                   category=urllib.quote_plus(category.encode('utf-8'))))
     response = urllib2.urlopen(url)
     jsondata = response.read()
     data = json.loads(jsondata)
@@ -127,7 +192,7 @@ def get_subcategories(category):
            "&format=json"
            "&cmtitle={category}"
            .format(base_url=base_url,
-                   category=urllib.quote_plus(category)))
+                   category=urllib.quote_plus(category.encode('utf-8'))))
     response = urllib2.urlopen(url)
     jsondata = response.read()
     data = json.loads(jsondata)
