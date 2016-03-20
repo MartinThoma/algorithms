@@ -20,9 +20,16 @@ def get_parser():
                         default=128,
                         type=int,
                         help="which size to download")
+    parser.add_argument("-i", "--intermediate",
+                        default="data.json",
+                        dest="intermediate_filepath",
+                        help="file to store progress in downloading",
+                        metavar="JSONFILE")
     return parser
 
 
 if __name__ == "__main__":
     args = get_parser().parse_args()
-    wikicommons.download_complete_category(args.category, args.size, '.')
+    wikicommons.download_filelist(args.category,
+                                  args.intermediate_filepath,
+                                  args.size)

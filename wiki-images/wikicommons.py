@@ -36,23 +36,64 @@ def create_filelist(category):
     cats_to_explore = [category]
 
     catsub = len("Category:")
+    visited_categories = []
 
     while len(cats_to_explore) > 0:
         sub_cat = cats_to_explore.pop()  # Get next category
         sub_filelist = get_direct_files(sub_cat)  # Get direct members
         for el in sub_filelist:
             entry = {'filename': el['filename'],
+                     'status': 'registered',
                      'category': os.path.join(category[catsub:],
                                               el['category'][catsub:])}
             filelist.append(entry)
         # get subcategories
         sub_categories = get_subcategories(sub_cat)
         for el in sub_categories:
-            cats_to_explore.append(el)
-        logging.info("Done with sub_category '%s' (%i files)",
+            if el not in visited_categories:
+                cats_to_explore.append(el)
+            else:
+                logging.warning("Double category (%s)", sub_cat)
+        visited_categories.append(sub_cat)
+        logging.info("Done with sub_category '%s' (%i files), %i remaining",
                      sub_cat,
-                     len(sub_filelist))
+                     len(sub_filelist),
+                     len(cats_to_explore))
     return filelist
+
+
+def download_filelist(category, file_path, pixels):
+    """Download all files in filelist."""
+    if os.path.isfile(file_path):
+        with open(file_path) as data_file:
+            filelist = json.load(data_file)
+    else:
+        # File does not exist right now. Get data and create it.
+        logging.info("No file '%s' found. Get data.", file_path)
+        filelist = create_filelist(category)
+        logging.info("Got data for category '%s'. Write it to '%s'",
+                     category,
+                     file_path)
+        with open(file_path, 'w') as fp:
+            json.dump(filelist, fp, indent=2)
+
+    logging.info("The category '%s' has %i images.",
+                 category,
+                 len(filelist))
+
+    # Now load the images
+    logging.info("Start loading images for category '%s'", category)
+    for el in filelist:
+        if el['status'] != 'downloaded':
+            el['status'] = 'downloaded'
+            if not os.path.exists(el['category']):
+                os.makedirs(el['category'])
+            get_image(el['filename'],
+                      pixels,
+                      os.path.join(el['category'], el['filename']))
+            with open(file_path, 'w') as fp:
+                json.dump(filelist, fp, indent=2)
+    logging.info('Done loading files.')
 
 
 def get_direct_files(category):
