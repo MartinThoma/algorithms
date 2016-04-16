@@ -6,6 +6,26 @@
 import csv
 
 
+class HashTree(object):
+    """
+    A hash tree to get the support of a set faster.
+
+    Parameters
+    ----------
+    k : int
+    itemsets : list of sets
+    """
+
+    def __init__(self, k, itemsets):
+        """Constructur."""
+        pass  # TODO
+
+
+def get_item_hash(item):
+    """Get a hash of an item."""
+    pass  # TODO
+
+
 def get_frequent_items(itemsets, threshold=0.5):
     """
     Get the frequency of all items.
@@ -91,22 +111,20 @@ def apriori(itemsets, threshold=0.05):
     frequent_itemsets = {}
 
     # Create 1-Element frequent itemsets
-    f_items = get_frequent_items(itemsets, threshold=threshold)
-    frequent_itemsets[1] = f_items
+    large_k = get_frequent_items(itemsets, threshold=threshold)
+    frequent_itemsets[1] = large_k
 
     # Create k-element frequent itemsets
     k = 2
-    while len(f_items) > 0:
-        f_items = apriori_join(f_items)
-        f_items = apriori_prune(itemsets, f_items, threshold=threshold)
-        # Support Counting
-        frequent_itemsets[k] = f_items
+    while len(large_k) > 0:
+        candidates_k = apriori_gen(large_k)
+        large_k = apriori_prune(itemsets, candidates_k, threshold=threshold)
+        frequent_itemsets[k] = large_k
         k += 1
-        break  # TODO
     return frequent_itemsets
 
 
-def apriori_join(f_items):
+def apriori_gen(f_items):
     """
     Create (k+1)-itemsets from all frequent k-itemsets.
 
@@ -172,10 +190,15 @@ def get_parser():
                         default="groceries.csv",
                         help="CSV-FILE to read",
                         metavar="CSV-FILE")
+    parser.add_argument("--threshold",
+                        dest="threshold",
+                        default=0.001,
+                        type=float,
+                        help="Minimum support")
     return parser
 
 
-def main(filename):
+def main(filename, threshold):
     """Print interesting stuff of data."""
     data = get_data(filename)
     print("Transactions: %i" % len(data))
@@ -197,11 +220,13 @@ def main(filename):
                       support=get_support(data,
                                           set(item['itemset']),
                                           probability=True)*100))
-    print("\napriori")
-    print("--------")
-    f_itemsets = apriori(data, threshold=0.01)
+    print("\napriori(threshold=%0.4f)" % threshold)
+    print("-------------------------")
+    f_itemsets = apriori(data, threshold=threshold)
     k = 1
     while k in f_itemsets:
+        if len(f_itemsets[k]) == 0:
+            break
         print("\nk={k}".format(k=k))
         max_itemlength = max([len(", ".join(item['itemset']))
                              for item in f_itemsets[k]])
@@ -215,4 +240,4 @@ def main(filename):
 
 if __name__ == '__main__':
     args = get_parser().parse_args()
-    main(args.filename)
+    main(args.filename, args.threshold)
