@@ -31,3 +31,4 @@ secret.json
 *.db
 OpenGL/basic-info/info
 OpenGL/*/main
+.ipynb_checkpoints
