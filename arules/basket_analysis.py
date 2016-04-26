@@ -99,8 +99,8 @@ def get_confidence(itemsets, itemset_a, itemset_b):
     itemset_b : set
         Itemset B
     """
-    return (float(get_support(itemset_a.union(itemset_b))) /
-            float(get_support(itemset_a)))
+    return (float(get_support(itemsets, itemset_a.union(itemset_b))) /
+            float(get_support(itemsets, itemset_a)))
 
 
 def apriori(itemsets, threshold=0.05):
@@ -122,6 +122,51 @@ def apriori(itemsets, threshold=0.05):
         frequent_itemsets[k] = large_k
         k += 1
     return frequent_itemsets
+
+
+def generate_arules(itemsets, f_itemset, min_confidence=0.8):
+    """
+    Generate association rules from a frequent itemset.
+
+    Parameters
+    ----------
+    itemsets : list
+        All available itemsets.
+    f_itemset : set
+    min_confidence : float
+
+    Yields
+    ------
+    tuples of (set A, set B, float confidence)
+        Set A => Set B with confidence
+    """
+    assert min_confidence >= 0.0
+
+    for set_a, set_b in set_partitions(f_itemset['itemset']):
+        confidence = get_confidence(itemsets, set_a, set_b)
+        if confidence >= min_confidence:
+            yield (set_a, set_b, confidence)
+
+
+def set_partitions(complete_set):
+    """
+    Generate all partitions into two set of complete_set.
+
+    Parameters
+    ----------
+    complete_set : set
+
+    Yields
+    -------
+    tuple of set
+        Two sets which give, when combined, complete_set
+    """
+    from itertools import combinations
+    for r in range(len(complete_set)):
+        for set_a in combinations(complete_set, r):
+            set_a = set(set_a)
+            set_b = complete_set - set_a
+            yield (set_a, set_b)
 
 
 def apriori_gen(f_items):
@@ -192,7 +237,7 @@ def get_parser():
                         metavar="CSV-FILE")
     parser.add_argument("--threshold",
                         dest="threshold",
-                        default=0.001,
+                        default=0.01,
                         type=float,
                         help="Minimum support")
     return parser
@@ -200,10 +245,10 @@ def get_parser():
 
 def main(filename, threshold):
     """Print interesting stuff of data."""
-    data = get_data(filename)
-    print("Transactions: %i" % len(data))
+    itemsets = get_data(filename)
+    print("Transactions: %i" % len(itemsets))
 
-    frequent_items = get_frequent_items(data, threshold=0)
+    frequent_items = get_frequent_items(itemsets, threshold=0)
     print("Total different items: %i\n" % len(frequent_items))
 
     n = 10
@@ -217,12 +262,12 @@ def main(filename, threshold):
                % (len(str(frequent_items[0]['count'])), max_itemlength))
               .format(item_count=item['count'],
                       item=", ".join(item['itemset']),
-                      support=get_support(data,
+                      support=get_support(itemsets,
                                           set(item['itemset']),
                                           probability=True)*100))
     print("\napriori(threshold=%0.4f)" % threshold)
     print("-------------------------")
-    f_itemsets = apriori(data, threshold=threshold)
+    f_itemsets = apriori(itemsets, threshold=threshold)
     k = 1
     while k in f_itemsets:
         if len(f_itemsets[k]) == 0:
@@ -235,8 +280,17 @@ def main(filename, threshold):
                    % (len(str(f_itemsets[k][0]['count'])), max_itemlength))
                   .format(item_count=item['count'],
                           item=", ".join(item['itemset']),
-                          support=(float(item['count'])/len(data))*100))
+                          support=(float(item['count'])/len(itemsets))*100))
+
+        for f_itemset in f_itemsets[k]:
+            for set_a, set_b, conf in generate_arules(itemsets,
+                                                      f_itemset,
+                                                      0.5):
+                print("{set_a:<20} => {set_b:<20} {conf:>5}"
+                      .format(set_a=set_a, set_b=set_b, conf=conf))
+
         k += 1
+
 
 if __name__ == '__main__':
     args = get_parser().parse_args()
