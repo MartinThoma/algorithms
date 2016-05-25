@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Implement the DB SCAN algorithm for."""
+"""Pseudo-implemention of the DBSCAN algorithm for learning."""
 
 
 class Point(object):
@@ -13,7 +13,7 @@ class Point(object):
         self.visited = False
 
 
-def db_scan(points, epsilon, min_points):
+def dbscan(points, epsilon, min_points):
     """
     Find clusters in points.
 
