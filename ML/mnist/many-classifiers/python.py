@@ -17,14 +17,13 @@ from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 from sklearn.neural_network import BernoulliRBM
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
+from sklearn import cross_validation
 
 import skflow
 
 
 def dropout_model(x, y):
-    """
-    This is DNN with 500, 200 hidden layers, and dropout of 0.5 probability.
-    """
+    """DNN with 500, 200 hidden layers, and dropout of 0.5 probability."""
     layers = skflow.ops.dnn(x, [500, 200], keep_prob=0.5)
     return skflow.models.logistic_regression(layers, y)
 
@@ -37,6 +36,14 @@ import tensorflow as tf
 def max_pool_2x2(tensor_in):
     """
     Max pooling of 2x2 patches with padding at the borders and stride of 2.
+
+    Parameters
+    ----------
+    tensor_in : tensor
+
+    Returns
+    -------
+    tensor
     """
     return tf.nn.max_pool(tensor_in,
                           ksize=[1, 2, 2, 1],
@@ -75,6 +82,7 @@ def conv_model(x, y):
 
 
 def main():
+    """Run experiment with multiple classifiers."""
     data = get_data()
 
     print("Got %i training samples and %i test samples." %
@@ -143,12 +151,12 @@ def main():
     for clf_name, clf in classifiers:
         print("#" * 80)
         print("Start fitting '%s' classifier." % clf_name)
-        examples = 100000
+        examples = 100000  # Reduce data to make training faster
         t0 = time.time()
         clf.fit(data['train']['X'][:examples], data['train']['y'][:examples])
         t1 = time.time()
         an_data = analyze(clf, data, t1 - t0, clf_name=clf_name)
-        classifier_data[clf_name] = {'training_time': t1-t0,
+        classifier_data[clf_name] = {'training_time': t1 - t0,
                                      'testing_time': an_data['testing_time'],
                                      'accuracy': an_data['accuracy']}
 
@@ -157,7 +165,7 @@ def main():
 
 def print_website(data):
     """
-    Print dictionary as HTML for website
+    Print dictionary as HTML for website.
 
     Parameters
     ----------
@@ -191,10 +199,10 @@ def print_website(data):
         print("\t\t<td>%s</td>" % clf_name)
         if clf_data['accuracy'] == best_acc:
             print('\t\t<td style="text-align: right" %s><b>%0.2f%%</b></td>' %
-                  (acc_msg, clf_data['accuracy']*100))
+                  (acc_msg, clf_data['accuracy'] * 100))
         else:
             print('\t\t<td style="text-align: right" %s>%0.2f%%</td>' %
-                  (acc_msg, clf_data['accuracy']*100))
+                  (acc_msg, clf_data['accuracy'] * 100))
         print('\t\t<td style="text-align: right" >%0.4fs</td>' % clf_data['training_time'])
         if clf_data['testing_time'] == best_time:
             print('\t\t<td style="text-align: right" %s><b>%0.4fs</b></td>' %
@@ -313,7 +321,7 @@ def get_data(dataset='iris'):
         y = digits.target
 
         # Scale data to [-1, 1] - This is of mayor importance!!!
-        x = x/255.0*2 - 1
+        x = x / 255.0 * 2 - 1
 
         x, y = shuffle(x, y, random_state=0)
 
