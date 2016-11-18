@@ -61,7 +61,7 @@ class Perceptron:
     weight : list
     """
 
-    def __init__(self, train, valid, test, learningRate=0.01, epochs=50):
+    def __init__(self, train, valid, test, learningRate=0.01, epochs=10):
 
         self.learningRate = learningRate
         self.epochs = epochs
