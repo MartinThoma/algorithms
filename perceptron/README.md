@@ -1,8 +1,8 @@
 ## General
 
-A perceptron is a linear, binary classifier. This perceptron can be executed
-on the MNIST dataset and recognize if an input image (28 pixel x 28 pixel) is
-a "3" or not:
+A perceptron is a linear, binary classifier. Hence the target labels are `0`
+and `1`. This perceptron can be executed on the MNIST dataset and recognize if
+an input image (28 pixel x 28 pixel) is a "3" or not:
 
 ```
 ./perceptron.py
