@@ -1,3 +1,9 @@
+## General
+
+A perceptron is a linear, binary classifier. This perceptron can be executed
+on the MNIST dataset and recognize if an input image (28 pixel x 28 pixel) is
+a "3" or not.
+
 ## Requirements
 
 You have to install two 3rd-party packages: `numpy` and `scikit-learn`.
