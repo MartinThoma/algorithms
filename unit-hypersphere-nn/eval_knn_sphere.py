@@ -52,7 +52,6 @@ def run_q_at_a_time(candidates, queries, k, n, algorithm):
     assert n >= 1
     solution = np.zeros((len(queries), k, n))
     for i, query in enumerate(queries):
-        logging.info("\ti=%i" % i)
         solution[i] = algorithm(D, query, k, n)
     return solution
 
@@ -77,11 +76,12 @@ def build_datastructure(candidates):
 
 
 # parameters
-k = 5
-n = 128
-m = 10**4
-T = 10**3
-query_batch_size = 10**3  # should divide T
+k = 5  # get k closest points
+n = 128  # dimensionality of each point / query
+m = 10**5  # candidates for closest points
+T = 10**2  # number of queries
+query_batch_size = 10**1  # should divide T
+assert T % query_batch_size == 0
 
 # paths
 query_file = "queries.hdf5"
@@ -119,7 +119,8 @@ if not os.path.isfile(query_file):
                                 dtype='float32',
                                 chunks=(query_batch_size, n))
         for i in range(T / query_batch_size):
-            logging.info("\tQuery %i of %i." % (i + 1, T / query_batch_size))
+            logging.info("\tQuery batch%i of %i." %
+                         (i + 1, T / query_batch_size))
             queries = np.array(create_points(n, query_batch_size))
             if i > 0:
                 dset.resize((dset.shape[0] + query_batch_size, n))
@@ -127,13 +128,14 @@ if not os.path.isfile(query_file):
 
 
 # Evaluate
+logging.info("Start evaluation.")
 total_time = 0
 D = create_datastructure_algorithm(candidates)
 
 with h5py.File(query_file, 'r') as f:
     queries = f.get('queries')
     for i in range(T / query_batch_size):
-        logging.info("\tQuery %i of %i." % (i + 1, T / query_batch_size))
+        logging.info("\tQuery batch %i of %i." % (i + 1, T / query_batch_size))
         q = queries[i * query_batch_size:(i + 1) * query_batch_size]
         t0 = time.time()
         solution = run_q_at_a_time(D, q, k, n, search_algorithm)  # TODO
@@ -142,4 +144,9 @@ with h5py.File(query_file, 'r') as f:
         t1 = time.time()
         total_time += t1 - t0
 logging.info("Needed %i seconds in total." % (total_time))
-logging.info("Needed %0.5f seconds for each query." % (float(total_time) / T))
+logging.info("k={k}, n={n}, m={m}, T={T}: {time:.2f}s per query."
+             .format(k=k,
+                     n=n,
+                     m=m,
+                     T=T,
+                     time=float(total_time) / T))
