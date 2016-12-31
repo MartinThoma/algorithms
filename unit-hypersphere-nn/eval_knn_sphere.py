@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 """Create benchmark for k nearest neighbor on unit sphere in R^k."""
+# Scroll down to line 100 to adjust the code
 
 import random
 import numpy as np
