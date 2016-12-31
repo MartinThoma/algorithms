@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """Create benchmark for k nearest neighbor on unit sphere in R^k."""
-# Scroll down to line 100 to adjust the code
+# Scroll down to line 90 to "Adjust this" to add your experiment
 
 import random
 import numpy as np
@@ -26,15 +26,6 @@ def create_point(n):
 def create_points(n, number):
     """Create number random points on the unit sphere in R^n."""
     return [create_point(n) for _ in range(number)]
-
-
-class ClosestPoints(object):
-    """Store the k closest points to a reference point."""
-
-    def __init__(self, reference, k):
-        self.reference = reference
-        self.closest = []
-        self.dist
 
 
 def get_dist(a, b):
