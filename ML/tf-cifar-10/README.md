@@ -16,6 +16,48 @@ Install (in this order):
 * Tensorflow: [instructions](https://www.tensorflow.org/get_started/os_setup)
 
 
+## Usage examples
+
+```
+$ python cifar10_train.py --help
+I tensorflow/stream_executor/dso_loader.cc:128] successfully opened CUDA library libcublas.so locally
+I tensorflow/stream_executor/dso_loader.cc:128] successfully opened CUDA library libcudnn.so locally
+I tensorflow/stream_executor/dso_loader.cc:128] successfully opened CUDA library libcufft.so locally
+I tensorflow/stream_executor/dso_loader.cc:128] successfully opened CUDA library libcuda.so.1 locally
+I tensorflow/stream_executor/dso_loader.cc:128] successfully opened CUDA library libcurand.so locally
+usage: cifar10_train.py [-h] [--batch_size BATCH_SIZE] [--data_dir DATA_DIR]
+                        [--use_fp16 [USE_FP16]] [--nouse_fp16]
+                        [--train_dir TRAIN_DIR] [--max_steps MAX_STEPS]
+                        [--log_device_placement [LOG_DEVICE_PLACEMENT]]
+                        [--nolog_device_placement]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --batch_size BATCH_SIZE
+                        Number of images to process in a batch.
+  --data_dir DATA_DIR   Path to the CIFAR-10 data directory.
+  --use_fp16 [USE_FP16]
+                        Train the model using fp16.
+  --nouse_fp16
+  --train_dir TRAIN_DIR
+                        Directory where to write event logs and checkpoint.
+  --max_steps MAX_STEPS
+                        Number of batches to run.
+  --log_device_placement [LOG_DEVICE_PLACEMENT]
+                        Whether to log device placement.
+  --nolog_device_placement
+
+```
+
+Now run it:
+
+```
+$ mkdir checkpoints
+$ mkdir data
+$ python cifar10_train.py --max_steps 200 --train_dir checkpoints --data_dir data
+```
+
+
 ## How it looks like when it works
 
 ```
