@@ -2,9 +2,11 @@
 
 """Create hwrt-offline dataset."""
 
-import json
 from PIL import Image, ImageDraw
 import csv
+import json
+import os
+import sys
 
 
 def load_csv(filepath):
@@ -63,23 +65,37 @@ def draw(target_path, lines):
     im.save(target_path)
 
 
-def generate_dataset(data, symbols_df, directory):
+def generate_dataset(data, symbols_dict, directory):
     """Generate a dataset."""
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    else:
+        print("Directory '%s' already exists. Please remove it.")
+        sys.exit(-1)
     print("Start generating 32x32 images for %i instances of %i symbols" %
-          (len(data), len(symbols_df)))
-    labels = []
+          (len(data), len(symbols_dict)))
+    labels = [('path', 'symbol_id', 'latex')]
     for i in range(len(data)):
         if i % 1000 == 0:
             print("\t%i done" % i)
         target_path = "%s/%s.png" % (directory, data[i]['i'])
         draw(target_path, lines=data[i]['data'])
-        labels.append((target_path, data[i]['symbol_id']))
-    with open('%s/labels.csv', 'w') as f:
+        labels.append((target_path,
+                       data[i]['symbol_id'],
+                       symbols_dict[data[i]['symbol_id']]))
+    with open('%s-labels.csv' % directory, 'w') as f:
         a = csv.writer(f, delimiter=',')
-        a.writerows(data)
+        a.writerows(labels)
 
 symbols_df = load_csv('symbols.csv')
-print(symbols_df)
+symbols = {}
+for row in symbols_df:
+    symbols[row['symbol_id']] = row['latex']
 
-generate_dataset(load_dataset('test-data.csv'), symbols_df, directory='test')
-generate_dataset(load_dataset('train-data.csv'), symbols_df, directory='train')
+generate_dataset(load_dataset('test-data.csv'),
+                 symbols,
+                 directory='masym-test')
+print("Start loading train data...")
+generate_dataset(load_dataset('train-data.csv'),
+                 symbols,
+                 directory='masym-train')
