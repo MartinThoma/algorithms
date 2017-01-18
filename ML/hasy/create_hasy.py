@@ -60,8 +60,18 @@ def draw(target_path, lines):
     im = Image.new('RGB', (width, height), (255, 255, 255))
     draw = ImageDraw.Draw(im)
     for line in lines:
+        had_difference = False
+        p = line[0]
         for p1, p2 in zip(line, line[1:]):
-            draw.line((p1['x'], p1['y'], p2['x'], p2['y']), fill=0, width=2)
+            if int(abs(p1['x'] - p2['x'])) + int(abs(p1['y'] - p2['y'])) > 0:
+                had_difference = True
+            draw.line((p1['x'], p1['y'], p2['x'], p2['y']),
+                      fill=0,
+                      width=2)
+        if not had_difference:
+            r = 2
+            x, y = p['x'], p['y']
+            draw.ellipse((x - r, y - r, x + r, y + r), fill=0)
     im.save(target_path)
 
 
@@ -94,8 +104,8 @@ for row in symbols_df:
 
 generate_dataset(load_dataset('test-data.csv'),
                  symbols,
-                 directory='masym-test')
+                 directory='hasy-test')
 print("Start loading train data...")
 generate_dataset(load_dataset('train-data.csv'),
                  symbols,
-                 directory='masym-train')
+                 directory='hasy-train')
