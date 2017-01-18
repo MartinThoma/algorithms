@@ -83,7 +83,7 @@ def get_nonexisting_path(model_checkpoint_path):
         return gen_filename
 
 
-hasy = input_data.read_data_sets('HASYv1', one_hot=True)
+hasy = input_data.read_data_sets('HASYv2', one_hot=True)
 
 with tf.Session() as sess:
     x = tf.placeholder(tf.float32, shape=[None, 1024])
