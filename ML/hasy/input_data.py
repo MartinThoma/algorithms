@@ -78,7 +78,6 @@ def load_images(dataset_path, csv_file_path, symbol_id2index):
         data = images, numpy.array(labels)
         with open(pickle_filepath, 'wb') as handle:
             pickle.dump(data, handle, protocol=pickle.HIGHEST_PROTOCOL)
-    print(data[1])
     data = (data[0], numpy.eye(369)[data[1]])
     return data
 
@@ -202,7 +201,12 @@ def read_data_sets(train_dir,
         raise ValueError(
             'Validation size should be between 0 and {}. Received: {}.'
             .format(len(train_images), validation_size))
-
+    # Shuffle data
+    perm = numpy.arange(len(train_labels))
+    numpy.random.shuffle(perm)
+    train_images = train_images[perm]
+    train_labels = train_labels[perm]
+    # Split training set in training and validation set
     validation_images = train_images[:validation_size]
     validation_labels = train_labels[:validation_size]
     train_images = train_images[validation_size:]

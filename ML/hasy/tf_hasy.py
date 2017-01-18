@@ -9,7 +9,7 @@ from tensorflow.python.framework import ops
 import os
 import numpy as np
 
-epochs = 20000
+epochs = 200000
 model_checkpoint_path = 'checkpoints/hasy_tf_model.ckpt'
 
 
@@ -97,16 +97,16 @@ with tf.Session() as sess:
     h_pool1 = max_pool_2x2(h_conv1)
 
     with tf.variable_scope('conv2') as scope:
-        W_conv2 = weight_variable([5, 5, 32, 64])
-        b_conv2 = bias_variable([64])
+        W_conv2 = weight_variable([5, 5, 32, 32])
+        b_conv2 = bias_variable([32])
         h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2, name='ReLU2')
     h_pool2 = max_pool_2x2(h_conv2)
 
     with tf.variable_scope('fc1'):
-        W_fc1 = weight_variable([8 * 8 * 64, 500])
-        b_fc1 = bias_variable([500])
+        W_fc1 = weight_variable([8 * 8 * 32, 1000])
+        b_fc1 = bias_variable([1000])
 
-        h_pool2_flat = tf.reshape(h_pool2, [-1, 8 * 8 * 64])
+        h_pool2_flat = tf.reshape(h_pool2, [-1, 8 * 8 * 32])
         h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
 
     with tf.variable_scope('dropout'):
@@ -114,7 +114,7 @@ with tf.Session() as sess:
         h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
 
     with tf.variable_scope('softmax'):
-        W_fc2 = weight_variable([500, 369])
+        W_fc2 = weight_variable([1000, 369])
         b_fc2 = bias_variable([369])
 
         y_conv = tf.nn.softmax(tf.matmul(h_fc1_drop, W_fc2) + b_fc2)
@@ -155,7 +155,6 @@ with tf.Session() as sess:
     print("model_checkpoint_path: %s" % model_checkpoint_path)
     print("validation_curve_path: %s" % validation_curve_path)
     if not os.path.isfile(model_checkpoint_path):
-        print(hasy.train.labels)
         for i in range(epochs):
             batch = hasy.train.next_batch(50)
             if i % 100 == 0:
