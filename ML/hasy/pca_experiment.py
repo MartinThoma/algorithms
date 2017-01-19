@@ -8,19 +8,9 @@ dataset_path = './HASYv2'
 symbol_id2index = ht.generate_index(dataset_path)
 data, y = ht.load_images(dataset_path,
                          'hasy-train-labels.csv',
-                         symbol_id2index)
+                         symbol_id2index,
+                         one_hot=False)
 data = data.reshape(data.shape[0], data.shape[1] * data.shape[2])
-
-
-def onehot2index(y):
-    t = []
-    for row in y:
-        for i, el in enumerate(row):
-            if abs(el) > 10**-7:
-                t.append(i)
-    return t
-
-y = onehot2index(y)
 X = data
 print(data.shape)
 
