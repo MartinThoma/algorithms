@@ -9,7 +9,17 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 
-MAX_DATA_LINES = 794
+csv_filename = 'validation-curve-accuracy-4.csv'
+
+
+def file_len(fname):
+    """Count the number of lines of fname."""
+    with open(fname) as f:
+        for i, l in enumerate(f):
+            pass
+    return i + 1
+
+MAX_DATA_LINES = file_len(csv_filename)
 
 xs_all, y_test_all, y_train_all = [], [], []
 epoch_sum_train = [0 for _ in range(MAX_DATA_LINES)]
@@ -17,7 +27,7 @@ epoch_sum_test = [0 for _ in range(MAX_DATA_LINES)]
 series = 0
 
 # Get the data
-for filename in natsort.natsorted(glob.glob('*.csv')):
+for filename in [csv_filename]:  # natsort.natsorted(glob.glob('*.csv')):
     series += 1
     with open(filename, 'rb') as f:
         reader = csv.reader(f, delimiter=";")
@@ -47,7 +57,7 @@ for filename in natsort.natsorted(glob.glob('*.csv')):
 # plt.plot(xs, train_means, 'b-')
 # plt.plot(xs, test_means, 'b-')
 
-plt.axhline(y=0.19)
+plt.axhline(y=0.175)
 
 # This is added to the SO post
 plt.ylim(0.0, 0.5)
