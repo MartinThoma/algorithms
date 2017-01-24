@@ -4,33 +4,18 @@
 
 import input_data
 import tensorflow as tf
-from tensorflow.python.framework import ops
+import tflearn
+import tflearn.utils as utils
+import tflearn.variables as vs
+from tensorflow.python.training import moving_averages
+# from tensorflow.python.framework import ops
 
 import os
 import numpy as np
 
 epochs = 200000
-model_checkpoint_path = 'checkpoints/hasy_tf_model.ckpt'
-
-
-def weight_variable(shape):
-    initial = tf.truncated_normal(shape, stddev=0.1)
-    #initial = tf.constant(0.0, shape=shape)
-    return tf.get_variable(initializer=initial, name='weights')
-
-
-def bias_variable(shape):
-    initial = tf.constant(0.1, shape=shape)
-    return tf.get_variable(initializer=initial, name='biases')
-
-
-def conv2d(x, W):
-    return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding='SAME')
-
-
-def max_pool_2x2(x):
-    return tf.nn.max_pool(x, ksize=[1, 2, 2, 1],
-                          strides=[1, 2, 2, 1], padding='SAME')
+MODEL_NAME = '3-48-64-128-369'
+model_checkpoint_path = 'checkpoints/hasy_%s_model.ckpt' % MODEL_NAME
 
 
 def eval_network(sess, summary_writer, dataset, correct_prediction, epoch,
@@ -43,7 +28,8 @@ def eval_network(sess, summary_writer, dataset, correct_prediction, epoch,
     for i in range(dataset.labels.shape[0] / 1000):
         feed_dict = {x: dataset.images[i * 1000:(i + 1) * 1000],
                      y_: dataset.labels[i * 1000:(i + 1) * 1000],
-                     keep_prob: 1.0}
+                     # keep_prob: 1.0
+                     }
 
         if mode == 'test' and make_summary:
             [test_correct, train_summ, loss_summ] = sess.run([correct_prediction,
@@ -88,36 +74,64 @@ hasy = input_data.read_data_sets('HASYv2', one_hot=True)
 with tf.Session() as sess:
     x = tf.placeholder(tf.float32, shape=[None, 1024])
     y_ = tf.placeholder(tf.float32, shape=[None, 369])
-    x_image = tf.reshape(x, [-1, 32, 32, 1])
-
-    with tf.variable_scope('conv1') as scope:
-        W_conv1 = weight_variable([5, 5, 1, 32])
-        b_conv1 = bias_variable([32])
-        h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1) + b_conv1, name='ReLU1')
-    h_pool1 = max_pool_2x2(h_conv1)
-
-    with tf.variable_scope('conv2') as scope:
-        W_conv2 = weight_variable([5, 5, 32, 32])
-        b_conv2 = bias_variable([32])
-        h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2, name='ReLU2')
-    h_pool2 = max_pool_2x2(h_conv2)
-
-    with tf.variable_scope('fc1'):
-        W_fc1 = weight_variable([8 * 8 * 32, 1000])
-        b_fc1 = bias_variable([1000])
-
-        h_pool2_flat = tf.reshape(h_pool2, [-1, 8 * 8 * 32])
-        h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
-
-    with tf.variable_scope('dropout'):
-        keep_prob = tf.placeholder(tf.float32)
-        h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
-
-    with tf.variable_scope('softmax'):
-        W_fc2 = weight_variable([1000, 369])
-        b_fc2 = bias_variable([369])
-
-        y_conv = tf.nn.softmax(tf.matmul(h_fc1_drop, W_fc2) + b_fc2)
+    net = tf.reshape(x, [-1, 32, 32, 1])
+    # net = batch_norm(net)
+    # net = tflearn.layers.normalization.batch_normalization(net,
+    #                                                        beta=0.0,
+    #                                                        gamma=1.0,
+    #                                                        epsilon=1e-05,
+    #                                                        decay=0.9,
+    #                                                        stddev=0.002,
+    #                                                        trainable=True)
+    net = tflearn.layers.conv.conv_2d(net,
+                                      nb_filter=48,
+                                      filter_size=3,
+                                      activation='relu',
+                                      strides=1,
+                                      weight_decay=0.0)
+    net = tflearn.layers.conv.max_pool_2d(net,
+                                          kernel_size=2,
+                                          strides=2,
+                                          padding='same',
+                                          name='MaxPool2D')
+    # net = tflearn.layers.normalization.batch_normalization(net,
+    #                                                        beta=0.0,
+    #                                                        gamma=1.0,
+    #                                                        epsilon=1e-05,
+    #                                                        decay=0.9,
+    #                                                        stddev=0.002,
+    #                                                        trainable=True)
+    net = tflearn.layers.conv.conv_2d(net,
+                                      nb_filter=64,
+                                      filter_size=3,
+                                      activation='relu',
+                                      strides=1,
+                                      weight_decay=0.0)
+    net = tflearn.layers.conv.max_pool_2d(net,
+                                          kernel_size=2,
+                                          strides=2,
+                                          padding='same',
+                                          name='MaxPool2D')
+    net = tflearn.layers.conv.conv_2d(net,
+                                      nb_filter=128,
+                                      filter_size=3,
+                                      activation='relu',
+                                      strides=1,
+                                      weight_decay=0.0)
+    net = tflearn.layers.conv.max_pool_2d(net,
+                                          kernel_size=2,
+                                          strides=2,
+                                          padding='same',
+                                          name='MaxPool2D')
+    # net = tflearn.global_avg_pool(net)
+    net = tflearn.layers.core.flatten(net, name='Flatten')
+    # y_conv = tflearn.activation(net, 'softmax')
+    y_conv = tflearn.layers.core.fully_connected(net, 369,
+                                                 activation='softmax',
+                                                 weights_init='truncated_normal',
+                                                 bias_init='zeros',
+                                                 regularizer=None,
+                                                 weight_decay=0)
 
     # for op in y_conv.get_operations():
     #     flops = ops.get_stats_for_node_def(g, op.node_def, 'flops').value
@@ -151,7 +165,8 @@ with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     model_checkpoint_path = get_nonexisting_path(model_checkpoint_path)
     validation_curve_path = get_nonexisting_path('validation-curves/validation'
-                                                 '-curve-accuracy.csv')
+                                                 '-curve-accuracy-%s.csv' %
+                                                 MODEL_NAME)
     print("model_checkpoint_path: %s" % model_checkpoint_path)
     print("validation_curve_path: %s" % validation_curve_path)
     if not os.path.isfile(model_checkpoint_path):
@@ -163,7 +178,8 @@ with tf.Session() as sess:
                           hasy, correct_prediction, i)
             train_step.run(feed_dict={x: batch[0],
                                       y_: batch[1],
-                                      keep_prob: 0.5})
+                                      # keep_prob: 0.5
+                                      })
 
         log_score(sess, summary_writer, validation_curve_path,
                   hasy, correct_prediction, epochs)
