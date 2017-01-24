@@ -6,14 +6,15 @@ import glob
 import natsort
 import csv
 import matplotlib.pyplot as plt
-import seaborn as sns
+import numpy as np
 import pandas as pd
 
-csv_filename = 'validation-curve-accuracy-4.csv'
+csv_filename = 'validation-curve-accuracy-3-12-12-24-369.csv'
 
 
 def file_len(fname):
     """Count the number of lines of fname."""
+    i = 0
     with open(fname) as f:
         for i, l in enumerate(f):
             pass
@@ -37,8 +38,8 @@ for filename in [csv_filename]:  # natsort.natsorted(glob.glob('*.csv')):
     validation_data = validation_data[:MAX_DATA_LINES]
 
     xs = [el[0] for el in validation_data]
-    ys_train = [1-float(el[1]) for el in validation_data]
-    ys_test = [1-float(el[2]) for el in validation_data]
+    ys_train = [1 - float(el[1]) for el in validation_data]
+    ys_test = [1 - float(el[2]) for el in validation_data]
 
     for i, y_train in enumerate(ys_train):
         epoch_sum_train[i] += y_train
@@ -58,6 +59,9 @@ for filename in [csv_filename]:  # natsort.natsorted(glob.glob('*.csv')):
 # plt.plot(xs, test_means, 'b-')
 
 plt.axhline(y=0.175)
+plt.axhline(y=0.01)
+x = np.linspace(0, MAX_DATA_LINES * 100, 100)  # 100 linearly spaced numbers
+plt.plot(x, (-10 * 10**-7) * x + 0.17, color="red")  # sin(x)/x
 
 # This is added to the SO post
 plt.ylim(0.0, 0.5)
@@ -73,14 +77,5 @@ d = {'train': pd.Series(y_train_all, index=xs_all),
      'epoch': pd.Series(xs_all, index=xs_all)}
 df = pd.DataFrame(d)
 df.index.name = 'epoch'
-
-
-
-# None of those worked
-#ax = sns.violinplot(x="epoch", y="train", data=df, inner=None, color=".8")
-#ax = sns.stripplot(x="epoch", y="test", data=df, jitter=True)
-#ax = sns.factorplot(x="epoch", y="train", data=df)
-#ax = sns.stripplot(x="epoch", y="train", data=df, jitter=True)
-#ax.set(ylim=(0.96, 1))
 
 plt.show()
