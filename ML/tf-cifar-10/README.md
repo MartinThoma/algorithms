@@ -57,6 +57,12 @@ $ mkdir data
 $ python cifar10_train.py --max_steps 200 --train_dir checkpoints --data_dir data
 ```
 
+If you want to know how good your model is:
+
+```
+$ python cifar10_eval.py --eval_data test --data_dir data --checkpoint_dir checkpoints
+```
+
 
 ## How it looks like when it works
 
