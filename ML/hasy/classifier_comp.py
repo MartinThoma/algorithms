@@ -122,7 +122,7 @@ def pretty_print(classifier_data):
               (train_times.mean(), train_times.min(), train_times.max()))
         print("\ttest_time:\t%0.1f (min=%0.2f, max=%0.2f)" %
               (test_times.mean(), test_times.min(), test_times.max()))
-        print("\tacc:\t\t%0.1f (min=%0.2f, max=%0.2f)" %
+        print("\tacc:\t\t%0.4f (min=%0.4f, max=%0.4f)" %
               (accuracy.mean(), accuracy.min(), accuracy.max()))
     print(classifier_data)
 
