@@ -31,15 +31,18 @@ def swap(cm, i, j):
 
 
 def random_optimizer(cm):
+    """Optimize cm by randomly swapping elements."""
     n = len(cm)
     best_score = calculate_score(cm)
-    for _ in range(1000):
+    steps = 2 * 10**4
+    for _ in range(steps):
         tmp = np.array(cm, copy=True)
         tmp = swap(tmp, random.randint(0, n - 1), random.randint(0, n - 1))
         tmp_score = calculate_score(tmp)
         if best_score > tmp_score:
-            cm = tmp
             best_score = tmp_score
+            cm = tmp
+            print(best_score)
     return cm
 
 
