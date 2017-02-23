@@ -93,24 +93,24 @@ def read_and_decode(filename_queue):
 
 def get_all_records(record_filename):
     """Get all records from record_filename."""
+    records = []
     with tf.Session() as sess:
         filename_queue = tf.train.string_input_producer([record_filename])
         image, label, height, width, depth = read_and_decode(filename_queue)
         image = tf.reshape(image, tf.stack([height, width, 3]))
-        image.set_shape([720, 720, 3])
         init_op = tf.global_variables_initializer()
         sess.run(init_op)
         coord = tf.train.Coordinator()
         threads = tf.train.start_queue_runners(coord=coord)
-        nr_of_images = 2
+        nr_of_images = 1
         for i in range(nr_of_images):
             example, label = sess.run([image, label])
             img = Image.fromarray(example, 'RGB')
-            print("label: %i" % label)
-            scipy.misc.imshow(img)
+            records.append({'image': img, 'label': label})
         coord.request_stop()
         coord.join(threads)
+    return records
 
 write_images()
-a = get_all_records('example.tfrecords')
-print(a)
+records = get_all_records('example.tfrecords')
+scipy.misc.imshow(records[0]['image'])
