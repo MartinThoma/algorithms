@@ -1,44 +1,116 @@
 #!/usr/bin/env python
 
+"""Example for reading and writing tfrecords."""
+
 import tensorflow as tf
 from PIL import Image
 import numpy as np
+import scipy.misc
 
-#  list of files to read
-filenames = ['Aurelia-aurita-3.jpg']
-filename_queue = tf.train.string_input_producer(filenames)
 
-reader = tf.WholeFileReader()
-key, value = reader.read(filename_queue)
+def _int64_feature(value):
+    return tf.train.Feature(int64_list=tf.train.Int64List(value=[value]))
 
-my_img = tf.image.decode_jpeg(value)
 
-init_op = tf.initialize_all_variables()
-with tf.Session() as sess:
-    sess.run(init_op)
+def _bytes_feature(value):
+    return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value]))
 
-    # Start populating the filename queue.
-    coord = tf.train.Coordinator()
-    threads = tf.train.start_queue_runners(coord=coord)
 
-    for i in range(len(filenames)):
-        image = my_img.eval()  # image is an image tensor
+def write_images(filenames=['Aurelia-aurita-3.jpg'],
+                 labels=[0],
+                 tf_records_filename="example.tfrecords"):
+    """
+    Write images to tfrecords file.
 
-    # Create tf.train.Example
-    bytes_list = tf.train.BytesList(value=image.tobytes())
-    feat = tf.train.Feature(bytes_list=bytes_list)
-    ex = tf.train.Example(features=tf.train.Features(feature={'image': feat}))
+    Parameters
+    ----------
+    filenames : list of strings
+        List containing the paths to image files.
+    labels : list of integers
+    tf_records_filename : string
+        Where the file gets stored
+    """
+    filename_queue = tf.train.string_input_producer(filenames)
 
-    # Write tf.train.Example
-    writer = tf.python_io.TFRecordWriter("example.tfrecords")
-    writer.write(ex.SerializeToString())
+    reader = tf.WholeFileReader()
+    key, value = reader.read(filename_queue)
 
-    # Read tf.train.Example
-    # TODO
+    my_img = tf.image.decode_jpeg(value)
 
-    print(image.shape)
-    im = Image.fromarray(np.asarray(image))
-    im.show()
+    init_op = tf.initialize_all_variables()
+    with tf.Session() as sess:
+        sess.run(init_op)
 
-    coord.request_stop()
-    coord.join(threads)
+        # Start populating the filename queue.
+        coord = tf.train.Coordinator()
+        threads = tf.train.start_queue_runners(coord=coord)
+
+        writer = tf.python_io.TFRecordWriter(tf_records_filename)
+        for i in range(len(filenames)):
+            image = my_img.eval()  # image is an image tensor
+
+            image_raw = image.tostring()
+            rows = image.shape[0]
+            cols = image.shape[1]
+
+            if np.ndim(image) == 3:
+                depth = image.shape[2]
+            else:
+                depth = 1
+
+            example = tf.train.Example(features=tf.train.Features(feature={
+                'height': _int64_feature(rows),
+                'width': _int64_feature(cols),
+                'depth': _int64_feature(depth),
+                'label': _int64_feature(labels[i]),
+                'image_raw': _bytes_feature(image_raw)}))
+            writer.write(example.SerializeToString())
+        coord.request_stop()
+        coord.join(threads)
+
+
+def read_and_decode(filename_queue):
+    """Read and decode them from filename_queue."""
+    reader = tf.TFRecordReader()
+    _, serialized_example = reader.read(filename_queue)
+    features = tf.parse_single_example(
+        serialized_example,
+        # Defaults are not specified since both keys are required.
+        features={
+            'image_raw': tf.FixedLenFeature([], tf.string),
+            'label': tf.FixedLenFeature([], tf.int64),
+            'height': tf.FixedLenFeature([], tf.int64),
+            'width': tf.FixedLenFeature([], tf.int64),
+            'depth': tf.FixedLenFeature([], tf.int64)
+        })
+    image = tf.decode_raw(features['image_raw'], tf.uint8)
+    label = tf.cast(features['label'], tf.int32)
+    height = tf.cast(features['height'], tf.int32)
+    width = tf.cast(features['width'], tf.int32)
+    depth = tf.cast(features['depth'], tf.int32)
+    return image, label, height, width, depth
+
+
+def get_all_records(record_filename):
+    """Get all records from record_filename."""
+    with tf.Session() as sess:
+        filename_queue = tf.train.string_input_producer([record_filename])
+        image, label, height, width, depth = read_and_decode(filename_queue)
+        image = tf.reshape(image, tf.stack([height, width, 3]))
+        image.set_shape([720, 720, 3])
+        init_op = tf.global_variables_initializer()
+        sess.run(init_op)
+        coord = tf.train.Coordinator()
+        threads = tf.train.start_queue_runners(coord=coord)
+        nr_of_images = 2
+        for i in range(nr_of_images):
+            example, label = sess.run([image, label])
+            img = Image.fromarray(example, 'RGB')
+            print("label: %i" % label)
+            scipy.misc.imshow(img)
+        coord.request_stop()
+        coord.join(threads)
+
+write_images()
+a = get_all_records('example.tfrecords')
+print(a)
