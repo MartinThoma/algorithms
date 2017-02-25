@@ -63,7 +63,8 @@ def write_images(filenames=['Aurelia-aurita-3.jpg'],
                 'width': _int64_feature(cols),
                 'depth': _int64_feature(depth),
                 'label': _int64_feature(labels[i]),
-                'image_raw': _bytes_feature(image_raw)}))
+                'image_raw': _bytes_feature(image_raw),
+                'src': _bytes_feature(filenames[i])}))
             writer.write(example.SerializeToString())
         coord.request_stop()
         coord.join(threads)
@@ -81,22 +82,24 @@ def read_and_decode(filename_queue):
             'label': tf.FixedLenFeature([], tf.int64),
             'height': tf.FixedLenFeature([], tf.int64),
             'width': tf.FixedLenFeature([], tf.int64),
-            'depth': tf.FixedLenFeature([], tf.int64)
+            'depth': tf.FixedLenFeature([], tf.int64),
+            'src': tf.FixedLenFeature([], tf.string)
         })
     image = tf.decode_raw(features['image_raw'], tf.uint8)
     label = tf.cast(features['label'], tf.int32)
     height = tf.cast(features['height'], tf.int32)
     width = tf.cast(features['width'], tf.int32)
     depth = tf.cast(features['depth'], tf.int32)
-    return image, label, height, width, depth
+    # fn = tf.cast(features['filename'], tf.str)
+    return image, label, height, width, depth, features['src']
 
 
 def get_all_records(record_filename):
     """Get all records from record_filename."""
     records = []
     with tf.Session() as sess:
-        filename_queue = tf.train.string_input_producer([record_filename])
-        image, label, height, width, depth = read_and_decode(filename_queue)
+        fn_queue = tf.train.string_input_producer([record_filename])
+        image, label, height, width, depth, src = read_and_decode(fn_queue)
         image = tf.reshape(image, tf.stack([height, width, 3]))
         init_op = tf.global_variables_initializer()
         sess.run(init_op)
@@ -104,13 +107,15 @@ def get_all_records(record_filename):
         threads = tf.train.start_queue_runners(coord=coord)
         nr_of_images = 1
         for i in range(nr_of_images):
-            example, label = sess.run([image, label])
+            example, label, src = sess.run([image, label, src])
             img = Image.fromarray(example, 'RGB')
-            records.append({'image': img, 'label': label})
+            records.append({'image': img, 'label': label,
+                            'src': src})
         coord.request_stop()
         coord.join(threads)
     return records
 
 write_images()
 records = get_all_records('example.tfrecords')
+print(records[0]['src'])
 scipy.misc.imshow(records[0]['image'])
