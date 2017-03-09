@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 """
 Optimize confusion matrix.
@@ -17,6 +18,7 @@ random.seed(0)
 import logging
 import sys
 import csv
+import os
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     level=logging.DEBUG,
@@ -152,24 +154,57 @@ def plot_cm(cm, zero_diagonal=False):
     #                     horizontalalignment='center',
     #                     verticalalignment='center')
 
-    cb = fig.colorbar(res)
+    fig.colorbar(res)
     # alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     # plt.xticks(range(width), alphabet[:width])
     # plt.yticks(range(height), alphabet[:height])
     plt.savefig('confusion_matrix.png', format='png')
 
-with open('confusion-matrix.json') as f:
-    cm = json.load(f)
-    cm = np.array(cm)
 
-# Visulize
-print("Score: {}".format(calculate_score(cm)))
+def main(perm_file, steps):
+    """
+    Run optimization and generate output.
+    """
+    with open('confusion-matrix.json') as f:
+        cm = json.load(f)
+        cm = np.array(cm)
 
-# 58626
-perm = [34, 201, 24, 65, 225, 153, 248, 295, 286, 113, 362, 284, 141, 158, 276, 275, 22, 63, 230, 221, 228, 194, 219, 227, 229, 49, 192, 190, 130, 20, 78, 151, 75, 74, 353, 365, 298, 285, 364, 91, 92, 131, 300, 43, 287, 148, 129, 164, 193, 237, 241, 217, 223, 19, 252, 121, 261, 262, 104, 48, 36, 307, 162, 134, 58, 224, 200, 183, 185, 199, 112, 144, 342, 90, 316, 271, 188, 156, 136, 304, 335, 3, 345, 350, 296, 140, 101, 186, 212, 291, 71, 299, 21, 62, 146, 84, 82, 149, 97, 176, 31, 361, 250, 68, 274, 51, 45, 266, 11, 154, 234, 32, 128, 120, 42, 33, 99, 70, 165, 60, 315, 18, 259, 247, 9, 256, 349, 6, 322, 41, 167, 123, 115, 203, 337, 306, 239, 143, 173, 289, 236, 56, 14, 27, 312, 150, 343, 348, 294, 249, 174, 269, 35, 145, 163, 87, 37, 168, 47, 100, 341, 72, 85, 346, 351, 246, 135, 119, 30, 161, 263, 105, 258, 251, 220, 363, 0, 301, 333, 282, 297, 137, 206, 138, 178, 181, 103, 207, 109, 254, 152, 124, 283, 354, 133, 288, 66, 319, 25, 332, 358, 29, 293, 81, 326, 303, 2, 106, 44, 98, 344, 147, 347, 170, 169, 155, 127, 117, 122, 339, 309, 253, 279, 197, 111, 38, 366, 324, 325, 28, 334, 257, 340, 93, 313, 88, 15, 89, 46, 280, 272, 179, 355, 330, 356, 327, 265, 281, 16, 336, 210, 125, 171, 189, 86, 172, 110, 102, 211, 209, 196, 260, 314, 331, 114, 273, 268, 264, 69, 59, 17, 255, 76, 77, 305, 116, 180, 177, 139, 187, 218, 231, 235, 357, 328, 245, 26, 226, 240, 232, 242, 40, 67, 292, 73, 55, 214, 57, 329, 126, 352, 166, 39, 360, 302, 1, 157, 323, 83, 310, 12, 13, 311, 233, 238, 278, 52, 79, 80, 338, 308, 195, 94, 318, 132, 23, 64, 160, 175, 320, 95, 96, 317, 61, 108, 202, 208, 359, 290, 222, 244, 184, 204, 205, 4, 5, 10, 7, 50, 54, 321, 191, 216, 368, 243, 213, 215, 142, 277, 118, 198, 159, 8, 367, 107, 267, 53, 270, 182]
-result = simulated_annealing(cm, perm, deterministic=True, steps=4* 10**5)
-print("Score: {}".format(calculate_score(result['cm'])))
-print("Perm: {}".format(list(result['perm'])))
-symbols = read_symbols()
-print("Symbols: {}".format([symbols[i] for i in perm]))
-plot_cm(result['cm'], zero_diagonal=True)
+    # Visulize
+    print("Score: {}".format(calculate_score(cm)))
+
+    if os.path.isfile(perm_file):
+        with open(perm_file) as data_file:
+            perm = json.load(data_file)
+        print(perm)
+    else:
+        perm = list(range(len(cm)))
+    result = simulated_annealing(cm, perm, deterministic=True, steps=steps)
+    print("Score: {}".format(calculate_score(result['cm'])))
+    print("Perm: {}".format(list(result['perm'])))
+    symbols = read_symbols()
+    print("Symbols: {}".format([symbols[i] for i in perm]))
+    plot_cm(result['cm'], zero_diagonal=True)
+
+
+def get_parser():
+    """Get parser object for script xy.py."""
+    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    parser = ArgumentParser(description=__doc__,
+                            formatter_class=ArgumentDefaultsHelpFormatter)
+    parser.add_argument("--perm",
+                        dest="perm_file",
+                        help=("path of a json file with a permutation to "
+                              "start with"),
+                        metavar="perm.json",
+                        default="")
+    parser.add_argument("-n",
+                        dest="n",
+                        default=4 * 10**5,
+                        type=int,
+                        help="number of steps to iterate")
+    return parser
+
+
+if __name__ == "__main__":
+    args = get_parser().parse_args()
+    main(args.perm_file, args.n)
