@@ -141,7 +141,7 @@ def plot_cm(cm, zero_diagonal=False):
     plt.clf()
     ax = fig.add_subplot(111)
     ax.set_aspect(1)
-    res = ax.imshow(np.array(norm_conf), cmap=plt.cm.jet,
+    res = ax.imshow(np.array(norm_conf), cmap=plt.cm.viridis,
                     interpolation='nearest')
 
     width, height = cm.shape
