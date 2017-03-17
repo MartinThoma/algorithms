@@ -26,7 +26,20 @@ logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
 
 
 def read_symbols(symbol_file='symbols.csv'):
-    """Read symbols."""
+    """
+    Read symbols.
+
+    Parameters
+    ----------
+    symbol_file : str
+        Path to a CSV (with ',' as delimiter) which contains one symbol label
+        in the second colum
+
+    Returns
+    -------
+    list
+        Of symbol labels
+    """
     with open(symbol_file) as fp:
         reader = csv.reader(fp, delimiter=',', quotechar='"')
         data_read = [row for row in reader]
@@ -68,6 +81,7 @@ def apply_permutation(cm, perm):
 
 def simulated_annealing(current_cm,
                         current_perm=None,
+                        score=calculate_score,
                         steps=2 * 10**5,
                         temp=100.0,
                         cooling_factor=0.99,
@@ -92,19 +106,19 @@ def simulated_annealing(current_cm,
         current_perm = list(range(n))
     current_perm = np.array(current_perm)
     current_cm = apply_permutation(current_cm, current_perm)
-    current_score = calculate_score(current_cm)
+    current_score = score(current_cm)
     best_perm = current_perm
     best_cm = current_cm
     best_score = current_score
-    print("Starting Score: {}".format(current_score))
-    for _ in range(steps):
+    print("Starting Score: {:0.2f}%".format(current_score * 100))
+    for step in range(steps):
         tmp = np.array(current_cm, copy=True)
         i = random.randint(0, n - 1)
         j = random.randint(0, n - 1)
         perm = swap_1d(current_perm.copy(), i, j)
         tmp = swap(tmp, i, j)
         # tmp = apply_permutation(tmp, perm)
-        tmp_score = calculate_score(tmp)
+        tmp_score = score(tmp)
         if deterministic:
             chance = 1.0
         else:
@@ -112,16 +126,21 @@ def simulated_annealing(current_cm,
             temp *= 0.99
         hot_prob = min(1, np.exp(-(tmp_score - current_score) / temp))
         if chance <= hot_prob:
+            changed = False
             if best_score > tmp_score:
                 best_perm = perm
                 best_cm = tmp
                 best_score = tmp_score
+                changed = True
             current_score = tmp_score
             current_cm = tmp
-            logging.info("Current: %i (best: %i, hot_prob=%0.4f%%)",
-                         current_score,
-                         best_score,
-                         (hot_prob * 100))
+            if changed:
+                logging.info(("Current: %0.2f (best: %0.2f, "
+                              "hot_prob=%0.4f%%, step=%i)"),
+                             current_score,
+                             best_score,
+                             (hot_prob * 100),
+                             step)
     return {'cm': best_cm, 'perm': best_perm}
 
 
@@ -135,7 +154,7 @@ def plot_cm(cm, zero_diagonal=False):
     for i, line in enumerate(cm):  # line
         a = max(sum(line), 10**-7)
         for j, el in enumerate(line):  # el
-            norm_conf[i][j] = (float(el) / float(a))
+            norm_conf[i][j] = el  # (float(el) / float(a))
 
     n = len(cm)
     size = int(n / 4.)
@@ -161,28 +180,36 @@ def plot_cm(cm, zero_diagonal=False):
     plt.savefig('confusion_matrix.png', format='png')
 
 
-def main(perm_file, steps):
-    """
-    Run optimization and generate output.
-    """
-    with open('confusion-matrix.json') as f:
+def main(cm_file, perm_file, steps, labels_file):
+    """Run optimization and generate output."""
+    # Load confusion matrix
+    with open(cm_file) as f:
         cm = json.load(f)
         cm = np.array(cm)
 
-    # Visulize
-    print("Score: {}".format(calculate_score(cm)))
-
+    # Load permutation
     if os.path.isfile(perm_file):
         with open(perm_file) as data_file:
             perm = json.load(data_file)
-        print(perm)
     else:
         perm = list(range(len(cm)))
-    result = simulated_annealing(cm, perm, deterministic=True, steps=steps)
+
+    # Load labels
+    if os.path.isfile(labels_file):
+        with open(labels_file, "r") as f:
+            symbols = json.load(f)
+    else:
+        symbols = read_symbols()
+
+    print("Score: {}".format(calculate_score(cm)))
+    result = simulated_annealing(cm, perm,
+                                 score=calculate_score,
+                                 deterministic=True,
+                                 steps=steps)
     print("Score: {}".format(calculate_score(result['cm'])))
     print("Perm: {}".format(list(result['perm'])))
-    symbols = read_symbols()
     print("Symbols: {}".format([symbols[i] for i in perm]))
+    print(float(sum([cm[i][i] for i in range(100)])) / cm.sum())
     plot_cm(result['cm'], zero_diagonal=True)
 
 
@@ -191,11 +218,22 @@ def get_parser():
     from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
+    parser.add_argument("--cm",
+                        dest="cm_file",
+                        help=("path of a json file with a confusion matrix"),
+                        metavar="cm.json",
+                        default='confusion-matrix.json')
     parser.add_argument("--perm",
                         dest="perm_file",
                         help=("path of a json file with a permutation to "
                               "start with"),
                         metavar="perm.json",
+                        default="")
+    parser.add_argument("--labels",
+                        dest="labels_file",
+                        help=("path of a json file with a list of label "
+                              "names"),
+                        metavar="labels.json",
                         default="")
     parser.add_argument("-n",
                         dest="n",
@@ -207,4 +245,4 @@ def get_parser():
 
 if __name__ == "__main__":
     args = get_parser().parse_args()
-    main(args.perm_file, args.n)
+    main(args.cm_file, args.perm_file, args.n, args.labels_file)
