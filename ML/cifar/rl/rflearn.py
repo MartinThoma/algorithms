@@ -1,7 +1,12 @@
 #!/usr/bin/env python
 
 
-"""Create a CIFAR model found by reinforcment learning."""
+"""
+Create a CIFAR model found by reinforcment learning.
+
+The Reinforcment Learning approach is described in
+[Neural Archtecture Search With Reinforcment Learning](https://arxiv.org/abs/1611.01578)
+"""
 
 import numpy as np
 np.random.seed(0)
