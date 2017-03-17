@@ -74,16 +74,33 @@ def main(_):
     loss_ = loss(logits=y, labels=y_)
     train_step = training(loss_)
 
-    sess = tf.InteractiveSession()
-    tf.global_variables_initializer().run()
-
-    for _ in range(1000):
-        batch_xs, batch_ys = mnist.train.next_batch(100)
-        sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
-
     # Test trained model
     correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+
+    with tf.name_scope('accuracy'):
+        tf.summary.scalar('accuracy', accuracy)
+    merged = tf.summary.merge_all()
+
+    sess = tf.InteractiveSession()
+    train_writer = tf.summary.FileWriter('summary_dir/train', sess.graph)
+    test_writer = tf.summary.FileWriter('summary_dir/test', sess.graph)
+    tf.global_variables_initializer().run()
+
+    for train_step_i in range(100000):
+        if train_step_i % 100 == 0:
+            summary, acc = sess.run([merged, accuracy],
+                                    feed_dict={x: mnist.test.images,
+                                               y_: mnist.test.labels})
+            print(acc)
+            test_writer.add_summary(summary, train_step_i)
+            summary, acc = sess.run([merged, accuracy],
+                                    feed_dict={x: mnist.train.images,
+                                               y_: mnist.train.labels})
+            train_writer.add_summary(summary, train_step_i)
+        batch_xs, batch_ys = mnist.train.next_batch(100)
+        sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
+
     print(sess.run(accuracy, feed_dict={x: mnist.test.images,
                                         y_: mnist.test.labels}))
 
