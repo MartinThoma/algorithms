@@ -1,0 +1,13 @@
+BB1(left),BB1(top),BB1(right),BB1(bottom),BB2(left),BB2(top),BB2(right),BB2(bottom),IoU,comment
+0,0,2,2,3,0,5,2,0.0,Two AABBs next to each other
+0,0,2,2,0,3,2,5,0.0,Two AABBs below each other
+0,0,2,2,2,0,5,2,0.0,Two AABBs next to each other
+0,0,2,2,0,2,2,5,0.0,Two AABBs below each other
+0,0,2,2,1,1,3,3,0.14285714285714285,
+0,0,3,2,1,1,3,3,0.25,
+0,0,4,4,1,1,3,3,0.25,contained
+0,0,2,2,2,2,4,4,0.0,
+1,0,3,2,0,1,2,3,0.14285714285714285,
+0,0,2,2,0,0,2,2,1.0,Identical AABBs
+0,0,2,2,1,0,3,2,0.33333333333333333,Side overlaps
+0,0,2,2,0,1,2,3,0.33333333333333333,Side overlaps
