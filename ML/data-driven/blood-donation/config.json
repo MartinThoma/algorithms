@@ -1,0 +1,8 @@
+{"input": {"train": "train.csv",
+           "test": "test.csv",
+           "feature_columns": [1, 2, 3, 4],
+           "factor_columns": [5],
+           "label_column": 5},
+ "output": "submit.csv",
+ "classes": 2
+}
