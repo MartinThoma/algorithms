@@ -9,6 +9,12 @@ how well it gets.
 It has 4,380,022 parameters (4,374,742 trainable parameters).
 
 
+## Notes
+
+* After 25 epochs with Adam(lr=1E-4) the test accuracy was at 36.6%, but the
+  test accuracy jumped a lot. After epoch 22, it was at 38.1%.
+
+
 ## Implementation questions
 
 I have a couple of questions about the architecture / training setup which I
