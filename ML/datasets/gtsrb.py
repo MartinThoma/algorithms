@@ -66,8 +66,7 @@ labels = ['speed limit 20 (prohibitory)',
           'keep left (mandatory)',
           'roundabout (mandatory)',
           'restriction ends (overtaking) (other)',
-          'restriction ends (overtaking (trucks)) (other)',
-          'no sign']
+          'restriction ends (overtaking (trucks)) (other)']
 labels_short = ['20',
                 '30',
                 '50',
