@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
-"""Utility file for the HASYv2 dataset.
+"""
+Utility file for the HASYv2 dataset.
 
-See https://arxiv.org/abs/1701.08380 for details.
+See https://arxiv.org/abs/1701.08380 for details about the dataset.
 """
 
 from __future__ import absolute_import
@@ -19,6 +20,8 @@ from six.moves import cPickle as pickle
 
 n_classes = 369
 labels = []
+WIDTH = 32
+HEIGHT = 32
 
 
 def _load_csv(filepath, delimiter=',', quotechar="'"):
@@ -77,12 +80,24 @@ def _generate_index(csv_filepath):
     return symbol_id2index, labels
 
 
-def load_data():
+def load_data(mode='complete'):
     """
     Load HASYv2 dataset.
 
-    # Returns
-        Tuple of Numpy arrays: `(x_train, y_train), (x_test, y_test)`.
+    Parameters
+    ----------
+    mode : string, optional (default: "complete")
+        - "complete" : Returns {'x': x, 'y': y} with all labeled data
+        - "fold-1": Returns {'x_train': x_train,
+                             'y_train': y_train,
+                             'x_test': x_test,
+                             'y_test': y_test}
+        - "fold-2", ..., "fold-10": See "fold-1"
+
+    Returns
+    -------
+    dict
+        See "mode" parameter for details
     """
     # Download if not already done
     fname = 'HASYv2.tar.bz2'
@@ -94,7 +109,7 @@ def load_data():
     # Extract content if not already done
     untar_fpath = os.path.join(path, "HASYv2")
     if not os.path.exists(untar_fpath):
-        print('Untaring file...')
+        print('Extract contents from archive...')
         tfile = tarfile.open(fpath, 'r:bz2')
         try:
             tfile.extractall(path=untar_fpath)
@@ -108,55 +123,38 @@ def load_data():
         tfile.close()
 
     # Create pickle if not already done
-    pickle_fpath = os.path.join(untar_fpath, "fold1.pickle")
+    pickle_fpath = os.path.join(untar_fpath, "hasy-data.pickle")
     if not os.path.exists(pickle_fpath):
         # Load mapping from symbol names to indices
         symbol_csv_fpath = os.path.join(untar_fpath, "symbols.csv")
         symbol_id2index, labels = _generate_index(symbol_csv_fpath)
         globals()["labels"] = labels
 
-        # Load first fold
-        fold_dir = os.path.join(untar_fpath, "classification-task/fold-1")
-        train_csv_fpath = os.path.join(fold_dir, "train.csv")
-        test_csv_fpath = os.path.join(fold_dir, "test.csv")
-        train_csv = _load_csv(train_csv_fpath)
-        test_csv = _load_csv(test_csv_fpath)
+        # Load data
+        data_csv_fpath = os.path.join(untar_fpath, "hasy-data-labels.csv")
+        data_csv = _load_csv(data_csv_fpath)
+        x_compl = np.zeros((len(data_csv), 1, WIDTH, HEIGHT), dtype=np.uint8)
+        y_compl = []
+        s_compl = []
+        path2index = {}
 
-        WIDTH = 32
-        HEIGHT = 32
-        x_train = np.zeros((len(train_csv), 1, WIDTH, HEIGHT), dtype=np.uint8)
-        x_test = np.zeros((len(test_csv), 1, WIDTH, HEIGHT), dtype=np.uint8)
-        y_train, s_train = [], []
-        y_test, s_test = [], []
-
-        # Load training data
-        for i, data_item in enumerate(train_csv):
+        # Load HASYv2 data
+        for i, data_item in enumerate(data_csv):
             fname = os.path.join(untar_fpath, data_item['path'])
-            s_train.append(fname)
-            x_train[i, 0, :, :] = scipy.ndimage.imread(fname,
+            s_compl.append(fname)
+            x_compl[i, 0, :, :] = scipy.ndimage.imread(fname,
                                                        flatten=False,
                                                        mode='L')
             label = symbol_id2index[data_item['symbol_id']]
-            y_train.append(label)
-        y_train = np.array(y_train, dtype=np.int64)
+            y_compl.append(label)
+            path2index[fname] = i
+        y_compl = np.array(y_compl, dtype=np.int64)
 
-        # Load test data
-        for i, data_item in enumerate(test_csv):
-            fname = os.path.join(untar_fpath, data_item['path'])
-            s_test.append(fname)
-            x_train[i, 0, :, :] = scipy.ndimage.imread(fname,
-                                                       flatten=False,
-                                                       mode='L')
-            label = symbol_id2index[data_item['symbol_id']]
-            y_test.append(label)
-        y_test = np.array(y_test, dtype=np.int64)
-
-        data = {'x_train': x_train,
-                'y_train': y_train,
-                'x_test': x_test,
-                'y_test': y_test,
-                'labels': labels
-                }
+        data = {'x': x_compl,
+                'y': y_compl,
+                's': s_compl,
+                'labels': labels,
+                'path2index': path2index}
 
         # Store data as pickle to speed up later calls
         with open(pickle_fpath, 'wb') as f:
@@ -164,17 +162,50 @@ def load_data():
     else:
         with open(pickle_fpath, 'rb') as f:
             data = pickle.load(f)
-        x_train = data['x_train']
-        y_train = data['y_train']
-        x_test = data['x_test']
-        y_test = data['y_test']
         globals()["labels"] = data['labels']
 
-    y_train = np.reshape(y_train, (len(y_train), 1))
-    y_test = np.reshape(y_test, (len(y_test), 1))
+    labels = data['labels']
+    x_compl = data['x']
+    y_compl = np.reshape(data['y'], (len(data['y']), 1))
+    s_compl = data['s']
+    path2index = data['path2index']
 
     if K.image_dim_ordering() == 'tf':
-        x_train = x_train.transpose(0, 2, 3, 1)
-        x_test = x_test.transpose(0, 2, 3, 1)
+        x_compl = x_compl.transpose(0, 2, 3, 1)
 
-    return (x_train, y_train), (x_test, y_test)
+    if mode == 'complete':
+        return {'x': x_compl, 'y': y_compl}
+    elif mode.startswith('fold-'):
+        fold = int(mode.split("-")[1])
+        if fold < 1 or fold > 10:
+            raise NotImplementedError
+
+        # Load fold
+        fold_dir = os.path.join(untar_fpath,
+                                "classification-task/fold-{}".format(fold))
+        train_csv_fpath = os.path.join(fold_dir, "train.csv")
+        test_csv_fpath = os.path.join(fold_dir, "test.csv")
+        train_csv = _load_csv(train_csv_fpath)
+        test_csv = _load_csv(test_csv_fpath)
+
+        train_ids = np.array([path2index[row['path']] for row in train_csv])
+        test_ids = np.array([path2index[row['path']] for row in test_csv])
+
+        x_train = x_compl[train_ids]
+        x_test = x_compl[test_ids]
+        y_train = y_compl[train_ids]
+        y_test = y_compl[test_ids]
+        s_train = [s_compl[id_] for id_ in train_ids]
+        s_test = [s_compl[id_] for id_ in test_ids]
+
+        data = {'x_train': x_train,
+                'y_train': y_train,
+                'x_test': x_test,
+                'y_test': y_test,
+                's_train': s_train,
+                's_test': s_test,
+                'labels': labels
+                }
+        return data
+    else:
+        raise NotImplementedError
