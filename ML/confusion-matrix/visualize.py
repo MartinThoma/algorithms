@@ -144,28 +144,26 @@ def simulated_annealing(current_cm,
     return {'cm': best_cm, 'perm': best_perm}
 
 
-def plot_cm(cm, zero_diagonal=False):
+def plot_cm(cm, zero_diagonal=False, labels=None):
     """Plot a confusion matrix."""
-    if zero_diagonal:
-        for i in range(len(cm)):
-            cm[i][i] = 0  # Set diagonal to 0 to make other stuff visible
-
     n = len(cm)
+    if zero_diagonal:
+        for i in range(n):
+            cm[i][i] = 0
     size = int(n / 4.)
     fig = plt.figure(figsize=(size, size), dpi=80, )
     plt.clf()
     ax = fig.add_subplot(111)
     ax.set_aspect(1)
+    if labels is None:
+        labels = [i for i in range(len(cm))]
+    x = [i for i in range(len(cm))]
+    plt.xticks(x, labels, rotation='vertical')
+    y = [i for i in range(len(cm))]
+    plt.yticks(y, labels)  # , rotation='vertical'
     res = ax.imshow(np.array(cm), cmap=plt.cm.viridis,
                     interpolation='nearest')
     width, height = cm.shape
-
-    # for x in xrange(width):
-    #     for y in xrange(height):
-    #         ax.annotate(str(cm[x][y]), xy=(y, x),
-    #                     horizontalalignment='center',
-    #                     verticalalignment='center')
-
     fig.colorbar(res)
     plt.savefig('confusion_matrix.png', format='png')
 
@@ -176,6 +174,8 @@ def main(cm_file, perm_file, steps, labels_file):
     with open(cm_file) as f:
         cm = json.load(f)
         cm = np.array(cm)
+
+    cm_orig = cm.copy()
 
     # Load permutation
     if os.path.isfile(perm_file):
@@ -199,7 +199,8 @@ def main(cm_file, perm_file, steps, labels_file):
     print("Score: {}".format(calculate_score(result['cm'])))
     print("Perm: {}".format(list(result['perm'])))
     print("Symbols: {}".format([symbols[i] for i in perm]))
-    print(float(sum([cm[i][i] for i in range(100)])) / cm.sum())
+    acc = float(sum([cm_orig[i][i] for i in range(len(cm_orig))])) / cm_orig.sum()
+    print("Accuracy: {:0.2f}%".format(acc * 100))
     plot_cm(result['cm'], zero_diagonal=True)
 
 
