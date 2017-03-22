@@ -46,21 +46,28 @@ def read_symbols(symbol_file='symbols.csv'):
     return [el[1] for el in data_read]
 
 
-def calculate_score(cm):
+def calculate_score(cm, weights):
     """
     Calculate a score how close big elements of cm are to the diagonal.
 
     Examples
     --------
     >>> cm = np.array([[0, 1, 2], [3, 4, 5], [6, 7, 8]])
-    >>> calculate_score(cm)
+    >>> weights = calculate_weight_matrix(3)
+    >>> calculate_score(cm, weights)
     32
     """
-    score = 0
-    for i, line in enumerate(cm):
-        for j, el in enumerate(line):
-            score += el * abs(i - j)
-    return score
+    return int(np.tensordot(cm, weights, axes=((0, 1), (0, 1))))
+
+
+def calculate_weight_matrix(n):
+    """
+    Calculate the weights for each position.
+
+    The weight is the distance to the diagonal.
+    """
+    weights = np.abs(np.arange(n) - np.arange(n)[:, None])
+    return weights
 
 
 def swap(cm, i, j):
@@ -145,9 +152,12 @@ def simulated_annealing(current_cm,
         current_perm = list(range(n))
     current_perm = np.array(current_perm)
 
+    # Pre-calculate weights
+    weights = calculate_weight_matrix(n)
+
     # Apply the permutation
     current_cm = apply_permutation(current_cm, current_perm)
-    current_score = score(current_cm)
+    current_score = score(current_cm, weights)
 
     best_cm = current_cm
     best_score = current_score
@@ -168,7 +178,7 @@ def simulated_annealing(current_cm,
 
         # Define values after swap
         tmp_cm = swap(tmp_cm, i, j)
-        tmp_score = score(tmp_cm)
+        tmp_score = score(tmp_cm, weights)
 
         # Should be swapped?
         if deterministic:
@@ -244,12 +254,13 @@ def main(cm_file, perm_file, steps, labels_file):
     else:
         labels = read_symbols()
 
-    print("Score: {}".format(calculate_score(cm)))
+    weights = calculate_weight_matrix(len(cm))
+    print("Score: {}".format(calculate_score(cm, weights)))
     result = simulated_annealing(cm, perm,
                                  score=calculate_score,
                                  deterministic=True,
                                  steps=steps)
-    print("Score: {}".format(calculate_score(result['cm'])))
+    print("Score: {}".format(calculate_score(result['cm'], weights)))
     print("Perm: {}".format(list(result['perm'])))
     print("Symbols: {}".format([labels[i] for i in perm]))
     acc = (float(sum([cm_orig[i][i] for i in range(len(cm_orig))])) /
