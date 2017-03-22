@@ -68,7 +68,6 @@ def simulated_annealing(current_cm,
     current_perm = np.array(current_perm)
 
     # Debugging code
-    n = len(current_cm)
     perm_exp = np.zeros((n, n), dtype=np.int)
     for i in range(n):
         for j in range(n):
