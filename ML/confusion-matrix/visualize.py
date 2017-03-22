@@ -47,7 +47,15 @@ def read_symbols(symbol_file='symbols.csv'):
 
 
 def calculate_score(cm):
-    """Calculate a score how close big elements of cm are to the diagonal."""
+    """
+    Calculate a score how close big elements of cm are to the diagonal.
+
+    Examples
+    --------
+    >>> cm = np.array([[0, 1, 2], [3, 4, 5], [6, 7, 8]])
+    >>> calculate_score(cm)
+    32
+    """
     score = 0
     for i, line in enumerate(cm):
         for j, el in enumerate(line):
@@ -56,7 +64,17 @@ def calculate_score(cm):
 
 
 def swap(cm, i, j):
-    """Swap row and column i and j."""
+    """
+    Swap row and column i and j in-place.
+
+    Examples
+    --------
+    >>> cm = np.array([[0, 1, 2], [3, 4, 5], [6, 7, 8]])
+    >>> swap(cm, 2, 0)
+    array([[8, 7, 6],
+           [5, 4, 3],
+           [2, 1, 0]])
+    """
     # swap columns
     copy = cm[:, i].copy()
     cm[:, i] = cm[:, j]
@@ -69,13 +87,32 @@ def swap(cm, i, j):
 
 
 def swap_1d(perm, i, j):
-    """Swap two elements of a 1-D numpy array in-place."""
+    """
+    Swap two elements of a 1-D numpy array in-place.
+
+    Examples
+    --------
+    >>> perm = np.array([2, 1, 2, 3, 4, 5, 6])
+    >>> swap_1d(perm, 2, 6)
+    array([2, 1, 6, 3, 4, 5, 2])
+    """
     perm[i], perm[j] = perm[j], perm[i]
     return perm
 
 
 def apply_permutation(cm, perm):
-    """Apply permutation to a matrix."""
+    """
+    Apply permutation to a matrix.
+
+    Examples
+    --------
+    >>> cm = np.array([[0, 1, 2], [3, 4, 5], [6, 7, 8]])
+    >>> perm = np.array([2, 0, 1])
+    >>> apply_permutation(cm, perm)
+    array([[8, 6, 7],
+           [2, 0, 1],
+           [5, 3, 4]])
+    """
     return cm[perm].transpose()[perm].transpose()
 
 
@@ -98,48 +135,64 @@ def simulated_annealing(current_cm,
         Temperature
     cooling_factor: float in (0, 1), optional (default: 0.99)
     """
-    assert temp > 0
-    assert cooling_factor > 0
-    assert cooling_factor < 1
+    assert temp > 0.0
+    assert cooling_factor > 0.0
+    assert cooling_factor < 1.0
     n = len(current_cm)
+
+    # Load the initial permutation
     if current_perm is None:
         current_perm = list(range(n))
     current_perm = np.array(current_perm)
+
+    # Apply the permutation
     current_cm = apply_permutation(current_cm, current_perm)
     current_score = score(current_cm)
-    best_perm = current_perm
+
     best_cm = current_cm
     best_score = current_score
-    print("Starting Score: {:0.2f}%".format(current_score * 100))
+    best_perm = current_perm
+
+    print("## Starting Score: {:0.2f}%".format(current_score))
     for step in range(steps):
-        tmp = np.array(current_cm, copy=True)
+        tmp_cm = np.array(current_cm, copy=True)
+
+        # Choose what to swap
         i = random.randint(0, n - 1)
-        j = random.randint(0, n - 1)
+        j = i
+        while j == i:
+            j = random.randint(0, n - 1)
+
+        # Define permutation
         perm = swap_1d(current_perm.copy(), i, j)
-        tmp = swap(tmp, i, j)
-        # tmp = apply_permutation(tmp, perm)
-        tmp_score = score(tmp)
+
+        # Define values after swap
+        tmp_cm = swap(tmp_cm, i, j)
+        tmp_score = score(tmp_cm)
+
+        # Should be swapped?
         if deterministic:
             chance = 1.0
         else:
             chance = random.random()
             temp *= 0.99
-        hot_prob = min(1, np.exp(-(tmp_score - current_score) / temp))
-        if chance <= hot_prob:
+        hot_prob_thresh = min(1, np.exp(-(tmp_score - current_score) / temp))
+        if chance <= hot_prob_thresh:
             changed = False
-            if best_score > tmp_score:
+            if best_score > tmp_score:  # minimize
                 best_perm = perm
-                best_cm = tmp
+                best_cm = tmp_cm
                 best_score = tmp_score
                 changed = True
             current_score = tmp_score
-            current_cm = tmp
+            current_cm = tmp_cm
+            current_perm = perm
             if changed:
                 logging.info(("Current: %0.2f (best: %0.2f, "
-                              "hot_prob=%0.4f%%, step=%i)"),
+                              "hot_prob_thresh=%0.4f%%, step=%i)"),
                              current_score,
                              best_score,
-                             (hot_prob * 100),
+                             (hot_prob_thresh * 100),
                              step)
     return {'cm': best_cm, 'perm': best_perm}
 
@@ -187,9 +240,9 @@ def main(cm_file, perm_file, steps, labels_file):
     # Load labels
     if os.path.isfile(labels_file):
         with open(labels_file, "r") as f:
-            symbols = json.load(f)
+            labels = json.load(f)
     else:
-        symbols = read_symbols()
+        labels = read_symbols()
 
     print("Score: {}".format(calculate_score(cm)))
     result = simulated_annealing(cm, perm,
@@ -198,10 +251,11 @@ def main(cm_file, perm_file, steps, labels_file):
                                  steps=steps)
     print("Score: {}".format(calculate_score(result['cm'])))
     print("Perm: {}".format(list(result['perm'])))
-    print("Symbols: {}".format([symbols[i] for i in perm]))
-    acc = float(sum([cm_orig[i][i] for i in range(len(cm_orig))])) / cm_orig.sum()
+    print("Symbols: {}".format([labels[i] for i in perm]))
+    acc = (float(sum([cm_orig[i][i] for i in range(len(cm_orig))])) /
+           cm_orig.sum())
     print("Accuracy: {:0.2f}%".format(acc * 100))
-    plot_cm(result['cm'], zero_diagonal=True)
+    plot_cm(result['cm'], zero_diagonal=True, labels=labels)
 
 
 def get_parser():
@@ -236,4 +290,6 @@ def get_parser():
 
 if __name__ == "__main__":
     args = get_parser().parse_args()
+    import doctest
+    doctest.testmod()
     main(args.cm_file, args.perm_file, args.n, args.labels_file)
