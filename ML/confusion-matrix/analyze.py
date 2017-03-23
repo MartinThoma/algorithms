@@ -18,15 +18,11 @@ import sys
 import os
 from visualize import read_symbols, calculate_score
 from visualize import simulated_annealing, plot_cm
+from visualize import get_accuracy
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     level=logging.DEBUG,
                     stream=sys.stdout)
-
-
-def get_accuracy(cm):
-    """Get the accuaracy by the confusion matrix cm."""
-    return sum([cm[i][i] for i in range(len(cm))]) / float(cm.sum())
 
 
 def get_errors(cm, i):

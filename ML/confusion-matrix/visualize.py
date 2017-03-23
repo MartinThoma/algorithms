@@ -26,6 +26,11 @@ logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     stream=sys.stdout)
 
 
+def get_accuracy(cm):
+    """Get the accuaracy by the confusion matrix cm."""
+    return float(sum([cm[i][i] for i in range(len(cm))])) / float(cm.sum())
+
+
 def read_symbols(symbol_file='symbols.csv'):
     """
     Read symbols.
@@ -335,8 +340,7 @@ def main(cm_file, perm_file, steps, labels_file):
     print("Perm: {}".format(list(result['perm'])))
     labels = [labels[i] for i in result['perm']]
     print("Symbols: {}".format(labels))
-    acc = (float(sum([cm_orig[i][i] for i in range(len(cm_orig))])) /
-           cm_orig.sum())
+    acc = get_accuracy(cm_orig)
     print("Accuracy: {:0.2f}%".format(acc * 100))
     start = 0
     limit_classes = len(cm)  # :50
