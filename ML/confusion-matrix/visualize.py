@@ -19,6 +19,7 @@ import logging
 import sys
 import csv
 import os
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     level=logging.DEBUG,
@@ -90,6 +91,48 @@ def swap(cm, i, j):
     copy = cm[i, :].copy()
     cm[i, :] = cm[j, :]
     cm[j, :] = copy
+    return cm
+
+
+def move_1d(perm, from_start, from_end, insert_pos):
+    assert insert_pos < from_start or insert_pos > from_end
+    if insert_pos > from_end:
+        p_new = (list(range(from_end + 1, insert_pos + 1)) +
+                 list(range(from_start, from_end + 1)))
+    else:
+        p_new = (list(range(from_start, from_end + 1)) +
+                 list(range(insert_pos, from_start)))
+    p_old = sorted(p_new)
+    perm[p_old] = perm[p_new]
+    return perm
+
+
+def move(cm, from_start, from_end, insert_pos):
+    """
+    Move rows from_start - from_end to insert_pos in-place.
+
+    Examples
+    --------
+    >>> cm = np.array([[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 0, 1], [2, 3, 4, 5]])
+    >>> move(cm, 1, 2, 0)
+    array([[5, 6, 4, 7],
+           [9, 0, 8, 1],
+           [1, 2, 0, 3],
+           [3, 4, 2, 5]])
+    """
+    assert insert_pos < from_start or insert_pos > from_end
+    if insert_pos > from_end:
+        p_new = (list(range(from_end + 1, insert_pos + 1)) +
+                 list(range(from_start, from_end + 1)))
+    else:
+        p_new = (list(range(from_start, from_end + 1)) +
+                 list(range(insert_pos, from_start)))
+    # print(p_new)
+    p_old = sorted(p_new)
+    # swap columns
+    cm[:, p_old] = cm[:, p_new]
+    # swap rows
+    cm[p_old, :] = cm[p_new, :]
     return cm
 
 
@@ -167,17 +210,32 @@ def simulated_annealing(current_cm,
     for step in range(steps):
         tmp_cm = np.array(current_cm, copy=True)
 
-        # Choose what to swap
-        i = random.randint(0, n - 1)
-        j = i
-        while j == i:
-            j = random.randint(0, n - 1)
+        swap_prob = 0.5
+        make_swap = random.random() < swap_prob
+        if make_swap:
+            # Choose what to swap
+            i = random.randint(0, n - 1)
+            j = i
+            while j == i:
+                j = random.randint(0, n - 1)
+            # Define permutation
+            perm = swap_1d(current_perm.copy(), i, j)
+            # Define values after swap
+            tmp_cm = swap(tmp_cm, i, j)
+        else:
+            block_len = n
+            while block_len >= n - 1:
+                from_start = random.randint(0, n - 3)
+                from_end = random.randint(from_start + 1, n - 2)
+                block_len = from_start - from_end
+            insert_pos = from_start
+            while not (insert_pos < from_start or insert_pos > from_end):
+                insert_pos = random.randint(0, n - 1)
+            perm = move_1d(current_perm.copy(),
+                           from_start, from_end, insert_pos)
 
-        # Define permutation
-        perm = swap_1d(current_perm.copy(), i, j)
-
-        # Define values after swap
-        tmp_cm = swap(tmp_cm, i, j)
+            # Define values after swap
+            tmp_cm = move(tmp_cm, from_start, from_end, insert_pos)
         tmp_score = score(tmp_cm, weights)
 
         # Should be swapped?
@@ -199,11 +257,12 @@ def simulated_annealing(current_cm,
             current_perm = perm
             if changed:
                 logging.info(("Current: %0.2f (best: %0.2f, "
-                              "hot_prob_thresh=%0.4f%%, step=%i)"),
+                              "hot_prob_thresh=%0.4f%%, step=%i, swap=%s)"),
                              current_score,
                              best_score,
                              (hot_prob_thresh * 100),
-                             step)
+                             step,
+                             str(make_swap))
     return {'cm': best_cm, 'perm': best_perm}
 
 
@@ -227,7 +286,11 @@ def plot_cm(cm, zero_diagonal=False, labels=None):
     res = ax.imshow(np.array(cm), cmap=plt.cm.viridis,
                     interpolation='nearest')
     width, height = cm.shape
-    fig.colorbar(res)
+
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes("right", size="5%", pad=0.5)
+    plt.colorbar(res, cax=cax)
+
     plt.savefig('confusion_matrix.png', format='png')
 
 
@@ -237,6 +300,14 @@ def main(cm_file, perm_file, steps, labels_file):
     with open(cm_file) as f:
         cm = json.load(f)
         cm = np.array(cm)
+
+    n = len(cm)
+    make_max = float('inf')
+    for i in range(n):
+        for j in range(n):
+            if i == j:
+                continue
+            cm[i][j] = min(cm[i][j], make_max)
 
     cm_orig = cm.copy()
 
@@ -262,11 +333,15 @@ def main(cm_file, perm_file, steps, labels_file):
                                  steps=steps)
     print("Score: {}".format(calculate_score(result['cm'], weights)))
     print("Perm: {}".format(list(result['perm'])))
-    print("Symbols: {}".format([labels[i] for i in perm]))
+    labels = [labels[i] for i in result['perm']]
+    print("Symbols: {}".format(labels))
     acc = (float(sum([cm_orig[i][i] for i in range(len(cm_orig))])) /
            cm_orig.sum())
     print("Accuracy: {:0.2f}%".format(acc * 100))
-    plot_cm(result['cm'], zero_diagonal=True, labels=labels)
+    start = 0
+    limit_classes = len(cm)  # :50
+    plot_cm(result['cm'][start:limit_classes, start:limit_classes],
+            zero_diagonal=True, labels=labels[start:limit_classes])
 
 
 def get_parser():
