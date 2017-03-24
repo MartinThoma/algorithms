@@ -81,6 +81,13 @@ def load_data():
     return data
 
 
+def preprocess(x):
+    """Preprocess features."""
+    x = x.astype('float32')
+    x /= 255.0
+    return x
+
+
 if __name__ == '__main__':
     data = load_data()
     print("n_classes={}".format(n_classes))

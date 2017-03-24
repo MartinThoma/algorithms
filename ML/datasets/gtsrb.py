@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """
@@ -111,6 +112,9 @@ labels_short = ['20',
                 'restriction ends (overt)',
                 'restriction ends (overt tr)']
 n_classes = len(labels)
+img_rows = 32
+img_cols = 32
+img_channels = 3
 train_img_paths = []
 train_img_rois = {}
 
@@ -265,3 +269,11 @@ def load_data():
         data['x_test'] = data['x_test'].transpose(0, 2, 3, 1)
 
     return data
+
+
+def preprocess(x):
+    """Preprocess features."""
+    x = x.astype('float32')
+    x /= 255.0
+    return x
+

@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """
@@ -209,3 +210,10 @@ def load_data(mode='complete'):
         return data
     else:
         raise NotImplementedError
+
+
+def preprocess(x):
+    """Preprocess features."""
+    x = x.astype('float32')
+    x /= 255.0
+    return x
