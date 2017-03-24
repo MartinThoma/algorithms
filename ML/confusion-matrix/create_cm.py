@@ -9,8 +9,8 @@ from sklearn.model_selection import train_test_split
 import numpy as np
 import json
 import io
-import matplotlib.pyplot as plt
-from visualize import plot_cm
+from keras import backend as K
+from visualize import plot_cm, get_accuracy
 try:
     to_unicode = unicode
 except NameError:
@@ -30,20 +30,26 @@ X_train, X_val, y_train, y_val = train_test_split(X, y,
                                                   test_size=0.20,
                                                   random_state=42)
 
-from keras import backend as K
 print("image_dim_ordering: %s" % K.image_dim_ordering())
 print("shape=%s" % str(X_train.shape))
 
+X_train = X_train.astype('float32')
+X_val = X_val.astype('float32')
+X_test = X_test.astype('float32')
+X_train /= 255.0
+X_val /= 255.0
+X_test /= 255.0
+
 # Calculate confusion matrix
-y_val_i = y_val.flatten()
-y_val_pred = model.predict(X_val)
+y_val_i = y_test.flatten()
+y_val_pred = model.predict(X_test)
 y_val_pred_i = y_val_pred.argmax(1)
 cm = np.zeros((n_classes, n_classes), dtype=np.int)
 for i, j in zip(y_val_i, y_val_pred_i):
     cm[i][j] += 1
 
-acc = sum([cm[i][i] for i in range(100)]) / float(cm.sum())
-print("Accuracy: %0.4f" % acc)
+acc = get_accuracy(cm)
+print("Accuracy: {:0.2f}".format(acc * 100))
 
 # Create plot
 plot_cm(cm)
