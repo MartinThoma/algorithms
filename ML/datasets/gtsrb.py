@@ -277,3 +277,9 @@ def preprocess(x):
     x /= 255.0
     return x
 
+
+if __name__ == '__main__':
+    data = gtsrb.load_data()
+    print(data['x_train'].shape)
+    print(data['y_train'].shape)
+    print(data['x_test'].shape)

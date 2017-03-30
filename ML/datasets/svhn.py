@@ -17,6 +17,9 @@ import os
 
 labels = [str(i) for i in range(10)]
 n_classes = len(labels)
+img_rows = 32
+img_cols = 32
+img_channels = 3
 
 
 def _replace_10(y):
@@ -69,10 +72,13 @@ def load_data():
     train_x, train_y = train_data['X'], _replace_10(train_data['y'])
     test_x, test_y = test_data['X'], _replace_10(test_data['y'])
 
-    data = {'train_x': train_x,
-            'train_y': train_y,
-            'test_x': test_x,
-            'test_y': test_y}
+    data = {'x_train': train_x,
+            'y_train': train_y,
+            'x_test': test_x,
+            'y_test': test_y}
+
+    data['x_train'] = data['x_train'].transpose(3, 0, 1, 2)
+    data['x_test'] = data['x_test'].transpose(3, 0, 1, 2)
 
     if K.image_dim_ordering() == 'th':
         data['x_train'] = data['x_train'].transpose(0, 2, 3, 1)
@@ -92,10 +98,10 @@ if __name__ == '__main__':
     data = load_data()
     print("n_classes={}".format(n_classes))
     print("labels={}".format(labels))
-    print("data['train_x'].shape={}".format(data['train_x'].shape))
-    print("data['train_y'].shape={}".format(data['train_y'].shape))
-    print("data['test_x'].shape={}".format(data['test_x'].shape))
-    print("data['test_y'].shape={}".format(data['test_y'].shape))
+    print("data['x_train'].shape={}".format(data['x_train'].shape))
+    print("data['y_train'].shape={}".format(data['y_train'].shape))
+    print("data['x_test'].shape={}".format(data['x_test'].shape))
+    print("data['y_test'].shape={}".format(data['y_test'].shape))
     for image_ind in range(0, 100):
-        print(data['train_y'][image_ind])
-        scipy.misc.imshow(data['train_x'][:, :, :, image_ind])
+        print(data['y_train'][image_ind])
+        scipy.misc.imshow(data['x_train'][image_ind, :, :, :])

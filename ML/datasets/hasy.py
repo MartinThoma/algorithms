@@ -23,6 +23,9 @@ n_classes = 369
 labels = []
 WIDTH = 32
 HEIGHT = 32
+img_rows = 32
+img_cols = 32
+img_channels = 1
 
 
 def _load_csv(filepath, delimiter=',', quotechar="'"):
@@ -81,7 +84,7 @@ def _generate_index(csv_filepath):
     return symbol_id2index, labels
 
 
-def load_data(mode='complete'):
+def load_data(mode='fold-1'):
     """
     Load HASYv2 dataset.
 
