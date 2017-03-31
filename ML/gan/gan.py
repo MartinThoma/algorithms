@@ -12,10 +12,6 @@ from keras.optimizers import Adam
 import matplotlib.pyplot as plt
 from keras.models import Model
 from tqdm import tqdm
-# Mine
-import mnist as data_module
-import discriminator_module
-import generator_module
 
 
 def make_trainable(net, val):
@@ -103,7 +99,7 @@ def plot_real(X_train, n_ex=16, dim=(4, 4), figsize=(10, 10)):
     plt.show()
 
 
-def main():
+def main(data_module, generator_module, discriminator_module):
     data = data_module.load_data()
     X_train = data['x_train']
     X_test = data['x_test']
@@ -171,7 +167,6 @@ def main():
     # Train for 6000 epochs at original learning rates
     print("Train for 6000 epochs")
     epochs = 6000
-    epochs = 100
     train_for_n(X_train, generator, discriminator, losses, GAN,
                 epochs=epochs, plt_frq=500, BATCH_SIZE=32)
 
@@ -180,7 +175,6 @@ def main():
     # discriminator.optimizer.lr.set_value(1e-4)
     print("Train for 2000 epochs")
     epochs = 6000
-    epochs = 20
     train_for_n(X_train, generator, discriminator, losses, GAN,
                 epochs=epochs, plt_frq=500, BATCH_SIZE=32)
 
@@ -189,7 +183,6 @@ def main():
     # discriminator.optimizer.lr.set_value(1e-5)
     print("Train for 2000 epochs")
     epochs = 6000
-    epochs = 20
     train_for_n(X_train, generator, discriminator, losses, GAN,
                 epochs=epochs, plt_frq=500, BATCH_SIZE=32)
 
@@ -206,4 +199,7 @@ def main():
     plot_real(X_train)
 
 if __name__ == '__main__':
-    main()
+    import mnist as data_module
+    import discriminator_module
+    import generator_module
+    main(data_module, generator_module, discriminator_module)
