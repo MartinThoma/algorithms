@@ -2,8 +2,7 @@
 #
 # Keras GAN Implementation
 # See:
-# https://oshearesearch.com/index.php/2016/07/01/
-#         mnist-generative-adversarial-model-in-keras/
+# https://oshearesearch.com/index.php/2016/07/01/mnist-generative-adversarial-model-in-keras/
 
 import random
 import numpy as np
@@ -26,7 +25,7 @@ def plot_loss(losses):
     plt.plot(losses["d"], label='discriminitive loss')
     plt.plot(losses["g"], label='generative loss')
     plt.legend()
-    plt.show()
+    plt.savefig('plot_loss.png')
 
 
 def plot_gen(generator, n_ex=16, dim=(4, 4), figsize=(10, 10)):
@@ -42,7 +41,7 @@ def plot_gen(generator, n_ex=16, dim=(4, 4), figsize=(10, 10)):
         plt.imshow(img)
         plt.axis('off')
     plt.tight_layout()
-    plt.show()
+    plt.savefig('plot_gen.png')
 
 
 # Set up our main training loop
@@ -96,16 +95,13 @@ def plot_real(X_train, n_ex=16, dim=(4, 4), figsize=(10, 10)):
         plt.imshow(img)
         plt.axis('off')
     plt.tight_layout()
-    plt.show()
+    plt.savefig('plot_real.png')
 
 
 def main(data_module, generator_module, discriminator_module):
     data = data_module.load_data()
     X_train = data['x_train']
     X_test = data['x_test']
-    # img_rows, img_cols = data_module.img_rows, data_module.img_cols
-    # y_train = data['y_train']
-    # y_test = data['y_test']
     X_train = data_module.preprocess(X_train)
     X_test = data_module.preprocess(X_test)
 
@@ -133,7 +129,7 @@ def main(data_module, generator_module, discriminator_module):
     GAN.compile(loss='categorical_crossentropy', optimizer=opt)
     GAN.summary()
 
-    ntrain = 100
+    ntrain = 10000
     trainidx = random.sample(range(0, X_train.shape[0]), ntrain)
     XT = X_train[trainidx, :, :, :]
 
@@ -174,7 +170,7 @@ def main(data_module, generator_module, discriminator_module):
     # generator.optimizer.lr.set_value(1e-5)
     # discriminator.optimizer.lr.set_value(1e-4)
     print("Train for 2000 epochs")
-    epochs = 6000
+    epochs = 2000
     train_for_n(X_train, generator, discriminator, losses, GAN,
                 epochs=epochs, plt_frq=500, BATCH_SIZE=32)
 
@@ -182,7 +178,7 @@ def main(data_module, generator_module, discriminator_module):
     # generator.optimizer.lr.set_value(1e-6)
     # discriminator.optimizer.lr.set_value(1e-5)
     print("Train for 2000 epochs")
-    epochs = 6000
+    epochs = 2000
     train_for_n(X_train, generator, discriminator, losses, GAN,
                 epochs=epochs, plt_frq=500, BATCH_SIZE=32)
 
