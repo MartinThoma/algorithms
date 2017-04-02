@@ -1,25 +1,33 @@
 #!/usr/bin/env python
-#
-# Keras GAN Implementation
-# See:
-# https://oshearesearch.com/index.php/2016/07/01/mnist-generative-adversarial-model-in-keras/
+
+"""
+Run GAN training.
+
+See:
+https://oshearesearch.com/index.php/2016/07/01/mnist-generative-adversarial-model-in-keras/
+"""
 
 import random
 import numpy as np
 from keras.layers import Input
 from keras.optimizers import Adam
+import matplotlib as mpl
+mpl.use('Agg')  # works even without X-Org
 import matplotlib.pyplot as plt
 from keras.models import Model
 from tqdm import tqdm
+import keras.backend as K
 
 
 def make_trainable(net, val):
+    """Freeze or unfreeze variables."""
     net.trainable = val
     for l in net.layers:
         l.trainable = val
 
 
 def plot_loss(losses):
+    """Plot the loss function."""
     fig = plt.figure(figsize=(10, 8))
     fig.suptitle('Losses')
     plt.plot(losses["d"], label='discriminitive loss')
@@ -29,6 +37,7 @@ def plot_loss(losses):
 
 
 def plot_gen(generator, n_ex=16, dim=(4, 4), figsize=(10, 10)):
+    """Plot generated images."""
     noise = np.random.uniform(0, 1, size=[n_ex, 100])
     generated_images = generator.predict(noise)
     print(generated_images[0].shape)
@@ -44,10 +53,9 @@ def plot_gen(generator, n_ex=16, dim=(4, 4), figsize=(10, 10)):
     plt.savefig('plot_gen.png')
 
 
-# Set up our main training loop
 def train_for_n(X_train, generator, discriminator, losses, GAN,
                 epochs=5000, plt_frq=25, BATCH_SIZE=32):
-
+    """Set up our main training loop."""
     for e in tqdm(range(epochs)):
 
         # Make generative images
@@ -83,7 +91,7 @@ def train_for_n(X_train, generator, discriminator, losses, GAN,
 
 
 def plot_real(X_train, n_ex=16, dim=(4, 4), figsize=(10, 10)):
-
+    """Plot real data."""
     idx = np.random.randint(0, X_train.shape[0], n_ex)
     generated_images = X_train[idx, :, :, :]
 
@@ -99,6 +107,7 @@ def plot_real(X_train, n_ex=16, dim=(4, 4), figsize=(10, 10)):
 
 
 def main(data_module, generator_module, discriminator_module):
+    """Orchestrate."""
     data = data_module.load_data()
     X_train = data['x_train']
     X_test = data['x_test']
@@ -129,7 +138,7 @@ def main(data_module, generator_module, discriminator_module):
     GAN.compile(loss='categorical_crossentropy', optimizer=opt)
     GAN.summary()
 
-    ntrain = 10000
+    ntrain = 50000
     trainidx = random.sample(range(0, X_train.shape[0]), ntrain)
     XT = X_train[trainidx, :, :, :]
 
@@ -155,7 +164,7 @@ def main(data_module, generator_module, discriminator_module):
     n_tot = y.shape[0]
     n_rig = (diff == 0).sum()
     acc = n_rig * 100.0 / n_tot
-    print("Accuracy: %0.02f pct (%d of %d) right" % (acc, n_rig, n_tot))
+    print("Accuracy: {:0.02f}% ({} of {}) right".format(acc, n_rig, n_tot))
 
     # set up loss storage vector
     losses = {"d": [], "g": []}
@@ -167,16 +176,16 @@ def main(data_module, generator_module, discriminator_module):
                 epochs=epochs, plt_frq=500, BATCH_SIZE=32)
 
     # Train for 2000 epochs at reduced learning rates
-    # generator.optimizer.lr.set_value(1e-5)
-    # discriminator.optimizer.lr.set_value(1e-4)
+    K.set_value(opt.lr, 1e-5)
+    K.set_value(dopt.lr, 1e-4)
     print("Train for 2000 epochs")
     epochs = 2000
     train_for_n(X_train, generator, discriminator, losses, GAN,
                 epochs=epochs, plt_frq=500, BATCH_SIZE=32)
 
     # Train for 2000 epochs at reduced learning rates
-    # generator.optimizer.lr.set_value(1e-6)
-    # discriminator.optimizer.lr.set_value(1e-5)
+    K.set_value(opt.lr, 1e-6)
+    K.set_value(dopt.lr, 1e-5)
     print("Train for 2000 epochs")
     epochs = 2000
     train_for_n(X_train, generator, discriminator, losses, GAN,
