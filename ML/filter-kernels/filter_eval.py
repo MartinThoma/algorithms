@@ -37,7 +37,13 @@ imgs = []
 nrows = 5
 ncols = 5
 for i in range(nrows * ncols):
-    weights = numpy.random.random((3, 3))  # Filter size
+    x = 9 * 9 * 3
+    min_val = - 1. / x
+    max_val = + 1. / x
+    range_val = max_val - min_val
+
+    filter_size = (3, 3)
+    weights = (numpy.random.random(filter_size) * range_val) + min_val
     print(weights)
     im_res = convolve2d(im, weights, mode='same')
     imgs.append(im_res)
@@ -45,3 +51,8 @@ imgs = numpy.array(imgs)
 mosaic = make_mosaic(imgs, nrows=nrows, ncols=ncols, border=1)
 print(mosaic.shape)
 imshow(mosaic)
+
+# Edge filter
+weights = [[1, 1, 1], [0, 0, 0], [-1, -1, -1]]
+im_res = convolve2d(im, weights, mode='same')
+imshow(im_res)
