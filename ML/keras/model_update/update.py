@@ -8,12 +8,12 @@ from keras.models import load_model
 
 
 def main(path):
-    glob_str = "{}*.h5".fromat(path)
-    print("Globbing with '{}'".fromat(glob_str))
+    glob_str = "{}/*.h5".format(path)
+    print("Globbing with '{}'".format(glob_str))
     model_files = glob.glob(glob_str)
     for model_fname in model_files:
+        print("Update {}...".format(model_fname))
         model = load_model(model_fname)
-        print("Loading done. Save.")
         model.save(model_fname)
 
 
