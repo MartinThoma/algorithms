@@ -186,7 +186,7 @@ def load_data(config):
         return {'x': x_compl, 'y': y_compl}
     elif mode.startswith('fold-'):
         fold = int(mode.split("-")[1])
-        if fold < 1 or fold > 10:
+        if not (1 <= fold <= 10):
             raise NotImplementedError
 
         # Load fold

@@ -16,12 +16,12 @@ import time
 config = {'dataset': {}}
 data = hasy.load_data(config)
 X, y = data['x_train'], data['y_train']
-X_train, X_test, y_train, y_test = (data['x_train'], data['x_test'],
+x_train, x_test, y_train, y_test = (data['x_train'], data['x_test'],
                                     data['y_train'], data['y_test'])
 
 # Reshaping
-X_train = X_train.reshape(len(X_train), -1)
-X_test = X_test.reshape(len(X_test), -1)
+x_train = x_train.reshape(len(x_train), -1)
+x_test = x_test.reshape(len(x_test), -1)
 y_train = y_train.reshape(-1)
 y_test = y_test.reshape(-1)
 
@@ -29,9 +29,9 @@ y_test = y_test.reshape(-1)
 automl = autosklearn.classification.AutoSklearnClassifier()
 print("automl.fit")
 t0 = time.time()
-automl.fit(X_train, y_train)
+automl.fit(x_train, y_train)
 t1 = time.time()
-y_hat = automl.predict(X_test)
+y_hat = automl.predict(x_test)
 acc = sklearn.metrics.accuracy_score(y_test, y_hat)
 
 # Serialize
