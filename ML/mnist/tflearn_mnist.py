@@ -24,8 +24,8 @@ y_test = data['y_test']
 # Bring data into necessary format
 x_train = mnist.preprocess(x_train, subtact_mean=False)
 x_test = mnist.preprocess(x_test, subtact_mean=False)
-y_train = np_utils.to_categorical(y_train, mnist.n_classes)
-y_test = np_utils.to_categorical(y_test, mnist.n_classes)
+y_train = mnist.to_categorical(y_train, mnist.n_classes)
+y_test = mnist.to_categorical(y_test, mnist.n_classes)
 
 # Define model
 input_shape = (mnist.img_rows, mnist.img_cols, 1)
@@ -49,3 +49,6 @@ model.fit({'input': x_train}, {'target': y_train}, n_epoch=epochs,
 # Evaluate model
 score = model.evaluate(x_test, y_test)
 print('Test accuracy: {:0.2f}%'.format(score[0] * 100))
+
+# Store model
+model.save('mnist_keras.h5')

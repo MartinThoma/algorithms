@@ -52,3 +52,6 @@ model.fit(x_train, y_train,
 # Evaluate model
 score = model.evaluate(x_test, y_test, verbose=0)
 print('Test accuracy: {:0.2f}%'.format(score[1] * 100))
+
+# Store model
+model.save('mnist_keras.h5')
