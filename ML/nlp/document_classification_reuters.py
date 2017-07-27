@@ -6,6 +6,19 @@ from nltk.corpus import reuters
 from collections import defaultdict
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+from sklearn.neural_network import BernoulliRBM
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LogisticRegression
+from sklearn.multiclass import OneVsRestClassifier
+import time
 
 
 def get_termfrequency_vector(word2wid, wordlist):
@@ -31,7 +44,7 @@ def get_termfrequency_vector(word2wid, wordlist):
     return document_tf_vector
 
 
-def get_x(document_id, word2wid):
+def get_x(document_id, word2wid, corpus_termfrequency_vector):
     """
     Get the feature vector of a document.
 
@@ -39,14 +52,19 @@ def get_x(document_id, word2wid):
     ----------
     document_id : int
     word2wid : dict
+    corpus_termfrequency_vector : list of int
 
     Returns
     -------
     list of int
     """
     word_list = list(reuters.words(document_id))
+    word_count = float(len(word_list))
     document_tf_vec = get_termfrequency_vector(word2wid, word_list)
-    return document_tf_vec
+    x = []
+    for i, wd_count in enumerate(document_tf_vec):
+        x.append(wd_count / (word_count * corpus_termfrequency_vector[i]))
+    return x
 
 
 def get_y(document_id, id2cats, cat2catid):
@@ -142,6 +160,7 @@ def main(categories, document_ids):
                   if word[1] >= min_occurences and word[1] <= max_occurences]
 
     # Analyze the vocabulary
+    print("total vocabulary = {}".format(len(word2count)))
     print("vocabulary size = {}".format(len(vocabulary)))
 
     word2wid = {}
@@ -150,7 +169,7 @@ def main(categories, document_ids):
         word2wid[word] = wid
     print("Created word2wid")
 
-    # corpus_termfrequency_vector = get_termfrequency_vector(word2wid, corpus)
+    corpus_termfrequency_vector = get_termfrequency_vector(word2wid, corpus)
 
     # Calculate feature vectors
     xs = {'train': [], 'test': []}
@@ -158,18 +177,72 @@ def main(categories, document_ids):
     for set_name, set_document_ids in [('test', test), ('train', train)]:
         print("Start with {}".format(set_name))
         for document_id in set_document_ids:
-            x = get_x(document_id, word2wid)
+            x = get_x(document_id, word2wid, corpus_termfrequency_vector)
             xs[set_name].append(x)
             y = get_y(document_id, id2cats, cat2catid)
             ys[set_name].append(y)
         xs[set_name] = np.array(xs[set_name])
         ys[set_name] = np.array(ys[set_name])
 
-    classifier = RandomForestClassifier()
-    print("Start fitting the RandomForestClassifier")
-    classifier.fit(xs['train'], ys['train'])
-    score = classifier.score(xs['test'], ys['test'])
-    print(score)
+    # Get classifiers
+    classifiers = [
+        ('Decision Tree', DecisionTreeClassifier(max_depth=5)),
+        ('Random Forest', RandomForestClassifier(n_estimators=50, n_jobs=10)),
+        ('Random Forest 2', RandomForestClassifier(max_depth=5,
+                                                   n_estimators=10,
+                                                   max_features=2,
+                                                   n_jobs=10)),
+        ('Naive Bayes', OneVsRestClassifier(GaussianNB())),
+        ('AdaBoost', OneVsRestClassifier(AdaBoostClassifier())),
+        ('Gradient Boosting', GradientBoostingClassifier()),
+        ('LDA', LinearDiscriminantAnalysis()),
+        ('QDA', QuadraticDiscriminantAnalysis()),
+        ('k nn', KNeighborsClassifier(3)),
+        ('Logistic Regression (C=1)', OneVsRestClassifier(LogisticRegression(C=1))),
+        ('Logistic Regression (C=1000)', OneVsRestClassifier(LogisticRegression(C=10000))),
+        # ('RBM 200, n_iter=40, LR=0.01, Reg: C=1',
+        #  Pipeline(steps=[('rbm', BernoulliRBM(n_components=200,
+        #                                       n_iter=40,
+        #                                       learning_rate=0.01,
+        #                                       verbose=True)),
+        #                  ('logistic', LogisticRegression(C=1))])),
+        # ('RBM 200, n_iter=40, LR=0.01, Reg: C=10000',
+        #  Pipeline(steps=[('rbm', BernoulliRBM(n_components=200,
+        #                                       n_iter=40,
+        #                                       learning_rate=0.01,
+        #                                       verbose=True)),
+        #                  ('logistic', LogisticRegression(C=10000))])),
+        # ('RBM 100', Pipeline(steps=[('rbm', BernoulliRBM(n_components=100)),
+        #                             ('logistic', LogisticRegression(C=1))])),
+        # ('RBM 100, n_iter=20',
+        #  Pipeline(steps=[('rbm', BernoulliRBM(n_components=100, n_iter=20)),
+        #                  ('logistic', LogisticRegression(C=1))])),
+        # ('RBM 256', Pipeline(steps=[('rbm', BernoulliRBM(n_components=256)),
+        #                             ('logistic', LogisticRegression(C=1))])),
+        # ('RBM 512, n_iter=100',
+        #  Pipeline(steps=[('rbm', BernoulliRBM(n_components=512, n_iter=10)),
+        #                  ('logistic', LogisticRegression(C=1))])),
+        ('SVM, adj.', OneVsRestClassifier(SVC(probability=False,
+                                              kernel="rbf",
+                                              C=2.8,
+                                              gamma=.0073,
+                                              cache_size=200))),
+        ('SVM, linear', OneVsRestClassifier(SVC(kernel="linear",
+                                                C=0.025,
+                                                cache_size=200))),
+    ]
+
+    for clf_name, classifier in classifiers:
+        t0 = time.time()
+        classifier.fit(xs['train'], ys['train'])
+        t1 = time.time()
+        score = classifier.score(xs['test'], ys['test'])
+        t2 = time.time()
+        print("{clf_name:<30}: {score:0.2f}% in {train_time:0.2f}s train / {test_time:0.2f}s test"
+              .format(clf_name=clf_name,
+                      score=(score * 100),
+                      train_time=t1 - t0,
+                      test_time=t2 - t1))
 
 if __name__ == '__main__':
     main(reuters.categories(), reuters.fileids())
