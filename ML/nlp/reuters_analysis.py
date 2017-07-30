@@ -104,5 +104,48 @@ def main(categories, document_ids, verbose=False):
     analyze_vocabulary(corpus)
 
 
+def find_class_predictors(ys):
+    class_pred_corr = [[0.0 for _ in range(90)] for _ in range(90)]
+    class_pred_total = [[0.0 for _ in range(90)] for _ in range(90)]
+    for document_cats in ys:
+        for take_i in range(90):
+            for predict_i in range(90):
+                if take_i == 0:
+                    continue
+                class_pred_total[take_i][predict_i] += 1
+                if document_cats[take_i] == document_cats[predict_i]:
+                    class_pred_corr[take_i][predict_i] += 1
+    acc = []
+    for i in range(90):
+        line = []
+        for j in range(90):
+            if class_pred_total[i][j] == 0.0:
+                score = 0.0
+            else:
+                score = class_pred_corr[i][j] / class_pred_total[i][j]
+            line.append(score)
+        acc.append(line)
+    return acc
+
+
+def print_class_predictors(acc):
+    score_list = []
+    for take_i in range(90):
+        for predict_i in range(90):
+            score_list.append({'take': take_i,
+                               'pred': predict_i,
+                               'acc': acc[take_i][predict_i]})
+    score_list = sorted(score_list, key=lambda n: n['acc'], reverse=True)
+    for el in score_list:
+        if el['take'] == el['pred']:
+            continue
+        take = reuters.labels[el['take']]
+        pred = reuters.labels[el['pred']]
+        print("{} => {} ({})".format(take, pred, el['acc']))
+
+
 if __name__ == '__main__':
-    main(reuters.categories(), reuters.fileids())
+    # main(reuters.categories(), reuters.fileids())
+    import reuters
+    acc = find_class_predictors(reuters.load_data()['y_train'])
+    print_class_predictors(acc)

@@ -16,6 +16,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.multiclass import OneVsRestClassifier
 import time
 from sklearn.svm import LinearSVC
+from scoring import get_tptnfpfn, get_accuracy, get_f_score
 
 
 def main(dataset_module):
@@ -35,8 +36,8 @@ def main(dataset_module):
 
     # Get classifiers
     classifiers = [
-        ('Decision Tree', DecisionTreeClassifier(max_depth=5)),
         ('LinearSVC', OneVsRestClassifier(LinearSVC(random_state=42))),
+        ('Decision Tree', DecisionTreeClassifier(max_depth=5)),
         ('Random Forest (50 estimators)',
          RandomForestClassifier(n_estimators=50, n_jobs=10)),
         ('Random Forest (200 estimators)',
@@ -45,6 +46,8 @@ def main(dataset_module):
          OneVsRestClassifier(LogisticRegression(C=1))),
         ('Logistic Regression (C=1000)',
          OneVsRestClassifier(LogisticRegression(C=10000))),
+        ('k nn 3', KNeighborsClassifier(3)),
+        ('k nn 5', KNeighborsClassifier(5)),
         ('Naive Bayes', OneVsRestClassifier(GaussianNB())),
         ('SVM, linear', OneVsRestClassifier(SVC(kernel="linear",
                                                 C=0.025,
@@ -54,8 +57,6 @@ def main(dataset_module):
                                               C=2.8,
                                               gamma=.0073,
                                               cache_size=200))),
-        ('k nn 3', KNeighborsClassifier(3)),
-        ('k nn 5', KNeighborsClassifier(5)),
         ('AdaBoost', OneVsRestClassifier(AdaBoostClassifier())),  # 20 minutes to train
         ('LDA', OneVsRestClassifier(LinearDiscriminantAnalysis())),  # took more than 6 hours
         ('RBM 100', Pipeline(steps=[('rbm', BernoulliRBM(n_components=100)),
@@ -70,6 +71,12 @@ def main(dataset_module):
         #                  ('logistic', LogisticRegression(C=1))])),
     ]
 
+    print(("{clf_name:<30}: {score:<5}  in {train_time:>5} /  {test_time}")
+          .format(clf_name="Classifier",
+                  score="score",
+                  train_time="train",
+                  test_time="test"))
+    print("-" * 70)
     for clf_name, classifier in classifiers:
         t0 = time.time()
         classifier.fit(xs['train'], ys['train'])
@@ -82,6 +89,9 @@ def main(dataset_module):
                       score=(score * 100),
                       train_time=t1 - t0,
                       test_time=t2 - t1))
+        res = get_tptnfpfn(classifier, data)
+        print("\tAccuracy={}\tF1={}".format(get_accuracy(res), get_f_score(res)))
+
 
 if __name__ == '__main__':
     main(reuters)
