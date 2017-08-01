@@ -17,10 +17,10 @@ def create_model(nb_classes, input_shape):
     """Create a MLP model."""
     input_ = Input(shape=input_shape)
     x = input_
-    x = Dropout(0.25)(x)
-    x = Dense(256, activation='relu')(x)
+    x = Dense(512, activation='relu')(x)
     x = Dropout(0.5)(x)
     x = Dense(256, activation='relu')(x)
+    x = Dropout(0.5)(x)
     x = Dense(nb_classes)(x)
     x = Activation('sigmoid')(x)
     model = Model(inputs=input_, outputs=x)
@@ -91,7 +91,7 @@ def main(data_module):
     t0 = time.time()
     model.fit(data['x_train'], data['y_train'],
               batch_size=32,
-              epochs=20,
+              epochs=30,
               validation_data=(data['x_test'], data['y_test']),
               shuffle=True,
               # callbacks=callbacks
