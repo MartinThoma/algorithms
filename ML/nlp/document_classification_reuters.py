@@ -16,7 +16,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.multiclass import OneVsRestClassifier
 import time
 from sklearn.svm import LinearSVC
-from scoring import get_tptnfpfn, get_accuracy, get_f_score
+from sklearn.metrics import accuracy_score, fbeta_score
 
 
 def main(dataset_module):
@@ -81,16 +81,24 @@ def main(dataset_module):
         t0 = time.time()
         classifier.fit(xs['train'], ys['train'])
         t1 = time.time()
-        score = classifier.score(xs['test'], ys['test'])
+        # score = classifier.score(xs['test'], ys['test'])
+        preds = classifier.predict(data['x_test'])
+        preds[preds >= 0.5] = 1
+        preds[preds < 0.5] = 0
         t2 = time.time()
-        print(("{clf_name:<30}: {score:0.2f}% in {train_time:0.2f}s train / "
-               "{test_time:0.2f}s test")
+        # res = get_tptnfpfn(classifier, data)
+        # acc = get_accuracy(res)
+        # f1 = get_f_score(res)
+        acc = accuracy_score(y_true=data['y_test'], y_pred=preds)
+        f1 = fbeta_score(y_true=data['y_test'], y_pred=preds, beta=1, average="weighted")
+        print(("{clf_name:<30}: {acc:0.2f}% {f1:0.2f}% in {train_time:0.2f}s"
+               " train / {test_time:0.2f}s test")
               .format(clf_name=clf_name,
-                      score=(score * 100),
+                      acc=(acc * 100),
+                      f1=(f1 * 100),
                       train_time=t1 - t0,
                       test_time=t2 - t1))
-        res = get_tptnfpfn(classifier, data)
-        print("\tAccuracy={}\tF1={}".format(get_accuracy(res), get_f_score(res)))
+        # print("\tAccuracy={}\tF1={}".format(acc, f1))
 
 
 if __name__ == '__main__':
