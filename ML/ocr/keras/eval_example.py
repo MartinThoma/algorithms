@@ -42,4 +42,4 @@ x = scipy.ndimage.imread('example.png', mode='L').transpose()
 x = x.reshape(x.shape + (1,))
 
 # Does not work
-print(model.predict(x))
+print(model.predict(x, batch_size=1, verbose=0))
