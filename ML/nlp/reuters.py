@@ -24,7 +24,8 @@ def load_data(config={}):
 
     Returns
     -------
-    Tuple of Numpy arrays: `(x_train, y_train), (x_test, y_test)`.
+    data : dict
+        with keys 'x_train', 'x_test', 'y_train', 'y_test', 'labels'
     """
     stop_words = stopwords.words("english")
     vectorizer = TfidfVectorizer(stop_words=stop_words)

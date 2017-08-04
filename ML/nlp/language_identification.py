@@ -64,8 +64,11 @@ def identify_language(text):
 
     # Normalize
     sum_scores = float(sum(el[1] for el in languages_ratios))
-    languages_ratios = [(_nltk_to_iso369_3(el[0]), el[1] / sum_scores)
+    languages_ratios = [(_nltk_to_iso369_3(el[0]), el[1])
                         for el in languages_ratios]
+    if sum_scores > 0:
+        languages_ratios = [(el[0], el[1] / sum_scores)
+                            for el in languages_ratios]
 
     return sorted(languages_ratios, key=lambda n: n[1], reverse=True)
 
