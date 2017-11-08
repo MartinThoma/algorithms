@@ -21,7 +21,7 @@ def main(env_name, nb_steps):
     model = create_nn_model(input_shape, nb_actions)
 
     # Finally, we configure and compile our agent.
-    memory = EpisodeParameterMemory(limit=1000, window_length=1)
+    memory = EpisodeParameterMemory(limit=450, window_length=1)
 
     agent = CEMAgent(model=model, nb_actions=nb_actions, memory=memory,
                      batch_size=50, nb_steps_warmup=2000, train_interval=50,
@@ -57,8 +57,18 @@ def create_nn_model(input_shape, nb_actions):
     -------
     model : keras Model object
     """
+    # model = Sequential()
+    # model.add(Flatten(input_shape=input_shape))
+    # model.add(Dense(nb_actions))
+    # model.add(Activation('softmax'))
     model = Sequential()
     model.add(Flatten(input_shape=input_shape))
+    model.add(Dense(16))
+    model.add(Activation('relu'))
+    model.add(Dense(16))
+    model.add(Activation('relu'))
+    model.add(Dense(16))
+    model.add(Activation('relu'))
     model.add(Dense(nb_actions))
     model.add(Activation('softmax'))
     print(model.summary())
