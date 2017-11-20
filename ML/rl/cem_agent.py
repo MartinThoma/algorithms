@@ -27,7 +27,7 @@ def main(env_name, nb_steps):
                      batch_size=50, nb_steps_warmup=2000, train_interval=50,
                      elite_frac=0.05)
     agent.compile()
-    agent.fit(env, nb_steps=nb_steps, visualize=False, verbose=2)
+    agent.fit(env, nb_steps=nb_steps, visualize=False, verbose=1)
 
     # After training is done, we save the best weights.
     agent.save_weights('cem_{}_params.h5f'.format(env_name), overwrite=True)
@@ -57,13 +57,12 @@ def create_nn_model(input_shape, nb_actions):
     -------
     model : keras Model object
     """
-    # model = Sequential()
-    # model.add(Flatten(input_shape=input_shape))
-    # model.add(Dense(nb_actions))
-    # model.add(Activation('softmax'))
     model = Sequential()
-    model.add(Flatten(input_shape=input_shape))
-    model.add(Dense(16))
+    if len(input_shape) == 3:
+        model.add(Flatten(input_shape=input_shape))
+        model.add(Dense(16))
+    else:
+        model.add(Dense(16, input_shape=input_shape))
     model.add(Activation('relu'))
     model.add(Dense(16))
     model.add(Activation('relu'))

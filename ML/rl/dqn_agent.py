@@ -2,6 +2,7 @@
 
 import numpy as np
 import gym
+import gym_banana
 
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Flatten
@@ -23,17 +24,17 @@ def main(env_name, nb_steps):
     model = create_nn_model(input_shape, nb_actions)
 
     # Finally, we configure and compile our agent.
-    memory = EpisodeParameterMemory(limit=2000, window_length=1)
+    memory = EpisodeParameterMemory(limit=10000, window_length=1)
 
     policy = LinearAnnealedPolicy(EpsGreedyQPolicy(), attr='eps', value_max=1.,
                                   value_min=.1, value_test=.05,
                                   nb_steps=1000000)
     agent = DQNAgent(model=model, nb_actions=nb_actions, policy=policy,
-                     memory=memory, nb_steps_warmup=50000,
-                     gamma=.99, target_model_update=10000,
+                     memory=memory, nb_steps_warmup=1000000,
+                     gamma=.99, target_model_update=1000,
                      train_interval=4, delta_clip=1.)
     agent.compile(Adam(lr=.00025), metrics=['mae'])
-    agent.fit(env, nb_steps=nb_steps, visualize=False, verbose=2)
+    agent.fit(env, nb_steps=nb_steps, visualize=False, verbose=1)
 
     # After training is done, we save the best weights.
     agent.save_weights('dqn_{}_params.h5f'.format(env_name), overwrite=True)
@@ -63,23 +64,12 @@ def create_nn_model(input_shape, nb_actions):
     -------
     model : keras Model object
     """
-    # model = Sequential()
-    # model.add(Flatten(input_shape=input_shape))
-    # model.add(Dense(nb_actions))
-    # model.add(Activation('softmax'))
-    # model = Sequential()
-    # model.add(Flatten(input_shape=input_shape))
-    # model.add(Dense(16))
-    # model.add(Activation('relu'))
-    # model.add(Dense(16))
-    # model.add(Activation('relu'))
-    # model.add(Dense(16))
-    # model.add(Activation('relu'))
-    # model.add(Dense(nb_actions))
-    # model.add(Activation('linear'))
     model = Sequential()
-    model.add(Flatten(input_shape=input_shape))
-    model.add(Dense(32))
+    if len(input_shape) == 3:
+        model.add(Flatten(input_shape=input_shape))
+        model.add(Dense(32))
+    else:
+        model.add(Dense(32, input_shape=input_shape))
     model.add(Activation('relu'))
     model.add(Dense(64))
     model.add(Activation('relu'))
