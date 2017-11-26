@@ -1,0 +1,9 @@
+model_name: 'qlearning'
+problem:
+  gamma: 0.99  # discounting factor
+training:
+  nb_epochs: 100000
+  learning_rate: 0.7  # alpha
+  print_score: 500  # each 500 episodes
+testing:
+  nb_epochs: 100
