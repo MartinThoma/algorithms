@@ -5,5 +5,9 @@ training:
   nb_epochs: 100000
   learning_rate: 0.10  # alpha
   print_score: 500  # each 500 episodes
+  print_window_size:  100
+  exploration:
+    name: 'Boltzmann'
+    clip: [-500, 500]
 testing:
   nb_epochs: 10000

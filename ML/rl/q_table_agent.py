@@ -19,6 +19,7 @@ np.random.seed(280490)
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     level=logging.DEBUG,
                     stream=sys.stdout)
+np.set_printoptions(formatter={'float_kind': lambda x: "{:>5.2f}".format(x)})
 
 
 def main(environment_name, agent_cfg_file):
@@ -61,8 +62,10 @@ class QTableAgent:
         self.lr = agent_cfg['training']['learning_rate']
         self.gamma = agent_cfg['problem']['gamma']  # discount
         self.epoch = 0
+        self.exploration = agent_cfg['training']['exploration']
 
     def reset(self):
+        """Reset the agent. Call this at the beginning of an episode."""
         self.epoch += 1
 
     def act(self, observation, no_exploration=False):
@@ -73,14 +76,27 @@ class QTableAgent:
         ----------
         observation : int
         no_exploration : bool, optional (default: False)
+
+        Returns
+        -------
+        action : int
         """
         assert self.epoch >= 1, "Reset before you run an episode."
-        if no_exploration:
-            noise = np.zeros((1, self.nb_act))
-        else:
-            f = self.epoch // 2 + 1
-            noise = np.random.randn(1, self.nb_act) * (1.0 / f)
-        action = np.argmax(self.Q[observation, :] + noise)
+        action = np.argmax(self.Q[observation, :])
+        if not no_exploration:
+            if self.exploration['name'] == 'epsilon-greedy':
+                if np.random.uniform() < self.exploration['epsilon']:
+                    action = np.random.random_integers(0, self.nb_act - 1)
+            elif self.exploration['name'] == 'Boltzmann':
+                T = 1
+                clip = self.exploration['clip']
+                q_values = self.Q[observation, :].astype('float64')
+                q_values = np.clip(q_values / T, clip[0], clip[1])
+                exp_values = np.exp(q_values)
+                probs = exp_values / np.sum(exp_values)
+                action = np.random.choice(range(self.nb_act), p=probs)
+            else:
+                raise NotImplemented(self.exploration['name'])
         return action
 
     def remember(self, prev_state, action, reward, state, is_done):
@@ -94,11 +110,10 @@ class QTableAgent:
         reward : float
         state : int
         """
-        gradient = (
-            reward + self.gamma * np.max(self.Q[state, :]) -
-            self.Q[prev_state, action]
-        )
-        self.Q[prev_state, action] += self.lr * gradient
+        delta = reward - self.Q[prev_state, action]
+        if not is_done:
+            delta += self.gamma * np.max(self.Q[state, :])
+        self.Q[prev_state, action] += self.lr * delta
         return self
 
     def save(self, path):
@@ -119,7 +134,14 @@ class QTableAgent:
 
 
 def load_agent(cfg, env):
-    """Create (and load) a QTableAgent."""
+    """
+    Create (and load) a QTableAgent.
+
+    Parameters
+    ----------
+    cfg : dict
+    env : OpenAI environment
+    """
     agent = QTableAgent(cfg, env.observation_space.n, env.action_space.n)
     if os.path.isfile(cfg['serialize_path']):
         agent.load(cfg['serialize_path'])
@@ -141,7 +163,8 @@ def train_agent(cfg, env, agent):
     ------
     agent : object
     """
-    cum_rewards = 0.0
+    rewards = []
+    window_size = cfg['training']['print_window_size']
     for episode in range(cfg['training']['nb_epochs']):
         agent.reset()
         observation_previous = env.reset()
@@ -149,14 +172,15 @@ def train_agent(cfg, env, agent):
         while not is_done:
             action = agent.act(observation_previous)
             observation, reward, is_done, _ = env.step(action)
-            cum_rewards += reward
+            rewards.append(reward)
             agent.remember(observation_previous, action, reward, observation,
                            is_done)
             observation_previous = observation
-        agent.save(cfg['serialize_path'])
         if episode % cfg['training']['print_score'] == 0 and episode > 0:
+            agent.save(cfg['serialize_path'])
             print("Average score: {:>5.2f}"
-                  .format(cum_rewards / (episode + 1)))
+                  .format(sum(rewards[-window_size:]) / window_size))
+            print(agent.Q)
     agent.save(cfg['serialize_path'])
     return agent
 
@@ -164,17 +188,15 @@ def train_agent(cfg, env, agent):
 def test_agent(cfg, env, agent):
     """Calculate average reward."""
     cum_reward = 0.0
-    for epoch in range(cfg['testing']['nb_epochs']):
+    for episode in range(cfg['testing']['nb_epochs']):
         agent.reset()
         observation_previous = env.reset()
-        while True:
+        is_done = False
+        while not is_done:
             action = agent.act(observation_previous, no_exploration=True)
             observation, reward, is_done, _ = env.step(action)
             cum_reward += reward
             observation_previous = observation
-            if is_done:
-                env.close()
-                break
     return cum_reward / cfg['testing']['nb_epochs']
 
 
