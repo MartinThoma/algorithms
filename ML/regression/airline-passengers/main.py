@@ -8,6 +8,8 @@ import time
 
 # 3rd party modules
 import numpy as np
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.linear_model import (HuberRegressor,
                                   SGDRegressor,
                                   PassiveAggressiveRegressor,
@@ -18,6 +20,7 @@ from sklearn.ensemble import (AdaBoostRegressor,
                               GradientBoostingRegressor,
                               RandomForestRegressor)
 from sklearn.gaussian_process import GaussianProcessRegressor
+from sklearn.svm import SVR
 import sklearn.metrics
 
 
@@ -28,14 +31,20 @@ def main():
                   ('BaggingRegressor', BaggingRegressor()),
                   ('ExtraTreesRegressor', ExtraTreesRegressor()),
                   ('GaussianProcessRegressor',
-                   GaussianProcessRegressor(n_restarts_optimizer=0,
-                                            normalize_y=True)),
+                   Pipeline([('scaler', MinMaxScaler()),
+                             ('gauss', GaussianProcessRegressor(
+                                 n_restarts_optimizer=0,
+                                 normalize_y=True))])),
                   ('GradientBoostingRegressor', GradientBoostingRegressor()),
                   ('HuberRegressor', HuberRegressor()),
-                  ('SGDRegressor', SGDRegressor()),
+                  ('SGDRegressor', Pipeline([('scaler', StandardScaler()),
+                                             ('sgd', SGDRegressor())])),
                   ('PassiveAggressiveRegressor', PassiveAggressiveRegressor()),
                   ('RANSACRegressor', RANSACRegressor()),
-                  ('RandomForestRegressor', RandomForestRegressor())]
+                  ('RandomForestRegressor', RandomForestRegressor()),
+                  ('SVR', Pipeline([('scaler', StandardScaler()),
+                                    ('sgr', SVR())])),
+                  ]
     # Fit them all
     regressor_data = {}
     for reg_name, model in regressors:
