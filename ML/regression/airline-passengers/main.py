@@ -11,9 +11,11 @@ import numpy as np
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.linear_model import (HuberRegressor,
-                                  SGDRegressor,
+                                  ElasticNet,
+                                  Lasso,
                                   PassiveAggressiveRegressor,
-                                  RANSACRegressor)
+                                  RANSACRegressor,
+                                  SGDRegressor)
 from sklearn.ensemble import (AdaBoostRegressor,
                               BaggingRegressor,
                               ExtraTreesRegressor,
@@ -42,8 +44,11 @@ def main():
                   ('PassiveAggressiveRegressor', PassiveAggressiveRegressor()),
                   ('RANSACRegressor', RANSACRegressor()),
                   ('RandomForestRegressor', RandomForestRegressor()),
+                  ('Lasso', Lasso()),
+                  ('ElasticNet', ElasticNet()),
+                  ('Linear SVR', SVR(kernel='linear')),
                   ('SVR', Pipeline([('scaler', StandardScaler()),
-                                    ('sgr', SVR())])),
+                                    ('svr', SVR(kernel='rbf'))])),
                   ]
     # Fit them all
     regressor_data = {}
