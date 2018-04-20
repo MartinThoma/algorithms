@@ -46,7 +46,8 @@ def main():
                   ('RandomForestRegressor', RandomForestRegressor()),
                   ('Lasso', Lasso()),
                   ('ElasticNet', ElasticNet()),
-                  ('Linear SVR', SVR(kernel='linear')),
+                  ('Linear SVR', Pipeline([('scaler', StandardScaler()),
+                                           ('svr', SVR(kernel='linear'))])),
                   ('SVR', Pipeline([('scaler', StandardScaler()),
                                     ('svr', SVR(kernel='rbf'))])),
                   ]
@@ -59,7 +60,7 @@ def main():
         t0 = time.time()
         model.fit(data['train']['X'][:examples], data['train']['y'][:examples])
         t1 = time.time()
-        an_data = analyze(model, data['test'], t1 - t0, reg_name)
+        an_data = analyze(model, data['all'], t1 - t0, reg_name)
         regressor_data[reg_name] = {'name': reg_name,
                                     'training_time': (t1 - t0) * 1000}
         for key, value in an_data.items():
@@ -79,10 +80,15 @@ def data_loading(path, tts=0.8):
     Returns
     -------
     data : dict
+        data['train']['X_raw']: list of datetime
         data['train']['X'] : ndarray
         data['train']['y'] : ndarray
+        data['test']['X_raw']: list of datetime
         data['test']['X'] : ndarray
         data['test']['y'] : ndarray
+        data['all']['X_raw']: list of datetime
+        data['all']['X'] : ndarray
+        data['all']['y'] : ndarray
     """
     load_requests('https://raw.githubusercontent.com/'
                   'blue-yonder/pydse/master/pydse/data/'
@@ -104,15 +110,21 @@ def data_loading(path, tts=0.8):
     # Basic Preprocessing to be able to make it a float ndarray
     # Also add the "month" feature
     min_time = min(row[0] for row in features)
+    x_raw = features
     features = [[(row[0] - min_time).total_seconds(),
                  row[0].month] for row in features]
 
     # Train-test-split
     n = int(math.floor(len(labels) * tts))
     data = {'train': {'X': np.array(features[:n], dtype=np.float),
+                      'X_raw': x_raw[:n],
                       'y': np.array(labels[:n], dtype=np.int)},
             'test': {'X': np.array(features[n:], dtype=np.float),
-                     'y': np.array(labels[n:], dtype=np.int)}}
+                     'X_raw': x_raw[n:],
+                     'y': np.array(labels[n:], dtype=np.int)},
+            'all': {'X': np.array(features, dtype=np.float),
+                    'X_raw': x_raw,
+                    'y': np.array(labels, dtype=np.int)}}
     return data
 
 
@@ -135,6 +147,7 @@ def analyze(model, data, fit_time, reg_name):
     t0 = time.time()
     y_pred = model.predict(data['X'])
     t1 = time.time()
+    plot(data['X_raw'], y_pred, data['y'])
     mse = sklearn.metrics.mean_squared_error(y_true=data['y'], y_pred=y_pred)
     mae = sklearn.metrics.mean_absolute_error(y_true=data['y'], y_pred=y_pred)
     medae = sklearn.metrics.median_absolute_error(y_true=data['y'],
@@ -190,6 +203,16 @@ def print_website(regressor_data):
             print(('\t<td>' + formatter + '</td>').format(row[td]))
         print('</tr>')
     print('</table>')
+
+
+def plot(xs, ys_pred, ys_true, ylabel='some numbers'):
+    import matplotlib.pyplot as plt
+    tuple_list_pred = zip(xs, ys_pred)
+    tuple_list_true = zip(xs, ys_true)
+    plt.plot(*zip(*tuple_list_pred))
+    plt.plot(*zip(*tuple_list_true))
+    plt.ylabel(ylabel)
+    plt.show()
 
 
 if __name__ == '__main__':
