@@ -8,6 +8,7 @@ import time
 
 # 3rd party modules
 import numpy as np
+from sklearn.base import BaseEstimator, RegressorMixin
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.linear_model import (HuberRegressor,
@@ -29,27 +30,45 @@ import sklearn.metrics
 def main():
     data = data_loading('international-airline-passengers.csv')
 
-    regressors = [('AdaBoostRegressor', AdaBoostRegressor()),
-                  ('BaggingRegressor', BaggingRegressor()),
-                  ('ExtraTreesRegressor', ExtraTreesRegressor()),
-                  ('GaussianProcessRegressor',
-                   Pipeline([('scaler', MinMaxScaler()),
-                             ('gauss', GaussianProcessRegressor(
-                                 n_restarts_optimizer=0,
-                                 normalize_y=True))])),
-                  ('GradientBoostingRegressor', GradientBoostingRegressor()),
-                  ('HuberRegressor', HuberRegressor()),
-                  ('SGDRegressor', Pipeline([('scaler', StandardScaler()),
-                                             ('sgd', SGDRegressor())])),
-                  ('PassiveAggressiveRegressor', PassiveAggressiveRegressor()),
-                  ('RANSACRegressor', RANSACRegressor()),
-                  ('RandomForestRegressor', RandomForestRegressor()),
-                  ('Lasso', Lasso()),
-                  ('ElasticNet', ElasticNet()),
-                  ('Linear SVR', Pipeline([('scaler', StandardScaler()),
-                                           ('svr', SVR(kernel='linear'))])),
-                  ('SVR', Pipeline([('scaler', StandardScaler()),
-                                    ('svr', SVR(kernel='rbf'))])),
+    regressors = [#('AdaBoostRegressor', AdaBoostRegressor()),
+                  # ('BaggingRegressor', BaggingRegressor()),
+                  # ('ExtraTreesRegressor', ExtraTreesRegressor()),
+                  # ('GaussianProcessRegressor',
+                  #  Pipeline([('scaler', MinMaxScaler()),
+                  #            ('gauss', GaussianProcessRegressor(
+                  #                n_restarts_optimizer=0,
+                  #                normalize_y=True))])),
+                  # ('GradientBoostingRegressor', GradientBoostingRegressor()),
+                  # ('HuberRegressor', HuberRegressor()),
+                  # ('SGDRegressor', Pipeline([('scaler', StandardScaler()),
+                  #                            ('sgd', SGDRegressor())])),
+                  # ('PassiveAggressiveRegressor', PassiveAggressiveRegressor()),
+                  # ('RANSACRegressor', RANSACRegressor()),
+                  # ('RandomForestRegressor', RandomForestRegressor()),
+                  # ('Lasso', Lasso()),
+                  # ('ElasticNet', ElasticNet()),
+                  # ('LinearSVR', Pipeline([('scaler', StandardScaler()),
+                  #                          ('svr', SVR(kernel='linear'))])),
+                  # ('SVR', Pipeline([('scaler', StandardScaler()),
+                  #                   ('svr', SVR(kernel='rbf'))])),
+                  # ('TrendSeasonRegressor_Lasso_ExtraTrees',
+                  #  TrendSeasonRegressor(Lasso(), ExtraTreesRegressor())),
+                  # ('TrendSeasonRegressor_ElasticNet_ExtraTrees',
+                  #  TrendSeasonRegressor(ElasticNet(), ExtraTreesRegressor())),
+                  # ('TrendSeasonRegressor_LinearSVR_ExtraTrees',
+                  #  TrendSeasonRegressor(Pipeline([('scaler', StandardScaler()),
+                  #                       ('svr', SVR(kernel='linear'))]), ExtraTreesRegressor())),
+
+                  # ('TrendSeasonRegressor_Lasso_Adaboost',
+                  #  TrendSeasonRegressor(Lasso(), AdaBoostRegressor())),
+                  # ('TrendSeasonRegressor_ElasticNet_Adaboost',
+                  #  TrendSeasonRegressor(ElasticNet(), AdaBoostRegressor())),
+                  # ('TrendSeasonRegressor_LinearSVR_Adaboost',
+                  #  TrendSeasonRegressor(Pipeline([('scaler', StandardScaler()),
+                  #                       ('svr', SVR(kernel='linear'))]), AdaBoostRegressor())),
+                  ('ResidualRegressor-LE',
+                   ResidualRegressor([Lasso(),
+                                      ExtraTreesRegressor()])),
                   ]
     # Fit them all
     regressor_data = {}
@@ -60,7 +79,7 @@ def main():
         t0 = time.time()
         model.fit(data['train']['X'][:examples], data['train']['y'][:examples])
         t1 = time.time()
-        an_data = analyze(model, data['all'], t1 - t0, reg_name)
+        an_data = analyze(model, data, t1 - t0, reg_name)
         regressor_data[reg_name] = {'name': reg_name,
                                     'training_time': (t1 - t0) * 1000}
         for key, value in an_data.items():
@@ -128,6 +147,48 @@ def data_loading(path, tts=0.8):
     return data
 
 
+class TrendSeasonRegressor(BaseEstimator, RegressorMixin):
+    """
+    Combined regressor.
+
+    One model as a base to fit the trend, the other model for seasonality
+    effects.
+    """
+    def __init__(self, f1, f2):
+        self.f1 = f1
+        self.f2 = f2
+
+    def fit(self, X, y):
+        self.f1.fit(X, y)
+        y_tilde = self.f1.predict(X)
+        self.f2.fit(X, y - y_tilde)
+        return self
+
+    def predict(self, X):
+        return self.f1.predict(X) + self.f2.predict(X)
+
+
+class ResidualRegressor(BaseEstimator, RegressorMixin):
+    """
+    Combined regressor where successive regressors fit the residuals.
+
+    If only one model is used, then the ResidualRegressor is simply that model.
+    """
+    def __init__(self, regressors):
+        self.regressors = regressors
+
+    def fit(self, X, y):
+        self.regressors[0].fit(X, y)
+        for i in range(1, len(self.regressors)):
+            y_tilde = sum(self.regressors[j].predict(X)
+                          for j in range(0, i))
+            self.regressors[i].fit(X, y - y_tilde)
+        return self
+
+    def predict(self, X):
+        return sum(reg.predict(X) for reg in self.regressors)
+
+
 def analyze(model, data, fit_time, reg_name):
     """
     Assume the first column is a datetime object that can be converted to int.
@@ -144,22 +205,26 @@ def analyze(model, data, fit_time, reg_name):
     transformed_data : list of tuples
         (int, int)
     """
+    y_pred = {'train': model.predict(data['train']['X'])}
     t0 = time.time()
-    y_pred = model.predict(data['X'])
+    y_pred['test'] = model.predict(data['test']['X'])
     t1 = time.time()
-    plot(data['X_raw'], y_pred, data['y'])
-    mse = sklearn.metrics.mean_squared_error(y_true=data['y'], y_pred=y_pred)
-    mae = sklearn.metrics.mean_absolute_error(y_true=data['y'], y_pred=y_pred)
-    medae = sklearn.metrics.median_absolute_error(y_true=data['y'],
-                                                  y_pred=y_pred)
-    r2 = sklearn.metrics.r2_score(y_true=data['y'], y_pred=y_pred)
+    plot(data, y_pred, reg_name, 'passengers')
+    mse = sklearn.metrics.mean_squared_error(y_true=data['test']['y'],
+                                             y_pred=y_pred['test'])
+    mae = sklearn.metrics.mean_absolute_error(y_true=data['test']['y'],
+                                              y_pred=y_pred['test'])
+    medae = sklearn.metrics.median_absolute_error(y_true=data['test']['y'],
+                                                  y_pred=y_pred['test'])
+    r2 = sklearn.metrics.r2_score(y_true=data['test']['y'],
+                                  y_pred=y_pred['test'])
     return {'testing_time': (t1 - t0) * 1000,
             'mse': mse,
             'mae': mae,
             'median_absolute_error': medae,
             'explained_variance':
-            sklearn.metrics.explained_variance_score(y_true=data['y'],
-                                                     y_pred=y_pred),
+            sklearn.metrics.explained_variance_score(y_true=data['test']['y'],
+                                                     y_pred=y_pred['test']),
             'r2': r2}
 
 
@@ -205,14 +270,30 @@ def print_website(regressor_data):
     print('</table>')
 
 
-def plot(xs, ys_pred, ys_true, ylabel='some numbers'):
+def plot(data, ys_pred, title='Classifier', ylabel='some numbers'):
     import matplotlib.pyplot as plt
-    tuple_list_pred = zip(xs, ys_pred)
+    ys_true = data['all']['y']
+    xs = data['all']['X_raw']
+    tuple_list_pred_train = zip(xs[:len(ys_pred['train'])], ys_pred['train'])
+    tuple_list_pred_test = zip(xs[len(ys_pred['train']):], ys_pred['test'])
     tuple_list_true = zip(xs, ys_true)
-    plt.plot(*zip(*tuple_list_pred))
-    plt.plot(*zip(*tuple_list_true))
+    tuple_list_ae = zip(xs, [abs(tr - pr)
+                             for tr, pr in zip(ys_true[:len(ys_pred['train'])], ys_pred['train'])] +
+                            [abs(tr - pr)
+                             for tr, pr in zip(ys_true[len(ys_pred['train']):], ys_pred['test'])])
+    plt.figure()
+    plt.title(title)
+    plt.plot(*zip(*tuple_list_true), color='green', linestyle='solid')
+    plt.plot(*zip(*tuple_list_pred_train), color='red', linestyle='solid')
+    plt.plot(*zip(*tuple_list_pred_test), color='red', linestyle='dashed')
+    plt.plot(*zip(*tuple_list_ae), color='black')
     plt.ylabel(ylabel)
-    plt.show()
+    plt.legend(['Ground Truth',
+                'Prediction (train)',
+                'Prediction (test)',
+                'Absolute Error'])
+    #plt.show()
+    plt.savefig('airline-passengers-train-{}.png'.format(title))
 
 
 if __name__ == '__main__':
