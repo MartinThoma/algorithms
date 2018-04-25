@@ -10,10 +10,12 @@ import time
 import numpy as np
 from sklearn.base import BaseEstimator, RegressorMixin
 from sklearn.pipeline import Pipeline
+import xgboost as xgb
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.linear_model import (HuberRegressor,
                                   ElasticNet,
                                   Lasso,
+                                  LinearRegression,
                                   PassiveAggressiveRegressor,
                                   RANSACRegressor,
                                   SGDRegressor)
@@ -46,6 +48,8 @@ def main():
                   # ('RANSACRegressor', RANSACRegressor()),
                   # ('RandomForestRegressor', RandomForestRegressor()),
                   # ('Lasso', Lasso()),
+                  ('LinearRegression', LinearRegression()),
+                  ('XGBoost', xgb.XGBRegressor()),
                   # ('ElasticNet', ElasticNet()),
                   # ('LinearSVR', Pipeline([('scaler', StandardScaler()),
                   #                          ('svr', SVR(kernel='linear'))])),
@@ -66,8 +70,8 @@ def main():
                   # ('TrendSeasonRegressor_LinearSVR_Adaboost',
                   #  TrendSeasonRegressor(Pipeline([('scaler', StandardScaler()),
                   #                       ('svr', SVR(kernel='linear'))]), AdaBoostRegressor())),
-                  ('ResidualRegressor-LE',
-                   ResidualRegressor([Lasso(),
+                  ('ResidualRegressor-LinE',
+                   ResidualRegressor([LinearRegression(),
                                       ExtraTreesRegressor()])),
                   ]
     # Fit them all
