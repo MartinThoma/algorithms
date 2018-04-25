@@ -29,7 +29,7 @@ import sklearn.metrics
 
 def main():
     data = data_loading('international-airline-passengers.csv')
-
+    plot_mm(data)
     regressors = [#('AdaBoostRegressor', AdaBoostRegressor()),
                   # ('BaggingRegressor', BaggingRegressor()),
                   # ('ExtraTreesRegressor', ExtraTreesRegressor()),
@@ -294,6 +294,37 @@ def plot(data, ys_pred, title='Classifier', ylabel='some numbers'):
                 'Absolute Error'])
     #plt.show()
     plt.savefig('airline-passengers-train-{}.png'.format(title))
+
+
+def plot_mm(data):
+    import matplotlib.pyplot as plt
+    xs = data['all']['X_raw']
+    last_val = data['train']['y'][-1]
+    tuple_list_pred_train = zip(xs,
+                                list(data['train']['y']) + [last_val for i in data['test']['y']])
+    plt.plot(*zip(*tuple_list_pred_train), color='green', linestyle='solid')
+    # Turn on the minor TICKS, which are required for the minor GRID
+    import matplotlib.dates as mdates
+    xfmt = mdates.DateFormatter('%Y-%m')
+    ax = plt.gca()
+    ax.xaxis.set_major_formatter(xfmt)
+    from datetime import datetime
+    dates = []
+    for year in [1949, 1950, 1951, 1952, 1953, 1954, 1955, 1956, 1957, 1958, 1959, 1960]:
+        dates += [datetime(year, 1, 1),
+                  datetime(year, 3, 1),
+                  datetime(year, 5, 1),
+                  datetime(year, 7, 1),
+                  datetime(year, 9, 1),
+                  datetime(year, 11, 1)]
+    plt.xticks(dates, rotation=90)
+    plt.yticks(np.arange(100, 700, 10))
+    #plt.minorticks_on()
+    plt.grid(linestyle=':', linewidth='0.5', color='black', which='major')
+    #plt.show()
+    fig = plt.gcf()
+    fig.set_size_inches(11.7, 8.3)
+    fig.savefig('airline-mm-human.png', dpi=300)
 
 
 if __name__ == '__main__':
