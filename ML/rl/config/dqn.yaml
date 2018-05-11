@@ -2,18 +2,18 @@ model_name: 'dqn'
 problem:
   gamma: 0.95  # discounting factor
 memory:
-  length: 2000
+  length: 10000
 training:
-  nb_episodes: 10000
+  nb_episodes: 100000
   max_episode_length: 500
   batch_size: 32
   learning_rate: 0.001  # alpha
-  print_score: 100  # each 500 episodes
   exploration:
     name: 'epsilon-greedy'
     epsilon: 1.0  # exploration rate
     epsilon_min: 0.01
     epsilon_decay: 0.995
+  print_score: 100  # each 500 episodes
   print_window_size: 100
 testing:
   nb_epochs: 10000

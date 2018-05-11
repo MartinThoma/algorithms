@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 r"""
 Download Tweets. Similar to the one from Inaki San Vicente, but working.
@@ -19,6 +20,8 @@ from bs4 import BeautifulSoup
 import codecs
 import re
 import urllib
+
+__version__ = '0.1'
 
 
 def main(in_file, out_file):

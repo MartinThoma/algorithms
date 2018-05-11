@@ -84,7 +84,7 @@ def create_nn_model(input_shape, nb_actions):
 
 
 def get_parser():
-    """Get parser object for script xy.py."""
+    """Get parser object."""
     from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)

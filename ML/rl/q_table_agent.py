@@ -8,11 +8,13 @@ import logging
 import os
 import pickle
 import sys
-import yaml
 
 # 3rd party modules
 import gym
 import numpy as np
+
+# local modules
+from rl_utils import get_parser, load_cfg, test_agent
 
 np.random.seed(280490)
 
@@ -43,7 +45,7 @@ def main(environment_name, agent_cfg_file):
     agent = train_agent(cfg, env, agent)
     rewards = test_agent(cfg, env, agent)
     print("Average reward: {:5.3f}".format(rewards))
-    print("Trained epochs: {}".format(agent.epoch))
+    print("Trained episodes: {}".format(agent.episode))
 
 
 class QTableAgent:
@@ -61,12 +63,12 @@ class QTableAgent:
         self.Q = np.zeros([nb_observations, nb_actions])
         self.lr = agent_cfg['training']['learning_rate']
         self.gamma = agent_cfg['problem']['gamma']  # discount
-        self.epoch = 0
+        self.episode = 0
         self.exploration = agent_cfg['training']['exploration']
 
     def reset(self):
         """Reset the agent. Call this at the beginning of an episode."""
-        self.epoch += 1
+        self.episode += 1
 
     def act(self, observation, no_exploration=False):
         """
@@ -81,7 +83,7 @@ class QTableAgent:
         -------
         action : int
         """
-        assert self.epoch >= 1, "Reset before you run an episode."
+        assert self.episode >= 1, "Reset before you run an episode."
         action = np.argmax(self.Q[observation, :])
         if not no_exploration:
             if self.exploration['name'] == 'epsilon-greedy':
@@ -119,7 +121,7 @@ class QTableAgent:
     def save(self, path):
         """Serialize an agent."""
         data = {'Q': self.Q,
-                'epoch': self.epoch}
+                'episode': self.episode}
         with open(path, 'wb') as handle:
             pickle.dump(data, handle, protocol=pickle.HIGHEST_PROTOCOL)
         return self
@@ -129,7 +131,7 @@ class QTableAgent:
         with open(path, 'rb') as handle:
             data = pickle.load(handle)
             self.Q = data['Q']
-            self.epoch = data['epoch']
+            self.episode = data['episode']
         return self
 
 
@@ -165,101 +167,26 @@ def train_agent(cfg, env, agent):
     """
     rewards = []
     window_size = cfg['training']['print_window_size']
-    for episode in range(cfg['training']['nb_epochs']):
+    max_episode_length = cfg['training']['max_episode_length']
+    for episode in range(cfg['training']['nb_episodes']):
         agent.reset()
         observation_previous = env.reset()
         is_done = False
-        while not is_done:
+        time = 0
+        while not (time >= max_episode_length) and not is_done:
             action = agent.act(observation_previous)
             observation, reward, is_done, _ = env.step(action)
             rewards.append(reward)
             agent.remember(observation_previous, action, reward, observation,
                            is_done)
             observation_previous = observation
+            time += 1
         if episode % cfg['training']['print_score'] == 0 and episode > 0:
             agent.save(cfg['serialize_path'])
             print("Average score: {:>5.2f}"
                   .format(sum(rewards[-window_size:]) / window_size))
-            print(agent.Q)
     agent.save(cfg['serialize_path'])
     return agent
-
-
-def test_agent(cfg, env, agent):
-    """Calculate average reward."""
-    cum_reward = 0.0
-    for episode in range(cfg['testing']['nb_epochs']):
-        agent.reset()
-        observation_previous = env.reset()
-        is_done = False
-        while not is_done:
-            action = agent.act(observation_previous, no_exploration=True)
-            observation, reward, is_done, _ = env.step(action)
-            cum_reward += reward
-            observation_previous = observation
-    return cum_reward / cfg['testing']['nb_epochs']
-
-
-# General code for loading ML configuration files
-def load_cfg(yaml_filepath):
-    """
-    Load a YAML configuration file.
-
-    Parameters
-    ----------
-    yaml_filepath : str
-
-    Returns
-    -------
-    cfg : dict
-    """
-    # Read YAML experiment definition file
-    with open(yaml_filepath, 'r') as stream:
-        cfg = yaml.load(stream)
-    cfg = make_paths_absolute(os.path.dirname(yaml_filepath), cfg)
-    return cfg
-
-
-def make_paths_absolute(dir_, cfg):
-    """
-    Make all values for keys ending with `_path` absolute to dir_.
-
-    Parameters
-    ----------
-    dir_ : str
-    cfg : dict
-
-    Returns
-    -------
-    cfg : dict
-    """
-    for key in cfg.keys():
-        if key.endswith("_path"):
-            cfg[key] = os.path.join(dir_, cfg[key])
-            cfg[key] = os.path.abspath(cfg[key])
-            if not os.path.isfile(cfg[key]):
-                logging.error("%s does not exist.", cfg[key])
-        if type(cfg[key]) is dict:
-            cfg[key] = make_paths_absolute(dir_, cfg[key])
-    return cfg
-
-
-def get_parser():
-    """Get parser object."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
-    parser = ArgumentParser(description=__doc__,
-                            formatter_class=ArgumentDefaultsHelpFormatter)
-    parser.add_argument("--env",
-                        dest="environment_name",
-                        help="OpenAI Gym environment",
-                        metavar="ENVIRONMENT",
-                        default="FrozenLake-v0")
-    parser.add_argument("--agent",
-                        dest="agent_cfg_file",
-                        required=True,
-                        metavar="AGENT_YAML",
-                        help="Configuration file for the agent")
-    return parser
 
 
 if __name__ == "__main__":

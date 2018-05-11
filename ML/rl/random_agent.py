@@ -1,25 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""
-Deep Q-Learning agent.
-
-This was initially taken from
-https://github.com/keon/deep-q-learning/blob/master/dqn.py and
-refactored quite a bit.
-"""
+"""Agent playing random actions."""
 
 # core modules
-from collections import deque
 import logging
-import os
-import random
 import sys
 
 # 3rd party modules
-from keras.layers import Dense
-from keras.models import Sequential
-from keras.optimizers import Adam
 import gym
 import numpy as np
 
@@ -58,9 +46,9 @@ def main(environment_name, agent_cfg_file):
     print("Trained episodes: {}".format(agent.episode))
 
 
-class DQNAgent:
+class RandomAgent:
     """
-    DQN Agent.
+    Random Agent.
 
     Parameters
     ----------
@@ -68,69 +56,25 @@ class DQNAgent:
     """
 
     def __init__(self, cfg, state_size, action_size):
-        self.state_size = state_size
-        self.action_size = action_size
-        self.memory = deque(maxlen=cfg['memory']['length'])
-        self.gamma = cfg['problem']['gamma']    # discount rate
-        self.epsilon = cfg['training']['exploration']['epsilon']
-        self.epsilon_min = cfg['training']['exploration']['epsilon_min']
-        self.epsilon_decay = cfg['training']['exploration']['epsilon_decay']
-        self.learning_rate = cfg['training']['learning_rate']
-        self.model = self._build_model()
-
+        self.env = cfg['env']
         self.episode = 0
 
-    def _build_model(self):
-        # Neural Net for Deep-Q learning Model
-        model = Sequential()
-        model.add(Dense(50, input_dim=self.state_size, activation='relu'))
-        model.add(Dense(50, activation='relu'))
-        model.add(Dense(self.action_size, activation='linear'))
-        model.compile(loss='mse',
-                      optimizer=Adam(lr=self.learning_rate))
-        return model
-
     def remember(self, state, action, reward, next_state, done):
-        state = self._preprocess_state(state)
-        next_state = self._preprocess_state(state)
-        self.memory.append((state, action, reward, next_state, done))
+        pass  # Dummy method
 
     def reset(self):
         """Reset the agent. Call this at the beginning of an episode."""
         self.episode += 1
 
     def act(self, state, no_exploration=False):
-        state = self._preprocess_state(state)
-        if not no_exploration and np.random.rand() <= self.epsilon:
-            return random.randrange(self.action_size)
-        act_values = self.model.predict(state)
-        return np.argmax(act_values[0])  # returns action
-
-    def replay(self, batch_size):
-        minibatch = random.sample(self.memory, batch_size)
-        for state, action, reward, next_state, done in minibatch:
-            target = reward
-            if not done:
-                target = (reward + self.gamma *
-                          np.amax(self.model.predict(next_state)[0]))
-            target_f = self.model.predict(state)
-            target_f[0][action] = target
-            self.model.fit(state, target_f, epochs=1, verbose=0)
-        if self.epsilon > self.epsilon_min:
-            self.epsilon *= self.epsilon_decay
-
-    def _preprocess_state(self, state):
-        state = np.reshape(state, [1, self.state_size])
-        return state
+        return self.env.action_space.sample()
 
     def save(self, name):
         """Serialize an agent."""
-        self.model.save_weights(name)
         return self
 
     def load(self, name):
         """Load an agent."""
-        self.model.load_weights(name)
         return self
 
 
@@ -143,9 +87,9 @@ def load_agent(cfg, env):
     cfg : dict
     env : OpenAI environment
     """
-    agent = DQNAgent(cfg, env.observation_space.shape[0], env.action_space.n)
-    if os.path.isfile(cfg['serialize_path']):
-        agent.load(cfg['serialize_path'])
+    agent = RandomAgent(cfg,
+                        env.observation_space.shape[0],
+                        env.action_space.n)
     return agent
 
 
@@ -184,8 +128,6 @@ def train_agent(cfg, env, agent):
             agent.save(cfg['serialize_path'])
             print("Average score: {:>5.2f}"
                   .format(sum(rewards[-window_size:]) / window_size))
-        if len(agent.memory) > cfg['training']['batch_size']:
-            agent.replay(cfg['training']['batch_size'])
     agent.save(cfg['serialize_path'])
     return agent
 

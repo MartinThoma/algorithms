@@ -32,22 +32,23 @@ import sklearn.metrics
 def main():
     data = data_loading('international-airline-passengers.csv')
     plot_mm(data)
-    regressors = [#('AdaBoostRegressor', AdaBoostRegressor()),
-                  # ('BaggingRegressor', BaggingRegressor()),
-                  # ('ExtraTreesRegressor', ExtraTreesRegressor()),
-                  # ('GaussianProcessRegressor',
-                  #  Pipeline([('scaler', MinMaxScaler()),
-                  #            ('gauss', GaussianProcessRegressor(
-                  #                n_restarts_optimizer=0,
-                  #                normalize_y=True))])),
-                  # ('GradientBoostingRegressor', GradientBoostingRegressor()),
-                  # ('HuberRegressor', HuberRegressor()),
-                  # ('SGDRegressor', Pipeline([('scaler', StandardScaler()),
-                  #                            ('sgd', SGDRegressor())])),
-                  # ('PassiveAggressiveRegressor', PassiveAggressiveRegressor()),
-                  # ('RANSACRegressor', RANSACRegressor()),
-                  # ('RandomForestRegressor', RandomForestRegressor()),
-                  # ('Lasso', Lasso()),
+    regressors = [
+                  ('AdaBoostRegressor', AdaBoostRegressor()),
+                  ('BaggingRegressor', BaggingRegressor()),
+                  ('ExtraTreesRegressor', ExtraTreesRegressor()),
+                  ('GaussianProcessRegressor',
+                   Pipeline([('scaler', MinMaxScaler()),
+                             ('gauss', GaussianProcessRegressor(
+                                 n_restarts_optimizer=0,
+                                 normalize_y=True))])),
+                  ('GradientBoostingRegressor', GradientBoostingRegressor()),
+                  ('HuberRegressor', HuberRegressor()),
+                  ('SGDRegressor', Pipeline([('scaler', StandardScaler()),
+                                             ('sgd', SGDRegressor())])),
+                  ('PassiveAggressiveRegressor', PassiveAggressiveRegressor()),
+                  ('RANSACRegressor', RANSACRegressor()),
+                  ('RandomForestRegressor', RandomForestRegressor()),
+                  ('Lasso', Lasso()),
                   ('LinearRegression', LinearRegression()),
                   ('XGBoost', xgb.XGBRegressor()),
                   # ('ElasticNet', ElasticNet()),
@@ -135,7 +136,8 @@ def data_loading(path, tts=0.8):
     min_time = min(row[0] for row in features)
     x_raw = features
     features = [[(row[0] - min_time).total_seconds(),
-                 row[0].month] for row in features]
+                 np.sin(row[0].month / 12 * np.pi),
+                 np.cos(row[0].month / 12 * np.pi)] for row in features]
 
     # Train-test-split
     n = int(math.floor(len(labels) * tts))
