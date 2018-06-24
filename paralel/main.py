@@ -3,15 +3,13 @@ import multiprocessing.pool
 import random
 import time
 
+# 3rd party modules
+from mpu import parallel_for
+
 
 def calc_stuff(bla):
     time.sleep(3 * random.random())
     return bla**2
-
-
-def parallel_for_multiprocessing(loop_function, parameters, nb_threads):
-    with multiprocessing.pool.ThreadPool(nb_threads) as pool:
-        return pool.map(loop_function, parameters)
 
 
 data = [['load', 'nb_threads', 'time_in_s']]
@@ -21,7 +19,7 @@ for nb_threads in [10, 100, 1000, 10000]:
                  9000, 10000, 20000]:
         parameters = list(range(load))
         t0 = time.time()
-        out = parallel_for_multiprocessing(calc_stuff, parameters, nb_threads)
+        out = parallel_for(calc_stuff, parameters, nb_threads)
         t1 = time.time()
         data.append([load, nb_threads, t1 - t0])
         print(data[-1])
