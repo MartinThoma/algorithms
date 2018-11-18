@@ -3,8 +3,9 @@
 """Calculate a score for a square matrix."""
 
 import random
-random.seed(0)
 import numpy as np
+
+random.seed(0)
 
 
 def calculate_score(cm, weights):
@@ -46,6 +47,7 @@ def measure_time(n):
         t1 = time.time()
         t += (t1 - t0)
     print("{:0.2f} scores / sec".format(score_calculations / t))
+
 
 if __name__ == '__main__':
     import doctest

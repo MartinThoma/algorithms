@@ -7,6 +7,7 @@ def square_gen(is_true):
         yield i**2
         i += 1
 
+
 g = square_gen(False)
 print(next(g))
 print(next(g))

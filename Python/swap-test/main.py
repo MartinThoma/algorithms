@@ -4,6 +4,7 @@
 
 import numpy as np
 import random
+import sys
 random.seed(0)
 
 
@@ -45,6 +46,7 @@ def main(n):
         cm = swap(cm, i, j)
     t1 = time.time()
     print("{:0.2f} swaps / sec".format(swaps / (t1 - t0)))
+
 
 if __name__ == '__main__':
     import doctest

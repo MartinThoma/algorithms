@@ -17,6 +17,7 @@ def square_counter(is_true):
             if i > 5:
                 return
 
+
 g = square_counter(False)
 for el in g:
     print(el)
