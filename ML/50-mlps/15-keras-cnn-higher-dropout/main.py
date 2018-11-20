@@ -55,7 +55,7 @@ checkpointer = ModelCheckpoint(filepath='checkpoint.h5',
                                save_best_only=True)
 model.fit(x_train, y_train,
           validation_data=(x_validate, y_validate),
-          epochs=700,
+          epochs=500,
           batch_size=128,
           callbacks=[csv_logger, checkpointer])
 
