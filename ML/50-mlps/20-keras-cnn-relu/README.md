@@ -5,7 +5,7 @@ This is copied from `16-keras-cnn-higher-dropout-l2`. Now the second last layer 
 
 ## Results
 
-Before, 76% accuracy.
+Before, 77.42% accuracy.
 
 ```
 Epoch 00700: val_loss did not improve from 0.27946
@@ -47,9 +47,9 @@ Trainable params: 476,577
 Non-trainable params: 0
 _________________________________________________________________
 None
-16992/16992 [==============================] - 2s 113us/step
+16992/16992 [==============================] - 2s 147us/step
 
-acc: 77.42%
+acc: 76.32%
 ```
 
-=> improved a bit by increasing dropout in second last layer!
+=> Performance dropped a bit
