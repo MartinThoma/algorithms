@@ -7,6 +7,7 @@ from keras.layers import Dense, Flatten, Dropout, Conv2D, MaxPooling2D, Input, A
 import numpy as np
 from keras.layers.pooling import GlobalAveragePooling2D
 from keras.models import Model
+from keras.regularizers import l1
 
 # internal modules
 import hasy_tools
@@ -42,9 +43,9 @@ def skip_layer_conv(x, nb_layers=16):
 
 
 def skip_layer(x, nb_layers=16):
-    x1 = Dense(nb_layers)(x)
+    x1 = Dense(nb_layers, kernel_regularizer=l1(0.01))(x)
     x1 = Activation('relu')(x1)
-    x2 = Dense(nb_layers)(x1)
+    x2 = Dense(nb_layers, kernel_regularizer=l1(0.01))(x1)
     x2 = Activation('relu')(x2)
     x3 = Add()([x1, x2])
     return x3
@@ -61,7 +62,7 @@ x = skip_layer_conv(x)
 x = MaxPooling2D(pool_size=(2, 2))(x)  # 4x4
 x = skip_layer_conv(x)
 x = Flatten()(x)  # Adjust for FCN
-x = Dense(512)(x)
+x = Dense(512, kernel_regularizer=l1(0.01))(x)
 x = Activation('relu')(x)
 x = Dense(hasy_tools.n_classes)(x)
 x = Activation('softmax')(x)
