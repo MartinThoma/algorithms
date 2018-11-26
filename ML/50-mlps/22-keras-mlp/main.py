@@ -3,11 +3,10 @@
 
 # 3rd party modules
 from keras.callbacks import CSVLogger, ModelCheckpoint
-from keras.layers import Dense, Flatten, Dropout, Conv2D, MaxPooling2D, Input, Activation, Add
+from keras.layers import Dense, Flatten, Activation
+from keras.models import Sequential
+from sklearn.model_selection import train_test_split
 import numpy as np
-from keras.layers.pooling import GlobalAveragePooling2D
-from keras.models import Model
-from keras.regularizers import l1
 
 # internal modules
 import hasy_tools
@@ -34,40 +33,14 @@ split = train_test_split(data['x_train'], data['y_train'],
 data['x_train'], data['x_val'], data['y_train'], data['y_val'] = split
 datasets.append('val')
 
-def skip_layer_conv(x, nb_layers=16):
-    x1 = Conv2D(nb_layers, (3, 3), padding='same')(x)
-    x1 = Activation('relu')(x1)
-    x2 = Conv2D(nb_layers, (3, 3), padding='same')(x1)
-    x2 = Activation('relu')(x2)
-    x3 = Add()([x1, x2])
-    return x3
-
-
-def skip_layer(x, nb_layers=16):
-    x1 = Dense(nb_layers, kernel_regularizer=l1(0.01))(x)
-    x1 = Activation('relu')(x1)
-    x2 = Dense(nb_layers, kernel_regularizer=l1(0.01))(x1)
-    x2 = Activation('relu')(x2)
-    x3 = Add()([x1, x2])
-    return x3
-
 # Define the model
-input_ = Input(shape=(hasy_tools.WIDTH, hasy_tools.HEIGHT, 1))
-x = input_
-x = Conv2D(16, (3, 3), padding='same',
-           kernel_initializer='he_uniform')(x)
-x = MaxPooling2D(pool_size=(2, 2))(x)  # 16x16
-x = skip_layer_conv(x)
-x = MaxPooling2D(pool_size=(2, 2))(x)  # 8x8
-x = skip_layer_conv(x)
-x = MaxPooling2D(pool_size=(2, 2))(x)  # 4x4
-x = skip_layer_conv(x)
-x = Flatten()(x)  # Adjust for FCN
-x = Dense(512, kernel_regularizer=l1(0.01))(x)
-x = Activation('relu')(x)
-x = Dense(hasy_tools.n_classes)(x)
-x = Activation('softmax')(x)
-model = Model(inputs=input_, outputs=x)
+model = Sequential()
+model.add(Flatten())
+model.add(Dense(128))
+model.add(Activation('relu'))
+model.add(Dense(128))
+model.add(Activation('relu'))
+model.add(Dense(hasy_tools.n_classes, activation='softmax'))
 
 # Compile model
 model.compile(loss='categorical_crossentropy',
