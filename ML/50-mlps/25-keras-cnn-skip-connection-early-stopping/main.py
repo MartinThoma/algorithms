@@ -84,11 +84,10 @@ checkpointer = ModelCheckpoint(filepath='checkpoint.h5',
                                save_best_only=True)
 es = EarlyStopping(monitor='val_loss',
                    min_delta=0,
-                   patience=0,
+                   patience=10,
                    verbose=0,
                    mode='auto',
-                   baseline=None,
-                   restore_best_weights=False)
+                   baseline=None)
 model.fit(data['x_train'], data['y_train'],
           validation_data=(data['x_val'], data['y_val']),
           epochs=500,
