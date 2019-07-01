@@ -111,6 +111,7 @@ get_custom_objects().update({'custom_activation': Activation(custom_activation)}
 
 def get_model_3(max_work, max_user, latent_factors=30):
     bias = 1
+    solution = 3
     # inputs
     w_inputs = Input(shape=(1,), dtype='int32')
     w = Embedding(max_work + 1, latent_factors, name="Movie-Embedding")(w_inputs)
@@ -121,23 +122,26 @@ def get_model_3(max_work, max_user, latent_factors=30):
     u = Embedding(max_user + 1, latent_factors, name="user")(u_inputs)
     u_bias = Embedding(max_user + 1, output_dim=bias, name="userbias")(u_inputs)
 
-    # Either:
-    # o = multiply([w, u])
-    # Or:
-    def Euclidean_distance(inputs):
-        if (len(inputs) != 2):
-            raise 'oops'
-        output = K.mean(K.square(inputs[0] - inputs[1]), axis=-1)
-        output = K.expand_dims(output, 1)
-        return output
-    # def Euclidean_distance(A, B):
-    #     return K.sqrt(K.sum(K.square(A - B), axis=1, keepdims=True))
-    o = Lambda(lambda x: Euclidean_distance(x),
-               output_shape=lambda inp_shp: (None, 1))([w, u])  # TODO: This should be constant 1!
+    if solution == 1:
+        o = multiply([w, u])
+    elif solution == 2:
+        def Euclidean_distance(inputs):
+            if (len(inputs) != 2):
+                raise 'oops'
+            output = K.mean(K.square(inputs[0] - inputs[1]), axis=-1)
+            output = K.expand_dims(output, 1)
+            output = 1 / output
+            return output
+        o = Lambda(lambda x: Euclidean_distance(x),
+                   output_shape=lambda inp_shp: (None, 1))([w, u])  # TODO: This should be constant 1!
+    elif solution == 3:
+        o = concatenate([w, u])
+        o = Dense(10, activation="relu")(o)
+        o = Dense(10, activation="relu")(o)
 
     # Rest
-    # o = Dropout(0.5)(o)
-    # o = concatenate([o, u_bias]) # , w_bias, u_bias
+    o = Dropout(0.5)(o)
+    o = concatenate([o, u_bias]) # , w_bias, u_bias
     ## higher is worse
     # no bias    : 0.84 (447,021 params)
     # only u_bias: 0.85 (447,734 params)
