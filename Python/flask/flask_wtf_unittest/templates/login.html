@@ -1,0 +1,18 @@
+<form action="" method="post" class="" role="form">
+    {{ form.hidden_tag() }}
+        {% if form.email.errors %}
+            {% for error in form.email.errors %}
+                {{ error }}
+            {% endfor %}
+        {% endif %}
+        {{ form.email(size=32, class_="form-control", placeholder="Enter email") }}
+        <hr />
+
+        {{ form.password(size=32, class_="form-control", placeholder="Enter Password", autocomplete="current-password") }}
+        <div class="invalid-feedback">
+        {% for error in form.password.errors %}
+            {{ error }}
+        {% endfor %}
+
+    {{ form.submit(class_="btn btn-primary login-btn btn-block") }}
+</form>
