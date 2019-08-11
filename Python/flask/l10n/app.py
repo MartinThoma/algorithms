@@ -6,6 +6,7 @@ import datetime
 # 3rd party modules
 from flask import Flask, flash, render_template
 from flask_babel import Babel, _
+import flask_babel
 
 
 def format_datetime(value, format="medium"):
@@ -32,7 +33,11 @@ babel = Babel(app)
 def index():
     print(_('Hello World!'))
     flash(_('Hello World!'))
-    return render_template("main.html", pubdate=datetime.datetime.now())
+    pubdate = datetime.datetime.now()
+    return render_template("main.html",
+                           pubdate=pubdate,
+                           author='John Smith',
+                           date_localized=flask_babel.dates.format_date(pubdate))
 
 
 @babel.localeselector

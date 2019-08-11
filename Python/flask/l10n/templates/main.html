@@ -2,4 +2,4 @@
 
 <p>{{ _('by %(name)s on %(pubdate)s', name=name, pubdate='<time>{}</time>'.format(pubdate)) }}</p>
 <time pubdate="pubdate" datetime="{{ pubdate | datetime('isoformat') }}">{{ pubdate | datetime('date') }}</time>
-<p>{{_('by %(author)s on %(pubdate)s', author=author, pubdate='<time pubdate="pubdate" datetime="{pubdate}">{pubdate}</time>'.format(pubdate=pubdate))}}</p>
+<p>{{_('by %(author)s on %(pubdate)s', author=author, pubdate='<time pubdate="pubdate" datetime="{pubdate}">{date_localized}</time>'.format(pubdate=pubdate, date_localized=date_localized))}}</p>
