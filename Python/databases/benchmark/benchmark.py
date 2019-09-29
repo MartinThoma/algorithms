@@ -7,6 +7,8 @@ Results
 -------
 * dict: Inserted 1_000_000 entries in 0.38s (2639859.62 inserts/s). - real398
 * memcached: Inserted 10_000 entries in 0.08s (131635.98 inserts/s).
+* Sqlite-inmemory: Inserted 1_000_000 entries in 3.85s with ORM-Bulk (259834.14 inserts/s).
+* SQLite: Inserted 1_000_000 entries in 5.16s with ORM-Bulk (193930.10 inserts/s).
 * Redis: Inserted 10_000 entries in 0.61s (16314.31 inserts/s).
 * MySQL (Aria, no key): Inserted 10_000 entries in 2.23s with ORM-Bulk (4490.08 inserts/s).
 * Postgres: Inserted 10_000 entries in 2.86s with ORM-Bulk (3494.85 inserts/s).
@@ -29,18 +31,22 @@ $ sudo apt-get install libmemcached-tools
 $ memcdump --servers=localhost | wc -l
 """
 
+# core modules
+import json
+import random
+import time
+import uuid
+
+# 3rd party modules
 from sqlalchemy import Column, Integer, String, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import text
 import click
-import json
+import numpy as np
 import pandas as pd
 import sqlalchemy
-import time
-import uuid
-import numpy as np
-import random
+
 
 Base = declarative_base()
 
@@ -64,7 +70,7 @@ class KeyValue(Base):
         return f"KeyValue(key='{self.key}', value='{self.value}')"
 
 
-def run_benchmark(SQLALCHEMY_DATABASE_URI, n=1000, benchmark_type='orm'):
+def run_benchmark(SQLALCHEMY_DATABASE_URI, n=1000, benchmark_type="orm"):
     if SQLALCHEMY_DATABASE_URI is not None:
         engine = sqlalchemy.create_engine(SQLALCHEMY_DATABASE_URI)
         connection = engine.connect()
@@ -78,26 +84,28 @@ def run_benchmark(SQLALCHEMY_DATABASE_URI, n=1000, benchmark_type='orm'):
     print("finished reading uuids")
     values = [json.dumps([str(uuid.uuid4()) for _ in range(100)]) for i in range(n)]
     print("finished creating values uuids")
-    if benchmark_type == 'orm':
+    if benchmark_type == "orm":
         benchmark_orm_insert(session, keys, values)
-    elif benchmark_type == 'orm-bulk':
+    elif benchmark_type == "orm-bulk":
         benchmark_orm_bulk_insert(session, keys, values)
-    elif benchmark_type == 'raw':
+    elif benchmark_type == "raw":
         benchmark_raw_insert(connection, keys, values)
-    elif benchmark_type == 'print-inserts':
+    elif benchmark_type == "print-inserts":
         print_extended_inserts(keys, values)
-    elif benchmark_type == 'datafile':
+    elif benchmark_type == "datafile":
         print_datafile(keys, values)
-    elif benchmark_type == 'redis':
+    elif benchmark_type == "redis":
         benchmark_redis_insert(keys, values)
-    elif benchmark_type == 'pickledb':
+    elif benchmark_type == "pickledb":
         benchmark_pickledb_insert(keys, values)
-    elif benchmark_type == 'memcached':
+    elif benchmark_type == "memcached":
         benchmark_memcached_insert(keys, values)
-    elif benchmark_type == 'dict':
+    elif benchmark_type == "dict":
         benchmark_dict_insert(keys, values)
     else:
-        raise NotImplementedError(f"benchmark_type={benchmark_type} is not implemented.")
+        raise NotImplementedError(
+            f"benchmark_type={benchmark_type} is not implemented."
+        )
 
 
 def read_uuids(filename):
@@ -112,8 +120,11 @@ def benchmark_dict_insert(keys, values):
     for key, value in zip(keys, values):
         store[key] = value
     t1 = time.time()
-    print(f"dict: Inserted {len(keys)} entries in {t1 - t0:0.2f}s "
-          f"({len(keys)/(t1 - t0):0.2f} inserts/s).")
+    print(
+        f"dict: Inserted {len(keys)} entries in {t1 - t0:0.2f}s "
+        f"({len(keys)/(t1 - t0):0.2f} inserts/s)."
+    )
+
 
 def benchmark_orm_insert(session, keys, values):
     t0 = time.time()
@@ -122,21 +133,22 @@ def benchmark_orm_insert(session, keys, values):
         session.add(new_entry)
     session.commit()
     t1 = time.time()
-    print(f"Inserted {len(keys)} entries in {t1 - t0:0.2f}s with ORM "
-          f"({len(keys)/(t1 - t0):0.2f} inserts/s).")
+    print(
+        f"Inserted {len(keys)} entries in {t1 - t0:0.2f}s with ORM "
+        f"({len(keys)/(t1 - t0):0.2f} inserts/s)."
+    )
 
 
 def benchmark_orm_bulk_insert(session, keys, values):
     t0 = time.time()
-    objects = [
-        KeyValue(key=key, value=value)
-        for key, value in zip(keys, values)
-    ]
+    objects = [KeyValue(key=key, value=value) for key, value in zip(keys, values)]
     session.bulk_save_objects(objects)
     session.commit()
     t1 = time.time()
-    print(f"Inserted {len(keys)} entries in {t1 - t0:0.2f}s with ORM-Bulk "
-          f"({len(keys)/(t1 - t0):0.2f} inserts/s).")
+    print(
+        f"Inserted {len(keys)} entries in {t1 - t0:0.2f}s with ORM-Bulk "
+        f"({len(keys)/(t1 - t0):0.2f} inserts/s)."
+    )
 
 
 def benchmark_redis_insert(keys, values):
@@ -162,15 +174,17 @@ def benchmark_redis_insert(keys, values):
     """
     import redis
 
-    r = redis.Redis(host='localhost')
+    r = redis.Redis(host="localhost")
     t0 = time.time()
     pipe = r.pipeline()
     for key, value in zip(keys, values):
         pipe.set(key, value)
     pipe.execute()
     t1 = time.time()
-    print(f"Redis: Inserted {len(keys)} entries in {t1 - t0:0.2f}s "
-          f"({len(keys)/(t1 - t0):0.2f} inserts/s).")
+    print(
+        f"Redis: Inserted {len(keys)} entries in {t1 - t0:0.2f}s "
+        f"({len(keys)/(t1 - t0):0.2f} inserts/s)."
+    )
 
 
 def benchmark_memcached_insert(keys, values):
@@ -196,27 +210,32 @@ def benchmark_memcached_insert(keys, values):
     """
     from pymemcache.client.base import Client
 
-    client = Client(('localhost', 11211))
+    client = Client(("localhost", 11211))
 
     t0 = time.time()
     for key, value in zip(keys, values):
         client.set(key, value)
     t1 = time.time()
-    print(f"memcached: Inserted {len(keys)} entries in {t1 - t0:0.2f}s "
-          f"({len(keys)/(t1 - t0):0.2f} inserts/s).")
+    print(
+        f"memcached: Inserted {len(keys)} entries in {t1 - t0:0.2f}s "
+        f"({len(keys)/(t1 - t0):0.2f} inserts/s)."
+    )
 
 
 def benchmark_pickledb_insert(keys, values):
     import pickledb
 
-    db = pickledb.load('pickle.db', False)
+    db = pickledb.load("pickle.db", False)
     t0 = time.time()
     for key, value in zip(keys, values):
         db.set(key, value)
     db.dump()
     t1 = time.time()
-    print(f"PickleDB: Inserted {len(keys)} entries in {t1 - t0:0.2f}s "
-          f"({len(keys)/(t1 - t0):0.2f} inserts/s).")
+    print(
+        f"PickleDB: Inserted {len(keys)} entries in {t1 - t0:0.2f}s "
+        f"({len(keys)/(t1 - t0):0.2f} inserts/s)."
+    )
+
 
 def benchmark_raw_insert(connection, keys, values):
     t0 = time.time()
@@ -224,8 +243,10 @@ def benchmark_raw_insert(connection, keys, values):
     for key, value in zip(keys, values):
         connection.execute(statement, key=key, value=value)
     t1 = time.time()
-    print(f"Inserted {len(keys)} entries in {t1 - t0:0.2f}s with raw SQL "
-          f"({len(keys)/(t1 - t0):0.2f} inserts/s).")
+    print(
+        f"Inserted {len(keys)} entries in {t1 - t0:0.2f}s with raw SQL "
+        f"({len(keys)/(t1 - t0):0.2f} inserts/s)."
+    )
 
 
 def print_extended_inserts(keys, values):
@@ -239,23 +260,30 @@ def print_extended_inserts(keys, values):
 
 
 def print_datafile(keys, values):
-    df = pd.DataFrame(data={'key': keys, 'value': values})
+    df = pd.DataFrame(data={"key": keys, "value": values})
     df.to_csv("data.csv", index=False, quotechar="'")
 
 
 @click.command()
-@click.option(
-    "--db",
-    "db",
-    required=True,
-    type=click.Choice(list(db_dict.keys())),
-)
+@click.option("--db", "db", required=True, type=click.Choice(list(db_dict.keys())))
 @click.option("-n", "n", required=True, type=int)
 @click.option(
     "--mode",
     "mode",
     required=True,
-    type=click.Choice(["orm", "orm-bulk", "raw", "print-inserts", "datafile", "redis", "pickledb", "memcached", "dict"]),
+    type=click.Choice(
+        [
+            "orm",
+            "orm-bulk",
+            "raw",
+            "print-inserts",
+            "datafile",
+            "redis",
+            "pickledb",
+            "memcached",
+            "dict",
+        ]
+    ),
 )
 def entry_point(db, n, mode):
     run_benchmark(db_dict[db], n, mode)
