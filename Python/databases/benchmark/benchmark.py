@@ -9,8 +9,8 @@ Results
 * memcached: Inserted 10_000 entries in 0.08s (131635.98 inserts/s).
 * Sqlite-inmemory: Inserted 1_000_000 entries in 3.85s with ORM-Bulk (259834.14 inserts/s).
 * SQLite: Inserted 1_000_000 entries in 5.16s with ORM-Bulk (193930.10 inserts/s).
-* Redis: Inserted 10_000 entries in 0.61s (16314.31 inserts/s).
-* MySQL (Aria, no key): Inserted 10_000 entries in 2.23s with ORM-Bulk (4490.08 inserts/s).
+* Redis: Inserted 100_000 entries in 2.13s (46960.52 inserts/s).
+* MySQL (Aria): Inserted 100_000 entries in 21.56s with ORM-Bulk (4638.86 inserts/s).
 * Postgres: Inserted 10_000 entries in 2.86s with ORM-Bulk (3494.85 inserts/s).
 * MySQL: Inserted 1_000_000 entries in 1987.36s with ORM (503 inserts/s). real    2377,21s
 
@@ -29,6 +29,9 @@ memcached
 ---------
 $ sudo apt-get install libmemcached-tools
 $ memcdump --servers=localhost | wc -l
+
+Redis
+-----
 """
 
 # core modules
@@ -81,6 +84,9 @@ def run_benchmark(SQLALCHEMY_DATABASE_URI, n=1000, benchmark_type="orm"):
         session = Session()
 
     keys = read_uuids("uuids.csv")
+    while len(keys) < n:
+        keys.append(str(uuid.uuid4()))
+    keys = keys[:n]
     print("finished reading uuids")
     values = [json.dumps([str(uuid.uuid4()) for _ in range(100)]) for i in range(n)]
     print("finished creating values uuids")
