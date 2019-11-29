@@ -5,7 +5,11 @@ does](https://stackoverflow.com/q/12282628/562769).
 On the x-axis, there are 1000 different seeds. On the y-axis, there are the first
 1000 numbers:
 
-![](1000-random-numbers.png)
+![](1000-random-numbers-java.png)
+
+![](1000-random-numbers-python.png)
+
+![](1000-random-numbers-numpy.png)
 
 The first few numbers:
 
