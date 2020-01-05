@@ -31,7 +31,7 @@ def main(filename: str, shell: str, apply_grouping: bool = True) -> pd.DataFrame
 
     if apply_grouping:
         with open("grouping.yaml") as f:
-            grouping = yaml.load(f)
+            grouping = yaml.safe_load(f)
         grouping_t = {}
         for to, from_list in grouping.items():
             for from_str in from_list:
