@@ -1,4 +1,4 @@
 click
-dateutil
+python-dateutil
 matplotlib
 pandas
