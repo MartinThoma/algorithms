@@ -42,7 +42,7 @@ def main(filename, n, remove_no_edge, remove_only_selfimport):
         charset="utf8",
     )
     cursor = connection.cursor()
-    logging.info("Start fetching data from server...")
+    logging.info("Start fetching data from database...")
     sql = "SELECT `id`, `name` FROM `packages`"
     cursor.execute(sql)
     packages = cursor.fetchall()
@@ -56,7 +56,12 @@ def main(filename, n, remove_no_edge, remove_only_selfimport):
 
 
 def create_graphviz(
-    filename, packages, dependencies, n, remove_no_edge, remove_only_selfimport
+    filename: str,
+    packages: List[Dict],
+    dependencies: List[Dict],
+    n: int,
+    remove_no_edge: bool,
+    remove_only_selfimport: bool,
 ):
     """
     Parameters
