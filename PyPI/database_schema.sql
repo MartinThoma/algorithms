@@ -69,11 +69,7 @@ CREATE TABLE IF NOT EXISTS `packages` (
   `download_url` varchar(255) COLLATE utf8_bin NOT NULL,
   `docs_url` varchar(255) COLLATE utf8_bin NOT NULL,
   `package_url` varchar(255) COLLATE utf8_bin NOT NULL,
-  `_pypi_hidden` tinyint(1) NOT NULL,
-  `_pypi_ordering` smallint(255) NOT NULL,
-  `cheesecake_code_kwalitee_id` smallint(255) DEFAULT NULL,
-  `cheesecake_documentation_id` smallint(255) DEFAULT NULL,
-  `cheesecake_installability_id` smallint(255) DEFAULT NULL
+  `_pypi_hidden` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------

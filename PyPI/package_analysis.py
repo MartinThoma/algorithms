@@ -4,23 +4,26 @@
 """Analysis of Python packages."""
 
 import json
+import logging
 import os
-from os import walk
-import pymysql.cursors
 import re
 import shutil
-import tarfile
-import logging
 import sys
+import tarfile
+from os import walk
+
+import pymysql.cursors
 
 if sys.version_info[0] == 2:
     from urllib import urlretrieve
 else:
     from urllib.request import urlretrieve
 
-logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
-                    level=logging.DEBUG,
-                    stream=sys.stdout)
+logging.basicConfig(
+    format="%(asctime)s %(levelname)s %(message)s",
+    level=logging.DEBUG,
+    stream=sys.stdout,
+)
 
 
 def main(package_name, package_url, release_id=None):
@@ -47,23 +50,27 @@ def main(package_name, package_url, release_id=None):
     required_packages = get_requirements(filepaths, pkg_name)
     imported_packages = get_imports(filepaths, pkg_name)
     setup_packages = get_setup_packages(filepaths, pkg_name)
-    store_dependencies(mysql,
-                       package_id,
-                       required_packages,
-                       imported_packages,
-                       setup_packages,
-                       package_url,
-                       release_id)
+    store_dependencies(
+        mysql,
+        package_id,
+        required_packages,
+        imported_packages,
+        setup_packages,
+        package_url,
+        release_id,
+    )
     remove_unpacked(download_dir)
 
 
-def store_dependencies(mysql,
-                       package_id,
-                       required_packages,
-                       imported_packages,
-                       setup_packages,
-                       package_url,
-                       release_id):
+def store_dependencies(
+    mysql,
+    package_id,
+    required_packages,
+    imported_packages,
+    setup_packages,
+    package_url,
+    release_id,
+):
     """
     Parameters
     ----------
@@ -76,28 +83,20 @@ def store_dependencies(mysql,
     package_url : str
     release_id : int
     """
-    connection = pymysql.connect(host=mysql['host'],
-                                 user=mysql['user'],
-                                 passwd=mysql['passwd'],
-                                 db=mysql['db'],
-                                 cursorclass=pymysql.cursors.DictCursor,
-                                 charset='utf8')
+    connection = pymysql.connect(
+        host=mysql["host"],
+        user=mysql["user"],
+        passwd=mysql["passwd"],
+        db=mysql["db"],
+        cursorclass=pymysql.cursors.DictCursor,
+        charset="utf8",
+    )
 
-    insert_dependency_db(imported_packages,
-                         'imported',
-                         package_id,
-                         mysql,
-                         connection)
-    insert_dependency_db(required_packages,
-                         'requirements.txt',
-                         package_id,
-                         mysql,
-                         connection)
-    insert_dependency_db(setup_packages,
-                         'setup.py',
-                         package_id,
-                         mysql,
-                         connection)
+    insert_dependency_db(imported_packages, "imported", package_id, mysql, connection)
+    insert_dependency_db(
+        required_packages, "requirements.txt", package_id, mysql, connection
+    )
+    insert_dependency_db(setup_packages, "setup.py", package_id, mysql, connection)
     # Store that the package was downloaded
     # and analyzed
     cursor = connection.cursor()
@@ -112,11 +111,7 @@ def store_dependencies(mysql,
     connection.close()
 
 
-def insert_dependency_db(imported_packages,
-                         req_type,
-                         package_id,
-                         mysql,
-                         connection):
+def insert_dependency_db(imported_packages, req_type, package_id, mysql, connection):
     """
     Parameters
     ----------
@@ -130,22 +125,25 @@ def insert_dependency_db(imported_packages,
     """
     cursor = connection.cursor()
     for pkg, times in imported_packages.items():
-        package_info = {'package': package_id,
-                        'needs_package': get_pkg_id_by_name(pkg, mysql),
-                        'times': times,
-                        'req_type': req_type}
-        if package_info['needs_package'] is not None:
+        package_info = {
+            "package": package_id,
+            "needs_package": get_pkg_id_by_name(pkg, mysql),
+            "times": times,
+            "req_type": req_type,
+        }
+        if package_info["needs_package"] is not None:
             try:
-                sql = ("INSERT INTO `dependencies` "
-                       "(`package`, `needs_package`, `req_type`, `times`) "
-                       " VALUES "
-                       "('{package}', '{needs_package}', '{req_type}', "
-                       "'{times}');").format(
-                    **package_info)
+                sql = (
+                    "INSERT INTO `dependencies` "
+                    "(`package`, `needs_package`, `req_type`, `times`) "
+                    " VALUES "
+                    "('{package}', '{needs_package}', '{req_type}', "
+                    "'{times}');"
+                ).format(**package_info)
                 cursor.execute(sql)
                 connection.commit()
             except pymysql.err.IntegrityError as e:
-                if 'Duplicate entry' not in str(e):
+                if "Duplicate entry" not in str(e):
                     logging.warning(e)
         else:
             # Packages which were imported, but not found on PyPI
@@ -170,18 +168,20 @@ def get_pkg_id_by_name(pkg_name, mysql):
     -------
     int or None
     """
-    connection = pymysql.connect(host=mysql['host'],
-                                 user=mysql['user'],
-                                 passwd=mysql['passwd'],
-                                 db=mysql['db'],
-                                 cursorclass=pymysql.cursors.DictCursor,
-                                 charset='utf8')
+    connection = pymysql.connect(
+        host=mysql["host"],
+        user=mysql["user"],
+        passwd=mysql["passwd"],
+        db=mysql["db"],
+        cursorclass=pymysql.cursors.DictCursor,
+        charset="utf8",
+    )
     cursor = connection.cursor()
     sql = "SELECT id FROM `packages` WHERE `name` = %s"
-    cursor.execute(sql, (pkg_name, ))
+    cursor.execute(sql, (pkg_name,))
     id_number = cursor.fetchone()
-    if id_number is not None and 'id' in id_number:
-        return id_number['id']
+    if id_number is not None and "id" in id_number:
+        return id_number["id"]
     else:
         return None
 
@@ -256,9 +256,11 @@ def download(package_url):
 
     # Unpack it
     if not os.path.exists(target[:-file_ending_len]):
-        is_tarfile = (package_url.endswith(".tar.gz")
-                      or package_url.endswith(".tar.bz")
-                      or package_url.endswith(".tar.bz2"))
+        is_tarfile = (
+            package_url.endswith(".tar.gz")
+            or package_url.endswith(".tar.bz")
+            or package_url.endswith(".tar.bz2")
+        )
         if is_tarfile:
             try:
                 with tarfile.open(target) as tar:
@@ -266,9 +268,13 @@ def download(package_url):
             except:
                 # Something is wrong with the tar file
                 return ([], None)
-        elif (package_url.endswith(".whl") or package_url.endswith(".zip") or
-              package_url.endswith(".egg")):
+        elif (
+            package_url.endswith(".whl")
+            or package_url.endswith(".zip")
+            or package_url.endswith(".egg")
+        ):
             import zipfile
+
             try:
                 with zipfile.ZipFile(target) as tar:
                     tar.extractall(target[:-file_ending_len])
@@ -308,8 +314,7 @@ def get_requirements(filepaths, pkg_name):
         "Officially" set requirements
     """
     imports = {}
-    requirements_file = [f for f in filepaths
-                         if f.endswith("requirements.txt")]
+    requirements_file = [f for f in filepaths if f.endswith("requirements.txt")]
 
     if len(requirements_file) > 0:
         requirements_file = requirements_file[0]
@@ -339,10 +344,10 @@ def get_imports(filepaths, pkg_name):
     """
     # TODO: Not all python files end with .py. We loose some.
     filepaths = [f for f in filepaths if f.endswith(".py")]
-    simple_pattern = re.compile("^\s*import\s+([a-zA-Z][a-zA-Z0-9_]*)",
-                                re.MULTILINE)
-    from_pattern = re.compile("^\s*from\s+import\s+([a-zA-Z][a-zA-Z0-9_]*)",
-                              re.MULTILINE)
+    simple_pattern = re.compile("^\s*import\s+([a-zA-Z][a-zA-Z0-9_]*)", re.MULTILINE)
+    from_pattern = re.compile(
+        "^\s*from\s+import\s+([a-zA-Z][a-zA-Z0-9_]*)", re.MULTILINE
+    )
     imports = {}
     for filep in filepaths:
         try:
@@ -354,8 +359,7 @@ def get_imports(filepaths, pkg_name):
             # Ignore it.
             return imports
 
-        imported = (simple_pattern.findall(content) +
-                    from_pattern.findall(content))
+        imported = simple_pattern.findall(content) + from_pattern.findall(content)
         for import_pkg_name in imported:
             if import_pkg_name in imports:
                 imports[import_pkg_name] += 1
@@ -404,16 +408,20 @@ def get_setup_packages(filepaths, pkg_name):
 def get_parser():
     """The parser object for this script."""
     from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
-    parser = ArgumentParser(description=__doc__,
-                            formatter_class=ArgumentDefaultsHelpFormatter)
-    parser.add_argument("--name",
-                        dest="name",
-                        help="name of the package",
-                        required=True)
-    parser.add_argument("-p", "--package_url",
-                        dest="package_url",
-                        help="url where the package is",
-                        required=True)
+
+    parser = ArgumentParser(
+        description=__doc__, formatter_class=ArgumentDefaultsHelpFormatter
+    )
+    parser.add_argument(
+        "--name", dest="name", help="name of the package", required=True
+    )
+    parser.add_argument(
+        "-p",
+        "--package_url",
+        dest="package_url",
+        help="url where the package is",
+        required=True,
+    )
     return parser
 
 

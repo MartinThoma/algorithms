@@ -2,15 +2,19 @@
 # -*- coding: utf-8 -*-
 
 import json
-import pymysql
 import logging
 import sys
-logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
-                    level=logging.DEBUG,
-                    stream=sys.stdout)
+
+import pymysql
 
 # mine
 import package_analysis
+
+logging.basicConfig(
+    format="%(asctime)s %(levelname)s %(message)s",
+    level=logging.DEBUG,
+    stream=sys.stdout,
+)
 
 
 def main():
@@ -22,15 +26,17 @@ def main():
     with open("secret.json") as f:
         mysql = json.load(f)
 
-    connection = pymysql.connect(host=mysql['host'],
-                                 user=mysql['user'],
-                                 passwd=mysql['passwd'],
-                                 db=mysql['db'],
-                                 cursorclass=pymysql.cursors.DictCursor,
-                                 charset='utf8')
+    connection = pymysql.connect(
+        host=mysql["host"],
+        user=mysql["user"],
+        passwd=mysql["passwd"],
+        db=mysql["db"],
+        cursorclass=pymysql.cursors.DictCursor,
+        charset="utf8",
+    )
     cursor = connection.cursor()
 
-    sql = ("""SELECT
+    sql = """SELECT
     `o`.`id`,
     `packages`.`name`,
     `o`.`url`,
@@ -49,14 +55,15 @@ WHERE
     AND `o`.`downloaded_bytes` = 0
 ORDER BY
     `packages`.`name`
-""")
+"""
+    logging.info("Start fetching packages...")
     cursor.execute(sql)
     packages = cursor.fetchall()
     logging.info("Fetched %i packages.", len(packages))
     for pkg in packages:
-        package_analysis.main(pkg['name'], pkg['url'], pkg['id'])
-        logging.info("Package '%s' done.", pkg['name'])
+        package_analysis.main(pkg["name"], pkg["url"], pkg["id"])
+        logging.info("Package '%s' done.", pkg["name"])
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
