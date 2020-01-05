@@ -2,6 +2,7 @@
 
 """Analyze a history file."""
 
+import datetime
 import re
 
 import click
@@ -12,14 +13,15 @@ import pandas as pd
 
 @click.command()
 @click.argument("filename", type=click.Path(exists=True))
-def cli(filename):
-    main(filename)
+@click.option("--shell", type=click.Choice({"zsh", "fish", "bash"}))
+def cli(filename: str, shell: str):
+    main(filename, shell)
 
 
-def main(filename: str) -> pd.DataFrame:
+def main(filename: str, shell: str) -> pd.DataFrame:
     with open(filename) as f:
         content = f.read()
-    df = extract_command_list(content)
+    df = extract_command_list(content, shell=shell)
     df["cleaned_command"] = df["command"]
     df = prefix_removal(df, prefix="sudo")
     df = prefix_removal(df, prefix="time")
@@ -29,10 +31,14 @@ def main(filename: str) -> pd.DataFrame:
     counts = df.base_command.value_counts()
     print(counts)
     min_occurences = 30
+    if max(counts) < min_occurences:
+        min_occurences = max(max(counts) - 10, min(counts))
     counts = counts[counts >= min_occurences]
+    min_date = min(df["date"])
+    max_date = max(df["date"])
     plt.title(
-        f"Command distribution from {min(df['date']):%Y-%m-%d} "
-        f"to {max(df['date']):%Y-%m-%d}\nmin occurences = {min_occurences}"
+        f"Command distribution from {min_date:%Y-%m-%d} "
+        f"to {max_date:%Y-%m-%d}\nmin occurences = {min_occurences}"
     )
     ax = counts.plot(kind="pie", figsize=(8, 8), title="")
     ax.set_ylabel("")
@@ -41,23 +47,31 @@ def main(filename: str) -> pd.DataFrame:
     return df
 
 
-def extract_command_list(content: str) -> pd.DataFrame:
+def extract_command_list(content: str, shell: str) -> pd.DataFrame:
     commands = []
     lines = content.rstrip().split("\n")
     # This is the ZSH history result pattern:
     #                9      13.5.2018 10:11  cd fonts
     # You might need to adjust the pattern!
-    pattern = r"\s+(\d+)\s+(\d+\.\d+\.\d+ \d+:\d+)\s+(.+)"
+    if shell == "zsh":
+        pattern = (
+            r"\s+(?P<number>\d+)\s+(?P<date>\d+\.\d+\.\d+ \d+:\d+)\s+(?P<command>.+)"
+        )
+    elif shell == "bash":
+        pattern = r"\s+(?P<number>\d+)\s+(?P<command>.+)"
+    else:
+        pattern = r"(?P<command>.+)"
 
     for line in lines:
         re_result = re.search(pattern, line, re.IGNORECASE)
         if re_result is None:
             continue
+        groups = re_result.groupdict()
         commands.append(
             (
-                re_result.group(1),
-                dateutil.parser.parse(re_result.group(2)),
-                re_result.group(3),
+                groups.get("number", None),
+                dateutil.parser.parse(groups.get("date", "1970-01-01")),
+                groups.get("command", None),
             )
         )
     df = pd.DataFrame(commands, columns=["number", "date", "command"])
