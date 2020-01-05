@@ -5,9 +5,12 @@ Generate a dotfile for Python module dependencies.
 """
 
 import json
-import pymysql
 import logging
 import sys
+from typing import Dict, List
+
+import pymysql
+import progressbar
 
 logging.basicConfig(
     format="%(asctime)s %(levelname)s %(message)s",
@@ -16,7 +19,7 @@ logging.basicConfig(
 )
 
 
-def main(filename, n, remove_no_edge, remove_only_selfimport):
+def main(filename: str, n: int, remove_no_edge: bool, remove_only_selfimport: bool):
     """
     Fetch data from server and create the graphviz data.
 
@@ -86,9 +89,8 @@ def create_graphviz(
             save_nodes.add(dep["package"])
         new_pkgs = []
         logging.info(
-            ("Imported graph had %i nodes. " "Only %i of them have edges."),
-            len(packages),
-            len(save_nodes),
+            f"Imported graph had {len(packages)} nodes. "
+            f"Only {len(save_nodes)} of them have edges."
         )
         for pkg in packages:
             if pkg["id"] in save_nodes:
@@ -111,7 +113,7 @@ def create_graphviz(
             if pkg["id"] in has_dependency and len(has_dependency[pkg["id"]]) >= 1:
                 new_pkgs.append(pkg)
         packages = new_pkgs
-    logging.info("%i packages remaining", len(packages))
+    logging.info(f"{len(packages)} packages remaining")
     packages = packages[:n]
 
     with open(filename, "w") as f:
@@ -121,14 +123,16 @@ def create_graphviz(
         # f.write('size="8,5"\n')
 
         pkg_ids = []
-        for pkg in packages[:n]:
+        for pkg in progressbar.progressbar(packages[:n]):
             # Remove 'shape=point,' for Gephi
-            f.write('%i [shape=point, label="%s"];\n' % (pkg["id"], pkg["name"]))
+            f.write(f'{pkg["id"]} [shape=point, label="{pkg["name"]}"];\n')
             pkg_ids.append(pkg["id"])
+
+        pkg_ids = set(pkg_ids)  # This is a EXTREME speedup!
         # f.write("\n")
-        for dep in dependencies:
+        for dep in progressbar.progressbar(dependencies):
             if dep["needs_package"] in pkg_ids and dep["package"] in pkg_ids:
-                f.write("%i -> %i;\n" % (dep["needs_package"], dep["package"]))
+                f.write(f"{dep['needs_package']} -> {dep['package']};\n")
         f.write("}")
 
 
