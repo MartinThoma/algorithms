@@ -9,6 +9,7 @@ import click
 import dateutil.parser
 import matplotlib.pyplot as plt
 import pandas as pd
+import yaml
 
 
 @click.command()
@@ -18,7 +19,7 @@ def cli(filename: str, shell: str):
     main(filename, shell)
 
 
-def main(filename: str, shell: str) -> pd.DataFrame:
+def main(filename: str, shell: str, apply_grouping: bool = True) -> pd.DataFrame:
     with open(filename) as f:
         content = f.read()
     df = extract_command_list(content, shell=shell)
@@ -27,13 +28,22 @@ def main(filename: str, shell: str) -> pd.DataFrame:
     df = prefix_removal(df, prefix="time")
     new = df["cleaned_command"].str.split(" ", expand=True)
     df["base_command"] = new[0]
-    print(df.base_command.value_counts())
+
+    if apply_grouping:
+        with open("grouping.yaml") as f:
+            grouping = yaml.load(f)
+        grouping_t = {}
+        for to, from_list in grouping.items():
+            for from_str in from_list:
+                grouping_t[from_str] = to
+        df["base_command"] = df["base_command"].map(lambda n: grouping_t.get(n, n))
+
     counts = df.base_command.value_counts()
-    print(counts)
-    min_occurences = 30
+    min_occurences = 20
     if max(counts) < min_occurences:
         min_occurences = max(max(counts) - 10, min(counts))
     counts = counts[counts >= min_occurences]
+    print(counts)
     min_date = min(df["date"])
     max_date = max(df["date"])
     plt.title(
