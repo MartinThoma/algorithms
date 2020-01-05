@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Analyze a history file"""
+"""Analyze a history file."""
 
 import re
 
@@ -16,7 +16,7 @@ def cli(filename):
     main(filename)
 
 
-def main(filename: str):
+def main(filename: str) -> pd.DataFrame:
     with open(filename) as f:
         content = f.read()
     df = extract_command_list(content)
@@ -31,7 +31,8 @@ def main(filename: str):
     min_occurences = 30
     counts = counts[counts >= min_occurences]
     plt.title(
-        f"Command distribution from {min(df['date']):%Y-%m-%d} to {max(df['date']):%Y-%m-%d}\nmin occurences = {min_occurences}"
+        f"Command distribution from {min(df['date']):%Y-%m-%d} "
+        f"to {max(df['date']):%Y-%m-%d}\nmin occurences = {min_occurences}"
     )
     ax = counts.plot(kind="pie", figsize=(8, 8), title="")
     ax.set_ylabel("")
@@ -43,8 +44,11 @@ def main(filename: str):
 def extract_command_list(content: str) -> pd.DataFrame:
     commands = []
     lines = content.rstrip().split("\n")
+    # This is the ZSH history result pattern:
     #                9      13.5.2018 10:11  cd fonts
+    # You might need to adjust the pattern!
     pattern = r"\s+(\d+)\s+(\d+\.\d+\.\d+ \d+:\d+)\s+(.+)"
+
     for line in lines:
         re_result = re.search(pattern, line, re.IGNORECASE)
         if re_result is None:
@@ -60,7 +64,8 @@ def extract_command_list(content: str) -> pd.DataFrame:
     return df
 
 
-def clean_prefix(x, prefix):
+def clean_prefix(x: str, prefix: str) -> str:
+    """Remove a prefix and all options from the command x."""
     if not x.startswith(prefix):
         return x
     x = x[len(prefix) :]
@@ -78,14 +83,23 @@ def clean_prefix(x, prefix):
     return x
 
 
-def prefix_removal(df: pd.DataFrame, prefix: str):
-    """Annotate which commands had "sudo" as a prefix and add a "cleaned" command."""
+def prefix_removal(df: pd.DataFrame, prefix: str) -> pd.DataFrame:
+    """
+    Annotate commands which have the given prefix and remove it from cleaned_command.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+    prefix : str
+
+    Returns
+    -------
+    df : pd.DataFrame
+    """
     df[prefix] = df["cleaned_command"].str.startswith(f"{prefix} ")
     df["cleaned_command"] = df["cleaned_command"].map(
         lambda x: clean_prefix(x, prefix=prefix)
     )
-    # df.loc[df[prefix], 'cleaned_command'] = df[df[prefix]]['cleaned_command'].str.slice(start=len(prefix) + 1)
-    # df.loc[~df[prefix], 'cleaned_command'] = df[~df[prefix]]['cleaned_command']
     return df
 
 
