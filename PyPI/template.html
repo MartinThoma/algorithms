@@ -1,0 +1,84 @@
+Out of {{'{:,}'.format(all_packages)}}, only {{'{:,}'.format(nb_used_packages)}} are used.
+
+There are {{'{:,}'.format(total_authors)}} authors of Python packages. The ten
+most active authors are:
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Author</th>
+            <th>Created packages</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for author_dict in author_dicts %}
+        <tr>
+            <td>{{ author_dict['author'] }}</td>
+            <td>{{ author_dict['created_packages'] }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+## Maximum length
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Column</th>
+            <th>NULL values</th>
+            <th>Maximum Length</th>
+            <th>Entry</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for attribute_name in attribute_names %}
+        <tr>
+            <td>{{ attribute_name }}</td>
+            <td>{{ null[attribute_name] }}</td>
+            <td>{{ max[attribute_name] | length }}</td>
+            <td>{{ max[attribute_name] | e}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+## Platforms
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Platform</th>
+            <th>Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for platform in platforms %}
+        <tr>
+            <td>{{ platform['name'] | e }}</td>
+            <td>{{ platform['count'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+## Licenses
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>License</th>
+            <th>Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for license in licenses %}
+        <tr>
+            <td>{{ license['name'] | e }}</td>
+            <td>{{ license['count'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
