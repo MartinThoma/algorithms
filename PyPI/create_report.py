@@ -250,6 +250,48 @@ cursor.execute(sql)
 results = cursor.fetchall()
 template_parameters["licenses"] = results
 
+sql = """
+SELECT `name`, `url`, `downloads`
+FROM `urls`
+JOIN `packages` ON `urls`.`package_id` = `packages`.`id`
+ORDER BY `urls`.`downloads`  DESC
+LIMIT 10"""
+cursor.execute(sql)
+results = cursor.fetchall()
+template_parameters["max_downloads"] = results
+
+
+sql = """
+SELECT
+    `name`, `release_number`, `size`
+FROM
+    `releases`
+JOIN
+    `packages` ON `releases`.`package_id` = `packages`.`id`
+WHERE releases.id IN (SELECT MAX(id) FROM releases GROUP BY package_id)
+ORDER BY
+    `releases`.`size` DESC
+LIMIT 15"""
+cursor.execute(sql)
+results = cursor.fetchall()
+template_parameters["max_pkg_sizes"] = results
+
+
+sql = """
+SELECT
+    `packagetype` as name, COUNT(`id`) as count
+FROM
+    `urls`
+GROUP BY
+    packagetype
+ORDER BY
+    COUNT(`id`) DESC
+"""
+cursor.execute(sql)
+results = cursor.fetchall()
+template_parameters["max_packagetypes"] = results
+
+
 ### Template
 with open("template.html") as f:
     query = f.read()

@@ -15,8 +15,7 @@ most active authors are:
         <tr>
             <td>{{ author_dict['author'] }}</td>
             <td>{{ author_dict['created_packages'] }}</td>
-        </tr>
-    {% endfor %}
+        </tr>{% endfor %}
     </tbody>
 </table>
 
@@ -38,8 +37,7 @@ most active authors are:
             <td>{{ null[attribute_name] }}</td>
             <td>{{ max[attribute_name] | length }}</td>
             <td>{{ max[attribute_name] | e}}</td>
-        </tr>
-        {% endfor %}
+        </tr>{% endfor %}
     </tbody>
 </table>
 
@@ -58,8 +56,7 @@ most active authors are:
         <tr>
             <td>{{ platform['name'] | e }}</td>
             <td>{{ platform['count'] }}</td>
-        </tr>
-        {% endfor %}
+        </tr>{% endfor %}
     </tbody>
 </table>
 
@@ -78,7 +75,49 @@ most active authors are:
         <tr>
             <td>{{ license['name'] | e }}</td>
             <td>{{ license['count'] }}</td>
+        </tr>{% endfor %}
+    </tbody>
+</table>
+
+
+## Size
+
+<p>What is currently the biggest Python package?</p>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Package</th>
+            <th>Release Number</th>
+            <th>Size</th>
         </tr>
-        {% endfor %}
+    </thead>
+    <tbody>
+        {% for max_pkg_size in max_pkg_sizes %}
+        <tr>
+            <td>{{ max_pkg_size['name'] | e }}</td>
+            <td>{{ max_pkg_size['release_number'] }}</td>
+            <td>{{ max_pkg_size['size'] }}</td>
+        </tr>{% endfor %}
+    </tbody>
+</table>
+
+
+## Package type
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>License</th>
+            <th>Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in max_packagetypes %}
+        <tr>
+            <td>{{ row['name'] | e }}</td>
+            <td>{{ row['count'] }}</td>
+        </tr>{% endfor %}
     </tbody>
 </table>
