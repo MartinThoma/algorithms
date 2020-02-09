@@ -36,3 +36,4 @@ OpenGL/*/main
 *.h5f
 *.h5
 mldata
+.mypy_cache/

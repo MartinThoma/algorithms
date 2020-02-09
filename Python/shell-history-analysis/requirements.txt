@@ -1,5 +1,0 @@
-click
-python-dateutil
-matplotlib
-pandas
-pyaml
