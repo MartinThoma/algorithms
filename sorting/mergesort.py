@@ -23,8 +23,34 @@ def main(numbers_filepath):
         print(f"Restored filepaths: {filepaths}")
 
     # Merges: Roughly 4.8h
+    cleanup(os.path.abspath("mergesort_temp/"), filepaths)
     result_path = merge_all(filepaths, splitting_success_marker)
     print(f"Sorted result is in {result_path}")
+
+
+def get_bool(text: str) -> bool:
+    data = "placeholder"
+    yes = ["y", "yes", "true", "1"]
+    no = ["n", "no", "false", "0"]
+    while data.lower() not in yes + no:
+        data = input(text)
+    return data in yes
+
+
+def cleanup(directory: str, filepaths: List[str]) -> List[str]:
+    potential = [
+        os.path.join(directory, f)
+        for f in os.listdir(directory)
+        if os.path.isfile(os.path.join(directory, f))
+    ]
+    no_delete = set(filepaths)
+    no_delete.add(os.path.join(directory, ".splitting_done"))
+    for filepath in potential:
+        if filepath not in no_delete:
+            delete = get_bool(f"Do you want to remove {filepath}? [y/n] ")
+            if delete:
+                os.remove(filepath)
+                print(f"Removed {filepath}")
 
 
 def split(numbers_filepath: str) -> List[str]:
