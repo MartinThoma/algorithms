@@ -69,8 +69,8 @@ class LogitRegressor(BaseEstimator, ClassifierMixin):
         # Make a grid-search to find the best values
         min_mse = float("inf")
         best_prams = {"beta": 1, "c": 0, "d": 1.0}
-        for beta_tmp in np.arange(start=0.15, stop=0.25, step=0.001):
-            for c_tmp in np.arange(start=12, stop=14, step=0.001):
+        for beta_tmp in np.arange(start=0.18, stop=0.24, step=0.001):
+            for c_tmp in np.arange(start=12, stop=16, step=0.001):
                 for d_tmp in np.arange(start=1, stop=2, step=1):
                     self.beta = beta_tmp
                     self.c = c_tmp
@@ -107,8 +107,8 @@ class LogitRegressor(BaseEstimator, ClassifierMixin):
 
 
 def find_model_for_germany():
-    dates, xs, ys = get_data("infections_germany.csv")
-    max_population = 80_000_000 * 0.8
+    dates, xs, ys = get_data("infections_us.csv")
+    max_population = 328_000_000 * 0.8
 
     model = LogitRegressor(max_population=max_population).fit(X=xs, y=ys)
 

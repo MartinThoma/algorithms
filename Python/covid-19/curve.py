@@ -20,7 +20,7 @@ critical_care_percentage = 0.05
 intensive_care_beds = 28_000
 
 
-model = LogitRegressor(beta=0.1980, c=13.4600, d=1.0000, max_population=20_000_000.0)
+model = LogitRegressor(beta=0.2060, c=14.5360, d=1.0, max_population=262400000.0)
 model_flat = LogitRegressor(
     beta=0.05, c=13.4600, d=1.0000, max_population=20_000_000.0, shift_x=120
 )
