@@ -1,4 +1,5 @@
-from typing import Tuple
+# Core Library modules
+from typing import FrozenSet, List, Set, Tuple
 
 EPSILON = 0.000001
 
@@ -46,6 +47,8 @@ class LineSegment:
             return f"LineSegment [{self.first} to {self.second}]"
         else:
             return self.name
+
+    __repr__ = __str__
 
     def __hash__(self):
         return hash((self.first, self.second, self.name))
@@ -108,6 +111,30 @@ def do_lines_intersect(a: LineSegment, b: LineSegment) -> bool:
         and line_segment_touches_or_crosses_line(a, b)
         and line_segment_touches_or_crosses_line(b, a)
     )
+
+
+def get_all_intersecting_lines_by_brute_force(
+    lines: List[LineSegment],
+) -> Set[FrozenSet[LineSegment]]:
+    """
+    Get all interectionLines by applying a brute force algorithm.
+
+    Parameters
+    ----------
+    lines : all lines you want to check, in no order
+
+    Returns
+    -------
+    a list that contains all pairs of intersecting lines
+    """
+    intersections: Set[FrozenSet[LineSegment]] = set()
+
+    for i in range(len(lines)):
+        for j in range(i + 1, len(lines)):
+            if do_lines_intersect(lines[i], lines[j]):
+                tmp = frozenset({lines[i], lines[j]})
+                intersections.add(tmp)
+    return intersections
 
 
 if __name__ == "__main__":
