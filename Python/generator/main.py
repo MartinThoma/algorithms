@@ -5,7 +5,7 @@ def square_counter(is_true):
     if is_true:
         i = 0
         while True:
-            yield i**2
+            yield i ** 2
             i += 1
             if i > 5:
                 return

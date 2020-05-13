@@ -1341,7 +1341,7 @@ def create_boxplot(duration_list):
         *sorted(duration_list.items(), key=operator.itemgetter(1))
     )
     flierprops = dict(markerfacecolor="0.75", markersize=1, linestyle="none")
-    ax = sns.boxplot(data=sorted_vals, width=0.3, orient="h", flierprops=flierprops,)
+    ax = sns.boxplot(data=sorted_vals, width=0.3, orient="h", flierprops=flierprops)
     ax.set(xlabel="Time in s", ylabel="")
     plt.yticks(plt.yticks()[0], sorted_keys)
     plt.tight_layout()

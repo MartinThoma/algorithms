@@ -4,7 +4,7 @@
 def square_gen(is_true):
     i = 0
     while True:
-        yield i**2
+        yield i ** 2
         i += 1
 
 

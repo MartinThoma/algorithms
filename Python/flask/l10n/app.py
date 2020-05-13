@@ -22,28 +22,31 @@ def format_datetime(value, format="medium"):
         return value.isoformat()
     return flask_babel.dates.format_datetime(value, format)
 
+
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'foo'
-app.config['BABEL_TRANSLATION_DIRECTORIES'] = './translations'
+app.config["SECRET_KEY"] = "foo"
+app.config["BABEL_TRANSLATION_DIRECTORIES"] = "./translations"
 app.jinja_env.filters["datetime"] = format_datetime
 babel = Babel(app)
 
 
 @app.route("/")
 def index():
-    print(_('Hello World!'))
-    flash(_('Hello World!'))
+    print(_("Hello World!"))
+    flash(_("Hello World!"))
     pubdate = datetime.datetime.now()
-    return render_template("main.html",
-                           pubdate=pubdate,
-                           author='John Smith',
-                           date_localized=flask_babel.dates.format_date(pubdate))
+    return render_template(
+        "main.html",
+        pubdate=pubdate,
+        author="John Smith",
+        date_localized=flask_babel.dates.format_date(pubdate),
+    )
 
 
 @babel.localeselector
 def get_locale():
-    print('foo')
-    return 'de' #request.accept_languages.best_match(app.config["LANGUAGES"])
+    print("foo")
+    return "de"  # request.accept_languages.best_match(app.config["LANGUAGES"])
 
 
 if __name__ == "__main__":

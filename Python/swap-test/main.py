@@ -5,6 +5,7 @@
 import numpy as np
 import random
 import sys
+
 random.seed(0)
 
 
@@ -33,8 +34,9 @@ def swap(cm, i, j):
 
 def main(n):
     import time
+
     cm = np.random.randint(0, 150000, size=(n, n))
-    swaps = 10**6
+    swaps = 10 ** 6
 
     t0 = time.time()
     for step in range(swaps):
@@ -48,7 +50,8 @@ def main(n):
     print("{:0.2f} swaps / sec".format(swaps / (t1 - t0)))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import doctest
+
     doctest.testmod()
     main(369)

@@ -27,7 +27,7 @@ class PlayerFieldState(enum.Enum):
     MARKED = 11
 
 
-class StepType(enum.Enum):
+class PlayerAction(enum.Enum):
     EXPLORE = 0
     MARK = 1
 
@@ -95,9 +95,9 @@ class Game:
     def take_step(self):
         self.print_field()
         x, y, step_type = self.get_valid_input()
-        if step_type == StepType.MARK:
+        if step_type == PlayerAction.MARK:
             self.take_step_mark_bomb(x, y)
-        elif step_type == StepType.EXPLORE:
+        elif step_type == PlayerAction.EXPLORE:
             self.take_step_explore(x, y)
         else:
             raise ValueError(f"step_type={step_type} is not known")
@@ -169,7 +169,7 @@ class Game:
             return False
         return self.mine_field[x][y]
 
-    def get_valid_input(self) -> Tuple[int, int, StepType]:
+    def get_valid_input(self) -> Tuple[int, int, PlayerAction]:
         position = None
         while not self.is_valid_input(position):
             position = input(
@@ -181,11 +181,11 @@ class Game:
         y = int(splitted[1])
         if len(splitted) == 3:
             if splitted[2] == "m":
-                t = StepType.MARK
+                t = PlayerAction.MARK
             else:
-                t = StepType.EXPLORE
+                t = PlayerAction.EXPLORE
         else:
-            t = StepType.EXPLORE
+            t = PlayerAction.EXPLORE
         return x, y, t
 
     def is_valid_input(self, position):

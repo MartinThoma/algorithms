@@ -12,10 +12,10 @@ import numpy as np
 
 def main(dir_):
     dir_ = os.path.abspath(dir_)
-    print('Checking .py files in {}'.format(dir_))
+    print("Checking .py files in {}".format(dir_))
     onlyfiles = get_all_files(dir_)
-    pyfiles = [f for f in onlyfiles if f.endswith('.py')]
-    print('Found {} files.'.format(len(pyfiles)))
+    pyfiles = [f for f in onlyfiles if f.endswith(".py")]
+    print("Found {} files.".format(len(pyfiles)))
 
     line_lengths = []
     line_filepaths = []
@@ -25,13 +25,14 @@ def main(dir_):
         line_filepaths += [filepath] * len(found_linelengths)
     line_lengths = np.array(line_lengths)
     for percentage in [95, 99, 100]:
-        print('{:>3}%: {} chars'
-              .format(str(percentage),
-                      np.percentile(line_lengths, percentage)))
+        print(
+            "{:>3}%: {} chars".format(
+                str(percentage), np.percentile(line_lengths, percentage)
+            )
+        )
 
     index = line_lengths.argmax()
-    print('The file {} has the longest line.'
-          .format(line_filepaths[index]))
+    print("The file {} has the longest line.".format(line_filepaths[index]))
 
 
 def get_all_files(root):
@@ -52,15 +53,17 @@ def get_line_lengths(filepath):
 def get_parser():
     """Create parser."""
     from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
-    parser = ArgumentParser(description=__doc__,
-                            formatter_class=ArgumentDefaultsHelpFormatter)
+
+    parser = ArgumentParser(
+        description=__doc__, formatter_class=ArgumentDefaultsHelpFormatter
+    )
 
     # Add more options if you like
-    parser.add_argument('dir', nargs='?', default=os.getcwd())
+    parser.add_argument("dir", nargs="?", default=os.getcwd())
 
     return parser
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     args = get_parser().parse_args()
     main(args.dir)

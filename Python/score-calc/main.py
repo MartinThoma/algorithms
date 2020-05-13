@@ -36,7 +36,8 @@ def measure_time(n):
     """Measure the time of calculate_score for n x n matrices."""
     import time
     import numpy as np
-    score_calculations = 10**3
+
+    score_calculations = 10 ** 3
 
     t = 0
     weights = calculate_weight_matrix(n)
@@ -45,11 +46,12 @@ def measure_time(n):
         t0 = time.time()
         calculate_score(cm, weights)
         t1 = time.time()
-        t += (t1 - t0)
+        t += t1 - t0
     print("{:0.2f} scores / sec".format(score_calculations / t))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import doctest
+
     doctest.testmod()
     measure_time(369)
