@@ -128,7 +128,7 @@ def chunk_data(state: Dict[str, Any], big_filepath: str, prefixes: List[str]):
 def sort_chunks(state: Dict[str, Any]) -> Dict[str, Any]:
     from multiprocessing import Pool
 
-    pool = Pool(processes=6)
+    pool = Pool(processes=8)
     pool.map(sort_chunk, state["chunks_to_sort"])
     return state
 

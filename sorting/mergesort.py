@@ -11,7 +11,7 @@ import progressbar
 
 
 def main(numbers_filepath):
-    # Split files: Roughly 4131s (1h 9 min)
+    # Split files: Roughly 4131s (1h 9 min) -- Next time: 1436s + 22454,88s + 6451,14s + 19888,94s + 9593,95s
     splitting_success_marker = os.path.abspath("mergesort_temp/.splitting_done")
     if not os.path.isfile(splitting_success_marker):
         filepaths = split(numbers_filepath)
@@ -103,6 +103,7 @@ def merge_all(filepaths: List[str], filepaths_filename: str) -> str:
         _, target_path = mkstemp(
             prefix="mergesort-", suffix=".txt", dir=os.path.dirname(filepaths_filename)
         )
+        os.close(_)
         written_lines = merge_files(filepath1, filepath2, target_path)
 
         # The order here is important! Make sure that you can continue if the
