@@ -1,5 +1,6 @@
 """Sort a huge amount of data by inserting it into SQLite."""
 
+# Core Library modules
 import logging
 import sqlite3
 import sys
