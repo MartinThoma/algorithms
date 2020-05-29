@@ -13,7 +13,6 @@ import math
 import os
 import sys
 import time
-from typing import Any, Dict, List, Tuple, Callable
 
 
 logging.basicConfig(
@@ -25,7 +24,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def main(big_filepath: str):
+def main(big_filepath):
     state_filepath = os.path.abspath(".radixsort.state.json")
     if not os.path.isfile(state_filepath):
         with open(state_filepath, "w") as fp:
@@ -45,14 +44,14 @@ def main(big_filepath: str):
         state = chunk_data(state, big_filepath, prefixes)
         t1 = time.time()
         state["meta"]["chunk_data"] = t1 - t0
-        print(f"Time for Chunking: {t1 - t0:0.1f}s")
+        print("Time for Chunking: {:0.1f}s".format(t1 - t0))
         write_state(state["filepath"], state)
     if "sort_chunks" not in state["finished_stages"]:
         t0 = time.time()
         state = sort_chunks(state)
         t1 = time.time()
         state["meta"]["sort_chunks"] = t1 - t0
-        print(f"Sort chunks: {t1 - t0:0.1f}s")
+        print("Sort chunks: {:0.1f}s".format(t1 - t0))
         state["finished_stages"].append("sort_chunks")
         write_state(state["filepath"], state)
     if "merge_data" not in state["finished_stages"]:
@@ -60,24 +59,24 @@ def main(big_filepath: str):
         state = merge_chunks(state)
         t1 = time.time()
         state["meta"]["merge_data"] = t1 - t0
-        print(f"Merged chunks: {t1 - t0:0.1f}s")
+        print("Merged chunks: {:0.1f}s".format(t1 - t0))
         state["finished_stages"].append("merge_data")
         write_state(state["filepath"], state)
     print("Done!")
 
 
-def get_state(state_filepath: str) -> Dict[str, Any]:
+def get_state(state_filepath):
     with open(state_filepath) as fp:
         state = json.loads(fp.read())
     return state
 
 
-def write_state(state_filepath: str, state: Dict[str, Any]):
+def write_state(state_filepath, state):
     with open(state_filepath, "w") as fp:
         fp.write(json.dumps(state))
 
 
-def get_range(big_filepath: str) -> Tuple[str, str, int]:
+def get_range(big_filepath):
     min_val, max_val = None, None
     i = 0
     with open(big_filepath) as fp:
@@ -85,8 +84,8 @@ def get_range(big_filepath: str) -> Tuple[str, str, int]:
         min_val = line.strip()
         max_val = line.strip()
         for line in fp:
-            if i % 10_000_000 == 0:
-                logger.info(f"    i={i:,}")
+            if i % 10000000 == 0:
+                logger.info("    i={:,}".fromat(i))
             line = line.strip()
             min_val = min(min_val, line)
             max_val = max(max_val, line)
@@ -94,12 +93,12 @@ def get_range(big_filepath: str) -> Tuple[str, str, int]:
     return min_val, max_val, i
 
 
-def get_prefixes() -> List[str]:
+def get_prefixes():
     """Those are the characters the number starts with."""
     return [str(i) for i in range(10, 100)]
 
 
-def chunk_data(state: Dict[str, Any], big_filepath: str, prefixes: List[str]):
+def chunk_data(state, big_filepath, prefixes):
     """
     Sort the numbers into files which are roughly 216MB big.
 
@@ -110,7 +109,7 @@ def chunk_data(state: Dict[str, Any], big_filepath: str, prefixes: List[str]):
     prefix2file = {}
     chunks_to_sort = []
     for prefix in prefixes:
-        chunk = os.path.abspath(f"radixsort_tmp/{prefix}.txt")
+        chunk = os.path.abspath("radixsort_tmp/{:}.txt".format(prefix))
         chunks_to_sort.append(chunk)
         prefix2file[prefix] = open(chunk, "w")
     logger.info("Generated files")
@@ -125,7 +124,7 @@ def chunk_data(state: Dict[str, Any], big_filepath: str, prefixes: List[str]):
     return state
 
 
-def sort_chunks(state: Dict[str, Any]) -> Dict[str, Any]:
+def sort_chunks(state):
     from multiprocessing import Pool
 
     pool = Pool(processes=8)
@@ -133,7 +132,7 @@ def sort_chunks(state: Dict[str, Any]) -> Dict[str, Any]:
     return state
 
 
-def sort_chunk(chunk_path: str):
+def sort_chunk(chunk_path):
     """Reading, sorting, writing... takes about 8-10s per 216MB."""
     with open(chunk_path) as fp:
         lines = fp.readlines()
@@ -142,7 +141,7 @@ def sort_chunk(chunk_path: str):
         fp.writelines(lines)
 
 
-def merge_chunks(state: Dict[str, Any]):
+def merge_chunks(state):
     state["chunks_to_merge"] = sorted(state["chunks_to_merge"])
     state["written_lines"] = 0
     write_state(state["filepath"], state)
@@ -155,7 +154,7 @@ def merge_chunks(state: Dict[str, Any]):
             fp.writelines(lines)
             state["written_lines"] += len(lines)
         t1 = time.time()
-        print(f"Written {chunk_filepath}: {t1 - t0:0.1f}")
+        print("Written {:}: {:0.1f}".format(chunk_filepath, t1 - t0))
         write_state(state["filepath"], state)
     return state
 

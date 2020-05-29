@@ -56,7 +56,7 @@ def split(numbers_filepath: str) -> List[str]:
     if not os.path.isdir(tmp_dir_path):
         os.mkdir(tmp_dir_path)
 
-    breaker = 10 ** 6
+    breaker = 10 ** 7
     filepaths: List[str] = []
 
     with open(numbers_filepath) as f:
@@ -121,9 +121,7 @@ def merge_all(filepaths: List[str], filepaths_filename: str) -> str:
         os.remove(filepath1)
         os.remove(filepath2)
         t1 = time.time()
-        print(
-            f"Merged two files in {t1 - t0:0.2f}s. Remaining: {len(filepaths)}"
-        )
+        print(f"Merged two files in {t1 - t0:0.2f}s. Remaining: {len(filepaths)}")
     return filepaths[0]
 
 
@@ -153,5 +151,5 @@ def merge_files(filepath1: str, filepath2: str, outpath: str) -> int:
 
 
 if __name__ == "__main__":
-    filepath = os.path.abspath("numbers.txt")
+    filepath = os.path.abspath("numbers-large.txt")
     main(filepath)
