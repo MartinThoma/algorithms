@@ -5,3 +5,7 @@ ddout.csv
 out-numbers.csv
 numbers-large.txt
 numbers-sorted.txt
+a.out
+cpp-radix/
+radixsort_tmp/
+heapsort_temp/
