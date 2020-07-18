@@ -1,4 +1,10 @@
+# Core Library modules
+from typing import Dict, Union
+
+# Third party modules
 from sqlalchemy import ForeignKey
+
+# First party modules
 from mini_app.app import db
 
 
@@ -8,7 +14,7 @@ class Author(db.Model):
     first_name = db.Column(db.Text)
     last_name = db.Column(db.Text)
 
-    def dict(self):
+    def dict(self) -> Dict[str, Union[int, str]]:
         return {
             "id": self.id,
             "first_name": self.first_name,

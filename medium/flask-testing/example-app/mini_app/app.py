@@ -1,8 +1,8 @@
 # Core Library modules
-from typing import Optional
+from typing import Dict, Optional, Union
 
 # Third party modules
-from flask import Flask, request, render_template
+from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 
 # First party modules
@@ -33,7 +33,7 @@ def create_app(cfg: Optional[config.Config] = None) -> Flask:
         return render_template("base.html", number=number, square=number ** 2)
 
     @app.route("/author/<int:author_id>")
-    def get_author(author_id):
+    def get_author(author_id: int) -> Dict[str, Union[int, str]]:
         """A view which uses the database."""
         from mini_app.models import Author
 
