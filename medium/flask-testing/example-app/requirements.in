@@ -1,0 +1,8 @@
+flask
+flask-sqlalchemy
+
+# Testing and development
+flake8
+mypy
+pytest
+pip-tools
