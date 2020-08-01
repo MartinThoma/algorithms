@@ -13,10 +13,14 @@ from mpu.geometry import LineSegment, Point, do_lines_intersect
 
 
 def create(
-    width: int = 1400, height: int = 1200, nb_points: int = 100, max_length: int = None, iterations: int=10
+    width: int = 1400,
+    height: int = 1200,
+    nb_points: int = 100,
+    max_length: int = None,
+    iterations: int = 10,
 ):
     if max_length is None:
-        max_length = int((width**2 + height**2)**0.5)
+        max_length = int((width ** 2 + height ** 2) ** 0.5)
     lines: List[Tuple[int, int, int, int]] = []
     points = [
         (

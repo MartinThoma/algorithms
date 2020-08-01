@@ -28,10 +28,22 @@ def entry_point(n, m):
     ms = list(range(m, n + 1, m))
 
     times = check_range(array, ms, algorithm=find_biggest_subarray_iterative)
-    plot(x=ms, y=times, name='find_biggest_subarray_iterative ', n=n, filename="find_biggest_subarray_iterative.png")
+    plot(
+        x=ms,
+        y=times,
+        name="find_biggest_subarray_iterative ",
+        n=n,
+        filename="find_biggest_subarray_iterative.png",
+    )
 
     times = check_range(array, ms, algorithm=find_biggest_subarray_slice)
-    plot(x=ms, y=times, name='find_biggest_subarray_slice', n=n, filename="find_biggest_subarray_slice.png")
+    plot(
+        x=ms,
+        y=times,
+        name="find_biggest_subarray_slice",
+        n=n,
+        filename="find_biggest_subarray_slice.png",
+    )
 
 
 def check_range(array, ms, algorithm):

@@ -2,12 +2,13 @@
 import hypothesis.strategies as s
 import pytest
 from click.testing import CliRunner
-from hypothesis import given
+from hypothesis import given, settings
 
 # First party modules
 from factorize import cli, factorize
 
 
+@settings(deadline=3000)
 @given(s.integers(min_value=-(10 ** 6), max_value=10 ** 6))
 def test_factorize(number):
     if number == 0:

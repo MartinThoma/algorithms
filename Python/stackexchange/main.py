@@ -19,7 +19,7 @@ def main(user_id: str):
         print(filepath)
 
         fixed_md = improve_markdown(answer["body_markdown"])
-
+        print(f"https://stackoverflow.com/questions/{answer['answer_id']}")
         show_side_by_side(html.unescape(answer["body_markdown"]), fixed_md)
         apply_changes = get_bool("Do you want to apply those changes? [y/N]: ")
         if apply_changes:
@@ -143,6 +143,10 @@ def get_answers(user_id: str, page: int = 1) -> Iterator[Dict[str, Any]]:
         yield from data["items"]
         has_more = data["has_more"]
         page += 1
+
+
+def authenticate(client_id="18046"):
+    pass
 
 
 if __name__ == "__main__":

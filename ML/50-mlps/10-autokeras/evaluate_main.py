@@ -11,12 +11,12 @@ import hasy_tools
 # Load the data
 data = hasy_tools.load_data()
 
-x_train = data['x_train']
-y_train = data['y_train']
-x_validate = data['x_train']
-y_validate = data['y_train']
-x_test = data['x_test']
-y_test = data['y_test']
+x_train = data["x_train"]
+y_train = data["y_train"]
+x_validate = data["x_train"]
+y_validate = data["y_train"]
+x_test = data["x_test"]
+y_test = data["y_test"]
 
 # One-Hot encoding
 y_train = np.eye(hasy_tools.n_classes)[y_train.squeeze()]
@@ -29,12 +29,10 @@ x_validate = hasy_tools.preprocess(x_validate)
 x_test = hasy_tools.preprocess(x_test)
 
 # Load the model
-model = keras.models.load_model('model.h5')
+model = keras.models.load_model("model.h5")
 
 # Compile model
-model.compile(loss='categorical_crossentropy',
-              optimizer='adam',
-              metrics=['accuracy'])
+model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
 # Visualize the model
 print(model.summary())

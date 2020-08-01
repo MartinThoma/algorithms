@@ -9,16 +9,16 @@ import hasy_tools
 
 # I don't understand why, but it is important to wrap autokeras in this
 # "if __name__ == '__main__'""
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Load the data
     data = hasy_tools.load_data()
 
-    x_train = data['x_train']
-    y_train = data['y_train']
-    x_validate = data['x_train']
-    y_validate = data['y_train']
-    x_test = data['x_test']
-    y_test = data['y_test']
+    x_train = data["x_train"]
+    y_train = data["y_train"]
+    x_validate = data["x_train"]
+    y_validate = data["y_train"]
+    x_test = data["x_test"]
+    y_test = data["y_test"]
 
     # One-Hot encoding
     # y_train = np.eye(hasy_tools.n_classes)[y_train.squeeze()]
@@ -45,7 +45,7 @@ if __name__ == '__main__':
     model.final_fit(x_train, y_train, x_test, y_test, retrain=True)
 
     # Serialize model
-    model.load_searcher().load_best_model().produce_keras_model().save('model.h5')
+    model.load_searcher().load_best_model().produce_keras_model().save("model.h5")
 
     # evaluate the model
     scores = model.evaluate(x_test, y_test)
