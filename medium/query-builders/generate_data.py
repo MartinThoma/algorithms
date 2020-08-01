@@ -1,6 +1,7 @@
 import random
-from faker import Faker
 from dataclasses import dataclass
+
+from faker import Faker
 
 fake = Faker()
 
