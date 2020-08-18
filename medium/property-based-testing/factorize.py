@@ -24,4 +24,6 @@ def factorize(number: int) -> List[int]:
             factors.append(i)
             number = number // i
         i += 2
+    if number != 1:
+        factors.append(number)
     return factors
