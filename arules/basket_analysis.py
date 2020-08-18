@@ -1,12 +1,11 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Make a basket analysis."""
 
 import csv
 
 
-class HashTree(object):
+class HashTree:
     """
     A hash tree to get the support of a set faster.
 
@@ -49,7 +48,7 @@ def get_frequent_items(itemsets, threshold=0.5):
                 frequent_items[item] += 1
             else:
                 frequent_items[item] = 1
-    frequency = [{'itemset': set([el[0]]), 'count': el[1]}
+    frequency = [{'itemset': {el[0]}, 'count': el[1]}
                  for el in frequent_items.items()
                  if float(el[1])/len(itemsets) > threshold]
     return sorted(frequency, reverse=True, key=lambda n: n['count'])
@@ -226,7 +225,7 @@ def get_data(csv_file_path):
 
 def get_parser():
     """Get parser object for basket-analysis.py."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("-f", "--file",
@@ -272,7 +271,7 @@ def main(filename, threshold):
     while k in f_itemsets:
         if len(f_itemsets[k]) == 0:
             break
-        print("\nk={k}".format(k=k))
+        print(f"\nk={k}")
         max_itemlength = max([len(", ".join(item['itemset']))
                              for item in f_itemsets[k]])
         for item in f_itemsets[k]:

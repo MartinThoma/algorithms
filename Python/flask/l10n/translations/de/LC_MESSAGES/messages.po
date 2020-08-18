@@ -30,4 +30,3 @@ msgstr "Artikel"
 #, python-format
 msgid "by %(name)s on %(publication_date)s"
 msgstr ""
-

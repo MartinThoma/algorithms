@@ -6,7 +6,7 @@ RELEASEFLAGS    = -O3 -D NDEBUG
 
 make:
 	g++ $(CFLAGS) $(RELEASEFLAGS) $(PROBLEM).cpp -o $(PROBLEM).out
-	
+
 debug:
 	g++ $(CFLAGS) $(DEBUGFLAGS) $(PROBLEM).cpp -o $(PROBLEM).out
 

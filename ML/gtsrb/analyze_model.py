@@ -1,16 +1,17 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 
 """Analyze a cifar100 keras model."""
 
-from keras.models import load_model
-import gtsdb
-from sklearn.model_selection import train_test_split
-import numpy as np
-import json
 import io
+import json
+
+import gtsdb
 import matplotlib.pyplot as plt
+import numpy as np
+from keras.models import load_model
+from sklearn.model_selection import train_test_split
+
 try:
     to_unicode = unicode
 except NameError:
@@ -91,7 +92,7 @@ def main(model_path):
     plot_cm(cm, zero_diagonal=True, labels=gtsdb.labels_short)
 
     # Serialize confusion matrix
-    with io.open('cm.json', 'w', encoding='utf8') as outfile:
+    with open('cm.json', 'w', encoding='utf8') as outfile:
         str_ = json.dumps(cm.tolist(),
                           indent=4, sort_keys=True,
                           separators=(',', ':'), ensure_ascii=False)
@@ -100,7 +101,7 @@ def main(model_path):
 
 def get_parser():
     """Get parser object for script xy.py."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("-f", "--file",

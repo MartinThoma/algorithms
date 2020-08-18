@@ -4,22 +4,23 @@
 """Update Keras models."""
 
 import glob
+
 from keras.models import load_model
 
 
 def main(path):
-    glob_str = "{}/*.h5".format(path)
-    print("Globbing with '{}'".format(glob_str))
+    glob_str = f"{path}/*.h5"
+    print(f"Globbing with '{glob_str}'")
     model_files = glob.glob(glob_str)
     for model_fname in model_files:
-        print("Update {}...".format(model_fname))
+        print(f"Update {model_fname}...")
         model = load_model(model_fname)
         model.save(model_fname)
 
 
 def get_parser():
     """Get parser object for script xy.py."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("--path",

@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
-import numpy as np
 import random
 import timeit
-from werkzeug.security import generate_password_hash, check_password_hash
+
+import numpy as np
+from werkzeug.security import check_password_hash, generate_password_hash
 
 random.seed(0)
 
@@ -123,9 +124,10 @@ def iter_list(functions, title, outfile):
 
 
 def create_boxplot(title, duration_list, showfliers=False, outfile="out.png"):
-    import seaborn as sns
-    import matplotlib.pyplot as plt
     import operator
+
+    import matplotlib.pyplot as plt
+    import seaborn as sns
 
     plt.figure(num=None, figsize=(8, 4), dpi=300, facecolor="w", edgecolor="k")
     sns.set(style="whitegrid")

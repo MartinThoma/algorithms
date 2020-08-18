@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 2015 Google Inc. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,23 +32,21 @@ to use this script to perform image recognition.
 https://tensorflow.org/tutorials/image_recognition/
 """
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 import os.path
 import re
 import sys
 import tarfile
 
+import numpy as np
+import tensorflow as tf
 # pylint: disable=unused-import,g-bad-import-order
 import tensorflow.python.platform
 from six.moves import urllib
-import numpy as np
-import tensorflow as tf
+from tensorflow.python.platform import gfile
+
 # pylint: enable=unused-import,g-bad-import-order
 
-from tensorflow.python.platform import gfile
 
 FLAGS = tf.app.flags.FLAGS
 
@@ -74,7 +71,7 @@ DATA_URL = 'http://download.tensorflow.org/models/image/imagenet/inception-2015-
 # pylint: enable=line-too-long
 
 
-class NodeLookup(object):
+class NodeLookup:
   """Converts integer node ID's to human readable labels."""
 
   def __init__(self,
@@ -201,7 +198,7 @@ def maybe_download_and_extract():
   filepath = os.path.join(dest_directory, filename)
   if not os.path.exists(filepath):
     def _progress(count, block_size, total_size):
-      sys.stdout.write('\r>> Downloading %s %.1f%%' % (
+      sys.stdout.write('\r>> Downloading {} {:.1f}%'.format(
           filename, float(count * block_size) / float(total_size) * 100.0))
       sys.stdout.flush()
     filepath, _ = urllib.request.urlretrieve(DATA_URL, filepath,
@@ -215,13 +212,15 @@ def maybe_download_and_extract():
 
 # configuration
 DEBUG = True
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 template_path = os.path.dirname(os.path.realpath(__file__))
 static_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'static')
-from flask import Flask, request, render_template, url_for
 import time
+
+from flask import Flask, render_template, request, url_for
 from werkzeug import secure_filename
+
 app = Flask(__name__,
             template_folder=template_path,
             static_folder=static_path,
@@ -243,9 +242,10 @@ def allowed_file(filename):
 
 def resize_image(filepath, max_width, max_height):
     import os
+
     import Image
     filename, file_extension = os.path.splitext(filepath)
-    outfile = "%s.thumbnail.%s" % (filename, file_extension)
+    outfile = f"{filename}.thumbnail.{file_extension}"
     if filepath != outfile:
         try:
             size = (max_width, max_height)
@@ -253,7 +253,7 @@ def resize_image(filepath, max_width, max_height):
             im.thumbnail(size, Image.ANTIALIAS)
             im.save(outfile, "JPEG")
             return outfile
-        except IOError:
+        except OSError:
             print("cannot create thumbnail for '%s'" % filepath)
             return None
 
@@ -280,7 +280,7 @@ def interactive():
                 t1 = time.time()
                 print("Needed %0.4f seconds." % (t1-t0))
                 for el in ret:
-                    print("%s: %0.4f" % (el['human_string'], el['score']))
+                    print("{}: {:0.4f}".format(el['human_string'], el['score']))
                 thumbname = os.path.basename(new_path)
                 return render_template('canvas.html',
                                        ret=ret,

@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
 r"""
 Download Tweets. Similar to the one from Inaki San Vicente, but working.
@@ -16,10 +15,11 @@ The output is CSV:
            ...
 """
 
-from bs4 import BeautifulSoup
 import codecs
 import re
 import urllib
+
+from bs4 import BeautifulSoup
 
 __version__ = '0.1'
 
@@ -29,7 +29,7 @@ def main(in_file, out_file):
     cache = {}
 
     for line in open(in_file):
-        fields = unicode(line).rstrip(u'\n').split(u'\t')
+        fields = unicode(line).rstrip('\n').split('\t')
 
         sid = fields[0]
         uid = fields[1]
@@ -37,7 +37,7 @@ def main(in_file, out_file):
         # url = 'http://twitter.com/%s/status/%s' % (uid, sid)
         # print "debug: "+uid+"  "+sid+"\n"
 
-        text = u"Not Available"
+        text = "Not Available"
         if sid in cache:
             text = cache[sid]
         else:
@@ -70,12 +70,12 @@ def main(in_file, out_file):
         text = re.sub(r'\s+', ' ', text)
 
         with codecs.open(out_file, 'a+', encoding='utf-8') as file:
-            file.write(u"\t".join(fields + [text]) + u"\n")
+            file.write("\t".join(fields + [text]) + "\n")
 
 
 def get_parser():
     """Get parser object for script xy.py."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("-i", "--input",

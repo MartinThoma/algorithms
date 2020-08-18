@@ -5,9 +5,10 @@ Generate a dotfile for Python module dependencies.
 """
 
 import json
-import pymysql
 import logging
 import sys
+
+import pymysql
 
 logging.basicConfig(
     format="%(asctime)s %(levelname)s %(message)s",
@@ -83,7 +84,7 @@ def store_json(filename, packages, dependencies):
 
 def get_parser():
     """Get the parser object for the store_json script."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 
     parser = ArgumentParser(
         description=__doc__, formatter_class=ArgumentDefaultsHelpFormatter

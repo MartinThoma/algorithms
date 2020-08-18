@@ -1,5 +1,6 @@
 import zipfile
-from surprise import Reader, Dataset, SVD, evaluate
+
+from surprise import SVD, Dataset, Reader, evaluate
 
 # Unzip ml-100k.zip
 zipfile = zipfile.ZipFile('ml-100k.zip', 'r')

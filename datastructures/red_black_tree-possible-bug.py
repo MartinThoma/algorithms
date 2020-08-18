@@ -1,8 +1,6 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
-from red_black_tree import RBtree
-from red_black_tree import RBnode
+from red_black_tree import RBnode, RBtree
 
 
 def bookid2key(bookid):

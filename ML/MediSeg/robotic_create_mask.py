@@ -4,9 +4,10 @@
 
 
 import os
+
+import numpy as np
 import scipy.misc
 import scipy.ndimage
-import numpy as np
 
 
 def main(dir_left, dir_right, dir_target):
@@ -45,7 +46,7 @@ def main(dir_left, dir_right, dir_target):
 
 def get_parser():
     """Get parser object for create_mask.py."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("--base",

@@ -12,7 +12,7 @@ from sklearn.metrics import mean_squared_error
 
 
 def get_data(filepath: str) -> Tuple[List[int], List[float]]:
-    with open(filepath, "r") as fp:
+    with open(filepath) as fp:
         reader = csv.reader(fp, delimiter=",", quotechar='"')
         next(reader, None)  # skip the headers
         data = [row for row in reader]

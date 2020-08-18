@@ -8,7 +8,7 @@ function setCursorByID(id,cursorStyle) {
 
 function euklideanDist(p1, p2) {
     return Math.sqrt(
-                  Math.pow(p1["x"]-p2["x"], 2) 
+                  Math.pow(p1["x"]-p2["x"], 2)
                 + Math.pow(p1["y"]-p2["y"], 2));
 }
 
@@ -82,7 +82,7 @@ function getKMeansInfo(k, mouseCoords) {
 		        clusterSum[i] = {"x":0, "y":0, "n":0};
 		    }
 		    for (i=0; i<points.length; i++) {
-		
+
 		        clusterSum[points[i]["cluster"]]["x"] += points[i]["x"];
 		        clusterSum[points[i]["cluster"]]["y"] += points[i]["y"];
 		        clusterSum[points[i]["cluster"]]["n"] += 1;
@@ -124,7 +124,7 @@ function getKMeansInfo(k, mouseCoords) {
         }
     }
 
-    return {"cluster":clusterMin, 
+    return {"cluster":clusterMin,
             "radius":distMin};
 }
 
@@ -139,7 +139,7 @@ function getKNearestNeighbor(k, mouseCoords) {
         points[i]["cluster"] = points[i]["class"];
         var dist = euklideanDist(points[i], mouseCoords);
         Distances.push({"dist":dist, "class":points[i]["class"]});
-    } 
+    }
 
     numberSort = function (a,b) {
         return a["dist"] - b["dist"];
@@ -152,7 +152,7 @@ function getKNearestNeighbor(k, mouseCoords) {
         for(var i=0;i<maxKnearestNeighborClasses;i++) {
             classCount[i] = 0;
         }
-        
+
         /* count classes */
         for(var i = 0; i < Distances.length; i++) {
             classCount[Distances[i]["class"]]++;
@@ -189,7 +189,7 @@ function getKNearestNeighbor(k, mouseCoords) {
                 maxClass = i;
             }
         }
-        return {"cluster":maxClass, 
+        return {"cluster":maxClass,
                 "radius":Distances[k-1]["dist"]};
     }
 }
@@ -224,7 +224,7 @@ function drawBoard(canvas, mouseCoords, radius) {
     if (document.getElementById("circle").checked && algorithm != getKMeansInfo) {
         var algorithmResult = algorithm(k, mouseCoords);
         context.beginPath();
-        context.arc(mouseCoords["x"], mouseCoords["y"], algorithmResult["radius"], 
+        context.arc(mouseCoords["x"], mouseCoords["y"], algorithmResult["radius"],
                     0, 2 * Math.PI, false);
         context.fillStyle = getColor(algorithmResult["cluster"], 0.4);
         context.strokeStyle = getColor(algorithmResult["cluster"], 1);
@@ -255,9 +255,9 @@ function addPoint(event, canvas, mouseCoords, radius) {
 function drawPoints(canvas, k) {
     for(var i = 0; i < points.length; i++) {
         context.beginPath();
-        context.arc(points[i]["x"], 
-                    points[i]["y"], 
-                    points[i]["radius"], 
+        context.arc(points[i]["x"],
+                    points[i]["y"],
+                    points[i]["radius"],
                     0, 2 * Math.PI, false);
         context.lineWidth = 1;
         context.strokeStyle = 'black';
@@ -302,13 +302,13 @@ updateNumberBgColor();
 setCursorByID("myCanvas", "crosshair");
 
 /** event listeners */
-canvas.addEventListener('mousemove', 
+canvas.addEventListener('mousemove',
     function(evt) {
         var mouseCoords = getMouseCoords(canvas, evt);
         drawBoard(canvas, mouseCoords, INITIAL_RADIUS);
     }, false);
 
-canvas.addEventListener("mousedown", 
+canvas.addEventListener("mousedown",
     function(event) {
         var mouseCoords = getMouseCoords(canvas, event);
         addPoint(event, canvas, mouseCoords, POINT_RADIUS);

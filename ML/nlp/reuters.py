@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """
 Utility file for the Reuters text categorization benchmark dataset.
@@ -9,10 +8,9 @@ See also
 http://www.vision.caltech.edu/Image_Datasets/Caltech101/
 """
 
-from nltk.corpus import reuters
-from nltk.corpus import stopwords
-from sklearn.preprocessing import MultiLabelBinarizer
+from nltk.corpus import reuters, stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.preprocessing import MultiLabelBinarizer
 
 n_classes = 90
 labels = reuters.categories()

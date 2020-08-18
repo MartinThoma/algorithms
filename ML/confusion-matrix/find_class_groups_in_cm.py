@@ -10,15 +10,17 @@ For more information, see
 """
 
 import json
-import numpy as np
 import random
+
+import numpy as np
+
 random.seed(0)
 import logging
-import sys
 import os
-from visualize import read_symbols, calculate_score
-from visualize import simulated_annealing, plot_cm
-from visualize import get_accuracy
+import sys
+
+from visualize import (calculate_score, get_accuracy, plot_cm, read_symbols,
+                       simulated_annealing)
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     level=logging.DEBUG,

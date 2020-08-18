@@ -1,12 +1,12 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Utility file for the MNIST dataset."""
 
-from keras.utils.data_utils import get_file
-import numpy as np
 import os
+
+import numpy as np
 import scipy.misc
+from keras.utils.data_utils import get_file
 from sklearn.model_selection import train_test_split
 
 n_classes = 10

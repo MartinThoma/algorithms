@@ -2,16 +2,18 @@
 
 """HASY with Tensorflow."""
 
+import os
+
 import input_data
+import numpy as np
 import tensorflow as tf
 import tflearn
 import tflearn.utils as utils
 import tflearn.variables as vs
 from tensorflow.python.training import moving_averages
+
 # from tensorflow.python.framework import ops
 
-import os
-import numpy as np
 
 epochs = 200000
 MODEL_NAME = '3-48-64-128-369'

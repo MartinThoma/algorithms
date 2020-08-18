@@ -73,7 +73,7 @@ function clearTime(){
 	printTime(time[0], time[1], time[2], time[3]);
 }
 
-document.addEventListener('keydown', 
+document.addEventListener('keydown',
             function(evt) {
 				if (evt.keyCode == 32) {
                toggle();

@@ -1,4 +1,4 @@
-from typing import List, Any
+from typing import Any, List
 
 
 def second_pass(tokens: List[Any]) -> List[Any]:

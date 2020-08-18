@@ -2,14 +2,13 @@
 import html
 import json
 from itertools import zip_longest
-from typing import Any, Dict, List, Tuple, Iterator
+from typing import Any, Dict, Iterator, List, Tuple
 
 # Third party modules
 import black
-import requests
-
 # First party modules
 import blacken_docs
+import requests
 
 
 def main(user_id: str):

@@ -1,10 +1,9 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Create a white noise RGB image of the dimensions you want."""
 
-import numpy
 import Image
+import numpy
 
 
 def create_white_noise(outfile, width, height):
@@ -24,7 +23,7 @@ def create_white_noise(outfile, width, height):
 
 def get_parser():
     """Get parser object for create_random_image.py."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("-f", "--file",

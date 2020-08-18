@@ -1,8 +1,7 @@
 # https://github.com/CVxTz/Recommender_keras
 import numpy as np
 from sklearn.metrics import mean_absolute_error
-
-from utils import get_model_3, get_array, get_data
+from utils import get_array, get_data, get_model_3
 
 train, test, max_user, max_work, mapping_work = get_data('ml-20m/ratings.csv', nrows=100000)
 

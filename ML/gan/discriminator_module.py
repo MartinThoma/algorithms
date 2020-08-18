@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 
-from keras.models import Model
 from keras.layers import Input
-from keras.layers.convolutional import Convolution2D
-from keras.layers.core import Dense
-from keras.layers.core import Dropout, Flatten
 from keras.layers.advanced_activations import LeakyReLU
+from keras.layers.convolutional import Convolution2D
+from keras.layers.core import Dense, Dropout, Flatten
+from keras.models import Model
 
 
 def create_model(shp=(28, 28, 1), dropout_rate=0.25):

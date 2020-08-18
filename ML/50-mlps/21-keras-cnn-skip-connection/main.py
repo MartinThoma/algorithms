@@ -1,16 +1,15 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-# 3rd party modules
-from keras.callbacks import CSVLogger, ModelCheckpoint
-from keras.layers import Dense, Flatten, Dropout, Conv2D, MaxPooling2D, Input, Activation, Add
-import numpy as np
-from keras.layers.pooling import GlobalAveragePooling2D
-from keras.models import Model
-from keras.regularizers import l1
 
 # internal modules
 import hasy_tools
+import numpy as np
+# 3rd party modules
+from keras.callbacks import CSVLogger, ModelCheckpoint
+from keras.layers import (Activation, Add, Conv2D, Dense, Dropout, Flatten,
+                          Input, MaxPooling2D)
+from keras.layers.pooling import GlobalAveragePooling2D
+from keras.models import Model
+from keras.regularizers import l1
 
 # Load the data
 data = hasy_tools.load_data()
@@ -91,4 +90,4 @@ model.save('model.h5')
 
 # evaluate the model
 scores = model.evaluate(data['x_test'], data['y_test'])
-print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
+print("\n{}: {:.2f}%".format(model.metrics_names[1], scores[1] * 100))

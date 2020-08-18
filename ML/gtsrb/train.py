@@ -6,19 +6,21 @@ Train a CNN on CIFAR 100.
 Takes about 100 minutes.
 """
 
-from __future__ import print_function
+
 import numpy as np
+
 np.random.seed(0)
+import csv
+
+import densenet
 import gtsrb
-from keras.preprocessing.image import ImageDataGenerator
+import sequential_model
 from keras import backend as K
-from keras.optimizers import Adam
 from keras.callbacks import ModelCheckpoint
+from keras.optimizers import Adam
+from keras.preprocessing.image import ImageDataGenerator
 from keras.utils import np_utils
 from sklearn.model_selection import train_test_split
-import csv
-import densenet
-import sequential_model
 
 batch_size = 64
 nb_classes = gtsrb.n_classes
@@ -71,7 +73,7 @@ elif model_type == 'dense':
                                       bottleneck=bottleneck, reduction=reduction,
                                       dropout_rate=dropout_rate)
 else:
-    print("Not implemented model '{}'".format(model_type))
+    print(f"Not implemented model '{model_type}'")
 print("Model created")
 
 model.summary()

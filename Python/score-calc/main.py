@@ -3,6 +3,7 @@
 """Calculate a score for a square matrix."""
 
 import random
+
 import numpy as np
 
 random.seed(0)
@@ -35,6 +36,7 @@ def calculate_weight_matrix(n):
 def measure_time(n):
     """Measure the time of calculate_score for n x n matrices."""
     import time
+
     import numpy as np
 
     score_calculations = 10 ** 3

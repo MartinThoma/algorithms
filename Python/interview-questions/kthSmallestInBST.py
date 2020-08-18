@@ -2,7 +2,7 @@
 # Binary trees are already defined with this interface:
 
 
-class Tree(object):
+class Tree:
     def __init__(self, x, left=None, right=None):
         self.value = x
         self.left = left

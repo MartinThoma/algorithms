@@ -18,6 +18,7 @@ for i in range(100):
 output_data = model.predict(input_data)
 
 import scipy.misc
+
 for el in output_data:
     print(el.shape)
     scipy.misc.imshow(el.squeeze())

@@ -32,16 +32,12 @@ data set, compile the program and train the model.
 
 http://tensorflow.org/tutorials/deep_cnn/
 """
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
-from datetime import datetime
 import time
-
-import tensorflow as tf
+from datetime import datetime
 
 import cifar10
+import tensorflow as tf
 
 FLAGS = tf.app.flags.FLAGS
 

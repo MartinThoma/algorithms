@@ -3,9 +3,9 @@
 """Example for learning a regression."""
 
 
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Activation
 import numpy
+from keras.layers import Activation, Dense, Dropout
+from keras.models import Sequential
 
 
 def plot(xs, ys_truth, ys_pred):
@@ -44,6 +44,7 @@ test_Y = []
 
 # First simple test: a linear function
 from math import sin
+
 f = lambda x: sin(x)
 
 # Second, more complicated test: x^2

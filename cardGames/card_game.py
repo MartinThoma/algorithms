@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """An example implementation for a card game."""
 
@@ -12,11 +11,11 @@ __maintainer__ = "Martin Thoma"
 __email__ = "info@martin-thoma.de"
 __status__ = "Prototype"
 
-from random import shuffle, sample
 from copy import deepcopy
+from random import sample, shuffle
 
 
-class Card(object):
+class Card:
     """A single card, e.g. 'Ace of Spades'."""
     def __init__(self, suit, rank, name=""):
         self.suit = suit
@@ -33,12 +32,12 @@ class Card(object):
 
     def __repr__(self):
         if self.name != str(self.rank):
-            return "%s %s (%s)" % (str(self.rank), self.suit, self.name)
+            return "{} {} ({})".format(str(self.rank), self.suit, self.name)
         else:
-            return "%s %s" % (str(self.rank), self.suit)
+            return "{} {}".format(str(self.rank), self.suit)
 
 
-class CardSet(object):
+class CardSet:
     """Some cards."""
 
     def __init__(self, name):
@@ -62,17 +61,16 @@ class CardSet(object):
         return self.cards.pop()
 
     def __str__(self):
-        return "%s[%s]" % (self.name, self.cards)
+        return f"{self.name}[{self.cards}]"
 
     def __iter__(self):
-        for card in self.cards:
-            yield card
+        yield from self.cards
 
     def __getitem__(self, key):
         return self.cards[key]
 
 
-class CardGame(object):
+class CardGame:
     """
     Parameters
     ----------
@@ -118,9 +116,9 @@ class CardGame(object):
 
     def __repr__(self):
         if self.name != str(self.rank):
-            return "%s %s (%s)" % (str(self.rank), self.suit, self.name)
+            return "{} {} ({})".format(str(self.rank), self.suit, self.name)
         else:
-            return "%s %s" % (str(self.rank), self.suit)
+            return "{} {}".format(str(self.rank), self.suit)
 
 if __name__ == "__main__":
     players = ["Martin", "Marie", "Tobi", "Ina"]

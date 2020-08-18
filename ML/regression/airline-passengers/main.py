@@ -1,32 +1,26 @@
 #!/usr/bin/env python
 
 # core modules
-from datetime import datetime
 import csv
 import math
 import time
+from datetime import datetime
 
 # 3rd party modules
 import numpy as np
-from sklearn.base import BaseEstimator, RegressorMixin
-from sklearn.pipeline import Pipeline
+import sklearn.metrics
 import xgboost as xgb
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
-from sklearn.linear_model import (HuberRegressor,
-                                  ElasticNet,
-                                  Lasso,
-                                  LinearRegression,
-                                  PassiveAggressiveRegressor,
-                                  RANSACRegressor,
-                                  SGDRegressor)
-from sklearn.ensemble import (AdaBoostRegressor,
-                              BaggingRegressor,
-                              ExtraTreesRegressor,
-                              GradientBoostingRegressor,
+from sklearn.base import BaseEstimator, RegressorMixin
+from sklearn.ensemble import (AdaBoostRegressor, BaggingRegressor,
+                              ExtraTreesRegressor, GradientBoostingRegressor,
                               RandomForestRegressor)
 from sklearn.gaussian_process import GaussianProcessRegressor
+from sklearn.linear_model import (ElasticNet, HuberRegressor, Lasso,
+                                  LinearRegression, PassiveAggressiveRegressor,
+                                  RANSACRegressor, SGDRegressor)
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.svm import SVR
-import sklearn.metrics
 
 
 def main():
@@ -118,7 +112,7 @@ def data_loading(path, tts=0.8):
                   'blue-yonder/pydse/master/pydse/data/'
                   'international-airline-passengers.csv',
                   path)
-    with open(path, 'r') as fp:
+    with open(path) as fp:
         reader = csv.reader(fp, delimiter=';', quotechar='"')
         next(reader, None)  # skip the headers
         data_read = [(datetime.strptime(row[0], '%Y-%m'), int(row[1]))
@@ -265,7 +259,7 @@ def print_website(regressor_data):
                ('mse', '{:0.1f}')]
     print('<tr>')
     for th, _ in headers:
-        print('\t<th>{}</th>'.format(th))
+        print(f'\t<th>{th}</th>')
     print('<tr>')
 
     for row in regressor_data.values():
@@ -299,7 +293,7 @@ def plot(data, ys_pred, title='Classifier', ylabel='some numbers'):
                 'Prediction (test)',
                 'Absolute Error'])
     #plt.show()
-    plt.savefig('airline-passengers-train-{}.png'.format(title))
+    plt.savefig(f'airline-passengers-train-{title}.png')
 
 
 def plot_mm(data):

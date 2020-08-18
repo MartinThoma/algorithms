@@ -21,7 +21,7 @@ def main():
     print(alpha_clipping(rectangle, Line(p0, p1)))
 
 
-class Point(object):
+class Point:
     """A point identified by (x,y) coordinates."""
 
     def __init__(self, x=0.0, y=0.0):
@@ -39,7 +39,7 @@ class Point(object):
         self.y = y
 
     def __str__(self):
-        return "P(%0.2f, %0.2f)" % (self.x, self.y)
+        return f"P({self.x:0.2f}, {self.y:0.2f})"
 
     def __repr__(self):
         return str(self)
@@ -55,7 +55,7 @@ class Point(object):
         return Point(other * self.x, other * self.y)
 
 
-class Rectangle(object):
+class Rectangle:
     """A rectangle identified by two points."""
 
     def __init__(self, p1, p2):
@@ -122,7 +122,7 @@ class Rectangle(object):
             return self.y_max - p.y
 
 
-class Line(object):
+class Line:
     """A line identified by two points."""
 
     def __init__(self, p1, p2):
@@ -140,7 +140,7 @@ class Line(object):
         self.p2 = p2
 
     def __str__(self):
-        return "[%s, %s]" % (str(self.p1), str(self.p2))
+        return "[{}, {}]".format(str(self.p1), str(self.p2))
 
     def __repr__(self):
         return str(self)

@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
     mpf_init(res);
     mpf_init(a);
     mpf_set_str(a, argv[1], 10);
-    mpf_sqrt (res, a); 
+    mpf_sqrt (res, a);
     gmp_printf("%.1000Ff\n", res); // increase this number.
     return 0;
 }

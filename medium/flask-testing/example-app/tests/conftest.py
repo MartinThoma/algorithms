@@ -4,7 +4,6 @@ import logging
 # Third party modules
 import pytest
 from flask import template_rendered
-
 # First party modules
 from mini_app.app import create_app, db
 from mini_app.models import Author

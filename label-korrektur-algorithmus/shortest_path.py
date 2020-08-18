@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Algorithms for shortest path search."""
 
@@ -18,7 +17,7 @@ class Stack(list):
         self.insert(0, item)
 
 
-class DiGraph(object):
+class DiGraph:
     """
     A graph.
 
@@ -78,7 +77,7 @@ class Graph(DiGraph):
         self.edges[n2.identifier][n1.identifier] = weight
 
 
-class Node(object):
+class Node:
     """
     A node of a graph.
 

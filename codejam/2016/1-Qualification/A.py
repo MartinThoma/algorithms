@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Solve task A of qualification round of Google Code jam 2016."""
 

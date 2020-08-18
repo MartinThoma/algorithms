@@ -1,5 +1,5 @@
-from typing import List, Set
 import math
+from typing import List, Set
 
 
 def find_first_duplicate_value_set(numbers: List[int]) -> int:

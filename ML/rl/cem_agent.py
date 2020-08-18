@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 
-import numpy as np
 import gym
-
+import numpy as np
+from keras.layers import Activation, Dense, Flatten
 from keras.models import Sequential
-from keras.layers import Dense, Activation, Flatten
-
 from rl.agents.cem import CEMAgent
 from rl.memory import EpisodeParameterMemory
 
@@ -30,7 +28,7 @@ def main(env_name, nb_steps):
     agent.fit(env, nb_steps=nb_steps, visualize=False, verbose=1)
 
     # After training is done, we save the best weights.
-    agent.save_weights('cem_{}_params.h5f'.format(env_name), overwrite=True)
+    agent.save_weights(f'cem_{env_name}_params.h5f', overwrite=True)
 
     # Finally, evaluate the agent
     history = agent.test(env, nb_episodes=100, visualize=False)
@@ -76,7 +74,7 @@ def create_nn_model(input_shape, nb_actions):
 
 def get_parser():
     """Get parser object for script xy.py."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("--env",

@@ -1,7 +1,6 @@
-from typing import Dict
-from math import floor, log
-
 from functools import lru_cache
+from math import floor, log
+from typing import Dict
 
 d = {
     # generate_d
@@ -169,8 +168,8 @@ def generate_d101x():
 
 
 def check(randvals=100):
-    import time
     import random
+    import time
 
     random.seed(0)
     brute_time = 0

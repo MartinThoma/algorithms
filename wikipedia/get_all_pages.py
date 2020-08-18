@@ -3,12 +3,13 @@
 """Get all page names of a given language."""
 
 import json
+
 import requests
 
 
 def query(lang, query):
     query = "&".join(query)
-    q = (u"https://{lang}.wikipedia.org/w/api.php?action=query&{query}"
+    q = ("https://{lang}.wikipedia.org/w/api.php?action=query&{query}"
          "&format=json"
          .format(lang=lang, query=query))
     r = requests.get(q)
@@ -18,7 +19,7 @@ def query(lang, query):
 def get_all_page_titles(lang, apcontinue='', max_pages=float('inf')):
     page_titles = []
     apcontinue = True
-    q = ["list=allpages", "aplimit=2", "apcontinue={}".format(apcontinue)]
+    q = ["list=allpages", "aplimit=2", f"apcontinue={apcontinue}"]
     while apcontinue:
         result = query(lang, q)
         print(result['query']['allpages'][0])
@@ -29,7 +30,7 @@ def get_all_page_titles(lang, apcontinue='', max_pages=float('inf')):
             apcontinue = None
             break
         apcontinue = result['continue']['apcontinue']
-        q[2] = u"apcontinue={}".format(apcontinue)
+        q[2] = f"apcontinue={apcontinue}"
         if len(page_titles) > max_pages:
             print("max_pages reached")
             break

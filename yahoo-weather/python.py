@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Example for getting weather data from Yahoo."""
 
-import urllib
-import urllib2
 import json
+import urllib
+
+import urllib2
 
 
 def get_weather():

@@ -9,7 +9,6 @@ The "reference points" are landmarks
 """
 
 from functools import partial
-
 # core modules
 from itertools import combinations
 
@@ -64,9 +63,9 @@ def main():
     )
     predicted_points = nn.predict(test_distances)
     error = measure_error(test_points, predicted_points)
-    print("Error: {:0.3f}".format(error))
+    print(f"Error: {error:0.3f}")
     error = measure_error(test_points, generate_random(predicted_points.shape))
-    print("Error (random): {:0.3f}".format(error))
+    print(f"Error (random): {error:0.3f}")
 
 
 def generate_data(n_points, n_dim):

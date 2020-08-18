@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 
 """How to receive the last-modified header."""
@@ -7,12 +6,12 @@
 import csv
 import logging
 import os
-import requests
 import subprocess
 import sys
 import time
 from multiprocessing import Process
 
+import requests
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     level=logging.DEBUG,
@@ -25,7 +24,7 @@ def sendmessage(summary, body):
 
 
 def read_jobs(csv_filepath):
-    with open(csv_filepath, 'r') as fp:
+    with open(csv_filepath) as fp:
         reader = csv.DictReader(fp, delimiter=';', quotechar='"')
         data_read = [row for row in reader]
     return data_read
@@ -55,9 +54,9 @@ def job_runner(csv_filepath, line_nr, jobs):
     url = jobs[line_nr]['url']
     intervall = int(jobs[line_nr]['intervall'])
     last_modified_seen = jobs[line_nr]['url']
-    print("Run line_nr={}".format(line_nr))
+    print(f"Run line_nr={line_nr}")
     while True:
-        print 'process id:', os.getpid()
+        print('process id:', os.getpid())
         # Get websites last modified
         last_modified_website = get_last_modified(url)
         if last_modified_website != last_modified_seen:

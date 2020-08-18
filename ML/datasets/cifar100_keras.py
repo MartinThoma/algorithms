@@ -1,9 +1,9 @@
-from __future__ import absolute_import
+import os
+
+import numpy as np
+from keras import backend as K
 from keras.datasets.cifar import load_batch
 from keras.utils.data_utils import get_file
-from keras import backend as K
-import numpy as np
-import os
 
 n_classes = 100
 img_rows = 32

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Solves https://code.google.com/codejam/contest/4304486/dashboard#s=p1."""
 

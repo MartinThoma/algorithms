@@ -1287,9 +1287,9 @@ UNICODE_NSM = [
     "\U000E01EE",
     "\U000E01EF",
 ]
-MARK_SET = set(
+MARK_SET = {
     chr(c) for c in range(sys.maxunicode + 1) if unicodedata.category(chr(c))[0] == "M"
-)
+}
 print("len(UNICODE_NSM) = {}".format(len(UNICODE_NSM)))
 print("len(MARK_SET) = {}".format(len(MARK_SET)))
 
@@ -1331,9 +1331,10 @@ def main():
 
 
 def create_boxplot(duration_list):
-    import seaborn as sns
-    import matplotlib.pyplot as plt
     import operator
+
+    import matplotlib.pyplot as plt
+    import seaborn as sns
 
     plt.figure(num=None, figsize=(8, 4), dpi=300, facecolor="w", edgecolor="k")
     sns.set(style="whitegrid")

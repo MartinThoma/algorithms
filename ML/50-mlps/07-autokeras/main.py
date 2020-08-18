@@ -1,9 +1,7 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 # 3rd party modules
 import autokeras
-
 # internal modules
 import hasy_tools
 
@@ -49,4 +47,4 @@ if __name__ == "__main__":
 
     # evaluate the model
     scores = model.evaluate(x_test, y_test)
-    print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
+    print("\n{}: {:.2f}%".format(model.metrics_names[1], scores[1] * 100))

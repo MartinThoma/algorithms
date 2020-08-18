@@ -1,14 +1,12 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-# 3rd party modules
-from keras.callbacks import CSVLogger, ModelCheckpoint
-from keras.layers import Dense, Flatten, Dropout, Conv2D, MaxPooling2D
-from keras.models import Sequential
-import numpy as np
 
 # internal modules
 import hasy_tools
+import numpy as np
+# 3rd party modules
+from keras.callbacks import CSVLogger, ModelCheckpoint
+from keras.layers import Conv2D, Dense, Dropout, Flatten, MaxPooling2D
+from keras.models import Sequential
 
 # Load the data
 data = hasy_tools.load_data()
@@ -62,4 +60,4 @@ model.save("model.h5")
 
 # evaluate the model
 scores = model.evaluate(x_test, y_test)
-print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
+print("\n{}: {:.2f}%".format(model.metrics_names[1], scores[1] * 100))

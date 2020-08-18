@@ -2,10 +2,10 @@
 
 """Example for reading and writing tfrecords."""
 
-import tensorflow as tf
-from PIL import Image
 import numpy as np
 import scipy.misc
+import tensorflow as tf
+from PIL import Image
 
 
 def _int64_feature(value):

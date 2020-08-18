@@ -1,9 +1,8 @@
 # Third party
 import hypothesis.strategies as s
-from hypothesis import given
-
 # First party
 from factorize import factorize
+from hypothesis import given
 
 
 @given(s.integers(min_value=-(10 ** 6), max_value=10 ** 6))

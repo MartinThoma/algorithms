@@ -1,8 +1,8 @@
 #include <iostream>
 #include <cmath>
- 
+
 using namespace std;
- 
+
 long double ln(int S, int n) {
     long double tmp = S - 1;
     long double result = tmp;
@@ -44,7 +44,7 @@ long double e2(long double x, int n) {
 long double sqrt(int a, int n) {
     return e2(ln(a, n)*0.5, n);
 }
- 
+
 int main(int argc, char *argv[]) {
     if (argc != 3) {
         cout << "Please enter exactly two arguments." << endl;

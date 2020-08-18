@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """
 Tools for the HASY dataset.
@@ -8,22 +7,24 @@ Type `./hasy_tools.py --help` for the command line tools and `help(hasy_tools)`
 in the interactive Python shell for the module options of hasy_tools.
 """
 
-import logging
 import csv
 import json
+import logging
 import os
 import random
+
 random.seed(0)  # make sure results are reproducible
-from PIL import Image, ImageDraw
-import sys
-from six.moves import urllib
 import hashlib
-from sklearn.model_selection import train_test_split
+import sys
 
 import numpy as np
+from PIL import Image, ImageDraw
+from six.moves import urllib
+from sklearn.model_selection import train_test_split
+
 np.random.seed(0)  # make sure results are reproducible
-import scipy.ndimage
 import matplotlib.pyplot as plt
+import scipy.ndimage
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     level=logging.INFO,
@@ -320,8 +321,8 @@ def load_data(fold=1,
     _get_data(dataset_path)
 
     # Load the data
-    symbol_id2index = generate_index("{}/symbols.csv".format(dataset_path))
-    base_ = "{}/classification-task/fold".format(dataset_path)
+    symbol_id2index = generate_index(f"{dataset_path}/symbols.csv")
+    base_ = f"{dataset_path}/classification-task/fold"
     x_train, y_train, s_train = load_images('%s-%i/train.csv' % (base_, fold),
                                             symbol_id2index,
                                             one_hot=one_hot,
@@ -378,8 +379,8 @@ def load_data_verification(dataset_path='../',
     _get_data(dataset_path)
 
     # Load the data
-    symbol_id2index = generate_index("{}/symbols.csv".format(dataset_path))
-    base_ = "{}/verification-task/".format(dataset_path)
+    symbol_id2index = generate_index(f"{dataset_path}/symbols.csv")
+    base_ = f"{dataset_path}/verification-task/"
     x_train, y_train, s_train = load_images('%s/train.csv' % base_,
                                             symbol_id2index,
                                             one_hot=one_hot,
@@ -546,7 +547,7 @@ def _get_color_statistics(csv_filepath, verbose=False):
         black_level.append(float(b) / (b + w))
         classes.append(symbol_id)
         if verbose:
-            print("%s:\t%0.4f" % (symbol_id, black_level[-1]))
+            print("{}:\t{:0.4f}".format(symbol_id, black_level[-1]))
     print("Average black level: %0.4f" % np.average(black_level))
     print("Median black level: %0.4f" % np.median(black_level))
     print("Minimum black level: %0.4f (class: %s)" %
@@ -613,7 +614,7 @@ def _analyze_class_distribution(csv_filepath,
     # plt.show()
     filename = '{}.pdf'.format('data-dist')
     plt.savefig(filename)
-    logging.info("Plot has been saved as {}".format(filename))
+    logging.info(f"Plot has been saved as {filename}")
 
     symbolid2latex = _get_symbolid2latex()
 
@@ -639,8 +640,9 @@ def _analyze_pca(csv_filepath):
     csv_filepath : str
         Path relative to dataset_path to a CSV file which points to images
     """
-    from sklearn.decomposition import PCA
     import itertools as it
+
+    from sklearn.decomposition import PCA
 
     symbol_id2index = generate_index(csv_filepath)
     data, y = load_images(csv_filepath, symbol_id2index, one_hot=False)
@@ -727,7 +729,7 @@ def _analyze_distances(csv_filepath):
                           for label, mean_c in mean_imgs],
                          key=lambda n: n[2])
         for label, mean_c, d in distarr:
-            print("\t%s: %0.4f" % (label, d))
+            print(f"\t{label}: {d:0.4f}")
         mean_imgs.append((latex, mean_img))
 
 
@@ -765,8 +767,8 @@ def _analyze_correlation(csv_filepath):
         Path to a CSV file which points to images
     """
     import pandas as pd
-    from matplotlib import pyplot as plt
     from matplotlib import cm as cm
+    from matplotlib import pyplot as plt
 
     symbol_id2index = generate_index(csv_filepath)
     data, y = load_images(csv_filepath,
@@ -829,7 +831,7 @@ def _create_stratified_split(csv_filepath, n_splits):
         train = [data[el] for el in train_index]
         test_ = [data[el] for el in test_index]
         for dataset, name in [(train, 'train'), (test_, 'test')]:
-            with open("%s/%s.csv" % (directory, name), 'wb') as csv_file:
+            with open(f"{directory}/{name}.csv", 'wb') as csv_file:
                 csv_writer = csv.writer(csv_file)
                 csv_writer.writerow(('path', 'symbol_id', 'latex', 'user_id'))
                 for el in dataset:
@@ -1054,7 +1056,7 @@ def _analyze_cm(cm_file, total_symbols=100):
 def _get_parser():
     """Get parser object for hasy_tools.py."""
     import argparse
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("--dataset",

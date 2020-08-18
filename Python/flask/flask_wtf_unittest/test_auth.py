@@ -3,11 +3,10 @@
 # core modules
 import logging
 
-# 3rd party modules
-import pytest
-
 # internal modules
 import app
+# 3rd party modules
+import pytest
 
 logger = logging.getLogger(__name__)
 

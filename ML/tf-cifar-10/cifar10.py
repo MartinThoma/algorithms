@@ -31,19 +31,15 @@ Summary of available functions:
  train_op = train(loss, global_step)
 """
 # pylint: disable=missing-docstring
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 import os
 import re
 import sys
 import tarfile
 
-from six.moves import urllib
-import tensorflow as tf
-
 import cifar10_input
+import tensorflow as tf
+from six.moves import urllib
 
 FLAGS = tf.app.flags.FLAGS
 
@@ -386,7 +382,7 @@ def maybe_download_and_extract():
   filepath = os.path.join(dest_directory, filename)
   if not os.path.exists(filepath):
     def _progress(count, block_size, total_size):
-      sys.stdout.write('\r>> Downloading %s %.1f%%' % (filename,
+      sys.stdout.write('\r>> Downloading {} {:.1f}%'.format(filename,
           float(count * block_size) / float(total_size) * 100.0))
       sys.stdout.flush()
     filepath, _ = urllib.request.urlretrieve(DATA_URL, filepath, _progress)

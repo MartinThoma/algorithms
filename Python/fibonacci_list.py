@@ -1,5 +1,7 @@
-from typing import List, Any, Sequence
+from typing import Any, List, Sequence
+
 import numpy as np
+
 
 def fib_list(n: int = 0) -> Sequence[Any]:
     fib_numbers: List[int] = [0, 1]

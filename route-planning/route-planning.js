@@ -56,9 +56,9 @@ function drawPolygons(canvas) {
         context.fillStyle = getColor(cluster, parseInt(document.getElementById("polygonNumber").max)+4, 0.9);
         for (var i=0; i < points[cluster].length; i++) {
             context.beginPath();
-            context.arc(points[cluster][i]["x"], 
-                        points[cluster][i]["y"], 
-                        points[cluster][i]["radius"], 
+            context.arc(points[cluster][i]["x"],
+                        points[cluster][i]["y"],
+                        points[cluster][i]["radius"],
                         0, 2 * Math.PI, false);
             context.lineWidth = 1;
             context.strokeStyle = 'black';
@@ -159,12 +159,12 @@ function getDistToPolygon(polygon, p) {
             minDist = tmpDist;
         }
     }
-    
+
     var tmpDist = getDistToLine([polygon[0], polygon[polygon.length-1]], p);
     if (tmpDist < minDist) {
         minDist = tmpDist;
     }
-    
+
     return minDist;
 }
 
@@ -211,7 +211,7 @@ function polygonzerlegung(canvas) {
     }
 }
 
-canvas.addEventListener("mousedown", 
+canvas.addEventListener("mousedown",
     function(event) {
         var mouseCoords = getMouseCoords(canvas, event);
         if (document.getElementById("nextClickType").value == "obstacle") {

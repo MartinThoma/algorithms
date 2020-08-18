@@ -60,7 +60,7 @@ def view_image(image, label=""):
         Make sure this is of the shape you want.
     label : str
     """
-    from matplotlib.pyplot import show, imshow, cm
+    from matplotlib.pyplot import cm, imshow, show
     print("Label: %s" % label)
     imshow(image, cmap=cm.gray)
     show()

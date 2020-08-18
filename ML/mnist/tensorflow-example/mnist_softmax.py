@@ -3,9 +3,9 @@
 import argparse
 import sys
 
+import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 
-import tensorflow as tf
 ce_with_logits = tf.nn.softmax_cross_entropy_with_logits
 
 FLAGS = None

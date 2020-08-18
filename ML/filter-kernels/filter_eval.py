@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
+import numpy as np
+import numpy.random
 from scipy.misc import imshow
 from scipy.ndimage import imread
 # from scipy.ndimage.filters import convolve
 from scipy.signal import convolve2d
-import numpy as np
-import numpy.random
 
 
 def make_mosaic(imgs, nrows, ncols, border=1):

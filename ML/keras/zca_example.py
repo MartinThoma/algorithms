@@ -2,10 +2,9 @@
 
 import keras
 from keras.datasets import cifar10
-from keras.preprocessing.image import ImageDataGenerator
+from keras.layers import Conv2D, Dense, Dropout, Flatten, MaxPooling2D
 from keras.models import Sequential
-from keras.layers import Dense, Dropout, Flatten
-from keras.layers import Conv2D, MaxPooling2D
+from keras.preprocessing.image import ImageDataGenerator
 
 # input image dimensions
 img_rows, img_cols, img_channels = 32, 32, 3

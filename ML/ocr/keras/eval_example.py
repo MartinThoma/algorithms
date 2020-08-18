@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
-from keras import backend as K
-import keras
-from keras.models import load_model
 import os
 
-from image_ocr import ctc_lambda_func, create_model, TextImageGenerator
-from keras.layers import Lambda
-from keras.utils.data_utils import get_file
-import scipy.ndimage
+import keras
 import numpy
+import scipy.ndimage
+from image_ocr import TextImageGenerator, create_model, ctc_lambda_func
+from keras import backend as K
+from keras.layers import Lambda
+from keras.models import load_model
+from keras.utils.data_utils import get_file
 
 img_h = 64
 img_w = 512
@@ -33,7 +33,7 @@ img_gen = TextImageGenerator(monogram_file=os.path.join(fdir, 'wordlist_mono_cle
                              downsample_factor=(pool_size ** 2),
                              val_split=words_per_epoch - val_words
                              )
-print("Input shape: {}".format(input_shape))
+print(f"Input shape: {input_shape}")
 model, _, _ = create_model(input_shape, img_gen, pool_size, img_w, img_h)
 
 model.load_weights("my_model.h5")

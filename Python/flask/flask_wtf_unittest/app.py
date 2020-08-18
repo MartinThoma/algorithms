@@ -1,18 +1,11 @@
 #!/usr/bin/env python
 
 # 3rd party modules
-from flask import Flask, redirect, url_for, flash, render_template
+from flask import Flask, flash, redirect, render_template, url_for
+from flask_login import (LoginManager, UserMixin, current_user, login_required,
+                         login_user, logout_user)
 from flask_wtf import FlaskForm
-from wtforms import BooleanField
-from wtforms import StringField, PasswordField, SubmitField
-from flask_login import (
-    LoginManager,
-    current_user,
-    login_user,
-    login_required,
-    logout_user,
-    UserMixin,
-)
+from wtforms import BooleanField, PasswordField, StringField, SubmitField
 
 app = Flask(__name__)
 app.secret_key = b"secret"

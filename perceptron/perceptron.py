@@ -2,13 +2,12 @@
 
 """Example implementation for a perceptron."""
 
-import math
-import numpy as np
-
-from sklearn.metrics import accuracy_score
-
 import logging
+import math
 import sys
+
+import numpy as np
+from sklearn.metrics import accuracy_score
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     level=logging.DEBUG,

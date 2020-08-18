@@ -1,12 +1,11 @@
-from keras.models import Model
-from keras.layers.core import Dense, Dropout, Activation
-from keras.layers.convolutional import Convolution2D
-from keras.layers.pooling import AveragePooling2D
-from keras.layers.pooling import GlobalAveragePooling2D
-from keras.layers import Input, merge
-from keras.layers.normalization import BatchNormalization
-from keras.regularizers import l2
 import keras.backend as K
+from keras.layers import Input, merge
+from keras.layers.convolutional import Convolution2D
+from keras.layers.core import Activation, Dense, Dropout
+from keras.layers.normalization import BatchNormalization
+from keras.layers.pooling import AveragePooling2D, GlobalAveragePooling2D
+from keras.models import Model
+from keras.regularizers import l2
 
 
 def conv_block(ip, nb_filter, bottleneck=False, dropout_rate=None, weight_decay=1E-4):

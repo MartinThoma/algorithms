@@ -6,7 +6,7 @@ import heapq
 import itertools
 
 
-class Point(object):
+class Point:
     """High-dimensional point."""
 
     def __init__(self, x):
@@ -19,7 +19,7 @@ class Point(object):
         return (sum([(i-j)**2 for i, j in zip(p, self.x)]))**0.5
 
 
-class RTree(object):
+class RTree:
     """An rtree."""
 
     def __init__(self):
@@ -34,7 +34,7 @@ class RTree(object):
             self.root.insert(p)
 
 
-class Node(object):
+class Node:
     """Node of an tree."""
 
     def __init__(self, value, max_children=3):
@@ -100,11 +100,11 @@ class Node(object):
 
         # Find dimension with highest distance of those points
         max_distance = abs(max_distance_points[0].dimension(0),
-                           (max_distance_points[1].dimension(0))
+                           (max_distance_points[1].dimension(0)))
         max_distance_d = 0
         for d in range(1, dimensions):
             distance = abs(max_distance_points[0].dimension(d),
-                           (max_distance_points[1].dimension(d))
+                           (max_distance_points[1].dimension(d)))
             if distance > max_distance:
                 max_distance = distance
                 max_distance_d = d

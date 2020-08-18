@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """
 This snippet makes checks on finite algebraic structures. It checks
@@ -304,7 +303,7 @@ def complete_check(conjunction, nr_of_elements):
         a, b, c = associativeCounterexamples[0]
         ab = conjunction[a][b]
         bc = conjunction[b][c]
-        print(u"\t(%i*%i)*%i = %i * %i = %i \u2260 %i = %i * %i = %i*(%i*%i)" %
+        print("\t(%i*%i)*%i = %i * %i = %i \u2260 %i = %i * %i = %i*(%i*%i)" %
               (a, b, c,
                ab, c, conjunction[ab][c],
                conjunction[a][bc], a, bc, a, b, c))
@@ -325,7 +324,7 @@ def complete_check(conjunction, nr_of_elements):
     else:
         print("(M,*) ist nicht kommutativ:")
         a, b = kommutativCounterexamples[0]
-        print(u"\t%i*%i = %i \u2260 %i = %i*%i" %
+        print("\t%i*%i = %i \u2260 %i = %i*%i" %
               (a, b, conjunction[a][b], conjunction[b][a], b, a))
     print("#"*80)
 

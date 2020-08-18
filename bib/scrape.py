@@ -2,13 +2,13 @@
 
 """Get data of seat estimations for KIT libraries."""
 
-import os
 import json
-import urllib2
-import sqlite3
-
 import logging
+import os
+import sqlite3
 import sys
+
+import urllib2
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     level=logging.DEBUG,

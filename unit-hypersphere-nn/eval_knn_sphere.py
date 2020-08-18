@@ -3,14 +3,15 @@
 """Create benchmark for k nearest neighbor on unit sphere in R^k."""
 # Scroll down to line 90 to "Adjust this" to add your experiment
 
-import random
-import numpy as np
-import os.path
 import logging
+import os.path
+import random
 import sys
-import Queue as queue
-import h5py
 import time
+
+import h5py
+import numpy as np
+import Queue as queue
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     level=logging.DEBUG,

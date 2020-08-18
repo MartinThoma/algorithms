@@ -1,8 +1,8 @@
 # This example comes from the Cookbook on www.scipy.org.  According to the
 # history, Andrew Straw did the conversion from an old page, but it is
 # unclear who the original author is.
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
 a = np.linspace(0, 1, 256).reshape(1, -1)
 a = np.vstack((a, a))

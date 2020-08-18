@@ -1,6 +1,6 @@
 from functools import lru_cache
 
-valid = set(str(i) for i in range(1, 26 + 1))
+valid = {str(i) for i in range(1, 26 + 1)}
 mod = 10 ** 9 + 7
 
 

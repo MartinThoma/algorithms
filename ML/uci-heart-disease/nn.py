@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
 import pandas as pd
-from sklearn.model_selection import train_test_split
+from keras.layers import Activation, Dense
 from keras.models import Sequential
-from keras.layers import Dense, Activation
+from sklearn.model_selection import train_test_split
 
 
 def get_heart_data():

@@ -1,16 +1,18 @@
+#!/usr/bin/env python
 import glob
 import io
 import os
 import shutil
 import tarfile
-import toml
-from configparser import ConfigParser
-from tempfile import mkdtemp
-from typing import Dict, List, Union, Optional, Set, Tuple
-from zipfile import ZipFile
 from collections import Counter
+from configparser import ConfigParser
 from dataclasses import dataclass
+from tempfile import mkdtemp
+from typing import Dict, List, Optional, Set, Tuple, Union
+from zipfile import ZipFile
+
 import progressbar
+import toml
 
 
 @dataclass

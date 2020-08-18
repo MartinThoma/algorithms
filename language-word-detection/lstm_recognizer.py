@@ -5,18 +5,17 @@
 # https://github.com/fchollet/keras/blob/master/examples/lstm_text_generation.py
 
 import logging
-import sys
 import os
-
-import numpy as np
-from numpy.random import random_sample
+import sys
 from itertools import permutations
 
+import numpy as np
+from keras.layers import LSTM, Dense, Dropout
+from keras.models import Sequential
+from numpy.random import random_sample
 # ML stuff
 from sklearn.cross_validation import train_test_split
 from sklearn.preprocessing import LabelEncoder
-from keras.models import Sequential
-from keras.layers import LSTM, Dense, Dropout
 from sklearn.utils import shuffle
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
@@ -64,7 +63,7 @@ def get_wordstats(words, verbose=True):
                        reverse=True,
                        key=lambda n: n[1])
         for letter, p in probs[:10]:
-            print("{letter}: {p}".format(letter=letter, p=p))
+            print(f"{letter}: {p}")
 
     return values, probabilities
 

@@ -9,8 +9,8 @@ import logging
 import sys
 from typing import Dict, List
 
-import pymysql
 import progressbar
+import pymysql
 
 logging.basicConfig(
     format="%(asctime)s %(levelname)s %(message)s",
@@ -137,7 +137,7 @@ def create_graphviz(
 
 
 def get_parser():
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 
     parser = ArgumentParser(
         description=__doc__, formatter_class=ArgumentDefaultsHelpFormatter

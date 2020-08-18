@@ -2,14 +2,14 @@
 
 """Semantic Segmentation experiment."""
 
-from keras.models import load_model
-from keras.models import Model
-from keras.layers import UpSampling2D
-import scipy.misc
-import numpy as np
-from PIL import Image
 import logging
 import sys
+
+import numpy as np
+import scipy.misc
+from keras.layers import UpSampling2D
+from keras.models import Model, load_model
+from PIL import Image
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     level=logging.DEBUG,
@@ -133,6 +133,6 @@ pred = pred[0].transpose((2, 1, 0))
 for i, layer in enumerate(pred):
     print(layer.shape)
     layer = scale_array(layer, img_shape)
-    segmentation_fname = 'segmentations/{}.png'.format(i)
+    segmentation_fname = f'segmentations/{i}.png'
     scipy.misc.imsave(segmentation_fname, layer)
     overlay_images(original_image, segmentation_fname)

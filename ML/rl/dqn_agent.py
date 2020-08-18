@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """
 Deep Q-Learning agent.
@@ -9,20 +8,19 @@ https://github.com/keon/deep-q-learning/blob/master/dqn.py and
 refactored quite a bit.
 """
 
-# core modules
-from collections import deque
 import logging
 import os
 import random
 import sys
+# core modules
+from collections import deque
 
+import gym
+import numpy as np
 # 3rd party modules
 from keras.layers import Dense
 from keras.models import Sequential
 from keras.optimizers import Adam
-import gym
-import numpy as np
-
 # local modules
 from rl_utils import get_parser, load_cfg, test_agent
 
@@ -31,7 +29,7 @@ np.random.seed(280490)
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     level=logging.DEBUG,
                     stream=sys.stdout)
-np.set_printoptions(formatter={'float_kind': lambda x: "{:>5.2f}".format(x)})
+np.set_printoptions(formatter={'float_kind': lambda x: f"{x:>5.2f}"})
 
 
 def main(environment_name, agent_cfg_file):
@@ -54,8 +52,8 @@ def main(environment_name, agent_cfg_file):
 
     agent = train_agent(cfg, env, agent)
     rewards = test_agent(cfg, env, agent)
-    print("Average reward: {:5.3f}".format(rewards))
-    print("Trained episodes: {}".format(agent.episode))
+    print(f"Average reward: {rewards:5.3f}")
+    print(f"Trained episodes: {agent.episode}")
 
 
 class DQNAgent:

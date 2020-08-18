@@ -9,13 +9,11 @@ import random
 
 import click
 import imageio
-
+import javarandom
 # 3rd party
 import numpy as np
 from numpy.random import MT19937, SFC64, Generator, Philox
 from randomgen import RandomGenerator, ThreeFry, Xoroshiro128, Xorshift1024
-
-import javarandom
 
 
 @click.command()

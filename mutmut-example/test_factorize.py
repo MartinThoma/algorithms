@@ -2,10 +2,9 @@
 import hypothesis.strategies as s
 import pytest
 from click.testing import CliRunner
-from hypothesis import given, settings
-
 # First party modules
 from factorize import cli, factorize
+from hypothesis import given, settings
 
 
 @settings(deadline=3000)

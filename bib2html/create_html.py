@@ -2,9 +2,10 @@
 
 """Create a HTML file from a .bibtex file."""
 
+import pprint
+
 import bibtexparser
 from jinja2 import Template
-import pprint
 
 
 def main(bibtexfile_path, output_path):
@@ -59,7 +60,7 @@ def get_publications(path):
 
 def get_parser():
     """Get parser object for script create_html.py."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("-b", "--bibtex",

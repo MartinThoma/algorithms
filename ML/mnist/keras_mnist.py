@@ -2,12 +2,12 @@
 
 """Train a CNN model on MNIST."""
 
-from __future__ import print_function
+
 import keras
-from keras.utils import np_utils
 import mnist
+from keras.layers import Conv2D, Dense, Dropout, Flatten, MaxPooling2D
 from keras.models import Sequential
-from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D
+from keras.utils import np_utils
 
 # training specific hyperparameters
 batch_size = 128

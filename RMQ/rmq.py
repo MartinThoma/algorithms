@@ -15,10 +15,10 @@ def read_numbers(number_file, query_file):
     tuple
         (numbers, queries) - both are lists
     """
-    with open(number_file, "r") as f:
+    with open(number_file) as f:
         numbers = list(map(int, f.read().split(" ")))
 
-    with open(query_file, "r") as f:
+    with open(query_file) as f:
         queries = list(map(lambda s: list(map(int, s.split(":"))),
                        f.read().split("\n")))
 
@@ -58,7 +58,7 @@ def execute_queries_precompute(numbers, queries):
 
 def get_parser():
     """Get a parser object."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("-t", "--test",

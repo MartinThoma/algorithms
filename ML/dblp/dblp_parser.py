@@ -304,8 +304,8 @@ def main():
     save_path = "dataset/article.json"
     try:
         context_iter(dblp_path)
-        log_msg('LOG: Successfully loaded "{}".'.format(dblp_path))
-    except IOError:
+        log_msg(f'LOG: Successfully loaded "{dblp_path}".')
+    except OSError:
         log_msg(
             'ERROR: Failed to load file "{}". Please check your XML and DTD files.'.format(
                 dblp_path

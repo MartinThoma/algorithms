@@ -1,10 +1,10 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Talk with the daemon."""
 
 import logging
 import sys
+
 import Pyro.core
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
@@ -22,7 +22,7 @@ def main(up):
 
 def get_parser():
     """Get parser object for call_demon.py."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("-n",

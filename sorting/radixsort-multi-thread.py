@@ -14,7 +14,6 @@ import os
 import sys
 import time
 
-
 logging.basicConfig(
     format="%(asctime)s %(levelname)s %(message)s",
     level=logging.DEBUG,
@@ -109,7 +108,7 @@ def chunk_data(state, big_filepath, prefixes):
     prefix2file = {}
     chunks_to_sort = []
     for prefix in prefixes:
-        chunk = os.path.abspath("radixsort_tmp/{:}.txt".format(prefix))
+        chunk = os.path.abspath(f"radixsort_tmp/{prefix}.txt")
         chunks_to_sort.append(chunk)
         prefix2file[prefix] = open(chunk, "w")
     logger.info("Generated files")

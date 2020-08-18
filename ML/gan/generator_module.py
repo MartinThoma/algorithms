@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 
 from keras.layers import Input
-from keras.layers.core import Dense, Activation, Reshape
+from keras.layers.convolutional import Convolution2D, UpSampling2D
+from keras.layers.core import Activation, Dense, Reshape
 from keras.layers.normalization import BatchNormalization
-from keras.layers.convolutional import UpSampling2D
-from keras.layers.convolutional import Convolution2D
 from keras.models import Model
 
 

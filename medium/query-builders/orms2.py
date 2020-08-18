@@ -2,13 +2,12 @@
 import os
 from typing import List
 
+# First party modules
+from orms import db_connection
 # Third party modules
 from sqlalchemy import Column, ForeignKey, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-
-# First party modules
-from orms import db_connection
 
 Base = declarative_base()
 

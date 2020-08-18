@@ -1,21 +1,21 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Create a red noise RGB image of the dimensions you want."""
 
-import numpy
-import Image
-import random
-
 import logging
+import random
 import sys
+
+import Image
+import numpy
+
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     level=logging.DEBUG,
                     stream=sys.stdout)
 
+import numpy as np
 # from sklearn.svm import SVR as Regressor
 from scipy.interpolate import griddata
-import numpy as np
 
 
 def create_red_noise(outfile, width, height, r=10):
@@ -83,16 +83,16 @@ def create_red_noise(outfile, width, height, r=10):
                                           random.randint(-r, r))
                 else:
                     for i in range(3):
-                        array[y][x][i] = (((array[y-1][x][i] +
+                        array[y][x][i] = ((array[y-1][x][i] +
                                             array[y][x-1][i]) / 2.0 +
-                                           random.randint(-r, r)))
+                                           random.randint(-r, r))
     im_out = Image.fromarray(array.astype('uint8')).convert('RGBA')
     im_out.save(outfile)
 
 
 def get_parser():
     """Get parser object for create_random_image.py."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("-f", "--file",

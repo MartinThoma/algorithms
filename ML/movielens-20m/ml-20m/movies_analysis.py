@@ -1,12 +1,12 @@
 from collections import Counter
-import numpy as np
-import pandas as pd
-import progressbar
-import networkx as nx
 from itertools import combinations
 
 import clana.io
 import clana.visualize_cm
+import networkx as nx
+import numpy as np
+import pandas as pd
+import progressbar
 
 # Load the data
 df = pd.read_csv("movies.csv")
@@ -21,7 +21,7 @@ print("* Unique genres: {}".format(len(value_count)))
 print("* Most common:")
 most_common = sorted(value_count.items(), key=lambda n: n[1], reverse=True)
 for name, count in most_common[:10]:
-    print("    {:>4}x {}".format(count, name))
+    print(f"    {count:>4}x {name}")
 
 unique_genres = sorted(list(value_count.keys()))
 
@@ -43,7 +43,7 @@ def get_biggest_clusters(edges, n=10):
 
 
 def create_matrix(nodes, edges):
-    n2i = dict([(node, i) for i, node in enumerate(sorted(nodes))])
+    n2i = {node: i for i, node in enumerate(sorted(nodes))}
     # node to index
     mat = np.zeros((len(nodes), len(nodes)), dtype=np.int32)
     for edge in edges:

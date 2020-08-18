@@ -14,7 +14,7 @@ function getRandomSubarray(arr, size) {
     return shuffled.slice(0, size);
 }
 
-/** 
+/**
  * Creates a password
  * @param {bool} digitFlag Should digits be used?
  * @param {bool} smallLetterFlag Should small letters be used?
@@ -55,4 +55,3 @@ function makePassword() {
     var noConfusableCharsFlag = document.getElementById("noConfusableCharsFlag").checked;
     pEl.value = createPassword(digits, digitFlag, smallLettersFlag, capitalLettersFlag, noConfusableCharsFlag);
 }
-

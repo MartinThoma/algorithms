@@ -39,7 +39,7 @@ def db_backup(session, Model, dump_path=None):
 
     if dump_path is None:
         now = datetime.datetime.now()
-        dump_path = os.path.abspath("dump_{:%Y-%m-%d-%H%M%S}.pickle".format(now))
+        dump_path = os.path.abspath(f"dump_{now:%Y-%m-%d-%H%M%S}.pickle")
     q = session.query(Model).all()
     serialized_data = dumps(q)
     with open(dump_path, "wb") as f:

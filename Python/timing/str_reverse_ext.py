@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
-import numpy as np
 import random
 import timeit
+
+import numpy as np
 
 random.seed(0)
 
@@ -39,9 +40,10 @@ def list_comprehension(string):
 
 
 def create_boxplot(title, duration_list, showfliers=False):
-    import seaborn as sns
-    import matplotlib.pyplot as plt
     import operator
+
+    import matplotlib.pyplot as plt
+    import seaborn as sns
 
     plt.figure(num=None, figsize=(8, 4), dpi=300, facecolor="w", edgecolor="k")
     sns.set(style="whitegrid")

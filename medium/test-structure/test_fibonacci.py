@@ -1,4 +1,5 @@
 import pytest
+
 from fibonacci import fib
 
 

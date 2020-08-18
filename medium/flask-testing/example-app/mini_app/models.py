@@ -1,11 +1,10 @@
 # Core Library modules
 from typing import Dict, Union
 
-# Third party modules
-from sqlalchemy import ForeignKey
-
 # First party modules
 from mini_app.app import db
+# Third party modules
+from sqlalchemy import ForeignKey
 
 
 class Author(db.Model):

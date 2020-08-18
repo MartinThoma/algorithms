@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """
 Evaluate an environment and an agent.
@@ -10,9 +9,8 @@ average reward.
 
 # 3rd party modules
 import gym
-
 # local modules
-from rl_utils import load_cfg, get_parser, test_agent
+from rl_utils import get_parser, load_cfg, test_agent
 
 
 def main(environment_name, agent_cfg_file):
@@ -33,8 +31,8 @@ def main(environment_name, agent_cfg_file):
                              .format(cfg['model_name'], environment_name))
     agent = load_agent(cfg, env)
     rewards = test_agent(cfg, env, agent)
-    print("Average reward: {:5.3f}".format(rewards))
-    print("Trained episodes: {}".format(agent.episode))
+    print(f"Average reward: {rewards:5.3f}")
+    print(f"Trained episodes: {agent.episode}")
 
 
 if __name__ == "__main__":

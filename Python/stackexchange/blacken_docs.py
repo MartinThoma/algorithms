@@ -2,16 +2,10 @@ import argparse
 import contextlib
 import re
 import textwrap
-from typing import Generator
-from typing import List
-from typing import Match
-from typing import NamedTuple
-from typing import Optional
-from typing import Sequence
-from typing import Tuple
+from typing import (Generator, List, Match, NamedTuple, Optional, Sequence,
+                    Tuple)
 
 import black
-
 
 MD_RE = re.compile(
     r"(?P<before>^(?P<indent> *)```python\n)"

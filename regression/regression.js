@@ -8,7 +8,7 @@ function setCursorByID(id,cursorStyle) {
 
 function euklideanDist(p1, p2) {
     return Math.sqrt(
-                  Math.pow(p1["x"]-p2["x"], 2) 
+                  Math.pow(p1["x"]-p2["x"], 2)
                 + Math.pow(p1["y"]-p2["y"], 2));
 }
 
@@ -72,9 +72,9 @@ function drawRegressionLine(canvas) {
 function drawPoints(canvas) {
     for(var i = 0; i < points.length; i++) {
         context.beginPath();
-        context.arc(points[i]["x"], 
-                    points[i]["y"], 
-                    points[i]["radius"], 
+        context.arc(points[i]["x"],
+                    points[i]["y"],
+                    points[i]["radius"],
                     0, 2 * Math.PI, false);
         context.lineWidth = 1;
         context.strokeStyle = 'black';
@@ -109,13 +109,13 @@ drawBoard(canvas, {"x":0,"y":0}, INITIAL_RADIUS);
 setCursorByID("myCanvas", "crosshair");
 
 /** event listeners */
-canvas.addEventListener('mousemove', 
+canvas.addEventListener('mousemove',
     function(evt) {
         var mouseCoords = getMouseCoords(canvas, evt);
         drawBoard(canvas, mouseCoords, INITIAL_RADIUS);
     }, false);
 
-canvas.addEventListener("mousedown", 
+canvas.addEventListener("mousedown",
     function(event) {
         var mouseCoords = getMouseCoords(canvas, event);
         addPoint(event, canvas, mouseCoords, POINT_RADIUS);

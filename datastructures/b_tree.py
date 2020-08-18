@@ -1,10 +1,9 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 import bisect
 
 
-class _BNode(object):
+class _BNode:
     """
     Node of a B-Tree.
 
@@ -26,7 +25,7 @@ class _BNode(object):
 
     def __repr__(self):
         name = getattr(self, "children", 0) and "Branch" or "Leaf"
-        return "<%s %s>" % (name, ", ".join(map(str, self.contents)))
+        return "<{} {}>".format(name, ", ".join(map(str, self.contents)))
 
     def lateral(self, parent, parent_index, dest, dest_index):
         if parent_index > dest_index:
@@ -171,7 +170,7 @@ class _BNode(object):
                 self.grow(ancestors)
 
 
-class BTree(object):
+class BTree:
     """
     B-Tree
 
@@ -227,7 +226,7 @@ class BTree(object):
             node, index = ancestors.pop()
             node.remove(index, ancestors)
         else:
-            raise ValueError("%r not in %s" % (item, self.__class__.__name__))
+            raise ValueError(f"{item!r} not in {self.__class__.__name__}")
 
     def __contains__(self, item):
         return self._present(item, self._path_to(item))
@@ -236,17 +235,14 @@ class BTree(object):
         def _recurse(node):
             if node.children:
                 for child, item in zip(node.children, node.contents):
-                    for child_item in _recurse(child):
-                        yield child_item
+                    yield from _recurse(child)
                     yield item
-                for child_item in _recurse(node.children[-1]):
-                    yield child_item
+                yield from _recurse(node.children[-1])
             else:
                 for item in node.contents:
                     yield item
 
-        for item in _recurse(self._root):
-            yield item
+        yield from _recurse(self._root)
 
     def __repr__(self):
         def recurse(node, accum, depth):
@@ -287,7 +283,8 @@ class BTree(object):
 
         return [self.LEAF(self, contents=node) for node in leaves], seps
 
-    def _build_bulkloaded_branches(self, (leaves, seps)):
+    def _build_bulkloaded_branches(self, tuple_in):
+        leaves, seps = tuple_in
         minimum = self.order // 2
         levels = [leaves]
 

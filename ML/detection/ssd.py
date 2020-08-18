@@ -1,20 +1,12 @@
 """Keras implementation of SSD."""
 
 import keras.backend as K
-from keras.layers import Activation
-from keras.layers import Convolution2D
-from keras.layers import Dense
-from keras.layers import Flatten
-from keras.layers import GlobalAveragePooling2D
-from keras.layers import Input
-from keras.layers import MaxPooling2D
+from keras.layers import (Activation, Convolution2D, Dense, Flatten,
+                          GlobalAveragePooling2D, Input, MaxPooling2D, Reshape,
+                          ZeroPadding2D)
 from keras.layers.merge import concatenate
-from keras.layers import Reshape
-from keras.layers import ZeroPadding2D
 from keras.models import Model
-
-from ssd_layers import Normalize
-from ssd_layers import PriorBox
+from ssd_layers import Normalize, PriorBox
 
 
 def SSD300(input_shape, num_classes=21):
@@ -142,7 +134,7 @@ def SSD300(input_shape, num_classes=21):
     net['conv4_3_norm_mbox_loc_flat'] = flatten(net['conv4_3_norm_mbox_loc'])
     name = 'conv4_3_norm_mbox_conf'
     if num_classes != 21:
-        name += '_{}'.format(num_classes)
+        name += f'_{num_classes}'
     x = Convolution2D(num_priors * num_classes, (3, 3), padding='same',
                       name=name)(net['conv4_3_norm'])
     net['conv4_3_norm_mbox_conf'] = x
@@ -161,7 +153,7 @@ def SSD300(input_shape, num_classes=21):
     net['fc7_mbox_loc_flat'] = flatten(net['fc7_mbox_loc'])
     name = 'fc7_mbox_conf'
     if num_classes != 21:
-        name += '_{}'.format(num_classes)
+        name += f'_{num_classes}'
     net['fc7_mbox_conf'] = Convolution2D(num_priors * num_classes, (3, 3),
                                          padding='same',
                                          name=name)(net['fc7'])
@@ -180,7 +172,7 @@ def SSD300(input_shape, num_classes=21):
     net['conv6_2_mbox_loc_flat'] = flatten(net['conv6_2_mbox_loc'])
     name = 'conv6_2_mbox_conf'
     if num_classes != 21:
-        name += '_{}'.format(num_classes)
+        name += f'_{num_classes}'
     x = Convolution2D(num_priors * num_classes, (3, 3), padding='same',
                       name=name)(net['conv6_2'])
     net['conv6_2_mbox_conf'] = x
@@ -199,7 +191,7 @@ def SSD300(input_shape, num_classes=21):
     net['conv7_2_mbox_loc_flat'] = flatten(net['conv7_2_mbox_loc'])
     name = 'conv7_2_mbox_conf'
     if num_classes != 21:
-        name += '_{}'.format(num_classes)
+        name += f'_{num_classes}'
     x = Convolution2D(num_priors * num_classes, (3, 3), padding='same',
                       name=name)(net['conv7_2'])
     net['conv7_2_mbox_conf'] = x
@@ -218,7 +210,7 @@ def SSD300(input_shape, num_classes=21):
     net['conv8_2_mbox_loc_flat'] = flatten(net['conv8_2_mbox_loc'])
     name = 'conv8_2_mbox_conf'
     if num_classes != 21:
-        name += '_{}'.format(num_classes)
+        name += f'_{num_classes}'
     x = Convolution2D(num_priors * num_classes, (3, 3), padding='same',
                       name=name)(net['conv8_2'])
     net['conv8_2_mbox_conf'] = x
@@ -234,7 +226,7 @@ def SSD300(input_shape, num_classes=21):
     net['pool6_mbox_loc_flat'] = x
     name = 'pool6_mbox_conf_flat'
     if num_classes != 21:
-        name += '_{}'.format(num_classes)
+        name += f'_{num_classes}'
     x = Dense(num_priors * num_classes, name=name)(net['pool6'])
     net['pool6_mbox_conf_flat'] = x
     priorbox = PriorBox(img_size, 276.0, max_size=330.0, aspect_ratios=[2, 3],

@@ -1,8 +1,9 @@
 import tkinter as tk
-from PIL import Image, ImageDraw
-import numpy as np
-import keras
+
 import hasy_tools
+import keras
+import numpy as np
+from PIL import Image, ImageDraw
 
 
 class ExampleApp(tk.Tk):

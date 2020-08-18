@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """
 Utility file for the SVHN dataset.
@@ -8,12 +7,12 @@ See http://benchmark.ini.rub.de/?section=gtsrb&subsection=dataset#Downloads for
 details.
 """
 
-from __future__ import absolute_import
-from keras.utils.data_utils import get_file
-from keras import backend as K
-import scipy.io
+
 import os
 
+import scipy.io
+from keras import backend as K
+from keras.utils.data_utils import get_file
 
 labels = [str(i) for i in range(10)]
 n_classes = len(labels)
@@ -96,8 +95,8 @@ def preprocess(x):
 
 if __name__ == '__main__':
     data = load_data()
-    print("n_classes={}".format(n_classes))
-    print("labels={}".format(labels))
+    print(f"n_classes={n_classes}")
+    print(f"labels={labels}")
     print("data['x_train'].shape={}".format(data['x_train'].shape))
     print("data['y_train'].shape={}".format(data['y_train'].shape))
     print("data['x_test'].shape={}".format(data['x_test'].shape))

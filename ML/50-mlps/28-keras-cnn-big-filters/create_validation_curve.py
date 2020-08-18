@@ -1,10 +1,9 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Visualize validation curve."""
 
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 
 Y_SCALE_FACTOR = 100
 

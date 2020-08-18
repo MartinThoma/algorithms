@@ -1,10 +1,10 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """The server."""
 
 import logging
 import sys
+
 import Pyro.core
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
@@ -24,13 +24,13 @@ class Bartimaeus(Pyro.core.ObjBase):
         """Count up."""
         logging.info("new up: %i", up)
         self.counter += up
-        return "I was called {count} times.".format(count=self.counter)
+        return f"I was called {self.counter} times."
 
 Pyro.core.initServer()
 daemon = Pyro.core.Daemon()
 uri = daemon.connect(Bartimaeus(), "bartid")
 
-print("The daemon runs on port: {port}".format(port=daemon.port))
-print("The object's uri is: {uri}".format(uri=uri))
+print(f"The daemon runs on port: {daemon.port}")
+print(f"The object's uri is: {uri}")
 
 daemon.requestLoop()

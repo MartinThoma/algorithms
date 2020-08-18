@@ -1,9 +1,8 @@
-from keras.callbacks import CSVLogger, ModelCheckpoint
-from keras.layers import Dense, Flatten, Activation
-from keras.models import Sequential
-import numpy as np
-
 import hasy_tools
+import numpy as np
+from keras.callbacks import CSVLogger, ModelCheckpoint
+from keras.layers import Activation, Dense, Flatten
+from keras.models import Sequential
 
 
 # Load data

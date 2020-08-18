@@ -1,7 +1,8 @@
+import datetime
+import time
+
 import pygame
 import pygame.camera
-import time
-import datetime
 
 pygame.camera.init()
 pygame.camera.list_cameras()
@@ -10,5 +11,5 @@ cam.start()
 cam.saveSnapshot('image.jpg')
 time.sleep(0.1)  # You might need something higher in the beginning
 img = cam.get_image()
-pygame.image.save(img, "pygame-{}.jpg".format(datetime.datetime.now()))
+pygame.image.save(img, f"pygame-{datetime.datetime.now()}.jpg")
 cam.stop()

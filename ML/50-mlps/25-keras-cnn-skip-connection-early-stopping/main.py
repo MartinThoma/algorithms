@@ -1,16 +1,15 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-# 3rd party modules
-from keras.callbacks import CSVLogger, ModelCheckpoint, EarlyStopping
-from keras.layers import Dense, Flatten, Dropout, Conv2D, MaxPooling2D, Input, Activation, Add
-from keras.models import Model
-from keras.regularizers import l1
-from sklearn.model_selection import train_test_split
-import numpy as np
 
 # internal modules
 import hasy_tools
+import numpy as np
+# 3rd party modules
+from keras.callbacks import CSVLogger, EarlyStopping, ModelCheckpoint
+from keras.layers import (Activation, Add, Conv2D, Dense, Dropout, Flatten,
+                          Input, MaxPooling2D)
+from keras.models import Model
+from keras.regularizers import l1
+from sklearn.model_selection import train_test_split
 
 # Load the data
 data = hasy_tools.load_data()
@@ -99,4 +98,4 @@ model.save('model.h5')
 
 # evaluate the model
 scores = model.evaluate(data['x_test'], data['y_test'])
-print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
+print("\n{}: {:.2f}%".format(model.metrics_names[1], scores[1] * 100))

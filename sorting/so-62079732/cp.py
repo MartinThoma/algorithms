@@ -1,10 +1,9 @@
-import time
-import sys
 import os
-
+import sys
+import time
 
 version = sys.version_info
-version = "{}.{}.{}".format(version.major, version.minor, version.micro)
+version = f"{version.major}.{version.minor}.{version.micro}"
 
 
 if os.path.isfile("numbers-tmp.txt"):

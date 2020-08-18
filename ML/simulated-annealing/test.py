@@ -1,8 +1,8 @@
 """Optimize a combinatoric problem with simulated annealing."""
 
-import time
-import random
 import logging
+import random
+import time
 
 import numpy as np
 
@@ -10,7 +10,7 @@ random.seed(0)
 np.random.seed(0)
 
 
-class AnnealingProblem(object):
+class AnnealingProblem:
     """ABstract definition of simulated annealing."""
 
     def mutate(self):
@@ -20,7 +20,7 @@ class AnnealingProblem(object):
         pass
 
 
-class PermutationProblem(object):
+class PermutationProblem:
     def __init__(self, edges):
         self.edges = edges
         self.nb_nodes = len(edges)
@@ -153,7 +153,7 @@ Execution time: 540.69s
         if score > best_score:
             best_score = score
             best_solution = solution
-            print('{}: {}'.format(try_i, best_score))
+            print(f'{try_i}: {best_score}')
     return best_solution
 
 
@@ -186,7 +186,7 @@ def main(nb_nodes):
     solution = optimize_swap(edges, nb_tries=1000000)
     t1 = time.time()
     value = evaluate_solution(edges, solution)
-    print('Found solution: {:0.0f}'.format(value))
+    print(f'Found solution: {value:0.0f}')
     print('Execution time: {:0.2f}s'.format(t1 - t0))
 
 

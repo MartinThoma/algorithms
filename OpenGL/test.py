@@ -6,10 +6,11 @@ An example how to use OpenGL and Python.
 See http://pyopengl.sourceforge.net/
 """
 
-from OpenGL.GLUT import *
-from OpenGL.GLU import *
-from OpenGL.GL import *
 import sys
+
+from OpenGL.GL import *
+from OpenGL.GLU import *
+from OpenGL.GLUT import *
 
 name = 'ball_glut'
 

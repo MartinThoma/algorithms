@@ -10,11 +10,11 @@ def main(big_filepath):
     os.makedirs(target_dir)
     prefix2file = {}
     for prefix in range(10, 100):
-        chunk = os.path.abspath("radixsort_tmp/{:}.txt".format(prefix))
+        chunk = os.path.abspath(f"radixsort_tmp/{prefix}.txt")
         prefix2file[str(prefix)] = open(chunk, "w")
     v = sys.version_info
-    version = "{}.{}.{}".format(v.major, v.minor, v.micro)
-    print("Python {}. Start splitting...".format(version))
+    version = f"{v.major}.{v.minor}.{v.micro}"
+    print(f"Python {version}. Start splitting...")
     t0 = time.time()
     chunk_data(big_filepath, prefix2file)
     t1 = time.time()

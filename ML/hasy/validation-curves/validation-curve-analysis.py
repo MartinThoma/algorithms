@@ -2,10 +2,11 @@
 
 """Visualize how the accuracy increases over epochs."""
 
-import glob
-import natsort
 import csv
+import glob
+
 import matplotlib.pyplot as plt
+import natsort
 import numpy as np
 import pandas as pd
 
@@ -65,7 +66,7 @@ plt.plot(x, (-10 * 10**-7) * x + 0.17, color="red")  # sin(x)/x
 
 # This is added to the SO post
 plt.ylim(0.0, 0.5)
-plt.title(u"Epoch-Accuracy Validation Curve", fontweight='bold', fontsize=20)
+plt.title("Epoch-Accuracy Validation Curve", fontweight='bold', fontsize=20)
 plt.xlabel(r"""Training step""", fontsize=20)
 plt.ylabel(r"""1 - Accuracy""", fontsize=20)
 plt.legend(fontsize=20)

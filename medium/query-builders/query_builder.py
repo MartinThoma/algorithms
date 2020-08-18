@@ -4,7 +4,6 @@ from typing import List
 # Third party modules
 import pymysql.cursors
 from pypika import Query, Table
-
 # First party modules
 from raw_sql import db_connection
 

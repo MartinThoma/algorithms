@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Derived from http://rosettacode.org/wiki/LU_decomposition#Python
 
 from fractions import Fraction

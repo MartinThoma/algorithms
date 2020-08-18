@@ -7,7 +7,7 @@ def is_registered(site):
     try:
         details = pythonwhois.get_whois(site)
     except pythonwhois.shared.WhoisException as e:
-        print("Exception for {}".format(site))
+        print(f"Exception for {site}")
         print(e)
         return False
     return not details["raw"][0].startswith("No match for")
@@ -67,11 +67,11 @@ def generate_by_pattern(pattern, prefixes=None):
 
 # https://raw.githubusercontent.com/dominictarr/random-name/master/first-names.txt
 names = read_from_file("english-adjectives.txt")
-sites = ["{}.me".format(name) for name in names]
+sites = [f"{name}.me" for name in names]
 # https://raw.githubusercontent.com/datmt/English-Verbs/master/verbsList
 # names = read_from_file('verbs.txt')
 # sites = ['{}.it'.format(name) for name in names]
-sites = ["{}.com".format(name) for name in generate_by_pattern("CVCV")]
+sites = [f"{name}.com" for name in generate_by_pattern("CVCV")]
 print(len(sites))
 
 i = 0

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Check the distrubution of line lengths of Python files."""
 
@@ -12,7 +11,7 @@ import numpy as np
 
 def main(dir_):
     dir_ = os.path.abspath(dir_)
-    print("Checking .py files in {}".format(dir_))
+    print(f"Checking .py files in {dir_}")
     onlyfiles = get_all_files(dir_)
     pyfiles = [f for f in onlyfiles if f.endswith(".py")]
     print("Found {} files.".format(len(pyfiles)))
@@ -52,7 +51,7 @@ def get_line_lengths(filepath):
 
 def get_parser():
     """Create parser."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 
     parser = ArgumentParser(
         description=__doc__, formatter_class=ArgumentDefaultsHelpFormatter

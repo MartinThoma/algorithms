@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 import json
 import logging
 import sys
 
-import pymysql
-
 # mine
 import package_analysis
+import pymysql
 
 logging.basicConfig(
     format="%(asctime)s %(levelname)s %(message)s",

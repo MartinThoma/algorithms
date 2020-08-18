@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """ TODO """
 
@@ -20,10 +19,10 @@ def get_score(program, a, n):
     os.system("./reference.out " + str(a) + " > reference.txt")
     os.system("./" + program + " " + str(a) + " " + str(n) + " > result.txt")
 
-    with open('reference.txt', 'r') as f:
+    with open('reference.txt') as f:
         reference = f.read()
 
-    with open('result.txt', 'r') as f:
+    with open('result.txt') as f:
         result = f.read()
 
     points = 0

@@ -3,14 +3,16 @@
 
 """Analyze a cifar100 keras model."""
 
-from keras.models import load_model
-from keras.datasets import cifar100
-from sklearn.model_selection import train_test_split
-import numpy as np
-import json
 import io
+import json
+
+import numpy as np
 from keras import backend as K
-from visualize import plot_cm, get_accuracy
+from keras.datasets import cifar100
+from keras.models import load_model
+from sklearn.model_selection import train_test_split
+from visualize import get_accuracy, plot_cm
+
 try:
     to_unicode = unicode
 except NameError:
@@ -55,7 +57,7 @@ print("Accuracy: {:0.2f}".format(acc * 100))
 plot_cm(cm)
 
 # Serialize confusion matrix
-with io.open('cm.json', 'w', encoding='utf8') as outfile:
+with open('cm.json', 'w', encoding='utf8') as outfile:
     str_ = json.dumps(cm.tolist(),
                       indent=4, sort_keys=True,
                       separators=(',', ':'), ensure_ascii=False)

@@ -1,4 +1,5 @@
 import timeit
+
 import numpy as np
 
 durations = timeit.repeat(

@@ -7,7 +7,7 @@ def graphDistances(g: List[List[int]], s: int) -> List[int]:
     >>> graphDistances(g, 0)
     [0, 2, 2]
     """
-    min_dist = dict((i, float("inf")) for i in range(len(g)))
+    min_dist = {i: float("inf") for i in range(len(g))}
     min_dist[s] = 0
     q = {s}
     while q:

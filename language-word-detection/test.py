@@ -1,9 +1,9 @@
 """Reddit."""
 
+import numpy as np
 import tensorflow as tf
 from tensorflow.models.rnn import rnn
 from tensorflow.models.rnn.rnn_cell import LSTMCell
-import numpy as np
 
 if __name__ == '__main__':
     np.random.seed(1)
@@ -53,6 +53,6 @@ if __name__ == '__main__':
     # Items at t>early_stop are all 0s
     outs = session.run(outputs, feed_dict=feed)
 
-    print type(outs)
-    print len(outs)
+    print(type(outs))
+    print(len(outs))
     print(outs)

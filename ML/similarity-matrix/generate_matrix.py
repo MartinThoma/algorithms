@@ -2,7 +2,6 @@
 
 import numpy as np
 import pandas as pd
-
 # 3rd party modules
 from sklearn.decomposition import PCA
 from sklearn.metrics.pairwise import cosine_similarity
@@ -23,13 +22,13 @@ def main():
     print(x_test.shape)
     print(y_test.shape)
     print(dim_reduction)
-    print("explained_variance_: {}".format(dim_reduction.explained_variance_))
+    print(f"explained_variance_: {dim_reduction.explained_variance_}")
     print(
-        "explained_variance_ratio_: {}".format(dim_reduction.explained_variance_ratio_)
+        f"explained_variance_ratio_: {dim_reduction.explained_variance_ratio_}"
     )
-    print("singular_values_: {}".format(dim_reduction.singular_values_))
-    print("noise_variance_: {}".format(dim_reduction.noise_variance_))
-    print(".components_:{}".format(dim_reduction.components_))
+    print(f"singular_values_: {dim_reduction.singular_values_}")
+    print(f"noise_variance_: {dim_reduction.noise_variance_}")
+    print(f".components_:{dim_reduction.components_}")
 
     top_n = get_top_n(similarity[240], 10)
     indices = [index for index, _ in top_n]

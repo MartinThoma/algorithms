@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Solution for problem C to Codejam 2016, Round 1B of Martin Thoma."""
 

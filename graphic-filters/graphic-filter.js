@@ -11,12 +11,12 @@ var onCameraFail = function (e) {
 
 /**
  * Apply a filter to grayscale image. (Covolution)
- * @param {ImageData} imgData 
+ * @param {ImageData} imgData
  * @param {matrix of numbers} matrix
  * @return {undefined}
  */
 function applyMatrix(imgData, matrix) {
-    var imgDataNormal = context.getImageData(0, 0, 
+    var imgDataNormal = context.getImageData(0, 0,
 				context.canvas.width, context.canvas.height);
 	var sep = (matrix.length-1)/2
 
@@ -46,7 +46,7 @@ function applyMatrix(imgData, matrix) {
 }
 
 function harrisCornerDetector(imgData) {
-    var imgDataNormal = context.getImageData(0, 0, 
+    var imgDataNormal = context.getImageData(0, 0,
 				context.canvas.width, context.canvas.height);
     var n = 3;
     for (var x=n-1; x<context.canvas.width - n; x++) {

@@ -1,17 +1,16 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Exploratory analysis of a whatsapp chat conversation."""
 
-# core modules
-from collections import Counter
 import datetime
 import os
 import re
+# core modules
+from collections import Counter
 
+import matplotlib.pyplot as plt
 # 3rd party modules (you might have to install them via pip)
 import pandas as pd
-import matplotlib.pyplot as plt
 
 
 def main(path):
@@ -24,7 +23,7 @@ def main(path):
     return df
 
 
-class Message(object):
+class Message:
     """A WhatsApp message object."""
 
     def __init__(self, line):
@@ -193,7 +192,7 @@ def print_general_statistics(df):
     senders = [sender for sender in df.sender.unique() if sender != 'SYSTEM']
     for sender in senders:
         df_sender = df[df.sender == sender]
-        print('## {}'.format(sender))
+        print(f'## {sender}')
         print('\tmin-words: {}'.format(df_sender['nb_words'].min()))
         print('\tmean-words: {:0.0f}'.format(df_sender['nb_words'].mean()))
         print('\tmax-words: {}'.format(df_sender['nb_words'].max()))
@@ -220,7 +219,7 @@ def text_mining(df):
 
     senders = [sender for sender in df.sender.unique() if sender != 'SYSTEM']
     for sender in senders:
-        print('## {}'.format(sender))
+        print(f'## {sender}')
         df_sender = df[df.sender == sender]
         corpus = ' '.join(df_sender.text.tolist()).lower()
         print('### Most common 30 words')
@@ -254,19 +253,19 @@ def find_common_smileys(df, most_common=20):
 
 def create_wordcloud(text, output='wordcloud.png'):
     # Start with loading all necessary libraries
-    from wordcloud import WordCloud
+    import random
 
     # Create and generate a word cloud image:
     from nltk.corpus import stopwords
     from nltk.tokenize import word_tokenize
-    import random
+    from wordcloud import WordCloud
 
     def love_color_func(word, font_size, position, orientation, random_state=None,
                         **kwargs):
         val = random.randint(0, 200)
         return (250, val, val)
 
-    stop_words = set(stopwords.words('german')).union(set(['dass', 'media_omitted']))
+    stop_words = set(stopwords.words('german')).union({'dass', 'media_omitted'})
     word_tokens = word_tokenize(text)
     filtered_sentence = [w for w in word_tokens if w not in stop_words]
     text = ' '.join(filtered_sentence)
@@ -306,7 +305,7 @@ def is_valid_file(parser, arg):
 
 def get_parser():
     """Get parser object for whatsapp analysis script."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("-f", "--file",

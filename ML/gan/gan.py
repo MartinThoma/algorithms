@@ -8,15 +8,17 @@ https://oshearesearch.com/index.php/2016/07/01/mnist-generative-adversarial-mode
 """
 
 import random
+
+import matplotlib as mpl
 import numpy as np
 from keras.layers import Input
 from keras.optimizers import Adam
-import matplotlib as mpl
+
 mpl.use('Agg')  # works even without X-Org
+import keras.backend as K
 import matplotlib.pyplot as plt
 from keras.models import Model
 from tqdm import tqdm
-import keras.backend as K
 
 
 def make_trainable(net, val):
@@ -164,7 +166,7 @@ def main(data_module, generator_module, discriminator_module):
     n_tot = y.shape[0]
     n_rig = (diff == 0).sum()
     acc = n_rig * 100.0 / n_tot
-    print("Accuracy: {:0.02f}% ({} of {}) right".format(acc, n_rig, n_tot))
+    print(f"Accuracy: {acc:0.02f}% ({n_rig} of {n_tot}) right")
 
     # set up loss storage vector
     losses = {"d": [], "g": []}
@@ -204,7 +206,7 @@ def main(data_module, generator_module, discriminator_module):
     plot_real(X_train)
 
 if __name__ == '__main__':
-    import mnist as data_module
     import discriminator_module
     import generator_module
+    import mnist as data_module
     main(data_module, generator_module, discriminator_module)

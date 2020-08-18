@@ -1,5 +1,5 @@
-from requests_example import get_ip
 import responses
+from requests_example import get_ip
 
 
 @responses.activate

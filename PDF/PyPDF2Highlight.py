@@ -1,11 +1,6 @@
-from PyPDF2.generic import (
-    DictionaryObject,
-    NumberObject,
-    FloatObject,
-    NameObject,
-    TextStringObject,
-    ArrayObject
-)
+from PyPDF2.generic import (ArrayObject, DictionaryObject, FloatObject,
+                            NameObject, NumberObject, TextStringObject)
+
 
 # x1, y1 starts in bottom left corner
 def createHighlight(x1, y1, x2, y2, meta, color = [1, 0, 0]):

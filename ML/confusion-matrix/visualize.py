@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """
 Optimize confusion matrix.
@@ -11,14 +10,17 @@ For more information, see
 """
 
 import json
-import numpy as np
-import matplotlib.pyplot as plt
 import random
+
+import matplotlib.pyplot as plt
+import numpy as np
+
 random.seed(0)
-import logging
-import sys
 import csv
+import logging
 import os
+import sys
+
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
@@ -211,7 +213,7 @@ def simulated_annealing(current_cm,
     best_score = current_score
     best_perm = current_perm
 
-    print("## Starting Score: {:0.2f}%".format(current_score))
+    print(f"## Starting Score: {current_score:0.2f}%")
     for step in range(steps):
         tmp_cm = np.array(current_cm, copy=True)
 
@@ -325,7 +327,7 @@ def main(cm_file, perm_file, steps, labels_file):
 
     # Load labels
     if os.path.isfile(labels_file):
-        with open(labels_file, "r") as f:
+        with open(labels_file) as f:
             labels = json.load(f)
     else:
         labels = read_symbols()
@@ -339,7 +341,7 @@ def main(cm_file, perm_file, steps, labels_file):
     print("Score: {}".format(calculate_score(result['cm'], weights)))
     print("Perm: {}".format(list(result['perm'])))
     labels = [labels[i] for i in result['perm']]
-    print("Symbols: {}".format(labels))
+    print(f"Symbols: {labels}")
     acc = get_accuracy(cm_orig)
     print("Accuracy: {:0.2f}%".format(acc * 100))
     start = 0
@@ -350,7 +352,7 @@ def main(cm_file, perm_file, steps, labels_file):
 
 def get_parser():
     """Get parser object for script xy.py."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("--cm",

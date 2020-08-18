@@ -1,9 +1,9 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Calculate HOG features for an image"""
 
 import os
+
 import Image
 import numpy
 from scipy.misc import toimage
@@ -154,7 +154,7 @@ def is_valid_file(parser, arg):
 
 def get_parser():
     """Get parser object for hog_features."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 
     parser = ArgumentParser(
         description=__doc__, formatter_class=ArgumentDefaultsHelpFormatter

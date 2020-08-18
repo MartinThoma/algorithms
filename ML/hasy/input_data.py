@@ -3,17 +3,16 @@
 
 """Load the MASYM dataset."""
 
-from hasy_tools import generate_index, load_images
 import numpy
+from hasy_tools import generate_index, load_images
 from six.moves import xrange
-
 from tensorflow.contrib.learn.python.learn.datasets import base
 from tensorflow.python.framework import dtypes
 
 SOURCE_URL = 'http://yann.lecun.com/exdb/mnist/'  # TODO
 
 
-class DataSet(object):
+class DataSet:
     """DataSet from tensorflow.contrib.learn.python.learn.datasets.mnist."""
 
     def __init__(self,
@@ -39,7 +38,7 @@ class DataSet(object):
             self.one_hot = one_hot
         else:
             assert images.shape[0] == labels.shape[0], (
-                'images.shape: %s labels.shape: %s' % (images.shape,
+                'images.shape: {} labels.shape: {}'.format(images.shape,
                                                        labels.shape))
             self._num_examples = images.shape[0]
 

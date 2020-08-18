@@ -76,6 +76,6 @@ for word in words:
 
 # Test if it works
 for word in words[:10]:
-    print("%s: %s" % (word, str(check(tree, word))))
+    print("{}: {}".format(word, str(check(tree, word))))
 for word in ['As', 'Aa']:
-    print("%s: %s" % (word, str(check(tree, word))))
+    print("{}: {}".format(word, str(check(tree, word))))

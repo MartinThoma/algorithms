@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Visualize matplotlib marker styles."""
 
@@ -22,7 +21,7 @@ functions = [f1, f2, f3, f4, f5, f6, f7]
 
 # Define the plot
 plt.ylim(-1.0, 1.0)
-plt.title(u"Example for matplotlib line styles", fontweight='bold', fontsize=20)
+plt.title("Example for matplotlib line styles", fontweight='bold', fontsize=20)
 plt.xlabel(r"""x-axis label""", fontsize=20)
 plt.ylabel(r"""y-axis label""", fontsize=20)
 

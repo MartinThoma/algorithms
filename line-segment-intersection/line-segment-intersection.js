@@ -43,9 +43,9 @@ function updateBoard(){
     if (doLinesIntersect(a, b)) {
         var intersection = getIntersection(a, b);
         context.beginPath();
-        context.arc(intersection["first"]["x"], 
-                    intersection["first"]["y"], 
-                    5, 
+        context.arc(intersection["first"]["x"],
+                    intersection["first"]["y"],
+                    5,
                     0, 2 * Math.PI, false);
         context.lineWidth = 1;
         context.strokeStyle = 'black';
@@ -54,9 +54,9 @@ function updateBoard(){
         context.stroke();
 
         context.beginPath();
-        context.arc(intersection["second"]["x"], 
-                    intersection["second"]["y"], 
-                    5, 
+        context.arc(intersection["second"]["x"],
+                    intersection["second"]["y"],
+                    5,
                     0, 2 * Math.PI, false);
         context.lineWidth = 1;
         context.strokeStyle = 'black';
@@ -97,7 +97,7 @@ function getIntersection(a, b) {
                 b = tmp;
             }
 
-            // Now we know that the y-value of a["first"] is the 
+            // Now we know that the y-value of a["first"] is the
             // lowest of all 4 y values
             // this means, we are either in case (AAA):
             //   a: x--------------x
@@ -127,7 +127,7 @@ function getIntersection(a, b) {
         // a and b switched
         x1 = b["first"]["x"];
         x2 = x1;
-        
+
         var tmp = a;
         a = b;
         b = tmp;
@@ -150,9 +150,9 @@ function getIntersection(a, b) {
         tb = b["first"]["y"] - mb*b["first"]["x"];
         if (ma == mb) {
             // Case (CA)
-            // both lines are in parallel. As we know that they 
+            // both lines are in parallel. As we know that they
             // intersect, the intersection could be a line
-            // when we rotated this, it would be the same situation 
+            // when we rotated this, it would be the same situation
             // as in case (AA)
 
             // Normalize
@@ -330,7 +330,7 @@ function doLinesIntersect(a, b) {
 
 var isDragFlag = false;
 
-canvas.addEventListener("mousedown", 
+canvas.addEventListener("mousedown",
     function(event) {
         var mouseCoords = getMouseCoords(canvas, event);
         var i = parseInt(document.getElementById("movePoint").value);
@@ -340,7 +340,7 @@ canvas.addEventListener("mousedown",
         isDragFlag = true;
     }, false);
 
-canvas.addEventListener("mousemove", 
+canvas.addEventListener("mousemove",
     function(event) {
         if(isDragFlag) {
             var mouseCoords = getMouseCoords(canvas, event);
@@ -351,7 +351,7 @@ canvas.addEventListener("mousemove",
         }
     }, false);
 
-canvas.addEventListener("mouseup", 
+canvas.addEventListener("mouseup",
     function(event) {
         isDragFlag = false;
     }, false);

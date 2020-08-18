@@ -50,9 +50,9 @@ def plot_graph(x, x_train, y_pred, mse, function_tex):
     from matplotlib import pyplot as pl
     pl.figure()
     y = f(x_train).ravel()
-    pl.plot(x, f(x), 'r:', label=u'$f(x) = %s$' % function_tex)
-    pl.plot(x_train, y, 'r.', markersize=10, label=u'Observations')
-    pl.plot(x, y_pred, 'b-', label=u'Prediction')
+    pl.plot(x, f(x), 'r:', label='$f(x) = %s$' % function_tex)
+    pl.plot(x_train, y, 'r.', markersize=10, label='Observations')
+    pl.plot(x, y_pred, 'b-', label='Prediction')
     pl.fill(np.concatenate([x, x[::-1]]),
             np.concatenate([y_pred - 1.9600 * sigma,
                            (y_pred + 1.9600 * sigma)[::-1]]),

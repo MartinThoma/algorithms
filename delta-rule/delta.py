@@ -2,13 +2,12 @@
 
 """Example for a linear classifier using a perceptron and the delta rule."""
 
-from sklearn.datasets.samples_generator import make_blobs
 import matplotlib.pyplot as plt
-
 import numpy as np
+from sklearn.datasets.samples_generator import make_blobs
 
 
-class Perceptron(object):
+class Perceptron:
 
     def __init__(self, eta=0.01, epochs=50):
         """

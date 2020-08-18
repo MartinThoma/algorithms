@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
-import seaborn as sns
-import random
 import operator as op
+import random
+
 import numpy as np
+import seaborn as sns
 
 data = {}
 names = [('human', 174, 5), ('ape', 150, 10)]
@@ -21,7 +22,7 @@ for key, values in data.items():
     p025 = np.percentile(values, 25)
     p075 = np.percentile(values, 75)
     p_dist = p075 - p025
-    print("\t[{}, {}]".format(p025, p075))
+    print(f"\t[{p025}, {p075}]")
     print("\tlower whisker: {}".format(p025 - p_dist * 1.5))
     print("\tupper whisker: {}".format(p075 + p_dist * 1.5))
 

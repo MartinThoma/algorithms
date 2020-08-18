@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 # http://stackoverflow.com/questions/1946896/conversion-from-infix-to-prefix
 numerals = "0123456789"

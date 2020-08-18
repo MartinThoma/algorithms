@@ -3,11 +3,11 @@ import logging
 import random
 import sys
 import time
-import pympler.asizeof
 
+import pympler.asizeof
+from mpu.datastructures.char_trie import Trie
 # First party modules
 from mpu.datastructures.trie import Trie
-from mpu.datastructures.char_trie import Trie
 
 logging.basicConfig(
     format="%(asctime)s %(levelname)s %(message)s",

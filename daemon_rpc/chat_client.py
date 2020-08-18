@@ -1,10 +1,10 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """A chat client."""
 
 import logging
 import sys
+
 import Pyro.core
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
@@ -17,18 +17,18 @@ def main(server, name):
     chat_server = Pyro.core.getProxyForURI(server)
     last_msg_id = 0
     print("*"*80)
-    print("* Chat started. You are called '{name}'.".format(name=name))
+    print(f"* Chat started. You are called '{name}'.")
     print("*"*80)
     while True:
         msg = raw_input()
         new_msgs, last_msg_id = chat_server.receive(name, msg, last_msg_id)
         for sender, msg in new_msgs:
-            print("[{sender}] {msg}".format(sender=sender, msg=msg))
+            print(f"[{sender}] {msg}")
 
 
 def get_parser():
     """Get parser object for chat_client.py."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("--server",

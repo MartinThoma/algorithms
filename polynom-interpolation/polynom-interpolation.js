@@ -18,7 +18,7 @@ function setCursorByID(id, cursorStyle) {
     elem.style.cursor = cursorStyle;
 }
 
-/** 
+/**
  * Calculates coordinates from worldspace to screenspace
  * @param {Number} x the coordinate you want to transform
  * @param {bool} isX true iff x is a x-coordinate, otherwise false
@@ -32,7 +32,7 @@ function c(x, isX) {
     return STRETCH_Y * (-x + Y_OFFSET);
 }
 
-/** 
+/**
  * Calculates coordinates from screenspace to worldspace
  * @param {Number} x the coordinate you want to transform
  * @param {bool} isX true iff x is a x-coordinate, otherwise false
@@ -372,10 +372,10 @@ function drawPointsGeneral(pointList, color) {
 }
 
 /**
- * Generate a linear system of equations and store them to a 
+ * Generate a linear system of equations and store them to a
  * n×(n+1) matrix.
  * @param {Array} points
- * @return {Array} 
+ * @return {Array}
  */
 function setGauss(points) {
     var n = points.length - 1;
@@ -393,9 +393,9 @@ function setGauss(points) {
     return A;
 }
 
-/** 
- * Solve a linear system of equations given by a n×n matrix A 
- * with a n×1 result vector b. 
+/**
+ * Solve a linear system of equations given by a n×n matrix A
+ * with a n×1 result vector b.
  * @param {matrix} A|b
  * @return {array} x
  */
@@ -444,7 +444,7 @@ function gauss(A) {
     return x;
 }
 
-/** 
+/**
  * Draw an arbitrary function.
  * @param {function as string} f
  * @param {string} color
@@ -542,7 +542,7 @@ function euklideanDist(p1, p2) {
         Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
 }
 
-/** 
+/**
  * Add or remove a point.
  * @param {event} event
  * @param {DOMElement} canvas
@@ -576,7 +576,7 @@ function addPoint(event, canvas, mouseCoords) {
     }
 }
 
-/** 
+/**
  * Draw all permanently added points.
  * @return {undefined}
  */
@@ -607,7 +607,7 @@ function writePointList() {
     }
 }
 
-/** 
+/**
  * Get current position of mouse.
  * @param {DOMElement} canvas
  * @param {event} event

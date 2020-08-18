@@ -1,16 +1,14 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """ResNet50 model for Keras."""
-from __future__ import print_function
 
-import numpy as np
 import json
 import os
 import time
 
+import numpy as np
 from keras import backend as K
-from keras.preprocessing import image
 from keras.applications import Xception
+from keras.preprocessing import image
 from keras.utils.data_utils import get_file
 
 CLASS_INDEX = None
@@ -114,7 +112,7 @@ def is_valid_file(parser, arg):
 
 def get_parser():
     """Get parser object."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("-f", "--file",

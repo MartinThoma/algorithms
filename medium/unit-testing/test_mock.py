@@ -1,6 +1,7 @@
-from mock_example import generate_filename
-from unittest import mock
 import datetime
+from unittest import mock
+
+from mock_example import generate_filename
 
 
 def test_generate_filename():

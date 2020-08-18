@@ -1,10 +1,9 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Coding challenge to find all conflicts of a list of appointments."""
 
 
-class Appointment(object):
+class Appointment:
     """
     An appointment.
 
@@ -62,7 +61,7 @@ def get_conflicts(appointments):
     for i, a in enumerate(appointments):
         for b in appointments[i+1:]:
             if is_conflict(a, b):
-                print("%s and %s overlap." % (a, b))
+                print(f"{a} and {b} overlap.")
 
 if __name__ == "__main__":
     """

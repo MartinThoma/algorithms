@@ -2,8 +2,8 @@
 
 """Generate training json file."""
 
-import os
 import json
+import os
 
 
 def main(base_dir):
@@ -67,7 +67,7 @@ def main(base_dir):
 
 def get_parser():
     """Get parser object for create_mask.py."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("--base",

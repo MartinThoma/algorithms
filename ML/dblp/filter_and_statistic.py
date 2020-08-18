@@ -1,12 +1,12 @@
+"""Filter and summarize dataset."""
 import codecs
 from collections import Counter, OrderedDict
 
 import matplotlib.pyplot as plt
 import numpy as np
+import ujson
 from nltk import word_tokenize
 from tqdm import tqdm
-
-import ujson
 
 # top 10 journals
 journals = [
@@ -23,13 +23,10 @@ journals = [
 ]
 
 # 11~20
-"""
-, 'Commun. ACM',
-            'Bioinformatics', 'Expert Syst. Appl.', 'IEEE Trans. Communications', 'NeuroImage', 'Automatica',
-            'IEEE Trans. Industrial Electronics', 'Inf. Sci.', 'IEEE Trans. Computers',
-            'IEEE Trans. Geoscience and Remote Sensing'
-"""
-
+# , 'Commun. ACM',
+#             'Bioinformatics', 'Expert Syst. Appl.', 'IEEE Trans. Communications', 'NeuroImage', 'Automatica',
+#             'IEEE Trans. Industrial Electronics', 'Inf. Sci.', 'IEEE Trans. Computers',
+#             'IEEE Trans. Geoscience and Remote Sensing'
 
 def load_json(filename):
     with codecs.open(filename, mode="r", encoding="utf8", errors="ignore") as f:
@@ -48,7 +45,7 @@ def plot(features, save_name, title_name):
     y = list(features.values())
     elem_size = len(features)
     color_map = plt.cm.get_cmap("RdYlBu_r")
-    colors = [color_map((i / elem_size)) for i in range(0, elem_size)]
+    colors = [color_map(i / elem_size) for i in range(0, elem_size)]
     fig, ax = plt.subplots()
     fig.set_size_inches(16, 16)
     width = 0.75  # the width of the bars

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Solve https://code.google.com/codejam/contest/6254486/dashboard#s=p2."""
 
@@ -62,7 +61,7 @@ def solve(N, J):
         if len(jamcoins) == J:
             break
     for jamcoin in jamcoins:
-        print("%s %s" % (jamcoin['coin'], jamcoin['divisors']))
+        print("{} {}".format(jamcoin['coin'], jamcoin['divisors']))
 
 
 if __name__ == "__main__":

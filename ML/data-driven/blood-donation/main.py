@@ -2,27 +2,27 @@
 
 """Data analysis of the blood donation task."""
 
-import pandas as pd
 import csv
-from sklearn import svm
 # from sklearn.preprocessing import StandardScaler
 import json
-from sklearn.model_selection import KFold
 from math import log
-import numpy as np
 
+import numpy as np
+import pandas as pd
+from sklearn import svm
+from sklearn.discriminant_analysis import (LinearDiscriminantAnalysis,
+                                           QuadraticDiscriminantAnalysis)
+from sklearn.ensemble import (AdaBoostClassifier, GradientBoostingClassifier,
+                              RandomForestClassifier)
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import KFold
+from sklearn.naive_bayes import GaussianNB
 # Classifiers
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.svm import SVC
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.naive_bayes import GaussianNB
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 from sklearn.neural_network import BernoulliRBM
 from sklearn.pipeline import Pipeline
-from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
 
 
 def calculate_score(labels, pred):

@@ -1,11 +1,11 @@
 # Core Library modules
 import datetime
+import heapq
 import json
 import os
 import time
 from tempfile import mkstemp
 from typing import List
-import heapq
 
 
 def main(numbers_filepath):

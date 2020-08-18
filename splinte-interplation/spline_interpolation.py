@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 
 def nice_cubic_polynomial(p):
@@ -112,6 +111,6 @@ if __name__ == "__main__":
     points.append({"x": 3.0, "y": 70})
     spline = get_spline(points)
     for p in spline:
-        tmp = "[%.2f, %.2f]:" % (p["u"], p["v"])
+        tmp = "[{:.2f}, {:.2f}]:".format(p["u"], p["v"])
         tmp += nice_cubic_polynomial(p)
         print(tmp)

@@ -1,5 +1,6 @@
 import inspect
 
+
 def log_action(func, *args, **kwargs):
     print("=" * 80)
     print(func)

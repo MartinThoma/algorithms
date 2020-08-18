@@ -3,7 +3,7 @@
 """Pseudo-implemention of the DBSCAN algorithm for learning."""
 
 
-class Point(object):
+class Point:
     """A point in R^n."""
 
     def __init__(self, coords):

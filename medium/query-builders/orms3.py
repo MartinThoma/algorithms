@@ -1,11 +1,10 @@
 # Core Library modules
 from typing import List
 
-# Third party modules
-from sqlalchemy.orm import joinedload
-
 # First party modules
 from orms2 import Author, Book, db_connection
+# Third party modules
+from sqlalchemy.orm import joinedload
 
 
 @db_connection

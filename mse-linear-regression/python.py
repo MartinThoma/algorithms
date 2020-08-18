@@ -2,8 +2,8 @@
 
 """Experiment with logistic regression."""
 
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def generate_points(n=500, min_=0, max_=1):

@@ -11,7 +11,7 @@ void print(vector< vector<double> > A) {
             cout << A[i][j] << "\t";
             if (j == n-1) {
                 cout << "| ";
-            } 
+            }
         }
         cout << "\n";
     }

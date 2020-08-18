@@ -2,8 +2,9 @@
 
 """Helper script to conveniently download data."""
 
-import wikicommons
 import os
+
+import wikicommons
 
 
 def main(db_name='category_data.db'):
@@ -115,7 +116,7 @@ def create_database(db_name='category_data.db'):
 
 def get_parser():
     """Get parser object for script xy.py."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     return parser

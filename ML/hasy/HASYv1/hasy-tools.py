@@ -2,11 +2,12 @@
 
 """Tools for the HASY dataset."""
 
-import logging
 import csv
+import logging
 import random
-from PIL import Image, ImageDraw
 import sys
+
+from PIL import Image, ImageDraw
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     level=logging.INFO,
@@ -71,7 +72,7 @@ def create_random_overview(img_src, x_images, y_images):
 
 def get_parser():
     """Get parser object for script xy.py."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("--verify",

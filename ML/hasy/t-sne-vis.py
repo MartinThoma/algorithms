@@ -2,8 +2,8 @@
 
 """Visualize with tsne as in https://indico.io/blog/visualizing-with-t-sne/."""
 
-import numpy as np
 import hasy_tools as ht
+import numpy as np
 from matplotlib import pyplot as plt
 from tsne import bh_sne
 

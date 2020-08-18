@@ -1,8 +1,8 @@
 #include <iostream>
 #include <cmath>
- 
+
 using namespace std;
- 
+
 long double newton(int a, int n) {
     long double x = ((long double)a)/2;
     for (int i=0; i<n; i++) {
@@ -10,7 +10,7 @@ long double newton(int a, int n) {
     }
     return x;
 }
- 
+
 int main(int argc, char *argv[]) {
     if (argc != 3) {
         cout << "Please enter exactly two arguments." << endl;

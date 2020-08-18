@@ -3,9 +3,9 @@
 """Create a sequential model."""
 
 from keras import backend as K
+from keras.layers import (Activation, Convolution2D, Dropout, Flatten,
+                          MaxPooling2D, Reshape)
 from keras.models import Sequential
-from keras.layers import Dropout, Flatten, Activation, Reshape
-from keras.layers import Convolution2D, MaxPooling2D
 
 
 def softmax(x):

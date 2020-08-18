@@ -1,5 +1,5 @@
-from typing import List, Dict, Set
 from collections import defaultdict
+from typing import Dict, List, Set
 
 
 def swapLexOrder(str_: str, pairs: List[List[int]]) -> str:
@@ -26,7 +26,7 @@ def get_swapset(pairs: List[List[int]], n) -> List[List[int]]:
     >>> get_swapset([[8,5], [10,8], [4,18], [20,12], [5,2], [17,2], [13,25], [29,12], [22,2], [17,11]], 30)
     [[1, 4, 7, 9, 10, 16, 21], [3, 17], [11, 19, 28], [12, 24]]
     """
-    tree: Dict[int, Set[int]] = dict((i, set()) for i in range(n))
+    tree: Dict[int, Set[int]] = {i: set() for i in range(n)}
     for a, b in pairs:
         a -= 1
         b -= 1

@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 # ref: https://gym.openai.com/evaluations/eval_1lfzNKEHS9GA7nNWE73w
 
-import numpy as np
 import gym
+import numpy as np
 from gym import wrappers
 
 # Q learning params
@@ -24,7 +23,7 @@ class Agent:
         # one episode learning
         state = self.env.reset()
         #self.env.render()
-        
+
         for t in range(TURN_LIMIT):
             act = self.env.action_space.sample() # random
             next_state, reward, done, info = self.env.step(act)
@@ -33,7 +32,7 @@ class Agent:
             # <=> Q <- (1-a)Q + a(Q')
             self.q_val[state][act] = (1 - ALPHA) * self.q_val[state][act]\
                                  + ALPHA * (reward + GAMMA * q_next_max)
-            
+
             #self.env.render()
             if done:
                 return reward
@@ -61,17 +60,17 @@ def main():
     reward_total = 0.0
     for i in range(LEARNING_COUNT):
         reward_total += agent.learn()
-    print("episodes      : {}".format(LEARNING_COUNT))
-    print("total reward  : {}".format(reward_total))
+    print(f"episodes      : {LEARNING_COUNT}")
+    print(f"total reward  : {reward_total}")
     print("average reward: {:.2f}".format(reward_total / LEARNING_COUNT))
-    print("Q Value       :{}".format(agent.q_val))
+    print(f"Q Value       :{agent.q_val}")
 
     print("###### TEST #####")
     reward_total = 0.0
     for i in range(TEST_COUNT):
         reward_total += agent.test()
-    print("episodes      : {}".format(TEST_COUNT))
-    print("total reward  : {}".format(reward_total))
+    print(f"episodes      : {TEST_COUNT}")
+    print(f"total reward  : {reward_total}")
     print("average reward: {:.2f}".format(reward_total / TEST_COUNT))
 
 if __name__ == "__main__":

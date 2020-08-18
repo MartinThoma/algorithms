@@ -17,7 +17,7 @@ def print_data(data):
     data : dict
     """
     for k, v in data.items():
-        print("%s:\t%s" % (k, v))
+        print(f"{k}:\t{v}")
 
 
 def main(path):
@@ -55,7 +55,7 @@ def main(path):
 
 def get_parser():
     """Get parser object for imagestats.py."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("-p", "--path",

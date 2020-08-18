@@ -1,6 +1,5 @@
 # Third party modules
 import pytest
-
 # First party modules
 from factorize import factorize
 

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Utility file for the GTSDB dataset.
 
@@ -8,22 +6,23 @@ See http://benchmark.ini.rub.de/?section=gtsdb&subsection=dataset for details.
 This has one additional class "no sign".
 """
 
-from __future__ import absolute_import
-from keras.utils.data_utils import get_file
-from keras import backend as K
-import PIL
-from PIL import Image
-import numpy as np
-import scipy.misc
-import os
-import zipfile
-import shutil
+
 import csv
-import sys
+import os
 import random
+import shutil
+import sys
+import zipfile
+
+import numpy as np
+import PIL
+import scipy.misc
+from keras import backend as K
+from keras.utils.data_utils import get_file
+from PIL import Image
+
 random.seed(0)
 from six.moves import cPickle as pickle
-
 
 labels = ['speed limit 20 (prohibitory)',
           'speed limit 30 (prohibitory)',
@@ -155,7 +154,7 @@ def _maybe_extract(fpath, dirname):
     path = os.path.dirname(fpath)
     untar_fpath = os.path.join(path, dirname)
     if not os.path.exists(untar_fpath):
-        print('Extracting contents of "{}"...'.format(dirname))
+        print(f'Extracting contents of "{dirname}"...')
         tfile = zipfile.ZipFile(fpath, 'r')
         try:
             tfile.extractall(untar_fpath)
@@ -171,7 +170,7 @@ def _maybe_extract(fpath, dirname):
             for o in os.listdir(untar_fpath)
             if os.path.isdir(os.path.join(untar_fpath, o))]
     if len(dirs) != 1:
-        print("Error, found not exactly one dir: {}".format(dirs))
+        print(f"Error, found not exactly one dir: {dirs}")
         sys.exit(-1)
     return dirs[0]
 

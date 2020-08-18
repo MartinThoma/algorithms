@@ -11,7 +11,7 @@ void print(vector< vector<double> > A) {
             cout << A[i][j] << "\t";
             if (j == n-1) {
                 cout << "| ";
-            } 
+            }
         }
         cout << "\n";
     }
@@ -58,11 +58,11 @@ void calculateInverse(vector< vector<double> >& A) {
             A[i][k] /= A[i][i];
         }
         // this is not necessary, but the output looks nicer:
-        A[i][i] = 1; 
+        A[i][i] = 1;
 
         for (int rowModify=i-1;rowModify>=0; rowModify--) {
             for (int columModify=n;columModify<2*n;columModify++) {
-                A[rowModify][columModify] -= A[i][columModify] 
+                A[rowModify][columModify] -= A[i][columModify]
                                              * A[rowModify][i];
             }
             // this is not necessary, but the output looks nicer:

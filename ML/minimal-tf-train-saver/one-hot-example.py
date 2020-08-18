@@ -2,8 +2,8 @@
 
 """Mini-demo how the one hot encoder works."""
 
-from sklearn.preprocessing import OneHotEncoder
 import numpy as np
+from sklearn.preprocessing import OneHotEncoder
 
 # The most intuitive way to label a dataset "X"
 # (list of features, where X[i] are the features for a datapoint i)

@@ -109,7 +109,7 @@ with plt.xkcd():
         for prefix, amount in prefixes:
             if x >= amount:
                 return f"{x / amount}{prefix}"
-        return "{:,}".format(x)
+        return f"{x:,}"
 
     plt.gca().yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(formatter))
     plt.show()

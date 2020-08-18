@@ -9,19 +9,21 @@ The Reinforcment Learning approach is described in
 """
 
 import numpy as np
+
 np.random.seed(0)
-from keras.models import Model
-from keras.layers import Input, merge, Dense, Flatten
+import csv
+
+import keras.backend as K
+from keras.callbacks import ModelCheckpoint
+from keras.datasets import cifar10
+from keras.layers import Dense, Flatten, Input, merge
 from keras.layers.convolutional import Convolution2D
 from keras.layers.normalization import BatchNormalization
-from keras.regularizers import l2
-import keras.backend as K
+from keras.models import Model
 from keras.optimizers import Adam
 from keras.preprocessing.image import ImageDataGenerator
-from keras.datasets import cifar10
+from keras.regularizers import l2
 from keras.utils import np_utils
-from keras.callbacks import ModelCheckpoint
-import csv
 
 
 def create_rflearn_net(nb_classes, img_dim):

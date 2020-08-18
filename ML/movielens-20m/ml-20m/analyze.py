@@ -5,14 +5,13 @@
 # core modules
 import math
 
+import click
+import implicit
+import pandas as pd
+import progressbar
 # 3rd party modules
 from sklearn.base import BaseEstimator
 from sklearn.model_selection import train_test_split
-import click
-import pandas as pd
-import progressbar
-
-import implicit
 
 
 def load_data(rating_filepath="ratings.csv"):
@@ -155,14 +154,14 @@ def main(strategy, constant):
     data["test"]["x"] = df_test[["userId", "movieId"]]
     data["test"]["y"] = df_test[["rating"]]
     print(m.model)
-    print("item_factors: {}".format(m.model.item_factors.shape))
-    print("user_factors: {}".format(m.model.user_factors.shape))
+    print(f"item_factors: {m.model.item_factors.shape}")
+    print(f"user_factors: {m.model.user_factors.shape}")
     # y_pred = m.predict(data['test']['x'])
     print(y_pred)
     mae = evaluate(data["test"]["y"]["rating"], y_pred, func="mae")
     mse = evaluate(data["test"]["y"]["rating"], y_pred, func="mse")
-    print("MAE of baseline: {:0.3f}".format(mae))
-    print("MSE of baseline: {:0.3f}".format(mse))
+    print(f"MAE of baseline: {mae:0.3f}")
+    print(f"MSE of baseline: {mse:0.3f}")
 
 
 if __name__ == "__main__":

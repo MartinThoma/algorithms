@@ -8,13 +8,13 @@
 
 #define SURPRESS_OUTPUT true
 #define SHOW_DICT_CREATION false
- 
+
 using namespace std;
 
 struct element {
     /** What is the next collatz number? */
     unsigned long long next;
-    
+
     /** How many steps does it take until you reach 1? */
     unsigned long long steps;
 
@@ -99,7 +99,7 @@ void insertCollatz(unsigned long long i){
 }
 
 void printCollatz() {
-    for(map<unsigned long long, struct element>::iterator it=collatz.begin(); 
+    for(map<unsigned long long, struct element>::iterator it=collatz.begin();
         it!=collatz.end(); ++it) {
         unsigned long long next = (*it).first;
         while(next != 1) {
@@ -113,8 +113,8 @@ void printCollatz() {
 void print(unsigned long long max) {
     cout << "n,maximum,steps" << endl;
     for(unsigned long long i=1;i<=max;i++) {
-        cout << i << "," 
-             << collatz[i].maxNumberInSequence << "," 
+        cout << i << ","
+             << collatz[i].maxNumberInSequence << ","
              << collatz[i].steps << endl;
     }
 }
@@ -127,7 +127,7 @@ int main(int argc, char* argv[]) {
     collatz[1] = e;
 
     unsigned long long maxCollatz = (unsigned long long) atoi(argv[1]);
- 
+
     for (unsigned long long i = 2; i <= maxCollatz; i++) {
         insertCollatz(i);
         saveULong = i;
@@ -137,7 +137,7 @@ int main(int argc, char* argv[]) {
     }
 
     cerr << "maxAddFromOneEntry: " << maxAddFromOneEntry << endl;
-    cerr << "maxStepsToOne: " << maxStepsToOne  
+    cerr << "maxStepsToOne: " << maxStepsToOne
          << " (" << producesMaxStepsToOne << ")"<< endl;
     cerr << "maxEntry: " << maxEntry << endl;
     cerr << "entries: " << collatz.size() << endl;

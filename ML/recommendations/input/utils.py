@@ -1,14 +1,16 @@
-import pandas as pd
 import numpy as np
 import numpy.random
+import pandas as pd
+
 numpy.random.seed(1)
 from tensorflow import set_random_seed
+
 set_random_seed(1)
 import keras.backend as K
+from keras.layers import (Activation, Dense, Dropout, Embedding, Flatten,
+                          Input, Lambda, Reshape, TimeDistributed)
+from keras.layers.merge import concatenate, multiply
 from keras.models import Model
-from keras.layers import (Embedding, Reshape, Activation, Input, Dense, Flatten,
-                          Dropout, TimeDistributed, Lambda)
-from keras.layers.merge import multiply, concatenate
 
 
 def get_mapping(series):
@@ -102,6 +104,7 @@ def get_model_2(max_work, max_user):
     return rec_model
 
 from keras.utils.generic_utils import get_custom_objects
+
 
 def custom_activation(x):
     return x * 5

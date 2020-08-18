@@ -3,14 +3,14 @@
 """Train and evaluate a MLP."""
 
 import time
-from keras.layers import Activation, Input, Dropout
-from keras.layers import Dense
-from keras.models import Model
-from keras.optimizers import Adam
+
 import reuters
 from keras import backend as K
+from keras.layers import Activation, Dense, Dropout, Input
+from keras.models import Model
+from keras.optimizers import Adam
+from scoring import get_accuracy, get_f_score, get_tptnfpfn
 from sklearn.metrics import accuracy_score, fbeta_score
-from scoring import get_tptnfpfn, get_accuracy, get_f_score
 
 
 def create_model(nb_classes, input_shape):

@@ -5,13 +5,14 @@ See http://automl.github.io/auto-sklearn/stable/ and
 https://www.reddit.com/r/MachineLearning/comments/6efs8u/d_anyone_have_experience_with_automated_ml_tools/
 """
 
-import hasy
-import autosklearn.classification
-import sklearn.model_selection
-import sklearn.metrics
 import json
 import pickle
 import time
+
+import autosklearn.classification
+import hasy
+import sklearn.metrics
+import sklearn.model_selection
 
 config = {'dataset': {}}
 data = hasy.load_data(config)

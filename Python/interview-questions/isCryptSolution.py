@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import Dict, List
 
 
 def isCryptSolution(crypt: List[str], solution: List[List[str]]):
@@ -6,7 +6,7 @@ def isCryptSolution(crypt: List[str], solution: List[List[str]]):
     >>> isCryptSolution(["A", "A", "A"], [["A", "0"]])
     True
     """
-    mapping: Dict[str, int] = dict([(el, int(number)) for el, number in solution])
+    mapping: Dict[str, int] = {el: int(number) for el, number in solution}
     if any(len(el) > 1 and mapping[el[0]] == 0 for el in crypt):
         return False
     numbers = [

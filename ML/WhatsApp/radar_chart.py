@@ -1,12 +1,11 @@
 # core modules
 from math import pi
 
+# internal modules
+import analysis
 # 3rd party modules
 import matplotlib.pyplot as plt
 import pandas as pd
-
-# internal modules
-import analysis
 
 
 def main(path):

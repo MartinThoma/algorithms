@@ -1,15 +1,13 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Calculate HOG features for an image"""
 
 import os
+
 import matplotlib.pyplot as plt
-
-from skimage.feature import hog
-from skimage import exposure
-
 from hog_features import image2pixelarray
+from skimage import exposure
+from skimage.feature import hog
 
 
 def main(filename):
@@ -69,7 +67,7 @@ def is_valid_file(parser, arg):
 
 def get_parser():
     """Get parser object for scikithog"""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 
     parser = ArgumentParser(
         description=__doc__, formatter_class=ArgumentDefaultsHelpFormatter

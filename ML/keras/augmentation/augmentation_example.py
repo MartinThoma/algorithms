@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from keras.datasets import cifar10
 import matplotlib.pyplot as plt
+from keras.datasets import cifar10
 from keras.preprocessing.image import ImageDataGenerator
 
 (X_train_raw, y_train_raw), (X_test, y_test) = cifar10.load_data()

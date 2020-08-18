@@ -1,16 +1,18 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Split the classes into two equal-sized groups to maximize accuracy."""
 
 import json
-import numpy as np
 import os
 import random
+
+import numpy as np
+
 random.seed(0)
-from visualize import read_symbols, plot_cm, swap_1d, swap, apply_permutation
 import logging
 import sys
+
+from visualize import apply_permutation, plot_cm, read_symbols, swap, swap_1d
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     level=logging.DEBUG,
@@ -148,7 +150,7 @@ def main(cm_file, perm_file, steps, labels_file):
     print("Perm: {}".format(list(result['perm'])))
     # Load labels
     if os.path.isfile(labels_file):
-        with open(labels_file, "r") as f:
+        with open(labels_file) as f:
             symbols = json.load(f)
     else:
         symbols = read_symbols()
@@ -158,7 +160,7 @@ def main(cm_file, perm_file, steps, labels_file):
 
 def get_parser():
     """Get parser object for script xy.py."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("--cm",

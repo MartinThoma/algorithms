@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Utility functions for Reinforcement Learning."""
 
@@ -25,7 +24,7 @@ def load_cfg(yaml_filepath):
     cfg : dict
     """
     # Read YAML experiment definition file
-    with open(yaml_filepath, 'r') as stream:
+    with open(yaml_filepath) as stream:
         cfg = yaml.load(stream)
     cfg = make_paths_absolute(os.path.dirname(yaml_filepath), cfg)
     return cfg
@@ -72,7 +71,7 @@ def test_agent(cfg, env, agent):
 
 def get_parser():
     """Get parser object."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("--env",

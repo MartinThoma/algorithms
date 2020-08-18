@@ -38,7 +38,7 @@ def serialize(data, filename='data.json'):
 def deserialize(filename='data.json'):
     """Return JSON data from file."""
     import json
-    with open(filename, 'r') as f:
+    with open(filename) as f:
         data = json.load(f)
     return data
 
@@ -47,7 +47,7 @@ def is_english_score(bigrams, word):
     """Calculate the score of a word."""
     prob = 1
     for w1, w2 in zip("!" + word, word + "!"):
-        bigram = "%s%s" % (w1, w2)
+        bigram = f"{w1}{w2}"
         if bigram in bigrams:
             prob *= bigrams[bigram]  # / float(bigrams['total'] + 1)
         else:
@@ -76,8 +76,8 @@ def main():
         else:
             scores_by_length[len(word)] = [score]
 
-    import seaborn as sns
     import matplotlib.pyplot as plt
+    import seaborn as sns
     f, axes = plt.subplots(2, 2, figsize=(7, 7), sharex=True)
     sns.despine(left=True)
     threshold_by_length = {}

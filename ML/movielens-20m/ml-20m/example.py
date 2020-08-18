@@ -1,7 +1,7 @@
 import random
-from scipy.sparse import csr_matrix
 
 import implicit
+from scipy.sparse import csr_matrix
 
 nb_movies = 50_000
 nb_users = 10_000_000

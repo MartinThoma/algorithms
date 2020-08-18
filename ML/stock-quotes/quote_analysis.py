@@ -18,7 +18,7 @@ def main(filepath):
     df["Datum"] = pd.to_datetime(df["Datum"], format="%Y-%m-%d")
     df = df.sort_values(by="Datum").reset_index()
     print(df)
-    print("Cummulative Volume: {}".format(df.Volumen.sum()))
+    print(f"Cummulative Volume: {df.Volumen.sum()}")
 
     data = df.set_index("Datum")
 

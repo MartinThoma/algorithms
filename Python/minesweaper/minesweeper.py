@@ -1,6 +1,6 @@
 # Core Library modules
 import enum
-from typing import List, Tuple, cast, Union
+from typing import List, Tuple, Union, cast
 
 # Third party modules
 import numpy as np

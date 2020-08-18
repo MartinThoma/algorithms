@@ -3,10 +3,10 @@
 # core modules
 import datetime
 
+import flask_babel
 # 3rd party modules
 from flask import Flask, flash, render_template
 from flask_babel import Babel, _
-import flask_babel
 
 
 def format_datetime(value, format="medium"):

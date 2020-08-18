@@ -1,15 +1,12 @@
 #!/usr/bin/env python
 """A very simple MNIST classifier."""
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 import argparse
 import sys
 
+import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 
-import tensorflow as tf
 ModelFnOps = tf.contrib.learn.ModelFnOps
 ce_with_logits = tf.nn.softmax_cross_entropy_with_logits
 

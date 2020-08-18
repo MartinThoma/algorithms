@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
+from decimal import Decimal, getcontext
 from fractions import Fraction
-from decimal import getcontext, Decimal
+
 digits = 500
 getcontext().prec = digits
 

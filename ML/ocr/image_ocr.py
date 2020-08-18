@@ -31,27 +31,26 @@ pip install editdistance
 Created by Mike Henry
 https://github.com/mbhenry/
 '''
-import os
-import itertools
-import re
 import datetime
+import itertools
+import os
+import re
+
 import cairocffi as cairo
 import editdistance
+import keras.callbacks
 import numpy as np
-from scipy import ndimage
 import pylab
 from keras import backend as K
+from keras.layers import Activation, Dense, Input, Lambda, Reshape
 from keras.layers.convolutional import Conv2D, MaxPooling2D
-from keras.layers import Input, Dense, Activation
-from keras.layers import Reshape, Lambda
 from keras.layers.merge import add, concatenate
-from keras.models import Model
 from keras.layers.recurrent import GRU
+from keras.models import Model
 from keras.optimizers import SGD
-from keras.utils.data_utils import get_file
 from keras.preprocessing import image
-import keras.callbacks
-
+from keras.utils.data_utils import get_file
+from scipy import ndimage
 
 OUTPUT_DIR = 'image_ocr'
 
@@ -91,7 +90,7 @@ def paint_text(text, w, h, rotate=False, ud=False, multi_fonts=False):
         box = context.text_extents(text)
         border_w_h = (4, 4)
         if box[2] > (w - 2 * border_w_h[1]) or box[3] > (h - 2 * border_w_h[0]):
-            raise IOError('Could not fit string into image. Max char count is too large for given image width.')
+            raise OSError('Could not fit string into image. Max char count is too large for given image width.')
 
         # teach the RNN translational invariance by
         # fitting text box randomly on canvas, with some room to rotate
@@ -197,7 +196,7 @@ class TextImageGenerator(keras.callbacks.Callback):
         self.Y_len = [0] * self.num_words
 
         # monogram file is sorted by frequency in english speech
-        with open(self.monogram_file, 'rt') as f:
+        with open(self.monogram_file) as f:
             for line in f:
                 if len(tmp_string_list) == int(self.num_words * mono_fraction):
                     break
@@ -206,7 +205,7 @@ class TextImageGenerator(keras.callbacks.Callback):
                     tmp_string_list.append(word)
 
         # bigram file contains common word pairings in english speech
-        with open(self.bigram_file, 'rt') as f:
+        with open(self.bigram_file) as f:
             lines = f.readlines()
             for line in lines:
                 if len(tmp_string_list) == self.num_words:
@@ -217,7 +216,7 @@ class TextImageGenerator(keras.callbacks.Callback):
                         (max_string_len == -1 or max_string_len is None or len(word) <= max_string_len):
                     tmp_string_list.append(word)
         if len(tmp_string_list) != self.num_words:
-            raise IOError('Could not pull enough words from supplied monogram and bigram files. ')
+            raise OSError('Could not pull enough words from supplied monogram and bigram files. ')
         # interlace to mix up the easy and hard words
         self.string_list[::2] = tmp_string_list[:self.num_words // 2]
         self.string_list[1::2] = tmp_string_list[self.num_words // 2:]
@@ -389,7 +388,7 @@ class VizCallback(keras.callbacks.Callback):
             else:
                 the_input = word_batch['the_input'][i, :, :, 0]
             pylab.imshow(the_input.T, cmap='Greys_r')
-            pylab.xlabel('Truth = \'%s\'\nDecoded = \'%s\'' % (word_batch['source_str'][i], res[i]))
+            pylab.xlabel('Truth = \'{}\'\nDecoded = \'{}\''.format(word_batch['source_str'][i], res[i]))
         fig = pylab.gcf()
         fig.set_size_inches(10, 13)
         pylab.savefig(os.path.join(self.output_dir, 'e%02d.png' % (epoch)))

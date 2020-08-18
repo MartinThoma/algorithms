@@ -2,12 +2,13 @@
 
 """Evaluate a GTSBM model on GTSBM."""
 
-from keras.models import load_model
-import gtsdb
-import scipy.misc
-import numpy as np
 import logging
 import sys
+
+import gtsdb
+import numpy as np
+import scipy.misc
+from keras.models import load_model
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     level=logging.DEBUG,
@@ -50,7 +51,7 @@ for img_orig in x_test:
                 i += 1
         slices /= 255
         # preds = model.predict(slices)
-        model.add(Reshape((-1, 1))
+        model.add(Reshape((-1, 1)))
         preds = model.predict(img)
 
         # Make prediction image

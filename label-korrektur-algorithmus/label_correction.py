@@ -18,7 +18,7 @@ class LIFO(list):
         self.append(el)
 
 
-class Graph(object):
+class Graph:
     """An undirected graph."""
 
     def __init__(self):

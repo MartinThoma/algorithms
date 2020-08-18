@@ -1,4 +1,4 @@
-from typing import List, Any, Sequence
+from typing import Any, List, Sequence
 
 
 def fib_list(n=0):

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""
+r"""
 Test the insertion / selection / deletion speed of a database.
 
 Results
@@ -54,17 +54,16 @@ import random
 import time
 import uuid
 
+import click
+import numpy as np
+import pandas as pd
+import redis
+import sqlalchemy
 # 3rd party modules
 from sqlalchemy import Column, Integer, String, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import text
-import click
-import numpy as np
-import pandas as pd
-import sqlalchemy
-import redis
-
 
 Base = declarative_base()
 

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 
 def is_increasing(seq):
@@ -61,9 +60,9 @@ def patience_sort(seq):
             piles.append([el])
     return len(piles)
 
+from bisect import bisect
 from collections import namedtuple
 from functools import total_ordering
-from bisect import bisect
 
 
 @total_ordering

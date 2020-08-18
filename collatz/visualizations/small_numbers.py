@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 
 """Graph for small Collatz sequences"""
@@ -76,7 +75,7 @@ def create_png(dotfile, base, program):
 
 def get_parser():
     """Get parser object."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("-f", "--file", dest="filename",
@@ -93,6 +92,6 @@ def get_parser():
 
 if __name__ == "__main__":
     args = get_parser()
-    write_dotfile(args.filename, args.limit, set([1]))
+    write_dotfile(args.filename, args.limit, {1})
     import os
     create_png(args.filename, os.path.splitext(args.filename)[0], args.program)

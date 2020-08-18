@@ -30,18 +30,14 @@ data set, compile the program and train the model.
 
 http://tensorflow.org/tutorials/deep_cnn/
 """
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
-from datetime import datetime
 import math
 import time
-
-import numpy as np
-import tensorflow as tf
+from datetime import datetime
 
 import cifar10
+import numpy as np
+import tensorflow as tf
 
 FLAGS = tf.app.flags.FLAGS
 
@@ -100,7 +96,7 @@ def eval_once(saver, summary_writer, top_k_op, summary_op):
 
       # Compute precision @ 1.
       precision = true_count / total_sample_count
-      print('%s: precision @ 1 = %.3f' % (datetime.now(), precision))
+      print(f'{datetime.now()}: precision @ 1 = {precision:.3f}')
 
       summary = tf.Summary()
       summary.ParseFromString(sess.run(summary_op))

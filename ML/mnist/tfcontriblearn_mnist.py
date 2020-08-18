@@ -2,12 +2,8 @@
 
 """Train MNIST classifier."""
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 import mnist
-
 import numpy as np
 import tensorflow as tf
 
@@ -53,7 +49,7 @@ def get_test_inputs():
 accuracy_score = classifier.evaluate(input_fn=get_test_inputs,
                                      steps=1)["accuracy"]
 
-print("\nTest Accuracy: {0:f}\n".format(accuracy_score))
+print(f"\nTest Accuracy: {accuracy_score:f}\n")
 
 predictions = list(classifier.predict(input_fn=x_test[:2]))
 

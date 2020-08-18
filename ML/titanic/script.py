@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 """Exploratory data analysis."""
 
@@ -7,10 +6,9 @@
 import logging
 import sys
 
+import matplotlib.pyplot as plt
 # 3rd party module
 import pandas as pd
-import matplotlib.pyplot as plt
-
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     level=logging.DEBUG,
@@ -173,7 +171,7 @@ def describe_pandas_df(df, dtype=None):
 
 def get_parser():
     """Get parser object for exploratory data analysis."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("-f", "--file",

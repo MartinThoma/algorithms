@@ -1,6 +1,7 @@
-from hypothesis import given, strategies as s
+from base64 import b64decode, b64encode
 
-from base64 import b64encode, b64decode
+from hypothesis import given
+from hypothesis import strategies as s
 
 
 @given(s.binary())

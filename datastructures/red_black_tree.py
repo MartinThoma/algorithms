@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """
 An implementation of a red–black tree as it is described in Cormen, Leiserson,
@@ -21,7 +20,6 @@ My latest source code:
 https://github.com/MartinThoma/algorithms/blob/master/datastructures/redBlackTree.py
 """
 
-from __future__ import print_function
 
 __author__ = "Original by John Reid, edited by Martin Thoma"
 __credits__ = ["John Reid", "Martin Thoma"]
@@ -33,7 +31,7 @@ __email__ = "info@martin-thoma.de"
 import os
 
 
-class RBnode(object):
+class RBnode:
     """
     A node in a red black tree.
     """
@@ -77,7 +75,7 @@ class RBnode(object):
                         repr(self.right)))
 
 
-class RBtree(object):
+class RBtree:
     """
     A red-black tree.
     """
@@ -536,11 +534,11 @@ def write_tree_as_dot(t, f, show_nil=False):
               file=f)
         if node.left and node.left != t.nil or show_nil:
             visit_node(node.left)
-            print("  %s -> %s ;" % (node_id(node), node_id(node.left)),
+            print("  {} -> {} ;".format(node_id(node), node_id(node.left)),
                   file=f)
         if node.right and node.right != t.nil or show_nil:
             visit_node(node.right)
-            print("  %s -> %s ;" % (node_id(node), node_id(node.right)),
+            print("  {} -> {} ;".format(node_id(node), node_id(node.right)),
                   file=f)
 
     print("// Created by RBtree.write_dot()", file=f)
@@ -553,7 +551,7 @@ def write_tree(t, filename, show_nil=True):
     "Write the tree as an SVG file."
     with open('%s.dot' % filename, 'w') as f:
         write_tree_as_dot(t, f, show_nil)
-    os.system('dot %s.dot -Tsvg -o %s.svg' % (filename, filename))
+    os.system(f'dot {filename}.dot -Tsvg -o {filename}.svg')
     os.system('rm %s.dot' % filename)
 
 

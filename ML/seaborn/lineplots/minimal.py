@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import numpy as np
 import seaborn as sns
+
 sns.set_style("whitegrid")
 sns.set_palette(sns.color_palette("Greens", 8))
 from scipy.ndimage.filters import gaussian_filter1d

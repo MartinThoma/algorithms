@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 """Analysis of Python packages."""
 
@@ -344,9 +343,9 @@ def get_imports(filepaths, pkg_name):
     """
     # TODO: Not all python files end with .py. We loose some.
     filepaths = [f for f in filepaths if f.endswith(".py")]
-    simple_pattern = re.compile("^\s*import\s+([a-zA-Z][a-zA-Z0-9_]*)", re.MULTILINE)
+    simple_pattern = re.compile(r"^\s*import\s+([a-zA-Z][a-zA-Z0-9_]*)", re.MULTILINE)
     from_pattern = re.compile(
-        "^\s*from\s+import\s+([a-zA-Z][a-zA-Z0-9_]*)", re.MULTILINE
+        r"^\s*from\s+import\s+([a-zA-Z][a-zA-Z0-9_]*)", re.MULTILINE
     )
     imports = {}
     for filep in filepaths:
@@ -407,7 +406,7 @@ def get_setup_packages(filepaths, pkg_name):
 
 def get_parser():
     """The parser object for this script."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 
     parser = ArgumentParser(
         description=__doc__, formatter_class=ArgumentDefaultsHelpFormatter

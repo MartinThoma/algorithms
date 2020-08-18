@@ -2,14 +2,14 @@
 
 """Get all images of a wikipedia commons category."""
 
-import urllib  # images
-import urllib2  # text
-
 import json
 import logging
-import sys
-import xmltodict
 import os
+import sys
+import urllib  # images
+
+import urllib2  # text
+import xmltodict
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     level=logging.DEBUG,

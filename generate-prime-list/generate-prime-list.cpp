@@ -1,7 +1,7 @@
 #include <stdio.h> // fopen
 #include <iostream> // atoi
 #include <vector>
-  
+
 using namespace std;
 
 void sieveOfEratosthenes(long long n) {

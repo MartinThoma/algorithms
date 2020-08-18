@@ -55,7 +55,7 @@ def print_list(current):
         print(f"!!!Breaker={BREAKER} was applied")
 
 
-class Node(object):
+class Node:
     def __init__(self, x, next_=None):
         self.value = x
         self.next = next_

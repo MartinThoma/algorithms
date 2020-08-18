@@ -17,7 +17,7 @@ def main():
     ]
     vectors = [np.array(vector) for vector in list(zip(*nr_list))]
     n = 10 ** 5
-    d = dict((i, [random.randint(1, n) for j in range(100)]) for i in range(n))
+    d = {i: [random.randint(1, n) for j in range(100)] for i in range(n)}
     list_ = [value for _, value in sorted(d.items())]
     list_int = [random.randint(0, 25) for _ in range(1000)]
     list_float = [random.random() for _ in range(1000)]
@@ -62,9 +62,10 @@ def main():
 
 
 def create_boxplot(duration_list, showfliers=False):
-    import seaborn as sns
-    import matplotlib.pyplot as plt
     import operator
+
+    import matplotlib.pyplot as plt
+    import seaborn as sns
 
     plt.figure(num=None, figsize=(8, 4), dpi=300, facecolor="w", edgecolor="k")
     sns.set(style="whitegrid")

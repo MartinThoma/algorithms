@@ -4,7 +4,6 @@ from typing import Dict, Optional, Union
 # Third party modules
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
-
 # First party modules
 from mini_app import config
 

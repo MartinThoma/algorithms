@@ -3,8 +3,9 @@
 """An example how to implement simulated annealing."""
 
 import math
-import numpy
 import random
+
+import numpy
 
 
 def simulated_annealing(x, f, u, temp, local_search_time=100):

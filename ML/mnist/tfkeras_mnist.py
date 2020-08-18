@@ -2,12 +2,13 @@
 
 """Train a CNN model on MNIST."""
 
-from __future__ import print_function
+
 import mnist
 import tensorflow
+from tensorflow.contrib.keras.api.keras.layers import (Conv2D, Dense, Dropout,
+                                                       Flatten, MaxPooling2D)
 from tensorflow.contrib.keras.api.keras.models import Sequential
-from tensorflow.contrib.keras.api.keras.layers import (Dense, Dropout, Flatten,
-                                                       Conv2D, MaxPooling2D)
+
 keras = tensorflow.contrib.keras
 
 # training specific hyperparameters

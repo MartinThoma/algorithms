@@ -1,13 +1,11 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-# 3rd party modules
-from keras.models import Sequential
-from keras.layers import Dense, Flatten
-import numpy as np
 
 # internal modules
 import hasy_tools
+import numpy as np
+from keras.layers import Dense, Flatten
+# 3rd party modules
+from keras.models import Sequential
 
 # Load the data
 data = hasy_tools.load_data()
@@ -43,4 +41,4 @@ model.save("model.h5")
 
 # evaluate the model
 scores = model.evaluate(x_test, y_test)
-print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
+print("\n{}: {:.2f}%".format(model.metrics_names[1], scores[1] * 100))

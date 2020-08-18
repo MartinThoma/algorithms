@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Utility file for the Caltech 101 dataset.
 
@@ -7,13 +5,13 @@ See http://www.vision.caltech.edu/Image_Datasets/Caltech101/Caltech101.html for
 details.
 """
 
-from __future__ import absolute_import
-from keras.utils.data_utils import get_file
-from keras import backend as K
-import numpy as np
-import scipy.ndimage
+
 import os
 
+import numpy as np
+import scipy.ndimage
+from keras import backend as K
+from keras.utils.data_utils import get_file
 
 n_classes = 102
 labels = []

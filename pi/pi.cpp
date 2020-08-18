@@ -1,7 +1,7 @@
 #include <stdio.h>
-  
+
 using namespace std;
- 
+
 int main(int argc, char* argv[]) {
     double pi = 0;
     int sign = 1.0;
@@ -9,7 +9,7 @@ int main(int argc, char* argv[]) {
         pi = pi + sign*4.0/i;
         sign *= -1;
     }
- 
+
     printf("%.60f\n", pi);
     return 0;
 }

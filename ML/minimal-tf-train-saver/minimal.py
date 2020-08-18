@@ -17,9 +17,9 @@ the features to find a propper decision boundary.
 
 __author__ = "Martin Thoma"
 
-import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
+import tensorflow as tf
 from sklearn.preprocessing import OneHotEncoder
 
 

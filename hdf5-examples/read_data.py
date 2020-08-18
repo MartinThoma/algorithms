@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import h5py
+
 filename = 'file.hdf5'
 f = h5py.File(filename, 'r')
 

@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 
-import keras
-from keras.datasets import cifar10
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Flatten, Activation
-from keras.layers import Convolution2D, MaxPooling2D
-from keras import backend as K
-from keras.preprocessing.image import ImageDataGenerator
 import time
+
+import keras
+from keras import backend as K
+from keras.datasets import cifar10
+from keras.layers import (Activation, Convolution2D, Dense, Dropout, Flatten,
+                          MaxPooling2D)
+from keras.models import Sequential
+from keras.preprocessing.image import ImageDataGenerator
 
 # Data
 img_rows, img_cols, img_channels = 32, 32, 1

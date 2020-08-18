@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """
 Tools for the HASY dataset.
@@ -10,34 +9,35 @@ in the interactive Python shell for the module options of hasy_tools.
 See https://arxiv.org/abs/1701.08380 for details about the dataset.
 """
 
-import logging
 import csv
 import json
+import logging
 import os
 import random
 
 random.seed(0)  # make sure results are reproducible
-from PIL import Image, ImageDraw
-import sys
-from six.moves import urllib
 import hashlib
-from sklearn.model_selection import train_test_split
+import sys
 
 import numpy as np
+from PIL import Image, ImageDraw
+from six.moves import urllib
+from sklearn.model_selection import train_test_split
 
 np.random.seed(0)  # make sure results are reproducible
-import scipy.ndimage
 import matplotlib.pyplot as plt
+import scipy.ndimage
 
 try:
     from urllib.request import urlretrieve  # Python 3
 except ImportError:
     from urllib import urlretrieve  # Python 2
-from six.moves.urllib.error import URLError
-from six.moves.urllib.error import HTTPError
-import tarfile
+
 import shutil
+import tarfile
+
 from six.moves import cPickle as pickle
+from six.moves.urllib.error import HTTPError, URLError
 
 logging.basicConfig(
     format="%(asctime)s %(levelname)s %(message)s",
@@ -74,7 +74,7 @@ def _load_csv(filepath, delimiter=",", quotechar="'"):
     """
     data = []
     csv_dir = os.path.dirname(filepath)
-    with open(filepath, "r") as csvfile:
+    with open(filepath) as csvfile:
         reader = csv.DictReader(csvfile, delimiter=delimiter, quotechar=quotechar)
         for row in reader:
             for el in ["path", "path1", "path2"]:
@@ -161,7 +161,7 @@ def _get_file(fname, origin, md5_hash=None, cache_subdir="~/.datasets"):
     if not os.path.exists(datadir_base):
         os.makedirs(datadir_base)
     if not os.access(datadir_base, os.W_OK):
-        logging.warning("Could not access {}.".format(cache_subdir))
+        logging.warning(f"Could not access {cache_subdir}.")
         datadir_base = os.path.join("/tmp", ".data")
     datadir = os.path.join(datadir_base, cache_subdir)
     if not os.path.exists(datadir):
@@ -183,7 +183,7 @@ def _get_file(fname, origin, md5_hash=None, cache_subdir="~/.datasets"):
         download = True
 
     if download:
-        print("Downloading data from {} to {}".format(origin, fpath))
+        print(f"Downloading data from {origin} to {fpath}")
         error_msg = "URL fetch failure on {}: {} -- {}"
         try:
             try:
@@ -326,7 +326,7 @@ def load_data(mode="fold-1", image_dim_ordering="tf"):
             raise NotImplementedError
 
         # Load fold
-        fold_dir = os.path.join(untar_fpath, "classification-task/fold-{}".format(fold))
+        fold_dir = os.path.join(untar_fpath, f"classification-task/fold-{fold}")
         train_csv_fpath = os.path.join(fold_dir, "train.csv")
         test_csv_fpath = os.path.join(fold_dir, "test.csv")
         train_csv = _load_csv(train_csv_fpath)
@@ -687,7 +687,7 @@ def _get_color_statistics(csv_filepath, verbose=False):
         black_level.append(float(b) / (b + w))
         classes.append(symbol_id)
         if verbose:
-            print("%s:\t%0.4f" % (symbol_id, black_level[-1]))
+            print("{}:\t{:0.4f}".format(symbol_id, black_level[-1]))
     print("Average black level: {:0.2f}%".format(np.average(black_level) * 100))
     print("Median black level: {:0.2f}%".format(np.median(black_level) * 100))
     print(
@@ -764,7 +764,7 @@ def _analyze_class_distribution(csv_filepath, max_data, bin_size):
     # plt.show()
     filename = "{}.pdf".format("data-dist")
     plt.savefig(filename)
-    logging.info("Plot has been saved as {}".format(filename))
+    logging.info(f"Plot has been saved as {filename}")
 
     symbolid2latex = _get_symbolid2latex()
 
@@ -793,8 +793,9 @@ def _analyze_pca(csv_filepath):
     csv_filepath : str
         Path relative to dataset_path to a CSV file which points to images
     """
-    from sklearn.decomposition import PCA
     import itertools as it
+
+    from sklearn.decomposition import PCA
 
     symbol_id2index, labels = generate_index(csv_filepath)
     data, y, s = load_images(csv_filepath, symbol_id2index, one_hot=False)
@@ -885,7 +886,7 @@ def _analyze_distances(csv_filepath):
             key=lambda n: n[2],
         )
         for label, mean_c, d in distarr:
-            print("\t%s: %0.4f" % (label, d))
+            print(f"\t{label}: {d:0.4f}")
         mean_imgs.append((latex, mean_img))
 
 
@@ -923,8 +924,8 @@ def _analyze_correlation(csv_filepath):
         Path to a CSV file which points to images
     """
     import pandas as pd
-    from matplotlib import pyplot as plt
     from matplotlib import cm as cm
+    from matplotlib import pyplot as plt
 
     symbol_id2index, labels = generate_index(csv_filepath)
     data, y, s = load_images(csv_filepath, symbol_id2index, one_hot=False, flatten=True)
@@ -984,7 +985,7 @@ def _create_stratified_split(csv_filepath, n_splits):
         train = [data[el] for el in train_index]
         test_ = [data[el] for el in test_index]
         for dataset, name in [(train, "train"), (test_, "test")]:
-            with open("%s/%s.csv" % (directory, name), "wb") as csv_file:
+            with open(f"{directory}/{name}.csv", "wb") as csv_file:
                 csv_writer = csv.writer(csv_file)
                 csv_writer.writerow(("path", "symbol_id", "latex", "user_id"))
                 for el in dataset:
@@ -1233,7 +1234,7 @@ def preprocess(x):
 def _get_parser():
     """Get parser object for hasy_tools.py."""
     import argparse
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 
     parser = ArgumentParser(
         description=__doc__, formatter_class=ArgumentDefaultsHelpFormatter

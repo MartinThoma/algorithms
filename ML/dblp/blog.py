@@ -1,13 +1,12 @@
 from collections import Counter
 from itertools import combinations
 
+import clana.io
+import clana.visualize_cm
 import networkx as nx
 import numpy as np
 import pandas as pd
 import progressbar
-
-import clana.io
-import clana.visualize_cm
 
 # Load the data
 df = pd.read_csv("articles.csv")
@@ -23,7 +22,7 @@ print("* Unique elements: {}".format(len(author_count)))
 print("* Most common:")
 most_common = sorted(author_count.items(), key=lambda n: n[1], reverse=True)
 for name, count in most_common[:10]:
-    print("    {:>4}x {}".format(count, name))
+    print(f"    {count:>4}x {name}")
 
 unique_authors = sorted(list(author_count.keys()))
 
@@ -45,7 +44,7 @@ def get_biggest_clusters(edges, n=10):
 
 
 def create_matrix(nodes, edges):
-    n2i = dict([(node, i) for i, node in enumerate(sorted(nodes))])
+    n2i = {node: i for i, node in enumerate(sorted(nodes))}
     # node to index
     mat = np.zeros((len(nodes), len(nodes)), dtype=np.int32)
     for edge in edges:

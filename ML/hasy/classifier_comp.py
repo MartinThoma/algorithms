@@ -2,22 +2,22 @@
 
 """Train classifiers to predict HASY data."""
 
-import numpy as np
 import time
 
+import numpy as np
+from sklearn import cross_validation
+from sklearn.discriminant_analysis import (LinearDiscriminantAnalysis,
+                                           QuadraticDiscriminantAnalysis)
+from sklearn.ensemble import (AdaBoostClassifier, GradientBoostingClassifier,
+                              RandomForestClassifier)
+from sklearn.linear_model import LogisticRegression
+from sklearn.naive_bayes import GaussianNB
 # Classifiers
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.svm import SVC
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.naive_bayes import GaussianNB
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 from sklearn.neural_network import BernoulliRBM
 from sklearn.pipeline import Pipeline
-from sklearn.linear_model import LogisticRegression
-from sklearn import cross_validation
+from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
 
 
 def main():
@@ -184,7 +184,7 @@ def view_image(image, label=""):
         Make sure this is of the shape you want.
     label : str
     """
-    from matplotlib.pyplot import show, imshow, cm
+    from matplotlib.pyplot import cm, imshow, show
     print("Label: %s" % label)
     imshow(image, cmap=cm.gray)
     show()

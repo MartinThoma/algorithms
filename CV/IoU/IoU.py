@@ -57,7 +57,7 @@ def get_iou(bb1, bb2):
 
 
 if __name__ == "__main__":
-    with open("testcases.csv", "r") as fp:
+    with open("testcases.csv") as fp:
         reader = csv.reader(fp, delimiter=",", quotechar='"')
         next(reader, None)  # skip the headers
         examples = [row for row in reader]
@@ -70,4 +70,4 @@ if __name__ == "__main__":
         pred_iou = get_iou(bb1, bb2)
         if abs(pred_iou - iou) > 1e-7:
             print("Test case {} failed ({})".format(i + 1, comment))
-            print("\tExpected {:0.4f}, got {:0.4f}".format(iou, pred_iou))
+            print(f"\tExpected {iou:0.4f}, got {pred_iou:0.4f}")

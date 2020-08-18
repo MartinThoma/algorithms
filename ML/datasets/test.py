@@ -3,8 +3,8 @@
 import hasy
 
 data = hasy.load_data()
-print("n_classes={}".format(hasy.n_classes))
-print("labels={}".format(hasy.labels))
+print(f"n_classes={hasy.n_classes}")
+print(f"labels={hasy.labels}")
 print("## complete")
 print("x.shape={:>20},\tx.dtype={}".format(data['x'].shape, data['x'].dtype))
 print("x.shape={:>20},\tx.dtype={}".format(data['y'].shape, data['y'].dtype))

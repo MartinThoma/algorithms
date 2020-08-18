@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """
 Utility file for the HASYv2 dataset.
@@ -7,18 +6,18 @@ Utility file for the HASYv2 dataset.
 See https://arxiv.org/abs/1701.08380 for details about the dataset.
 """
 
-from __future__ import absolute_import
-from keras.utils.data_utils import get_file
-from keras import backend as K
+
+import csv
+import os
+import shutil
+import tarfile
+
 import numpy as np
 import scipy.ndimage
-import os
-import tarfile
-import shutil
-import csv
+from keras import backend as K
+from keras.utils.data_utils import get_file
 from six.moves import cPickle as pickle
 from sklearn.model_selection import train_test_split
-
 
 n_classes = 369
 labels = []
@@ -48,7 +47,7 @@ def _load_csv(filepath, delimiter=',', quotechar="'"):
     """
     data = []
     csv_dir = os.path.dirname(filepath)
-    with open(filepath, 'r') as csvfile:
+    with open(filepath) as csvfile:
         reader = csv.DictReader(csvfile,
                                 delimiter=delimiter,
                                 quotechar=quotechar)
@@ -191,7 +190,7 @@ def load_data(config):
 
         # Load fold
         fold_dir = os.path.join(untar_fpath,
-                                "classification-task/fold-{}".format(fold))
+                                f"classification-task/fold-{fold}")
         train_csv_fpath = os.path.join(fold_dir, "train.csv")
         test_csv_fpath = os.path.join(fold_dir, "test.csv")
         train_csv = _load_csv(train_csv_fpath)

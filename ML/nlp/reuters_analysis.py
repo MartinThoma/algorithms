@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
-from nltk.corpus import reuters
 from collections import defaultdict
+
 import numpy as np
+from nltk.corpus import reuters
 
 
 def analyze_data_distribution(cat2count):
@@ -57,7 +58,7 @@ def analyze_vocabulary(corpus):
 
 
 def main(categories, document_ids, verbose=False):
-    print("categories: {}".format(categories))
+    print(f"categories: {categories}")
     print("number of categories: {}".format(len(categories)))
     cat2catid = {}
     for catid, cat in enumerate(sorted(categories)):

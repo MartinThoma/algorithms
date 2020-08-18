@@ -17,7 +17,7 @@ class Chat(Pyro.core.ObjBase):
     def receive(self, sender, msg, last_msg):
         """Receive a message."""
         self.msgs.append((sender, msg))
-        print("[{sender}] {msg}".format(sender=sender, msg=msg))
+        print(f"[{sender}] {msg}")
         return (self.msgs[last_msg:], len(self.msgs))
 
 
@@ -25,7 +25,7 @@ Pyro.core.initServer()
 pydaemon = Pyro.core.Daemon()
 uri = pydaemon.connect(Chat(), "chat")
 
-print("The daemon runs on port: {port}".format(port=pydaemon.port))
-print("The object's uri is: {uri}".format(uri=uri))
+print(f"The daemon runs on port: {pydaemon.port}")
+print(f"The object's uri is: {uri}")
 
 pydaemon.requestLoop()

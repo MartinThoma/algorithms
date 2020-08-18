@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-# 3rd party modules
-import keras
-import numpy as np
 
 # internal modules
 import hasy_tools
+# 3rd party modules
+import keras
+import numpy as np
 
 # Load the data
 data = hasy_tools.load_data()
@@ -39,4 +37,4 @@ print(model.summary())
 
 # Evaluate the model
 scores = model.evaluate(x_test, y_test)
-print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
+print("\n{}: {:.2f}%".format(model.metrics_names[1], scores[1] * 100))

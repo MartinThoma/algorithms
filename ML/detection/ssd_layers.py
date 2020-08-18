@@ -1,10 +1,9 @@
 """Some special pupropse layers for SSD."""
 
 import keras.backend as K
-from keras.engine.topology import InputSpec
-from keras.engine.topology import Layer
 import numpy as np
 import tensorflow as tf
+from keras.engine.topology import InputSpec, Layer
 
 
 class Normalize(Layer):
@@ -34,13 +33,13 @@ class Normalize(Layer):
         else:
             self.axis = 1
         self.scale = scale
-        super(Normalize, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def build(self, input_shape):
         self.input_spec = [InputSpec(shape=input_shape)]
         shape = (input_shape[self.axis],)
         init_gamma = self.scale * np.ones(shape)
-        self.gamma = K.variable(init_gamma, name='{}_gamma'.format(self.name))
+        self.gamma = K.variable(init_gamma, name=f'{self.name}_gamma')
         self.trainable_weights = [self.gamma]
 
     def call(self, x, mask=None):
@@ -106,7 +105,7 @@ class PriorBox(Layer):
                     self.aspect_ratios.append(1.0 / ar)
         self.variances = np.array(variances)
         self.clip = True
-        super(PriorBox, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def compute_output_shape(self, input_shape):
         num_priors_ = len(self.aspect_ratios)

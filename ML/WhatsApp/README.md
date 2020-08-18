@@ -23,5 +23,3 @@ $ python3 analysis.py -f "WhatsApp Chat with YOUR CHAT PARTNER.txt"
 
 
 ## Results
-
-

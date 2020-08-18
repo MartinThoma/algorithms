@@ -2,9 +2,10 @@
 
 """Swap rows and colums of a square integer matrix simultaneously."""
 
-import numpy as np
 import random
 import sys
+
+import numpy as np
 
 random.seed(0)
 

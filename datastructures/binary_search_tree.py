@@ -1,10 +1,8 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-from __future__ import print_function
 
 
-class Node(object):
+
+class Node:
     """
     A node.
 
@@ -45,7 +43,7 @@ class Node(object):
             return "NIL"
 
 
-class BinarySearchTree(object):
+class BinarySearchTree:
     """ A binary search tree implementation for learning purposes. """
 
     def __init__(self, create_node=Node):
@@ -222,15 +220,15 @@ def write_tree_as_dot(t, f, show_nil=False):
 
     def visit_node(node):
         "Visit a node."
-        print("  %s [label=\"%s\"];" % (node_id(node), node),
+        print("  {} [label=\"{}\"];".format(node_id(node), node),
               file=f)
         if node.left_child and node.left_child != t.nil or show_nil:
             visit_node(node.left_child)
-            print("  %s -> %s ;" % (node_id(node), node_id(node.left_child)),
+            print("  {} -> {} ;".format(node_id(node), node_id(node.left_child)),
                   file=f)
         if node.right_child and node.right_child != t.nil or show_nil:
             visit_node(node.right_child)
-            print("  %s -> %s ;" % (node_id(node), node_id(node.right_child)),
+            print("  {} -> {} ;".format(node_id(node), node_id(node.right_child)),
                   file=f)
 
     print("// Created by rbtree.write_dot()", file=f)
@@ -253,13 +251,14 @@ def test_tree(t, keys):
 
 if '__main__' == __name__:
     import os
+
     import numpy.random as R
 
     def write_tree(t, filename):
         "Write the tree as an SVG file."
         with open('%s.dot' % filename, 'w') as f:
             write_tree_as_dot(t, f)
-        os.system('dot %s.dot -Tsvg -o %s.svg' % (filename, filename))
+        os.system(f'dot {filename}.dot -Tsvg -o {filename}.svg')
 
     # test the rbtree
     R.seed(2)

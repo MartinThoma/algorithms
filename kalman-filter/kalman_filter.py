@@ -2,11 +2,11 @@
 
 """Pseudo Python code for calculating the Kalman filter for learning."""
 
-import numpy.random
 import matplotlib.pyplot as plt
+import numpy.random
 
 
-class KalmanFilter(object):
+class KalmanFilter:
     """
     Kalman filter for finding the true value of data comming iteratively.
 

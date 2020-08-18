@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 
-import Pyro4
-import time
 import signal
+import time
 from multiprocessing import Process
+
+import Pyro4
 
 
 @Pyro4.expose
-class Thing(object):
+class Thing:
     def method(self, arg):
         return arg * 2
 
@@ -15,7 +16,7 @@ class Thing(object):
 def start_server():
     daemon = Pyro4.Daemon()
     uri = daemon.register(Thing)
-    print("uri={}".format(uri))
+    print(f"uri={uri}")
     daemon.requestLoop()
     # ------ alternatively, using serveSimple -----
     Pyro4.Daemon.serveSimple(

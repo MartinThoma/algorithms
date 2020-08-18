@@ -28,4 +28,3 @@ didn't find in the paper (I might just have missed it):
 6. Did you use a bias for the Convolutional layer in the CIFAR10 model?
 7. Did you use a regularizer (e.g. l2 with 1E-4) for the CIFAR10 model?
 8. Did you use data augmentation for the CIFAR10 model? If yes, which kind?
-

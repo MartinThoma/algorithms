@@ -7,13 +7,13 @@ This is just a minor modification of code from
 https://github.com/rykov8/ssd_keras
 """
 
-from keras.applications.imagenet_utils import preprocess_input
-from keras.preprocessing import image
-import matplotlib.pyplot as plt
-import numpy as np
-from scipy.misc import imread
 import sys
 
+import matplotlib.pyplot as plt
+import numpy as np
+from keras.applications.imagenet_utils import preprocess_input
+from keras.preprocessing import image
+from scipy.misc import imread
 from ssd import SSD300
 from ssd_utils import BBoxUtility
 
@@ -65,7 +65,7 @@ def create_overlay(img, results, voc_classes, plt_fname):
         score = top_conf[i]
         label = int(top_label_indices[i])
         label_name = voc_classes[label - 1]
-        display_txt = '{:0.2f}, {}'.format(score, label_name)
+        display_txt = f'{score:0.2f}, {label_name}'
         coords = (xmin, ymin), xmax - xmin + 1, ymax - ymin + 1
         color = colors[label]
         currentAxis.add_patch(plt.Rectangle(*coords,
@@ -118,7 +118,7 @@ def main(img_paths):
 
 def get_parser():
     """Get parser object."""
-    from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+    from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("-f", "--file",

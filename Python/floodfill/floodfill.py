@@ -39,7 +39,7 @@ def init_graph(arr):
 
 def get_components(graph):
     visited = set()
-    new_candidates = set([(0, 0)])
+    new_candidates = {(0, 0)}
     components = []
     while new_candidates:
         current_component = []
