@@ -207,8 +207,8 @@ comparison of them. The dates are as of 2020-09-26 07:00+00:00:
 ## Links
 
 * [cPython](https://github.com/python/cpython/tags)
-* [simplejson](https://pypi.org/project/simplejson/) / [GitHub](https://github.com/simplejson/simplejson)
-* [ujson](https://pypi.org/project/ujson/) / [GitHub](https://github.com/ultrajson/ultrajson)
+* [simplejson](https://pypi.org/project/simplejson/) / [GitHub](https://github.com/simplejson/simplejson) / [Question for Feedback](https://github.com/simplejson/simplejson/issues/267)
+* [ujson](https://pypi.org/project/ujson/) / [GitHub](https://github.com/ultrajson/ultrajson) / [Question for Feedback](https://github.com/ultrajson/ultrajson/issues/428)
 * [orjson](https://pypi.org/project/orjson/) / [GitHub](https://github.com/ijl/orjson)
 * [pysimdjson](https://pypi.org/project/pysimdjson/) / [GitHub](https://github.com/TkTech/pysimdjson)
 * [python-rapidjson](https://pypi.org/project/python-rapidjson/) / [GitHub](https://github.com/python-rapidjson/python-rapidjson)
