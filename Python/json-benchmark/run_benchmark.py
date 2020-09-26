@@ -118,6 +118,7 @@ def test_write(in_filepath: str, out_filepath: str, title: str, repetitions: int
 
 def test_read(in_filepath: str, out_filepath: str, title: str, repetitions: int):
     filepath = os.path.abspath(in_filepath)
+    print(f"## {title}")
     print(f"File size: {os.path.getsize(filepath):,} Byte")
     ground_truth = read_json(filepath)
     functions = [
@@ -175,7 +176,7 @@ def create_boxplot(duration_list, title, out_filepath, sort_order=False):
 
 
 if __name__ == "__main__":
-    repetitions = 100
+    repetitions = 1000
     test_read(
         "data/canada.json",
         "read-geojson.png",

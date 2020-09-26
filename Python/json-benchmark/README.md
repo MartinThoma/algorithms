@@ -153,25 +153,25 @@ comparison of them. The dates are as of 2020-09-26 07:00+00:00:
     </tr>
     <tr>
         <th>GeoJSON Read</th>
-        <td>44ms</td>
-        <td>44ms</td>
-        <td style="background-color: green;">20ms</td>
+        <td>48ms</td>
+        <td>45ms</td>
+        <td style="background-color: green;">22ms</td>
+        <td style="background-color: green;">19ms</td>
         <td style="background-color: green;">14ms</td>
-        <td style="background-color: green;">16ms</td>
-        <td style="background-color: red;">79ms</td>
+        <td style="background-color: red;">83ms</td>
     </tr>
     <tr>
         <th>GeoJSON Write</th>
-        <td>293ms</td>
-        <td>364ms</td>
-        <td style="background-color: green;">36ms</td>
+        <td>291ms</td>
+        <td style="background-color: red;">352ms</td>
+        <td style="background-color: green;">34ms</td>
         <td style="background-color: green;">15ms</td>
-        <td>286ms</td>
-        <td style="background-color: green;">106ms</td>
+        <td>289ms</td>
+        <td style="background-color: green;">108ms</td>
     </tr>
     <tr>
         <th>Twitter Read</th>
-        <td>5ms</td>
+        <td>6ms</td>
         <td>6ms</td>
         <td>6ms</td>
         <td>5ms</td>
@@ -180,30 +180,30 @@ comparison of them. The dates are as of 2020-09-26 07:00+00:00:
     </tr>
     <tr>
         <th>Twitter Write</th>
-        <td>24ms</td>
-        <td>30ms</td>
+        <td>25ms</td>
+        <td style="background-color: red;">33ms</td>
         <td style="background-color: green;">5ms</td>
         <td style="background-color: green;">3ms</td>
         <td>24ms</td>
-        <td style="background-color: green;">7ms</td>
+        <td style="background-color: green;">6ms</td>
     </tr>
     <tr>
         <th>2MB Float List Read</th>
-        <td>34ms</td>
-        <td>33ms</td>
-        <td style="background-color: green;">14ms</td>
+        <td>36ms</td>
+        <td>37ms</td>
+        <td style="background-color: green;">16ms</td>
+        <td style="background-color: green;">9ms</td>
         <td style="background-color: green;">7ms</td>
-        <td style="background-color: green;">7ms</td>
-        <td style="background-color: red;">57ms</td>
+        <td style="background-color: green;">66ms</td>
     </tr>
     <tr>
         <th>2MB Float List Write</th>
-        <td>159ms</td>
-        <td style="background-color: red;">179ms</td>
-        <td style="background-color: green;">22ms</td>
+        <td>161ms</td>
+        <td style="background-color: red;">186ms</td>
+        <td style="background-color: green;">25ms</td>
         <td style="background-color: green;">12ms</td>
-        <td style="background-color: red;">165ms</td>
-        <td>91ms</td>
+        <td style="background-color: red;">164ms</td>
+        <td>104ms</td>
     </tr>
 </table>
 
