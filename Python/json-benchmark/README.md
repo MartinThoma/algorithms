@@ -187,22 +187,41 @@ comparison of them. The dates are as of 2020-09-26 07:00+00:00:
         <td>24ms</td>
         <td style="background-color: green;">7ms</td>
     </tr>
+    <tr>
+        <th>2MB Float List Read</th>
+        <td>34ms</td>
+        <td>33ms</td>
+        <td style="background-color: green;">14ms</td>
+        <td style="background-color: green;">7ms</td>
+        <td style="background-color: green;">7ms</td>
+        <td style="background-color: red;">57ms</td>
+    </tr>
+    <tr>
+        <th>2MB Float List Write</th>
+        <td>159ms</td>
+        <td style="background-color: red;">179ms</td>
+        <td style="background-color: green;">22ms</td>
+        <td style="background-color: green;">12ms</td>
+        <td style="background-color: red;">165ms</td>
+        <td>91ms</td>
+    </tr>
 </table>
 
 ## Speed Plots
 
+### Read
 * The baseline for reading is just reading the text file as text.
+
+![](read-float.png)
+![](read-geojson.png)
+![](read-twitter.png)
+
+### Write
 * The baseline for writing is dumping the JSON as text (converted to text before)
 
-### GeoJSON
-
-![](geojson-read.png)
-![](geojson-write.png)
-
-### Twitter
-
-![](twitter-read.png)
-![](twitter-write.png)
+![](write-float.png)
+![](write-geojson.png)
+![](write-twitter.png)
 
 ## Links
 

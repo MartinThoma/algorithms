@@ -94,8 +94,8 @@ def test_write(in_filepath: str, out_filepath: str, title: str, repetitions: int
         (write_json, "json"),
         (write_simplejson, "simplejson"),
         (write_ujson, "ujson"),
-        (write_simdjson, "simdjson"),
         (write_orjson, "orjson"),
+        (write_simdjson, "simdjson"),
         (write_rapidjson, "rapidjson"),
     ]
     duration_list = {}
@@ -125,8 +125,8 @@ def test_read(in_filepath: str, out_filepath: str, title: str, repetitions: int)
         (read_json, "json"),
         (read_simplejson, "simplejson"),
         (read_ujson, "ujson"),
-        (read_simdjson, "simdjson"),
         (read_orjson, "orjson"),
+        (read_simdjson, "simdjson"),
         (read_rapidjson, "rapidjson"),
     ]
     duration_list = {}
@@ -178,25 +178,37 @@ if __name__ == "__main__":
     repetitions = 100
     test_read(
         "data/canada.json",
-        "geojson-read.png",
+        "read-geojson.png",
         f"2.1 MB GeoJSON - Read Speed over {repetitions} repetitions",
         repetitions
     )
     test_write(
         "data/canada.json",
-        "geojson-write.png",
+        "write-geojson.png",
         f"2.1 MB GeoJSON - Write Speed over {repetitions} repetitions",
         repetitions
     )
     test_read(
         "data/twitter.json",
-        "twitter-read.png",
+        "read-twitter.png",
         f"630 KB Twitter JSON - Read Speed over {repetitions} repetitions",
         repetitions
     )
     test_write(
         "data/twitter.json",
-        "twitter-write.png",
+        "write-twitter.png",
         f"630 KB Twitter JSON - Write Speed over {repetitions} repetitions",
+        repetitions
+    )
+    test_read(
+        "data/floats.json",
+        "read-float.png",
+        f"2 MB Float JSON - Read Speed over {repetitions} repetitions",
+        repetitions
+    )
+    test_write(
+        "data/floats.json",
+        "write-float.png",
+        f"2 MB Float JSON - Write Speed over {repetitions} repetitions",
         repetitions
     )
