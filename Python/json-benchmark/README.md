@@ -106,7 +106,7 @@ comparison of them. The dates are as of 2020-09-26 07:00+00:00:
         <td>3</td>
         <td>4</td>
         <td style="background-color: red;">1</td>
-        <td>2</td>
+        <td style="background-color: red;">1</td>
         <td>2</td>
     </tr>
     <tr>
@@ -223,11 +223,19 @@ comparison of them. The dates are as of 2020-09-26 07:00+00:00:
 ![](write-geojson.png)
 ![](write-twitter.png)
 
+
+## Further Information
+
+* [UltraJSON](https://github.com/ultrajson/ultrajson) is a C library. `ujson` is a binding to it.
+* [simdjson](https://github.com/simdjson/simdjson) is a C++ library with funding from Canada. `pysimdjson` is a binding to it.
+* [Rapidjson](https://github.com/Tencent/rapidjson) is a C++ library developed by [Tencent](https://en.wikipedia.org/wiki/Tencent). `python-rapidjson` is a binding to it.
+
+
 ## Links
 
 * [cPython](https://github.com/python/cpython/tags)
 * [simplejson](https://pypi.org/project/simplejson/) / [GitHub](https://github.com/simplejson/simplejson) / [Question for Feedback](https://github.com/simplejson/simplejson/issues/267)
 * [ujson](https://pypi.org/project/ujson/) / [GitHub](https://github.com/ultrajson/ultrajson) / [Question for Feedback](https://github.com/ultrajson/ultrajson/issues/428)
 * [orjson](https://pypi.org/project/orjson/) / [GitHub](https://github.com/ijl/orjson)
-* [pysimdjson](https://pypi.org/project/pysimdjson/) / [GitHub](https://github.com/TkTech/pysimdjson)
-* [python-rapidjson](https://pypi.org/project/python-rapidjson/) / [GitHub](https://github.com/python-rapidjson/python-rapidjson)
+* [pysimdjson](https://pypi.org/project/pysimdjson/) / [GitHub](https://github.com/TkTech/pysimdjson) / [Question for Feedback](https://github.com/TkTech/pysimdjson/issues/54)
+* [python-rapidjson](https://pypi.org/project/python-rapidjson/) / [GitHub](https://github.com/python-rapidjson/python-rapidjson) / [Question for Feedback](https://github.com/python-rapidjson/python-rapidjson/issues/140)
