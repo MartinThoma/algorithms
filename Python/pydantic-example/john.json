@@ -1,1 +1,5 @@
-{"id": 1, "name": "John"}
+{
+    "id": 1,
+    "name": "John",
+    "birthdate": "1990-04-28T23:59:59"
+}

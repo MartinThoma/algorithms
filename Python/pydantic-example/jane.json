@@ -1,1 +1,7 @@
-{"id": 1, "friends": [], "bank_account": 0.0, "name": "Jane Doe"}
+{
+    "bank_account": 0.0,
+    "birthdate": "1990-04-28T23:59:59",
+    "friends": [],
+    "id": 1,
+    "name": "Jane Doe"
+}
