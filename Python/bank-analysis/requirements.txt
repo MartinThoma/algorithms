@@ -1,0 +1,6 @@
+pandas
+pydantic
+pyyaml
+seaborn
+streamlit
+matplotlib
