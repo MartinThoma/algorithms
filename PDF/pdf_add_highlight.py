@@ -10,12 +10,15 @@ page_content = page1.extractText()
 import textract
 
 text = textract.process("early-stopping-1703.09580.pdf")
-print(page_content.encode('utf-8'))
+print(page_content.encode("utf-8"))
 
-highlight = createHighlight(488.725021, 202.392357, 523.153376, 211.298922, {
-    "author": "",
-    "contents": "Bla-bla-bla"
-})
+highlight = createHighlight(
+    488.725021,
+    202.392357,
+    523.153376,
+    211.298922,
+    {"author": "", "contents": "Bla-bla-bla"},
+)
 
 addHighlightToPage(highlight, page1, pdfOutput)
 

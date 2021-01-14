@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 from decimal import Decimal
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -10,7 +10,7 @@ from pydantic import BaseModel, Field
 class User(BaseModel):
     id: int
     name = "Jane Doe"
-    birthdate: datetime.datetime
+    birthdate: Optional[datetime.datetime]
     friends: List[str] = Field(default_factory=list)
     bank_account: Decimal = Decimal(0.0)
 

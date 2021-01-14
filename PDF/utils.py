@@ -4,31 +4,33 @@ from pdfminer.pdfparser import PDFParser
 
 
 def parse(filename, maxlevel):
-    fp = open(filename, 'rb')
+    fp = open(filename, "rb")
     parser = PDFParser(fp)
     doc = PDFDocument(parser)
 
     outlines = doc.get_outlines()
     for (level, title, dest, a, se) in outlines:
         if level <= maxlevel:
-            title_words = title.encode('utf8') \
-                               .replace('\n', '') \
-                               .split()
-            title = ' '.join(title_words)
-            print('<h{level}>{title}</h{level}>'
-                  .format(level=level, title=title))
+            title_words = title.encode("utf8").replace("\n", "").split()
+            title = " ".join(title_words)
+            print("<h{level}>{title}</h{level}>".format(level=level, title=title))
 
 
 def get_parser():
     """Get parser object."""
     from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
-    parser = ArgumentParser(description=__doc__,
-                            formatter_class=ArgumentDefaultsHelpFormatter)
-    parser.add_argument("-f", "--file",
-                        dest="filename",
-                        help="Read this PDF file",
-                        metavar="FILE",
-                        required=True)
+
+    parser = ArgumentParser(
+        description=__doc__, formatter_class=ArgumentDefaultsHelpFormatter
+    )
+    parser.add_argument(
+        "-f",
+        "--file",
+        dest="filename",
+        help="Read this PDF file",
+        metavar="FILE",
+        required=True,
+    )
     return parser
 
 
