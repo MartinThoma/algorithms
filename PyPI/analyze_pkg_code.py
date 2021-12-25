@@ -137,7 +137,9 @@ def main(path, testrun=False):
     print(f"Count of exceptions={exceptions}")
 
     print("\n## Filenames")
-    group_counts: Dict[str,] = {}  # group -> [count, Dict[filename, count]]
+    group_counts: Dict[
+        str,
+    ] = {}  # group -> [count, Dict[filename, count]]
     for filename, count in sorted(
         pkg_info_aggregated.filenames.items(), key=lambda n: n[1], reverse=True
     ):
