@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import json
 import logging
 import sys
 import sqlite3
@@ -28,9 +27,6 @@ def main():
 
     Yep. All of it. Make sure you have at least 50GB disk space.
     """
-    with open("secret.json") as f:
-        mysql = json.load(f)
-
     connection = sqlite3.connect("pypi.db")
     connection.row_factory = dict_factory
     cursor = connection.cursor()

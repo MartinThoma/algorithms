@@ -9,9 +9,8 @@ import threading
 import time
 import requests
 import urllib
-from urllib import request
 from urllib.request import urlopen
-from typing import List, Tuple, Any, Dict, Optional
+from typing import Any, Optional
 import uuid
 from pydantic import BaseModel
 import datetime
@@ -29,12 +28,12 @@ class PypiPackageInfo(BaseModel):
     author: str
     author_email: str
     bugtrack_url: Optional[str]
-    classifiers: List[str]
+    classifiers: list[str]
     description: str
     description_content_type: str
     docs_url: str
     download_url: str
-    downloads: Dict[str, Any]
+    downloads: dict[str, Any]
     home_page: str
     keywords: str
     license: str
@@ -44,9 +43,9 @@ class PypiPackageInfo(BaseModel):
     package_url: str
     platform: str
     project_url: str
-    project_urls: Dict[str, Any]
+    project_urls: dict[str, Any]
     release_url: str
-    requires_dist: List[str]
+    requires_dist: list[str]
     requires_python: str
     summary: str
     version: str
@@ -58,7 +57,7 @@ class PypiPackageInfo(BaseModel):
 
 class PypiUrl(BaseModel):
     comment_text: str
-    digests: Dict[str, Any]
+    digests: dict[str, Any]
     downloads: int
     filename: str
     has_sig: bool  # int?
@@ -77,9 +76,9 @@ class PypiUrl(BaseModel):
 class PypiPackageInfoMain(BaseModel):
     info: PypiPackageInfo
     last_serial: int
-    releases: Dict[str, Any]
-    urls: List[PypiUrl]
-    vulnerabilities: List[Any]
+    releases: dict[str, Any]
+    urls: list[PypiUrl]
+    vulnerabilities: list[Any]
 
 
 def dict_factory(cursor, row):
@@ -89,7 +88,7 @@ def dict_factory(cursor, row):
     return d
 
 
-def in_parallel(target, job_list: List[Tuple[str, str]], mysql):
+def in_parallel(target, job_list: list[tuple[str, str]], mysql):
     chunk_size = 5
     for package_name_link, package_name in job_list:
         if threading.active_count() > chunk_size:
@@ -101,7 +100,7 @@ def in_parallel(target, job_list: List[Tuple[str, str]], mysql):
 
 def get_package_names(
     simple_index: str = "https://pypi.python.org/simple/",
-) -> List[Tuple[str, str]]:
+) -> list[tuple[str, str]]:
     """
     Returns
     -------
@@ -109,7 +108,7 @@ def get_package_names(
         Names of all packages.
     """
 
-    def extract_package_name(line: str) -> Tuple[str, str]:
+    def extract_package_name(line: str) -> tuple[str, str]:
         line = line.strip()
         line = line[len('<a href="') : -len("</a>")]
         path = line.split('">')[0]
@@ -344,7 +343,7 @@ def is_package_in_database(name, mysql):
 
 
 def handle_package(
-    package_name_link: str, package_name: str, mysql: Dict[str, Any]
+    package_name_link: str, package_name: str, mysql: dict[str, Any]
 ) -> None:
     """
     Load package information and store it in the database.

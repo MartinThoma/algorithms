@@ -216,7 +216,7 @@ def get_pkg_extension(package_url):
         return None
 
 
-def download(package_url):
+def download(package_url: str):
     """
     Parameters
     ----------
@@ -243,7 +243,8 @@ def download(package_url):
         try:
             urlretrieve(package_url, target)
             logging.info("Package '%s' downloaded.", pkg_name)
-        except:
+        except Exception as e:
+            print(f"Ignored exception while downloading: {e}")
             return ([], None)
     else:
         pass
@@ -260,7 +261,8 @@ def download(package_url):
             try:
                 with tarfile.open(target) as tar:
                     tar.extractall(target[:-file_ending_len])
-            except:
+            except Exception:
+                print(f"Something is wrong with the tar file of {pkg_name}")
                 # Something is wrong with the tar file
                 return ([], None)
         elif (
@@ -273,14 +275,14 @@ def download(package_url):
             try:
                 with zipfile.ZipFile(target) as tar:
                     tar.extractall(target[:-file_ending_len])
-            except:
-                # Something is wrong with the zip file
+            except Exception:
+                print(f"Something is wrong with the zip file of {package_url}")
                 return ([], None)
         else:
             raise NotImplementedError
 
     filepaths = []
-    for (dirpath, dirnames, filenames) in walk(target[:-file_ending_len]):
+    for (dirpath, _dirnames, filenames) in walk(target[:-file_ending_len]):
         filepaths.extend([os.path.join(dirpath, f) for f in filenames])
     return (filepaths, target[:-file_ending_len])
 
@@ -348,7 +350,8 @@ def get_imports(filepaths, pkg_name):
         try:
             with open(filep) as f:
                 content = f.read()
-        except:
+        except Exception:
+            print(f"Something is wrong with a file encoding of {pkg_name}")
             # there is something wrong with a file encoding. Or the file cannot
             # be opened
             # Ignore it.

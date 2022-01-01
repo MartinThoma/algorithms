@@ -10,8 +10,6 @@ def main():
     """
     Add system modules. Please run 'build_datastructure.py' before.
     """
-    with open("secret.json") as f:
-        mysql = json.load(f)
     sys_modules = get_system_modules()
     connection = sqlite3.connect("pypi.db")
     connection.row_factory = dict_factory
@@ -23,7 +21,8 @@ def main():
             "`author`, `author_email`, `maintainer`, `maintainer_email`, "
             "`requires_python`, `platform`, `version`, `license`, `keywords`, "
             "`description`, `summary`, `stable_version`, `home_page`, "
-            "`release_url`, `bugtrack_url`, `download_url`, `docs_url`, `package_url`, `_pypi_hidden`) "
+            "`release_url`, `bugtrack_url`, `download_url`, `docs_url`, "
+            "`package_url`, `_pypi_hidden`) "
             "VALUES "
             "(?, ?, 0, 'python::system::module', 'python::system::module'"
             ", 'python::system::module', 'python::system::module', true, "
