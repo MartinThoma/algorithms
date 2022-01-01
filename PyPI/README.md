@@ -32,6 +32,8 @@ You might want to examine the files:
 * `todo-unknown-pkg-extension.csv`: Package extensions which were not analyzed
   AND not seen before.
 
+9. `python create_report.py` (takes a few seconds)
+
 ## See also
 https://pypi.python.org/pypi/bandersnatch
 

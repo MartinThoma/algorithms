@@ -8,16 +8,24 @@ import json
 import logging
 import re
 import sys
+from datetime import datetime, timedelta
 
-import pymysql
+import sqlite3
 import requests
 
 logging.basicConfig(
     format="%(asctime)s %(levelname)s %(message)s",
-    level=logging.DEBUG,
+    level=logging.INFO,
     stream=sys.stdout,
 )
 logging.getLogger("requests").setLevel(logging.WARNING)
+
+
+def dict_factory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
 
 
 def main():
@@ -25,14 +33,8 @@ def main():
     with open("secret.json") as f:
         credentials = json.load(f)
 
-    connection = pymysql.connect(
-        host=credentials["host"],
-        user=credentials["user"],
-        passwd=credentials["passwd"],
-        db=credentials["db"],
-        cursorclass=pymysql.cursors.DictCursor,
-        charset="utf8",
-    )
+    connection = sqlite3.connect("pypi.db")
+    connection.row_factory = dict_factory
     cursor = connection.cursor()
 
     sql = """SELECT
@@ -70,7 +72,8 @@ def get_stargazers(credentials, packages):
         connection string
     packages : list
     """
-
+    # Use authenticated requests:
+    # https://docs.github.com/en/rest/overview/resources-in-the-rest-api#authentication
     pattern = re.compile("https://github.com/(.*?)/(.*)")
     highest = -1
 
@@ -96,7 +99,19 @@ def get_stargazers(credentials, packages):
                 print("Your credentials in secret.json are wrong.")
                 sys.exit(-1)
             else:
-                logging.debug(github_repo_meta)
+                if r.headers["X-RateLimit-Remaining"] == "0":
+                    reset_time = datetime.utcfromtimestamp(
+                        int(r.headers["X-RateLimit-Reset"])
+                    )
+                    now = datetime.utcnow()
+                    remaining = (reset_time - now) / timedelta(minutes=1)
+                    print(
+                        f"Rate limit reached. "
+                        f"The rate limit of {r.headers['X-RateLimit-Limit']} "
+                        f"reset will be at {reset_time} UTC ({remaining:0.0f} minutes remaining)"
+                    )
+                    return
+                logging.info(github_repo_meta)
                 continue
         if "stargazers_count" not in github_repo_meta:
             logging.info(
@@ -123,33 +138,27 @@ def update_stargazers(mysql, pypi_internal_mysql_id, github_repo_meta):
     github_repo_meta : int
     """
     # Connect to the database
-    connection = pymysql.connect(
-        host=mysql["host"],
-        user=mysql["user"],
-        passwd=mysql["passwd"],
-        db=mysql["db"],
-        cursorclass=pymysql.cursors.DictCursor,
-        charset="utf8mb4",
-    )
+    connection = sqlite3.connect("pypi.db")
+    connection.row_factory = dict_factory
 
     try:
-        with connection.cursor() as cursor:
-            # Create a new record
-            sql = (
-                "INSERT INTO `github` "
-                "(`id`, "
-                "`stargazers_count`, `watchers_count`, `forks_count`) "
-                "VALUES (%s, %s, %s, %s);"
-            )
-            cursor.execute(
-                sql,
-                (
-                    pypi_internal_mysql_id,
-                    github_repo_meta["stargazers_count"],
-                    github_repo_meta["watchers_count"],
-                    github_repo_meta["forks_count"],
-                ),
-            )
+        cursor = connection.cursor()
+        # Create a new record
+        sql = (
+            "INSERT INTO `github` "
+            "(`id`, "
+            "`stargazers_count`, `watchers_count`, `forks_count`) "
+            "VALUES (?, ?, ?, ?);"
+        )
+        cursor.execute(
+            sql,
+            (
+                pypi_internal_mysql_id,
+                github_repo_meta["stargazers_count"],
+                github_repo_meta["watchers_count"],
+                github_repo_meta["forks_count"],
+            ),
+        )
         connection.commit()
     finally:
         connection.close()

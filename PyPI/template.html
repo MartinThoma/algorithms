@@ -1,5 +1,20 @@
 Out of {{'{:,}'.format(all_packages)}}, only {{'{:,}'.format(nb_used_packages)}} are used.
 
+<h1>Draft packages</h1>
+This data dump is from TODO. It contains {{'{:,}'.format(total_packages)}} packages.
+Out of those, there are many that look like drafts or are not maintained:
+
+<ul>
+    <li>on_pypi=0: {{draft_pkgs_not_on_pypi}}</li>
+    <li>author="Example Author" / "Your Name": {{draft_pkgs_example_author}}</li>
+    <li>name starts with "example": {{ draft_pkgs_example_name }}</li>
+    <li>trove classifier development status alpha or earlier: {{'{:,}'.format(draft_pkgs_development_status)}}</li>
+</ul>
+
+Removing those leaves us with <b>{{'{:,}'.format(nb_noncrap)}}</b> packages.
+
+<h1>Authors</h1>
+
 There are {{'{:,}'.format(total_authors)}} authors of Python packages. The ten
 most active authors are:
 
@@ -19,9 +34,9 @@ most active authors are:
     </tbody>
 </table>
 
-## Maximum length
+<h1>Maximum length</h1>
 
-<table class="table">
+<table class="table" border="1">
     <thead>
         <tr>
             <th>Column</th>
@@ -35,14 +50,14 @@ most active authors are:
         <tr>
             <td>{{ attribute_name }}</td>
             <td>{{ null[attribute_name] }}</td>
-            <td>{{ max[attribute_name] | length }}</td>
+            <td><a href="{{ max_pkg[attribute_name] }}">{{ max[attribute_name] | length }}</a></td>
             <td>{{ max[attribute_name] | e}}</td>
         </tr>{% endfor %}
     </tbody>
 </table>
 
 
-## Platforms
+<h1>Platforms</h1>
 
 <table class="table">
     <thead>
@@ -61,7 +76,7 @@ most active authors are:
 </table>
 
 
-## Licenses
+<h1>Licenses</h1>
 
 <table class="table">
     <thead>
@@ -73,14 +88,20 @@ most active authors are:
     <tbody>
         {% for license in licenses %}
         <tr>
-            <td>{{ license['name'] | e }}</td>
+            <td>{{ license['name'][:50] | e }}</td>
             <td>{{ license['count'] }}</td>
         </tr>{% endfor %}
     </tbody>
 </table>
 
 
-## Size
+<h1>Size</h1>
+<ul>
+    <li>75% of the packages have a size of less than {{'{:,.0f}'.format(pkg_sizes_p75 / 1000)}} KB.</li>
+    <li>95% of the packages have a size of less than {{'{:,.0f}'.format(pkg_sizes_p95 / 1000)}} KB.</li>
+    <li>99% of the packages have a size of less than {{'{:,.0f}'.format(pkg_sizes_p99 / 1000)}} KB.</li>
+</ul>
+
 
 <p>What is currently the biggest Python package?</p>
 
@@ -94,17 +115,17 @@ most active authors are:
         </tr>
     </thead>
     <tbody>
-        {% for max_pkg_size in max_pkg_sizes %}
+        {% for max_pkg_size in max_pkg_sizes[:20] %}
         <tr>
             <td>{{ max_pkg_size['name'] | e }}</td>
             <td>{{ max_pkg_size['release_number'] }}</td>
-            <td>{{ max_pkg_size['size'] }}</td>
+            <td>{{'{:,.0f}'.format(max_pkg_size['size'] / 1000000)}} MB</td>
         </tr>{% endfor %}
     </tbody>
 </table>
 
 
-## Package type
+<h1>Package type</h1>
 
 <table class="table">
     <thead>

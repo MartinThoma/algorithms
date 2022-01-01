@@ -1,2 +1,4 @@
-PyMySQL
 requests
+matplotlib
+numpy
+jinja2
