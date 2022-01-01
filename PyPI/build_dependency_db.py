@@ -3,16 +3,23 @@
 import json
 import logging
 import sys
+import sqlite3
 
 # mine
 import package_analysis
-import pymysql
 
 logging.basicConfig(
     format="%(asctime)s %(levelname)s %(message)s",
     level=logging.DEBUG,
     stream=sys.stdout,
 )
+
+
+def dict_factory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
 
 
 def main():
@@ -24,14 +31,8 @@ def main():
     with open("secret.json") as f:
         mysql = json.load(f)
 
-    connection = pymysql.connect(
-        host=mysql["host"],
-        user=mysql["user"],
-        passwd=mysql["passwd"],
-        db=mysql["db"],
-        cursorclass=pymysql.cursors.DictCursor,
-        charset="utf8",
-    )
+    connection = sqlite3.connect("pypi.db")
+    connection.row_factory = dict_factory
     cursor = connection.cursor()
 
     sql = """SELECT

@@ -5,14 +5,20 @@
 import json
 import logging
 import sys
-
-import pymysql.cursors
+import sqlite3
 
 logging.basicConfig(
     format="%(asctime)s %(levelname)s %(message)s",
     level=logging.DEBUG,
     stream=sys.stdout,
 )
+
+
+def dict_factory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
 
 
 def get_package_names(mysql):
@@ -27,14 +33,8 @@ def get_package_names(mysql):
     list
         dicts {id, package name}
     """
-    connection = pymysql.connect(
-        host=mysql["host"],
-        user=mysql["user"],
-        passwd=mysql["passwd"],
-        db=mysql["db"],
-        cursorclass=pymysql.cursors.DictCursor,
-        charset="utf8",
-    )
+    connection = sqlite3.connect("pypi.db")
+    connection.row_factory = dict_factory
     cursor = connection.cursor()
     sql = "SELECT id, name FROM `packages`"
     cursor.execute(sql)
@@ -42,7 +42,7 @@ def get_package_names(mysql):
     return packages
 
 
-def prefix_analysis(pkg_names):
+def prefix_analysis(pkg_names: list[dict[str, str]]):
     """
     Parameters
     ----------

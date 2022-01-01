@@ -24,9 +24,9 @@ CREATE TABLE IF NOT EXISTS `dependencies` (
   `id` int(11) NOT NULL,
   `package` int(11) NOT NULL,
   `needs_package` int(11) NOT NULL,
-  `req_type` enum('requirements.txt','imported','setup.py') COLLATE utf8_bin NOT NULL,
+  `req_type` TEXT CHECK ( req_type in ('requirements.txt','imported','setup.py')) NOT NULL,
   `times` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+);
 
 -- --------------------------------------------------------
 
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `github` (
   `stargazers_count` int(11) NOT NULL DEFAULT '-1',
   `watchers_count` int(11) NOT NULL DEFAULT '-1',
   `forks_count` int(11) NOT NULL DEFAULT '-1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+);
 
 -- --------------------------------------------------------
 
@@ -50,27 +50,27 @@ CREATE TABLE IF NOT EXISTS `github` (
 CREATE TABLE IF NOT EXISTS `packages` (
   `id` int(11) NOT NULL,
   `on_pypi` tinyint(1) NOT NULL DEFAULT '1',
-  `name` varchar(255) COLLATE utf8_bin NOT NULL COMMENT 'Name of the package',
-  `author` varchar(255) COLLATE utf8_bin NOT NULL,
-  `author_email` varchar(255) COLLATE utf8_bin NOT NULL,
-  `maintainer` varchar(255) COLLATE utf8_bin NOT NULL,
-  `maintainer_email` varchar(255) COLLATE utf8_bin NOT NULL,
-  `requires_python` varchar(255) COLLATE utf8_bin NOT NULL,
-  `platform` varchar(255) COLLATE utf8_bin NOT NULL,
-  `version` varchar(255) COLLATE utf8_bin NOT NULL,
-  `license` varchar(255) COLLATE utf8_bin NOT NULL,
-  `keywords` text COLLATE utf8_bin NOT NULL,
-  `description` text COLLATE utf8_bin NOT NULL,
-  `summary` varchar(255) COLLATE utf8_bin NOT NULL,
-  `stable_version` varchar(255) COLLATE utf8_bin NOT NULL,
-  `home_page` varchar(255) COLLATE utf8_bin NOT NULL,
-  `release_url` varchar(255) COLLATE utf8_bin NOT NULL,
-  `bugtrack_url` varchar(255) COLLATE utf8_bin NOT NULL,
-  `download_url` varchar(255) COLLATE utf8_bin NOT NULL,
-  `docs_url` varchar(255) COLLATE utf8_bin NOT NULL,
-  `package_url` varchar(255) COLLATE utf8_bin NOT NULL,
+  `name` varchar(255) NOT NULL, --  COMMENT 'Name of the package'
+  `author` varchar(255) NOT NULL,
+  `author_email` varchar(255) NOT NULL,
+  `maintainer` varchar(255) NOT NULL,
+  `maintainer_email` varchar(255) NOT NULL,
+  `requires_python` varchar(255) NOT NULL,
+  `platform` varchar(255) NOT NULL,
+  `version` varchar(255) NOT NULL,
+  `license` varchar(255) NOT NULL,
+  `keywords` text NOT NULL,
+  `description` text NOT NULL,
+  `summary` varchar(255) NOT NULL,
+  `stable_version` varchar(255) NOT NULL,
+  `home_page` varchar(255) NOT NULL,
+  `release_url` varchar(255) NOT NULL,
+  `bugtrack_url` varchar(255) NOT NULL,
+  `download_url` varchar(255) NOT NULL,
+  `docs_url` varchar(255) NOT NULL,
+  `package_url` varchar(255) NOT NULL,
   `_pypi_hidden` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+);
 
 -- --------------------------------------------------------
 
@@ -81,8 +81,8 @@ CREATE TABLE IF NOT EXISTS `packages` (
 CREATE TABLE IF NOT EXISTS `package_classifiers` (
   `id` int(11) NOT NULL,
   `package_id` int(11) NOT NULL,
-  `classifier` varchar(255) COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+  `classifier` varchar(255) NOT NULL
+);
 
 -- --------------------------------------------------------
 
@@ -117,19 +117,19 @@ CREATE TABLE IF NOT EXISTS `package_names` (
 CREATE TABLE IF NOT EXISTS `releases` (
   `id` int(11) NOT NULL,
   `package_id` int(11) NOT NULL,
-  `release_number` varchar(255) COLLATE utf8_bin NOT NULL,
+  `release_number` varchar(255) NOT NULL,
   `has_sig` tinyint(1) NOT NULL,
-  `upload_time` varchar(255) COLLATE utf8_bin NOT NULL,
-  `comment_text` varchar(255) COLLATE utf8_bin NOT NULL,
-  `python_version` varchar(255) COLLATE utf8_bin NOT NULL,
-  `url` varchar(255) COLLATE utf8_bin NOT NULL,
-  `md5_digest` varchar(255) COLLATE utf8_bin NOT NULL,
+  `upload_time` varchar(255) NOT NULL,
+  `comment_text` varchar(255) NOT NULL,
+  `python_version` varchar(255) NOT NULL,
+  `url` varchar(255) NOT NULL,
+  `md5_digest` varchar(255) NOT NULL,
   `downloads` int(255) NOT NULL,
-  `filename` varchar(255) COLLATE utf8_bin NOT NULL,
-  `packagetype` varchar(255) COLLATE utf8_bin NOT NULL,
+  `filename` varchar(255) NOT NULL,
+  `packagetype` varchar(255) NOT NULL,
   `size` int(255) NOT NULL,
   `downloaded_bytes` int(255) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+);
 
 -- --------------------------------------------------------
 
@@ -152,16 +152,16 @@ CREATE TABLE IF NOT EXISTS `urls` (
   `id` int(11) NOT NULL,
   `package_id` int(11) NOT NULL,
   `has_sig` tinyint(1) NOT NULL,
-  `upload_time` varchar(255) COLLATE utf8_bin NOT NULL,
-  `comment_text` varchar(255) COLLATE utf8_bin NOT NULL,
-  `python_version` varchar(255) COLLATE utf8_bin NOT NULL,
-  `url` varchar(255) COLLATE utf8_bin NOT NULL,
-  `md5_digest` varchar(255) COLLATE utf8_bin NOT NULL,
+  `upload_time` varchar(255) NOT NULL,
+  `comment_text` varchar(255) NOT NULL,
+  `python_version` varchar(255) NOT NULL,
+  `url` varchar(255) NOT NULL,
+  `md5_digest` varchar(255) NOT NULL,
   `downloads` int(255) NOT NULL,
-  `filename` varchar(255) COLLATE utf8_bin NOT NULL,
-  `packagetype` varchar(255) COLLATE utf8_bin NOT NULL,
-  `size` varchar(255) COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+  `filename` varchar(255) NOT NULL,
+  `packagetype` varchar(255) NOT NULL,
+  `size` varchar(255) NOT NULL
+);
 
 -- --------------------------------------------------------
 
@@ -170,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `urls` (
 --
 DROP TABLE IF EXISTS `package_github`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `package_github` AS select `packages`.`id` AS `id`,`packages`.`name` AS `name`,`packages`.`home_page` AS `home_page`,`github`.`stargazers_count` AS `stargazers_count`,`github`.`watchers_count` AS `watchers_count`,`github`.`forks_count` AS `forks_count` from (`packages` left join `github` on((`packages`.`id` = `github`.`id`))) where ((`packages`.`license` like '%MIT%') and (`packages`.`summary` <> '') and (`packages`.`home_page` like 'https://github.com/%') and (`github`.`stargazers_count` is not null)) order by `packages`.`name`;
+CREATE VIEW `package_github` AS select `packages`.`id` AS `id`,`packages`.`name` AS `name`,`packages`.`home_page` AS `home_page`,`github`.`stargazers_count` AS `stargazers_count`,`github`.`watchers_count` AS `watchers_count`,`github`.`forks_count` AS `forks_count` from (`packages` left join `github` on((`packages`.`id` = `github`.`id`))) where ((`packages`.`license` like '%MIT%') and (`packages`.`summary` <> '') and (`packages`.`home_page` like 'https://github.com/%') and (`github`.`stargazers_count` is not null)) order by `packages`.`name`;
 
 -- --------------------------------------------------------
 
@@ -179,7 +179,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `package_names`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `package_names` AS select `packages`.`id` AS `id`,`packages`.`name` AS `name` from `packages` order by `packages`.`name`;
+CREATE VIEW `package_names` AS select `packages`.`id` AS `id`,`packages`.`name` AS `name` from `packages` order by `packages`.`name`;
 
 -- --------------------------------------------------------
 
@@ -188,7 +188,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `small_dependencies`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `small_dependencies` AS select `dependencies`.`package` AS `package`,`dependencies`.`needs_package` AS `needs_package`,`dependencies`.`times` AS `times` from `dependencies`;
+CREATE VIEW `small_dependencies` AS select `dependencies`.`package` AS `package`,`dependencies`.`needs_package` AS `needs_package`,`dependencies`.`times` AS `times` from `dependencies`;
 
 --
 -- Indexes for dumped tables

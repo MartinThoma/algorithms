@@ -2,8 +2,8 @@
 
 import json
 import logging
-
-import pymysql
+import sqlite3
+import uuid
 
 
 def main():
@@ -13,28 +13,44 @@ def main():
     with open("secret.json") as f:
         mysql = json.load(f)
     sys_modules = get_system_modules()
-    connection = pymysql.connect(
-        host=mysql["host"],
-        user=mysql["user"],
-        passwd=mysql["passwd"],
-        db=mysql["db"],
-        cursorclass=pymysql.cursors.DictCursor,
-        charset="utf8",
-    )
+    connection = sqlite3.connect("pypi.db")
+    connection.row_factory = dict_factory
     cursor = connection.cursor()
     for package_name in sys_modules:
         sql = (
-            "INSERT INTO `packages` (`name`, `on_pypi`) VALUES " "('{name}', 0);"
-        ).format(name=package_name)
+            "INSERT INTO `packages` "
+            "(`id`, `name`, `on_pypi`, "
+            "`author`, `author_email`, `maintainer`, `maintainer_email`, "
+            "`requires_python`, `platform`, `version`, `license`, `keywords`, "
+            "`description`, `summary`, `stable_version`, `home_page`, "
+            "`release_url`, `bugtrack_url`, `download_url`, `docs_url`, `package_url`, `_pypi_hidden`) "
+            "VALUES "
+            "(?, ?, 0, 'python::system::module', 'python::system::module'"
+            ", 'python::system::module', 'python::system::module', true, "
+            "'all', 'n/a', 'NULL', '', '', '', '', '', '', '', '', '', '', '');"
+        )
         try:
-            cursor.execute(sql)
+            cursor.execute(
+                sql,
+                (
+                    str(uuid.uuid4()),
+                    package_name,
+                ),
+            )
             connection.commit()
-        except pymysql.err.IntegrityError as e:
+        except ValueError as e:
             logging.warning(
-                ("Package '%s' is probably already in the " "database"), package_name
+                ("Package '%s' is probably already in the database"), package_name
             )
             if "Duplicate entry" not in str(e):
                 logging.warning(e)
+
+
+def dict_factory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
 
 
 def get_system_modules():

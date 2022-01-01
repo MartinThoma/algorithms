@@ -10,8 +10,8 @@ import shutil
 import sys
 import tarfile
 from os import walk
-
-import pymysql.cursors
+import sqlite3
+import uuid
 
 if sys.version_info[0] == 2:
     from urllib import urlretrieve
@@ -61,6 +61,13 @@ def main(package_name, package_url, release_id=None):
     remove_unpacked(download_dir)
 
 
+def dict_factory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
+
+
 def store_dependencies(
     mysql,
     package_id,
@@ -82,14 +89,9 @@ def store_dependencies(
     package_url : str
     release_id : int
     """
-    connection = pymysql.connect(
-        host=mysql["host"],
-        user=mysql["user"],
-        passwd=mysql["passwd"],
-        db=mysql["db"],
-        cursorclass=pymysql.cursors.DictCursor,
-        charset="utf8",
-    )
+    connection = sqlite3.connect("pypi.db")
+    connection.row_factory = dict_factory
+    cursor = connection.cursor()
 
     insert_dependency_db(imported_packages, "imported", package_id, mysql, connection)
     insert_dependency_db(
@@ -99,7 +101,7 @@ def store_dependencies(
     # Store that the package was downloaded
     # and analyzed
     cursor = connection.cursor()
-    sql = "UPDATE `releases` SET `downloaded_bytes` = %s WHERE `id` = %s;"
+    sql = "UPDATE `releases` SET `downloaded_bytes` = ? WHERE `id` = ?;"
     pkg_name = os.path.basename(package_url)
     target_dir = "pypipackages"
     target = os.path.join(target_dir, pkg_name)
@@ -134,14 +136,14 @@ def insert_dependency_db(imported_packages, req_type, package_id, mysql, connect
             try:
                 sql = (
                     "INSERT INTO `dependencies` "
-                    "(`package`, `needs_package`, `req_type`, `times`) "
+                    "(`id`, `package`, `needs_package`, `req_type`, `times`) "
                     " VALUES "
-                    "('{package}', '{needs_package}', '{req_type}', "
+                    "('{uid}', '{package}', '{needs_package}', '{req_type}', "
                     "'{times}');"
-                ).format(**package_info)
+                ).format(uid=uuid.uuid4(), **package_info)
                 cursor.execute(sql)
                 connection.commit()
-            except pymysql.err.IntegrityError as e:
+            except ValueError as e:  # pymysql.err.IntegrityError as e:
                 if "Duplicate entry" not in str(e):
                     logging.warning(e)
         else:
@@ -167,16 +169,10 @@ def get_pkg_id_by_name(pkg_name, mysql):
     -------
     int or None
     """
-    connection = pymysql.connect(
-        host=mysql["host"],
-        user=mysql["user"],
-        passwd=mysql["passwd"],
-        db=mysql["db"],
-        cursorclass=pymysql.cursors.DictCursor,
-        charset="utf8",
-    )
+    connection = sqlite3.connect("pypi.db")
+    connection.row_factory = dict_factory
     cursor = connection.cursor()
-    sql = "SELECT id FROM `packages` WHERE `name` = %s"
+    sql = "SELECT id FROM `packages` WHERE `name` = ?"
     cursor.execute(sql, (pkg_name,))
     id_number = cursor.fetchone()
     if id_number is not None and "id" in id_number:
