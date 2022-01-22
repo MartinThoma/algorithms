@@ -75,8 +75,11 @@ def main(path, testrun=False):
         filenames=Counter(),
     )
     exceptions = 0
+    threshold_testrun = 2000
+    threshold_config_section = 100
+    threshold_config_value = 100
     for i in progressbar.progressbar(range(len(pkgs))):
-        if testrun and i > 2000:
+        if testrun and i > threshold_testrun:
             break
         pkg = pkgs[i]
         try:
@@ -98,7 +101,7 @@ def main(path, testrun=False):
     for section, (count, _) in sorted(
         pkg_info_aggregated.setupcfg.items(), key=lambda n: n[1][0], reverse=True
     ):
-        if count < 100:
+        if count < threshold_config_section:
             break
         common_sections.append(section)
         print(f"* {count:>7,}× {section}")
@@ -109,7 +112,7 @@ def main(path, testrun=False):
             key=lambda n: n[1],
             reverse=True,
         ):
-            if count < 100:
+            if count < threshold_config_value:
                 break
             print(f"* {count:>7,}× {value}")
 
@@ -198,8 +201,12 @@ def filename2group(filename):
         return "requirements"
     elif "changes" in filename.lower() or "changelog" in filename.lower():
         return "CHANGES"
+    elif "log" in filename.lower():
+        return "logging"
     elif "authors" in filename.lower():
         return "authors"
+    elif "settings" in filename.lower() or "config" in filename.lower():
+        return "settings"
     elif (
         "intall.txt" in filename.lower()
         or "intall.rst" in filename.lower()
@@ -364,7 +371,7 @@ def handle_single_package(filepath: str) -> PkgInfo:
     return pkg_info
 
 
-def get_setup_cfg(pkg_path):
+def get_setup_cfg(pkg_path: str) -> Optional[dict]:
     setup_cfg = None
     elements = [os.path.join(pkg_path, element) for element in os.listdir(pkg_path)]
     setup_cfg_path = find_setup_cfg(elements)
@@ -373,7 +380,7 @@ def get_setup_cfg(pkg_path):
     return setup_cfg
 
 
-def get_pyprojecttoml(pkg_path):
+def get_pyprojecttoml(pkg_path: str) -> Optional[dict]:
     pyprojecttoml_dict = None
     elements = [os.path.join(pkg_path, element) for element in os.listdir(pkg_path)]
     pyprojecttoml_path = find_pyprojecttoml(elements)
@@ -394,11 +401,10 @@ def find_pyprojecttoml(filepaths):
             return filepath
 
 
-def read_setup_cfg(filepath):
+def read_setup_cfg(filepath: str) -> dict:
     # Load the configuration file
     config = ConfigParser(allow_no_value=True)
-    with open(filepath) as f:
-        config.readfp(f)
+    config.read_file(filepath)
 
     setupcfg_dict = {}
 
@@ -410,7 +416,7 @@ def read_setup_cfg(filepath):
     return setupcfg_dict
 
 
-def read_pyprojecttoml(filepath):
+def read_pyprojecttoml(filepath: str) -> dict:
     # Load the configuration file
     with open(filepath) as f:
         toml_string = f.read()
@@ -419,7 +425,7 @@ def read_pyprojecttoml(filepath):
     return parsed_toml
 
 
-def extract(source_file, target_directory):
+def extract(source_file: str, target_directory: str) -> None:
     if source_file.endswith("tar.gz"):
         tar = tarfile.open(source_file, "r:gz")
         tar.extractall(target_directory)
@@ -459,4 +465,4 @@ def get_pkg_type(filepath: str) -> str:
 
 
 if __name__ == "__main__":
-    main(path="pypipackages")
+    main(path="/media/moose/1d41967e-6a0c-4c0e-af8c-68d4fae7fa64/moose/pypipackages")

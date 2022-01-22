@@ -53,6 +53,7 @@ def prefix_analysis(pkg_names: list[dict[str, str]], known_prefixes=None):
             "collab",
             "conan",
             "nester",  # this might be in a head first tutorial?
+            "bane",  # security stuff
             "aio",
             "asyncio",
             "tornado",
@@ -90,6 +91,7 @@ def prefix_analysis(pkg_names: list[dict[str, str]], known_prefixes=None):
             "plone",
             "collective",  # plone
             "flask",
+            "pydantic",
             "django",
             "fastapi",
             "bottle",

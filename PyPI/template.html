@@ -15,8 +15,16 @@ Removing those leaves us with <b>{{'{:,}'.format(nb_noncrap)}}</b> packages.
 
 <h1>Authors</h1>
 
-There are {{'{:,}'.format(total_authors)}} authors of Python packages. The ten
-most active authors are:
+There are {{'{:,}'.format(total_authors)}} authors of Python packages.
+
+<ul>
+    <li>75% of authors have less than {{pkg_by_author_p75}} packages.</li>
+    <li>95% of authors have less than {{pkg_by_author_p95}} packages.</li>
+    <li>99% of authors have less than {{pkg_by_author_p99}} packages.</li>
+    <li>There are {{pkg_by_author_50plus}} authors with 50 or more packages.</li>
+</ul>
+
+The ten most active authors are:
 
 <table class="table">
     <thead>
@@ -30,6 +38,62 @@ most active authors are:
         <tr>
             <td>{{ author_dict['author'] }}</td>
             <td>{{ author_dict['created_packages'] }}</td>
+        </tr>{% endfor %}
+    </tbody>
+</table>
+
+<h1>Maintainers</h1>
+There are {{'{:,}'.format(total_maintainers)}} maintainers of Python packages.
+
+<ul>
+    <li>75% of authors have less than {{pkg_by_maintainer_p75}} packages.</li>
+    <li>95% of authors have less than {{pkg_by_maintainer_p95}} packages.</li>
+    <li>99% of authors have less than {{pkg_by_maintainer_p99}} packages.</li>
+    <li>There are {{pkg_by_maintainer_50plus}} maintainers with 50 or more packages.</li>
+</ul>
+
+The ten most active maintainer are:
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>maintainer</th>
+            <th>maintained packages</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for maintainer_dict in maintainer_dicts %}
+        <tr>
+            <td>{{ maintainer_dict['maintainer'] }}</td>
+            <td>{{ maintainer_dict['created_packages'] }}</td>
+        </tr>{% endfor %}
+    </tbody>
+</table>
+
+<h1>Maintainer Mail</h1>
+There are {{'{:,}'.format(total_maintainer_emails)}} maintainer emails of Python packages.
+
+<ul>
+    <li>75% of authors have less than {{pkg_by_maintainer_email_p75}} packages.</li>
+    <li>95% of authors have less than {{pkg_by_maintainer_email_p95}} packages.</li>
+    <li>99% of authors have less than {{pkg_by_maintainer_email_p99}} packages.</li>
+    <li>There are {{pkg_by_maintainer_email_50plus}} maintainers with 50 or more packages.</li>
+</ul>
+
+The ten most active maintainer emails are:
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>maintainer email</th>
+            <th>maintained packages</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for maintainer_email_dict in maintainer_email_dicts %}
+        <tr>
+            <td>{{ maintainer_email_dict['maintainer_email'] }}</td>
+            <td>{{ maintainer_email_dict['created_packages'] }}</td>
         </tr>{% endfor %}
     </tbody>
 </table>

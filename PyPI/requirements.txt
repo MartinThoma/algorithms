@@ -2,3 +2,4 @@ requests
 matplotlib
 numpy
 jinja2
+progressbar2

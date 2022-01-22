@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from jinja2 import Template
 import sqlite3
+from math import ceil
 
 template_parameters = {}
 
@@ -30,13 +31,13 @@ def create_barh(names, values, title, ylabel, filename):
     plt.savefig(filename, bbox_inches="tight")
 
 
-def get_packages_by_author(cursor, crap: str):
+def get_packages_by_x(cursor, crap: str, x: str = "author") -> dict[str, int]:
     pkg_by_author: dict[str, int] = {}
-    sql = f"""SELECT author FROM `packages` WHERE NOT ({crap})"""
+    sql = f"""SELECT {x} FROM `packages` WHERE NOT ({crap})"""
     cursor.execute(sql)  ## todo
     rows = cursor.fetchall()
     for row in rows:
-        author = row["author"].lower()
+        author = row[x].lower()
         if "Odoo Community Association".lower() in author:
             author = "Odoo Community Association".lower()
         if author not in pkg_by_author:
@@ -154,6 +155,7 @@ def get_release_sizes(cursor, crap) -> list[dict[str, Any]]:
     cursor.execute(sql)
     results = cursor.fetchall()
     return results
+
 
 with open("secret.json") as f:
     mysql = json.load(f)
@@ -340,16 +342,35 @@ cursor.execute(sql)
 total_packages = cursor.fetchone()["count"]
 template_parameters["nb_noncrap"] = total_packages
 
-##
-pkg_by_author = get_packages_by_author(cursor, crap)
-template_parameters["total_authors"] = len(pkg_by_author)
-max_authors = 100
-template_parameters["author_dicts"] = [
-    {"author": author, "created_packages": count}
-    for author, count in sorted(
-        pkg_by_author.items(), key=lambda x: x[1], reverse=True
-    )[:max_authors]
-]
+
+def gen_dev_stats(template_parameters, dev_type: str = "author"):
+    pkg_by_author = get_packages_by_x(cursor, crap, dev_type)
+    template_parameters[f"total_{dev_type}s"] = len(pkg_by_author)
+    max_authors = 100
+    template_parameters[f"{dev_type}_dicts"] = [
+        {dev_type: author, "created_packages": count}
+        for author, count in sorted(
+            pkg_by_author.items(), key=lambda x: x[1], reverse=True
+        )[:max_authors]
+    ]
+    template_parameters[f"nb_{dev_type}s"] = len(pkg_by_author)
+    template_parameters[f"pkg_by_{dev_type}_p75"] = int(
+        ceil(np.percentile(list(pkg_by_author.values()), 75))
+    )
+    template_parameters[f"pkg_by_{dev_type}_p95"] = int(
+        ceil(np.percentile(list(pkg_by_author.values()), 95))
+    )
+    template_parameters[f"pkg_by_{dev_type}_p99"] = int(
+        ceil(np.percentile(list(pkg_by_author.values()), 99))
+    )
+    template_parameters[f"pkg_by_{dev_type}_50plus"] = len(
+        [count for count in pkg_by_author.values() if count >= 50]
+    )
+
+
+gen_dev_stats(template_parameters, dev_type="author")
+gen_dev_stats(template_parameters, dev_type="maintainer")
+gen_dev_stats(template_parameters, dev_type="maintainer_email")
 
 
 def get_max_attribute(attribute_name: str) -> int:
@@ -432,11 +453,16 @@ results = cursor.fetchall()
 template_parameters["max_downloads"] = results
 
 
-
 template_parameters["max_pkg_sizes"] = get_release_sizes(cursor, crap)
-template_parameters["pkg_sizes_p75"]  = np.percentile([result["size"] for result in template_parameters["max_pkg_sizes"]], 75)
-template_parameters["pkg_sizes_p95"]  = np.percentile([result["size"] for result in template_parameters["max_pkg_sizes"]], 95)
-template_parameters["pkg_sizes_p99"]  = np.percentile([result["size"] for result in template_parameters["max_pkg_sizes"]], 99)
+template_parameters["pkg_sizes_p75"] = np.percentile(
+    [result["size"] for result in template_parameters["max_pkg_sizes"]], 75
+)
+template_parameters["pkg_sizes_p95"] = np.percentile(
+    [result["size"] for result in template_parameters["max_pkg_sizes"]], 95
+)
+template_parameters["pkg_sizes_p99"] = np.percentile(
+    [result["size"] for result in template_parameters["max_pkg_sizes"]], 99
+)
 
 
 sql = """

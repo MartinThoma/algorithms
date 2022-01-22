@@ -4,6 +4,7 @@
 
 import json
 import logging
+from optparse import Option
 import os
 import re
 import shutil
@@ -12,11 +13,8 @@ import tarfile
 from os import walk
 import sqlite3
 import uuid
-
-if sys.version_info[0] == 2:
-    from urllib import urlretrieve
-else:
-    from urllib.request import urlretrieve
+from typing import Optional, Any, Dict, List, Literal, Tuple
+from urllib.request import urlretrieve
 
 logging.basicConfig(
     format="%(asctime)s %(levelname)s %(message)s",
@@ -25,15 +23,7 @@ logging.basicConfig(
 )
 
 
-def main(package_name, package_url, release_id=None):
-    """
-    Parameters
-    ----------
-    package_name : str
-    package_url : str
-        Path to a Python package.
-    package_id : int, optional
-    """
+def main(package_name: str, package_url: str, release_id: Optional[str] = None):
     pkg_name = package_name
     if release_id is None:
         raise NotImplementedError("Look up the release id.")
@@ -42,7 +32,7 @@ def main(package_name, package_url, release_id=None):
         return
     with open("secret.json") as f:
         mysql = json.load(f)
-    package_id = get_pkg_id_by_name(pkg_name, mysql)
+    package_id = get_pkg_id_by_name(pkg_name)
     if package_id is None:
         logging.info("Package id of '%s' could not be determined", pkg_name)
         sys.exit(1)
@@ -69,26 +59,14 @@ def dict_factory(cursor, row):
 
 
 def store_dependencies(
-    mysql,
-    package_id,
-    required_packages,
-    imported_packages,
-    setup_packages,
-    package_url,
-    release_id,
+    mysql: Dict[str, Any],
+    package_id: str,
+    required_packages: Dict[str, int],
+    imported_packages: Dict[str, int],
+    setup_packages: Dict[str, int],
+    package_url: str,
+    release_id: str,
 ):
-    """
-    Parameters
-    ----------
-    mysql : dict
-        MySQL database connection information
-    package_id : int
-    required_packages : list
-    imported_packages : list
-    setup_packages : list
-    package_url : str
-    release_id : int
-    """
     connection = sqlite3.connect("pypi.db")
     connection.row_factory = dict_factory
     cursor = connection.cursor()
@@ -103,7 +81,7 @@ def store_dependencies(
     cursor = connection.cursor()
     sql = "UPDATE `releases` SET `downloaded_bytes` = ? WHERE `id` = ?;"
     pkg_name = os.path.basename(package_url)
-    target_dir = "pypipackages"
+    target_dir = "/media/moose/1d41967e-6a0c-4c0e-af8c-68d4fae7fa64/moose/pypipackages"
     target = os.path.join(target_dir, pkg_name)
     downloaded_bytes = os.path.getsize(target)
     cursor.execute(sql, (downloaded_bytes, release_id))
@@ -112,23 +90,18 @@ def store_dependencies(
     connection.close()
 
 
-def insert_dependency_db(imported_packages, req_type, package_id, mysql, connection):
-    """
-    Parameters
-    ----------
-    imported_packages : list
-    req_type : str
-        'setup.py', 'requirements.txt' or 'imported'
-    package_id : int
-    mysql : dict
-        credentials for the connection
-    connection : pymysql connection object
-    """
+def insert_dependency_db(
+    imported_packages: Dict[str, int],
+    req_type: Literal["setup.py", "requirements.txt", "imported"],
+    package_id: str,
+    mysql: Dict[str, Any],
+    connection,
+):
     cursor = connection.cursor()
     for pkg, times in imported_packages.items():
         package_info = {
             "package": package_id,
-            "needs_package": get_pkg_id_by_name(pkg, mysql),
+            "needs_package": get_pkg_id_by_name(pkg),
             "times": times,
             "req_type": req_type,
         }
@@ -143,7 +116,7 @@ def insert_dependency_db(imported_packages, req_type, package_id, mysql, connect
                 ).format(uid=uuid.uuid4(), **package_info)
                 cursor.execute(sql)
                 connection.commit()
-            except ValueError as e:  # pymysql.err.IntegrityError as e:
+            except ValueError as e:
                 if "Duplicate entry" not in str(e):
                     logging.warning(e)
         else:
@@ -157,18 +130,7 @@ def insert_dependency_db(imported_packages, req_type, package_id, mysql, connect
                 f.write("%s\n" % pkg)
 
 
-def get_pkg_id_by_name(pkg_name, mysql):
-    """
-    Parameters
-    ----------
-    pkg_name : str
-    mysql : dict
-        MySQL database connection information
-
-    Returns
-    -------
-    int or None
-    """
+def get_pkg_id_by_name(pkg_name: str) -> Optional[str]:
     connection = sqlite3.connect("pypi.db")
     connection.row_factory = dict_factory
     cursor = connection.cursor()
@@ -181,17 +143,8 @@ def get_pkg_id_by_name(pkg_name, mysql):
         return None
 
 
-def get_pkg_extension(package_url):
-    """
-    Parameters
-    ----------
-    package_url : str
-
-    Returns
-    -------
-    str
-        File extension of the package given by url
-    """
+def get_pkg_extension(package_url: str) -> Optional[str]:
+    """Returns the file extension of the package given by url."""
     not_implemented_fileending = [".msi", ".rpm", ".deb", ".tgz", ".dmg"]
     if package_url.endswith(".tar.gz"):
         return ".tar.gz"
@@ -214,26 +167,19 @@ def get_pkg_extension(package_url):
         with open("todo-unknown-pkg-extension.csv", "a") as f:
             f.write("%s\n" % package_url)
         return None
+    return None
 
 
-def download(package_url: str):
+def download(package_url: str) -> Tuple[List[str], Optional[str]]:
     """
-    Parameters
-    ----------
-    package_url : str
-        URL of a Python package
-
-    Returns
-    -------
-    tuple
-        (List of paths to all unpackaged files, folder where it got extracted)
+    Returns (List of paths to all unpackaged files, folder where it got extracted)
     """
     extension = get_pkg_extension(package_url)
     if extension is None:
         return ([], None)
     file_ending_len = len(extension)
 
-    target_dir = "pypipackages"
+    target_dir = "/media/moose/1d41967e-6a0c-4c0e-af8c-68d4fae7fa64/moose/pypipackages"
     if not os.path.exists(target_dir):
         os.makedirs(target_dir)
     pkg_name = os.path.basename(package_url)
@@ -287,14 +233,14 @@ def download(package_url: str):
     return (filepaths, target[:-file_ending_len])
 
 
-def remove_unpacked(download_dir):
+def remove_unpacked(download_dir: str):
     """
     Clean up the folders to prevent HDD of getting full.
     """
     shutil.rmtree(download_dir)
 
 
-def get_requirements(filepaths, pkg_name):
+def get_requirements(filepaths: List[str], pkg_name: str):
     """
     Get a list of all "officially" set requirements.
 
@@ -323,7 +269,7 @@ def get_requirements(filepaths, pkg_name):
     return imports
 
 
-def get_imports(filepaths, pkg_name):
+def get_imports(filepaths: List[str], pkg_name: str):
     """
     Get a list of all imported packages.
 
@@ -366,7 +312,7 @@ def get_imports(filepaths, pkg_name):
     return imports
 
 
-def get_setup_packages(filepaths, pkg_name):
+def get_setup_packages(filepaths: List[str], pkg_name: str) -> Dict[str, int]:
     """
     Get a list of all imported packages.
 
