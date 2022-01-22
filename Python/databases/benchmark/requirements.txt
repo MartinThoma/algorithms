@@ -3,5 +3,5 @@ redis==3.3.8
 PyMySQL==0.9.3
 pymemcache==2.2.2
 Click==7.0
-numpy==1.17.1
+numpy==1.21.0
 pandas==0.24.0
