@@ -8,22 +8,17 @@ If you're only interested in the data, have a look at
 
 If you want to use these scripts, please
 
-1. Install a MySQL server
-2. Add a database `pypi` to the MySQL server
-3. Add the MySQL database scheme from `database_schema.sql`
-4. Install Python requirements via `sudo pip install -r requirements.txt`
-   or `sudo pip3 install -r requirements.txt`
-5. Copy `secret.template.json` to `secret.json` in the same folder and adjust
-   the values.
+1. Create a SQLite database with the schema from `database_schema.sql` : `sqlite3 pypi.db < database_schema.sql`
+2. Install Python requirements via `sudo pip install -r requirements.txt`
 
 To fill the database, run
 
-6. `./build_datastructure.py` (takes several hours)
-7. `./add_system_packages.py` (takes a few seconds)
+3. `./build_datastructure.py` (takes several hours)
+4. `./add_system_packages.py` (takes a few seconds)
 
 If you have at least 50GB of disc space free, you can run
 
-8. `./build_dependency_db.py` (takes many many hours - probably even several days)
+5. `./build_dependency_db.py` (takes many many hours - probably even several days)
 
 You might want to examine the files:
 
@@ -32,7 +27,8 @@ You might want to examine the files:
 * `todo-unknown-pkg-extension.csv`: Package extensions which were not analyzed
   AND not seen before.
 
-9. `python create_report.py` (takes a few seconds)
+6. `python analyze_downloaded_gems.py`
+7. `python create_report.py` (takes a few seconds)
 
 ## See also
 https://pypi.python.org/pypi/bandersnatch

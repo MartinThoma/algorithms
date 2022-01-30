@@ -2,14 +2,13 @@
 
 """Create report."""
 
-import json
-
 from typing import Any
 import matplotlib.pyplot as plt
 import numpy as np
 from jinja2 import Template
 import sqlite3
 from math import ceil
+import json
 
 template_parameters = {}
 
@@ -31,9 +30,9 @@ def create_barh(names, values, title, ylabel, filename):
     plt.savefig(filename, bbox_inches="tight")
 
 
-def get_packages_by_x(cursor, crap: str, x: str = "author") -> dict[str, int]:
+def get_packages_by_x(cursor, x: str = "author") -> dict[str, int]:
     pkg_by_author: dict[str, int] = {}
-    sql = f"""SELECT {x} FROM `packages` WHERE NOT ({crap})"""
+    sql = f"""SELECT {x} FROM `packages` JOIN computed_values ON packages.id = package_id WHERE unusable=0"""
     cursor.execute(sql)  ## todo
     rows = cursor.fetchall()
     for row in rows:
@@ -46,8 +45,8 @@ def get_packages_by_x(cursor, crap: str, x: str = "author") -> dict[str, int]:
     return pkg_by_author
 
 
-def get_licenses(cursor, crap: str, min_count: int = 1) -> list[dict[str, Any]]:
-    sql = f"""SELECT license, COUNT(id) as count FROM `packages` WHERE NOT ({crap}) GROUP BY license ORDER BY count DESC"""
+def get_licenses(cursor, min_count: int = 1) -> list[dict[str, Any]]:
+    sql = f"""SELECT license, COUNT(id) as count FROM `packages` JOIN computed_values ON packages.id = package_id WHERE unusable=0 GROUP BY license ORDER BY count DESC"""
     cursor.execute(sql)
     results = cursor.fetchall()
     results_dict = {}
@@ -140,7 +139,7 @@ def get_licenses(cursor, crap: str, min_count: int = 1) -> list[dict[str, Any]]:
     return sorted(results, key=lambda n: n["count"], reverse=True)
 
 
-def get_release_sizes(cursor, crap) -> list[dict[str, Any]]:
+def get_release_sizes(cursor) -> list[dict[str, Any]]:
     sql = f"""
     SELECT
         `name`, `release_number`, `size`
@@ -148,7 +147,8 @@ def get_release_sizes(cursor, crap) -> list[dict[str, Any]]:
         `releases`
     JOIN
         `packages` ON `releases`.`package_id` = `packages`.`id`
-    WHERE releases.id IN (SELECT MAX(id) FROM releases GROUP BY package_id) AND  NOT ({crap})
+    JOIN computed_values ON packages.id = computed_values.package_id
+    WHERE releases.id IN (SELECT MAX(id) FROM releases GROUP BY releases.package_id) AND  unusable=0
     ORDER BY
         `releases`.`size` DESC
     """
@@ -157,8 +157,8 @@ def get_release_sizes(cursor, crap) -> list[dict[str, Any]]:
     return results
 
 
-with open("secret.json") as f:
-    mysql = json.load(f)
+with open("secret.json") as fp:
+    secrets = json.load(fp)
 
 connection = sqlite3.connect("pypi.db")
 connection.row_factory = dict_factory
@@ -184,7 +184,7 @@ queries.append(
         sql,
         "Module imports of Python packages",
         "Name of the imported package",
-        "images/pypi-imported-packages-count.png",
+        f"{secrets['meta_folder']}/pypi-imported-packages-count.png",
     )
 )
 ###
@@ -209,7 +209,7 @@ queries.append(
         sql,
         "Module imports of Python modules excluding system modules",
         "Name of the imported package",
-        "images/pypi-imported-packages-excluding-system-count.png",
+        f"{secrets['meta_folder']}/pypi-imported-packages-excluding-system-count.png",
     )
 )
 ###
@@ -232,7 +232,7 @@ queries.append(
         sql,
         "Weighted module imports by Python packages",
         "Name of the imported module",
-        "images/pypi-imported-packages.png",
+        f"{secrets['meta_folder']}/pypi-imported-packages.png",
     )
 )
 ###
@@ -257,7 +257,7 @@ queries.append(
         sql,
         "Module imports of Python packages, excluding system packages",
         "Number of imports",
-        "images/pypi-imported-packages-excluding-system.png",
+        f"{secrets['meta_folder']}/pypi-imported-packages-excluding-system.png",
     )
 )
 
@@ -297,19 +297,6 @@ all_packages = cursor.fetchone()["count"]
 template_parameters["all_packages"] = all_packages
 template_parameters["nb_used_packages"] = len(used_packages)
 
-
-## Remove crap
-crap = (
-    "on_pypi = 0 "
-    "OR author = 'Example Author' "
-    "OR packages.id IN (SELECT DISTINCT package_id FROM package_classifiers WHERE classifier = 'Development Status :: 1 - Planning' or classifier = 'Development Status :: 2 - Pre-Alpha' or classifier = 'Development Status :: 3 - Alpha' or classifier = 'Development Status :: 7 - Inactive') "
-    "OR author = 'Your Name' "
-    "OR name LIKE('%example%') "
-    # Remove packages created by beginners who read a 'head first' book
-    "OR summary LIKE('%A simple printer of nested lists%') "
-    "OR author = 'hfpython' "
-    "OR home_page LIKE ('%http://www.headfirstlabs.com%') "
-)
 sql = """SELECT COUNT(id) as count FROM `packages`"""
 cursor.execute(sql)
 total_packages = cursor.fetchone()["count"]
@@ -337,14 +324,14 @@ cursor.execute(sql)
 total_packages = cursor.fetchone()["count"]
 template_parameters["draft_pkgs_development_status"] = total_packages
 
-sql = f"""SELECT COUNT(id) as count FROM `packages` WHERE NOT ({crap})"""
+sql = f"""SELECT COUNT(id) as count FROM `packages` JOIN computed_values ON packages.id = package_id WHERE unusable=0"""
 cursor.execute(sql)
 total_packages = cursor.fetchone()["count"]
 template_parameters["nb_noncrap"] = total_packages
 
 
 def gen_dev_stats(template_parameters, dev_type: str = "author"):
-    pkg_by_author = get_packages_by_x(cursor, crap, dev_type)
+    pkg_by_author = get_packages_by_x(cursor, dev_type)
     template_parameters[f"total_{dev_type}s"] = len(pkg_by_author)
     max_authors = 100
     template_parameters[f"{dev_type}_dicts"] = [
@@ -438,14 +425,14 @@ cursor.execute(sql)
 results = cursor.fetchall()
 template_parameters["platforms"] = results
 
-template_parameters["licenses"] = get_licenses(cursor, crap, min_count=1000)
+template_parameters["licenses"] = get_licenses(cursor, min_count=1000)
 
 sql = f"""
 SELECT `name`, `url`, `downloads`
 FROM `urls`
 JOIN `packages` ON `urls`.`package_id` = `packages`.`id`
-WHERE
-    NOT ({crap})
+JOIN computed_values ON packages.id = computed_values.package_id 
+WHERE unusable=0
 ORDER BY `urls`.`downloads`  DESC
 LIMIT 10"""
 cursor.execute(sql)
@@ -453,7 +440,7 @@ results = cursor.fetchall()
 template_parameters["max_downloads"] = results
 
 
-template_parameters["max_pkg_sizes"] = get_release_sizes(cursor, crap)
+template_parameters["max_pkg_sizes"] = get_release_sizes(cursor)
 template_parameters["pkg_sizes_p75"] = np.percentile(
     [result["size"] for result in template_parameters["max_pkg_sizes"]], 75
 )
@@ -485,5 +472,5 @@ with open("template.html") as f:
     query = f.read()
 query = Template(query)
 rendered = query.render(**template_parameters)
-with open("created_report.html", "w") as f:
+with open(f"{secrets['meta_folder']}/created_report.html", "w") as f:
     f.write(rendered)

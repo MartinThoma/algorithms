@@ -3,6 +3,7 @@
 import logging
 import sys
 import sqlite3
+from typing import List, Dict
 
 # mine
 import package_analysis
@@ -27,6 +28,14 @@ def main():
 
     Yep. All of it. Make sure you have at least 50GB disk space.
     """
+    packages = get_from_db()
+    logging.info("Fetched %i packages.", len(packages))
+    for pkg in packages:
+        package_analysis.main(pkg["name"], pkg["url"], pkg["id"])
+        logging.info("Package '%s' done.", pkg["name"])
+
+
+def get_from_db() -> List[Dict[str, str]]:
     connection = sqlite3.connect("pypi.db")
     connection.row_factory = dict_factory
     cursor = connection.cursor()
@@ -54,10 +63,7 @@ ORDER BY
     logging.info("Start fetching packages...")
     cursor.execute(sql)
     packages = cursor.fetchall()
-    logging.info("Fetched %i packages.", len(packages))
-    for pkg in packages:
-        package_analysis.main(pkg["name"], pkg["url"], pkg["id"])
-        logging.info("Package '%s' done.", pkg["name"])
+    return packages
 
 
 if __name__ == "__main__":

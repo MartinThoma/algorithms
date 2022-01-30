@@ -8,15 +8,22 @@ import json
 import logging
 import sys
 from typing import Dict, List
+import sqlite3
 
 import progressbar
-import pymysql
 
 logging.basicConfig(
     format="%(asctime)s %(levelname)s %(message)s",
     level=logging.DEBUG,
     stream=sys.stdout,
 )
+
+
+def dict_factory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
 
 
 def main(filename: str, n: int, remove_no_edge: bool, remove_only_selfimport: bool):
@@ -34,16 +41,8 @@ def main(filename: str, n: int, remove_no_edge: bool, remove_only_selfimport: bo
     remove_only_selfimport : bool
         Remove packages which only import themselves.
     """
-    with open("../secret.json") as f:
-        mysql = json.load(f)
-    connection = pymysql.connect(
-        host=mysql["host"],
-        user=mysql["user"],
-        passwd=mysql["passwd"],
-        db=mysql["db"],
-        cursorclass=pymysql.cursors.DictCursor,
-        charset="utf8",
-    )
+    connection = sqlite3.connect("pypi.db")
+    connection.row_factory = dict_factory
     cursor = connection.cursor()
     logging.info("Start fetching data from database...")
     sql = "SELECT `id`, `name` FROM `packages`"

@@ -23,7 +23,7 @@ def dict_factory(cursor, row):
     return d
 
 
-def get_package_names(mysql: dict[str, str]) -> list[dict[str, str]]:
+def get_package_names() -> list[dict[str, str]]:
     connection = sqlite3.connect("pypi.db")
     connection.row_factory = dict_factory
     cursor = connection.cursor()
@@ -221,13 +221,10 @@ def prefix_analysis(pkg_names: list[dict[str, str]], known_prefixes=None):
 def main():
     """Orchestrate the package name analysis."""
     logging.info("Get package names...")
-    with open("secret.json") as f:
-        mysql = json.load(f)
-
-    pkg_names = get_package_names(mysql)
+    pkg_names = get_package_names()
     prefix_analysis(pkg_names)
     # for package_name_link, package_name in package_names:
-    #     handle_package(package_name_link, package_name, mysql)
+    #     handle_package(package_name_link, package_name)
 
 
 if __name__ == "__main__":

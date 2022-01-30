@@ -4,7 +4,6 @@
 
 import json
 import logging
-from optparse import Option
 import os
 import re
 import shutil
@@ -30,8 +29,6 @@ def main(package_name: str, package_url: str, release_id: Optional[str] = None):
     filepaths, download_dir = download(package_url)
     if download_dir is None:
         return
-    with open("secret.json") as f:
-        mysql = json.load(f)
     package_id = get_pkg_id_by_name(pkg_name)
     if package_id is None:
         logging.info("Package id of '%s' could not be determined", pkg_name)
@@ -40,7 +37,6 @@ def main(package_name: str, package_url: str, release_id: Optional[str] = None):
     imported_packages = get_imports(filepaths, pkg_name)
     setup_packages = get_setup_packages(filepaths, pkg_name)
     store_dependencies(
-        mysql,
         package_id,
         required_packages,
         imported_packages,
@@ -59,7 +55,6 @@ def dict_factory(cursor, row):
 
 
 def store_dependencies(
-    mysql: Dict[str, Any],
     package_id: str,
     required_packages: Dict[str, int],
     imported_packages: Dict[str, int],
@@ -71,11 +66,9 @@ def store_dependencies(
     connection.row_factory = dict_factory
     cursor = connection.cursor()
 
-    insert_dependency_db(imported_packages, "imported", package_id, mysql, connection)
-    insert_dependency_db(
-        required_packages, "requirements.txt", package_id, mysql, connection
-    )
-    insert_dependency_db(setup_packages, "setup.py", package_id, mysql, connection)
+    insert_dependency_db(imported_packages, "imported", package_id, connection)
+    insert_dependency_db(required_packages, "requirements.txt", package_id, connection)
+    insert_dependency_db(setup_packages, "setup.py", package_id, connection)
     # Store that the package was downloaded
     # and analyzed
     cursor = connection.cursor()
@@ -94,7 +87,6 @@ def insert_dependency_db(
     imported_packages: Dict[str, int],
     req_type: Literal["setup.py", "requirements.txt", "imported"],
     package_id: str,
-    mysql: Dict[str, Any],
     connection,
 ):
     cursor = connection.cursor()
@@ -188,7 +180,7 @@ def download(package_url: str) -> Tuple[List[str], Optional[str]]:
     if not os.path.exists(target):
         try:
             urlretrieve(package_url, target)
-            logging.info("Package '%s' downloaded.", pkg_name)
+            # logging.info("Package '%s' downloaded.", pkg_name)
         except Exception as e:
             print(f"Ignored exception while downloading: {e}")
             return ([], None)

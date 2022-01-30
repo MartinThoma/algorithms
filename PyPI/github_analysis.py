@@ -128,15 +128,7 @@ def get_stargazers(credentials, packages):
             highest = github_repo_meta["stargazers_count"]
 
 
-def update_stargazers(mysql, pypi_internal_mysql_id, github_repo_meta):
-    """
-    Parameters
-    ----------
-    mysql : dict
-        connection string
-    pypi_internal_mysql_id : int
-    github_repo_meta : int
-    """
+def update_stargazers(pypi_internal_sqlite_id: str, github_repo_meta: int):
     # Connect to the database
     connection = sqlite3.connect("pypi.db")
     connection.row_factory = dict_factory
@@ -153,7 +145,7 @@ def update_stargazers(mysql, pypi_internal_mysql_id, github_repo_meta):
         cursor.execute(
             sql,
             (
-                pypi_internal_mysql_id,
+                pypi_internal_sqlite_id,
                 github_repo_meta["stargazers_count"],
                 github_repo_meta["watchers_count"],
                 github_repo_meta["forks_count"],

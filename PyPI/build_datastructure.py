@@ -25,28 +25,28 @@ logging.basicConfig(
 
 
 class PypiPackageInfo(BaseModel):
-    author: str
-    author_email: str
+    author: Optional[str]
+    author_email: Optional[str]
     bugtrack_url: Optional[str]
     classifiers: list[str]
     description: str
-    description_content_type: str
-    docs_url: str
-    download_url: str
+    description_content_type: Optional[str]
+    docs_url: Optional[str]
+    download_url: Optional[str]
     downloads: dict[str, Any]
-    home_page: str
-    keywords: str
-    license: str
-    maintainer: str
-    maintainer_email: str
+    home_page: Optional[str]
+    keywords: Optional[str]
+    license: Optional[str]
+    maintainer: Optional[str]
+    maintainer_email: Optional[str]
     name: str
     package_url: str
-    platform: str
+    platform: Optional[str]
     project_url: str
-    project_urls: dict[str, Any]
+    project_urls: Optional[dict[str, Any]]
     release_url: str
-    requires_dist: list[str]
-    requires_python: str
+    requires_dist: Optional[list[str]]
+    requires_python: Optional[str]
     summary: str
     version: str
     yanked: bool
@@ -64,7 +64,7 @@ class PypiUrl(BaseModel):
     md5_digest: str
     packagetype: str
     python_version: str
-    requires_python: str
+    requires_python: Optional[str]
     size: int
     upload_time: datetime.datetime
     upload_time_iso_8601: datetime.datetime
@@ -88,14 +88,12 @@ def dict_factory(cursor, row):
     return d
 
 
-def in_parallel(target, job_list: list[tuple[str, str]], mysql):
+def in_parallel(target, job_list: list[tuple[str, str]]):
     chunk_size = 5
     for package_name_link, package_name in job_list:
         if threading.active_count() > chunk_size:
             time.sleep(1)  # delays for 1 second
-        threading.Thread(
-            target=target, args=(package_name_link, package_name, mysql)
-        ).start()
+        threading.Thread(target=target, args=(package_name_link, package_name)).start()
 
 
 def get_package_names(
@@ -125,17 +123,6 @@ def get_package_names(
 
 
 def get_package_info(package_name: str = "numpy") -> Optional[PypiPackageInfoMain]:
-    """
-    Parameters
-    ----------
-    package_name : str
-        Name of a Python package
-
-    Returns
-    -------
-    dict
-        Package meta information
-    """
     try:
         f = urlopen(f"https://pypi.org/pypi/{package_name}/json")
     except urllib.error.HTTPError as e:
@@ -146,16 +133,7 @@ def get_package_info(package_name: str = "numpy") -> Optional[PypiPackageInfoMai
     return PypiPackageInfoMain.parse_raw(content.decode("utf-8"))
 
 
-def insert_package_info(package_name: str, package_info: PypiPackageInfoMain, mysql):
-    """
-    Insert the package information into a MySQL database.
-
-    Parameters
-    ----------
-    package_info : dict
-    mysql : dict
-        MySQL database connection information
-    """
+def insert_package_info(package_name: str, package_info: PypiPackageInfoMain):
     releases = package_info.releases
     url_entries = package_info.urls
     package_info_info = package_info.info
@@ -209,7 +187,6 @@ def insert_package_info(package_name: str, package_info: PypiPackageInfoMain, my
         )
         connection.commit()
         was_successful = True
-    # except pymysql.err.IntegrityError as e:
     except sqlite3.IntegrityError as e:
         logging.error(f"{package_name} gave sqlite3.IntegrityError: {str(e)}")
         was_successful = False
@@ -226,52 +203,12 @@ def insert_package_info(package_name: str, package_info: PypiPackageInfoMain, my
 
     if was_successful:
         # Get id
-        db_package_id = is_package_in_database(package_info_info.name, mysql)
+        db_package_id = is_package_in_database(package_info_info.name)
 
         # Enter releases
         for release_number, release_all in releases.items():
             for release in release_all:
-                # e.g.
-                # https://pypi.python.org/pypi/agoraplex.themes.sphinx/json
-                # has one release number, but multiple releases for that
-                # number ... strange
-                for key in release:
-                    release[key] = str(release[key])
-                    if key == "has_sig":
-                        release[key] = release[key].replace("True", "1")
-                        release[key] = release[key].replace("False", "0")
-                release["package_id"] = db_package_id
-                release["release_number"] = release_number
-                sql = (
-                    "INSERT INTO `releases` (`id`, `package_id`, "
-                    "`release_number`, "
-                    "`has_sig`, `upload_time`, `comment_text`, "
-                    "`python_version`, `url`, `md5_digest`, `downloads`, "
-                    "`filename`, `packagetype`, `size`) VALUES "
-                    "(?, ?, ?, ?, "
-                    "?, ?, "
-                    "?, "
-                    "?, ?, ?, ?, "
-                    "?, ?);"
-                )
-                cursor.execute(
-                    sql,
-                    (
-                        str(uuid.uuid4()),
-                        release["package_id"],
-                        release["release_number"],
-                        release["has_sig"],
-                        release["upload_time"],
-                        release["comment_text"],
-                        release["python_version"],
-                        release["url"],
-                        release["md5_digest"],
-                        release["downloads"],
-                        release["filename"],
-                        release["packagetype"],
-                        release["size"],
-                    ),
-                )
+                insert_release(cursor, db_package_id, release, release_number)
         connection.commit()
 
         # Enter URLs
@@ -316,20 +253,51 @@ def insert_package_info(package_name: str, package_info: PypiPackageInfoMain, my
     connection.close()
 
 
-def is_package_in_database(name, mysql):
-    """
-    Check if a package is in the database.
+def insert_release(cursor, db_package_id, release, release_number):
+    # e.g.
+    # https://pypi.python.org/pypi/agoraplex.themes.sphinx/json
+    # has one release number, but multiple releases for that
+    # number ... strange
+    for key in release:
+        release[key] = str(release[key])
+        if key == "has_sig":
+            release[key] = release[key].replace("True", "1")
+            release[key] = release[key].replace("False", "0")
+    release["package_id"] = db_package_id
+    release["release_number"] = release_number
+    sql = (
+        "INSERT INTO `releases` (`id`, `package_id`, "
+        "`release_number`, "
+        "`has_sig`, `upload_time`, `comment_text`, "
+        "`python_version`, `url`, `md5_digest`, `downloads`, "
+        "`filename`, `packagetype`, `size`) VALUES "
+        "(?, ?, ?, ?, "
+        "?, ?, "
+        "?, "
+        "?, ?, ?, ?, "
+        "?, ?);"
+    )
+    cursor.execute(
+        sql,
+        (
+            str(uuid.uuid4()),
+            release["package_id"],
+            release["release_number"],
+            release["has_sig"],
+            release["upload_time"],
+            release["comment_text"],
+            release["python_version"],
+            release["url"],
+            release["md5_digest"],
+            release["downloads"],
+            release["filename"],
+            release["packagetype"],
+            release["size"],
+        ),
+    )
 
-    Parameters
-    ----------
-    package_name : str
-    mysql : dict
-        MySQL database connection information
 
-    Returns
-    -------
-    Either ``None`` or an integer (the ID in the database)
-    """
+def is_package_in_database(name: str) -> Optional[str]:
     connection = sqlite3.connect("pypi.db")
     connection.row_factory = dict_factory
     cursor = connection.cursor()
@@ -343,39 +311,29 @@ def is_package_in_database(name, mysql):
 
 
 def handle_package(
-    package_name_link: str, package_name: str, mysql: dict[str, Any]
-) -> None:
-    """
-    Load package information and store it in the database.
-
-    Parameters
-    ----------
-    package_name_link : str
-    package_name : str
-    mysql : dict
-        MySQL database connection information
-    """
-    package_id = is_package_in_database(package_name, mysql)
+    package_name_link: str, package_name: str
+) -> Optional[PypiPackageInfoMain]:
+    """Load package information and store it in the database."""
+    package_id = is_package_in_database(package_name)
     if package_id is not None:
         logging.info(f"Package '{package_name}' already in database. Continue.")
-        return
+        return None
     logging.info(f"Load '{package_name_link}'...")
     package_info = get_package_info(package_name_link)
     if package_info is None:
-        return
-    insert_package_info(package_name, package_info, mysql)
+        return None
+    insert_package_info(package_name, package_info)
+    return package_info
 
 
 def main():
     logging.info("Get package names. This takes about 50 seconds...")
     package_names = get_package_names()
     logging.info(f"{len(package_names)} packages found.")
-    with open("secret.json") as f:
-        mysql = json.load(f)
 
-    in_parallel(handle_package, package_names, mysql)
+    in_parallel(handle_package, package_names)
     # for package_name_link, package_name in package_names:
-    #     handle_package(package_name_link, package_name, mysql)
+    #     handle_package(package_name_link, package_name)
 
 
 if __name__ == "__main__":

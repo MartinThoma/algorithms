@@ -1,15 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 4.4.13.1deb1
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: Jan 02, 2016 at 11:19 AM
--- Server version: 5.6.27-0ubuntu1
--- PHP Version: 5.6.11-1ubuntu3.1
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
 --
 -- Database: `PyPI`
 --
@@ -163,6 +151,13 @@ CREATE TABLE IF NOT EXISTS `urls` (
   `size` varchar(255) NOT NULL
 );
 
+
+CREATE TABLE IF NOT EXISTS `computed_values` (
+  `package_id`  int(11) NOT NULL PRIMARY KEY,
+  `latest_release_id` int(11) NULL,
+  `unusable` tinyint(1) NOT NULL
+);
+
 -- --------------------------------------------------------
 
 --
@@ -198,7 +193,7 @@ CREATE VIEW `small_dependencies` AS select `dependencies`.`package` AS `package`
 -- Indexes for table `dependencies`
 --
 ALTER TABLE `dependencies`
-  ADD PRIMARY KEY (`id`),
+  ADD KEY `id`,
   ADD UNIQUE KEY `no_multiedges` (`package`,`needs_package`),
   ADD KEY `package` (`package`),
   ADD KEY `needs_package` (`needs_package`);
@@ -207,68 +202,39 @@ ALTER TABLE `dependencies`
 -- Indexes for table `github`
 --
 ALTER TABLE `github`
-  ADD PRIMARY KEY (`id`),
+  ADD KEY (`id`),
   ADD KEY `id` (`id`);
 
 --
 -- Indexes for table `packages`
 --
 ALTER TABLE `packages`
-  ADD PRIMARY KEY (`id`),
+  ADD KEY (`id`),
   ADD UNIQUE KEY `name` (`name`);
 
 --
 -- Indexes for table `package_classifiers`
 --
 ALTER TABLE `package_classifiers`
-  ADD PRIMARY KEY (`id`),
+  ADD KEY (`id`),
   ADD KEY `package_id` (`package_id`);
 
 --
 -- Indexes for table `releases`
 --
 ALTER TABLE `releases`
-  ADD PRIMARY KEY (`id`),
+  ADD KEY (`id`),
   ADD KEY `package_id` (`package_id`);
 
 --
 -- Indexes for table `urls`
 --
 ALTER TABLE `urls`
-  ADD PRIMARY KEY (`id`),
+  ADD KEY (`id`),
   ADD KEY `package_id` (`package_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `dependencies`
---
-ALTER TABLE `dependencies`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `packages`
---
-ALTER TABLE `packages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `package_classifiers`
---
-ALTER TABLE `package_classifiers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `releases`
---
-ALTER TABLE `releases`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `urls`
---
-ALTER TABLE `urls`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- Constraints for dumped tables
 --
 
 --
