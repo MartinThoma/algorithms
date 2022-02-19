@@ -38,3 +38,4 @@ OpenGL/*/main
 mldata
 .mypy_cache/
 .hypothesis/
+.python-version

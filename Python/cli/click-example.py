@@ -2,11 +2,11 @@ import click
 
 
 @click.group()
-def entry_point():
+def app():
     """Awesome app doing awesome things."""
 
 
-@entry_point.command()
+@app.command()
 @click.option("--count", default=1, help="How much love you want")
 @click.argument("name")
 def spread(name, count):
@@ -15,7 +15,7 @@ def spread(name, count):
         print(f"{name} loves you ❤️")
 
 
-@entry_point.command(name="print")
+@app.command(name="print")
 @click.argument("filepath", metavar="FILE", type=click.Path(exists=True))
 @click.option("--show-meta", default=False, is_flag=True)
 def print_(filepath, show_meta):
@@ -28,4 +28,4 @@ def print_(filepath, show_meta):
 
 
 if __name__ == "__main__":
-    entry_point()
+    app()

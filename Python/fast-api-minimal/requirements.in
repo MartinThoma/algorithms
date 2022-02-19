@@ -1,0 +1,4 @@
+pip-tools
+black
+fastapi
+uvicorn[standard]

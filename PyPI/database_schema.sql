@@ -158,6 +158,25 @@ CREATE TABLE IF NOT EXISTS `computed_values` (
   `unusable` tinyint(1) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS `package_files` (
+  `id` int(11) NOT NULL PRIMARY KEY,
+  `package_id`  int(11) NOT NULL,
+  `release_id` int(11) NULL,
+  `file_path` varchar(255) NOT NULL,
+  `file_name` varchar(255) NOT NULL,
+  `file_extension` varchar(255) NOT NULL,
+  `lines` int(11) NOT NULL,
+  `file_size` int(11) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS `package_file_lines` (
+  `id` int(11) NOT NULL PRIMARY KEY,
+  `package_id`  int(11) NOT NULL,
+  `release_id` int(11) NULL,
+  `package_file_id` int(11) NULL,
+  `line_length` int(11) NOT NULL
+);
+
 -- --------------------------------------------------------
 
 --
