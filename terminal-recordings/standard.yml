@@ -1,0 +1,369 @@
+# The configurations that used for the recording, feel free to edit them
+config:
+
+  # Specify a command to be executed
+  # like `/bin/bash -l`, `ls`, or any other commands
+  # the default is bash for Linux
+  # or powershell.exe for Windows
+  command: bash -l
+  
+  # Specify the current working directory path
+  # the default is the current working directory path
+  cwd: /home/moose
+  
+  # Export additional ENV variables
+  env:
+    recording: true
+  
+  # Explicitly set the number of columns
+  # or use `auto` to take the current
+  # number of columns of your shell
+  cols: 157
+  
+  # Explicitly set the number of rows
+  # or use `auto` to take the current
+  # number of rows of your shell
+  rows: 75
+  
+  # Amount of times to repeat GIF
+  # If value is -1, play once
+  # If value is 0, loop indefinitely
+  # If value is a positive number, loop n times
+  repeat: 0
+  
+  # Quality
+  # 1 - 100
+  quality: 100
+  
+  # Delay between frames in ms
+  # If the value is `auto` use the actual recording delays
+  frameDelay: auto
+  
+  # Maximum delay between frames in ms
+  # Ignored if the `frameDelay` isn't set to `auto`
+  # Set to `auto` to prevent limiting the max idle time
+  maxIdleTime: 2000
+  
+  # The surrounding frame box
+  # The `type` can be null, window, floating, or solid`
+  # To hide the title use the value null
+  # Don't forget to add a backgroundColor style with a null as type
+  frameBox:
+    type: floating
+    title: Terminalizer
+    style:
+      border: 0px black solid
+      # boxShadow: none
+      # margin: 0px
+  
+  # Add a watermark image to the rendered gif
+  # You need to specify an absolute path for
+  # the image on your machine or a URL, and you can also
+  # add your own CSS styles
+  watermark:
+    imagePath: null
+    style:
+      position: absolute
+      right: 15px
+      bottom: 15px
+      width: 100px
+      opacity: 0.9
+  
+  # Cursor style can be one of
+  # `block`, `underline`, or `bar`
+  cursorStyle: block
+  
+  # Font family
+  # You can use any font that is installed on your machine
+  # in CSS-like syntax
+  fontFamily: "Monaco, Lucida Console, Ubuntu Mono, Monospace"
+  
+  # The size of the font
+  fontSize: 12
+  
+  # The height of lines
+  lineHeight: 1
+  
+  # The spacing between letters
+  letterSpacing: 0
+  
+  # Theme
+  theme:
+    background: "transparent"
+    foreground: "#afafaf"
+    cursor: "#c7c7c7"
+    black: "#232628"
+    red: "#fc4384"
+    green: "#b3e33b"
+    yellow: "#ffa727"
+    blue: "#75dff2"
+    magenta: "#ae89fe"
+    cyan: "#708387"
+    white: "#d5d5d0"
+    brightBlack: "#626566"
+    brightRed: "#ff7fac"
+    brightGreen: "#c8ed71"
+    brightYellow: "#ebdf86"
+    brightBlue: "#75dff2"
+    brightMagenta: "#ae89fe"
+    brightCyan: "#b1c6ca"
+    brightWhite: "#f9f9f4"
+  
+# Records, feel free to edit them
+records:
+  - delay: 1255
+    content: "\e]0;moose@pc08:~\e\\\e]7;file://pc08/home/moose\e\\\e]0;moose@pc08: ~\amoose@pc08:~$ "
+  - delay: 891
+    content: p
+  - delay: 186
+    content: 'y'
+  - delay: 177
+    content: t
+  - delay: 47
+    content: h
+  - delay: 71
+    content: o
+  - delay: 148
+    content: 'n'
+  - delay: 197
+    content: "\r\n"
+  - delay: 116
+    content: "Python 3.9.1 (default, Jan 16 2021, 13:41:30) \r\n[GCC 9.3.0] on linux\r\nType \"help\", \"copyright\", \"credits\" or \"license\" for more information.\r\n>>> "
+  - delay: 1109
+    content: f
+  - delay: 165
+    content: r
+  - delay: 55
+    content: o
+  - delay: 173
+    content: m
+  - delay: 89
+    content: ' '
+  - delay: 365
+    content: m
+  - delay: 296
+    content: p
+  - delay: 189
+    content: u
+  - delay: 248
+    content: .
+  - delay: 548
+    content: p
+  - delay: 183
+    content: d
+  - delay: 196
+    content: ' '
+  - delay: 117
+    content: i
+  - delay: 175
+    content: m
+  - delay: 86
+    content: p
+  - delay: 152
+    content: o
+  - delay: 125
+    content: r
+  - delay: 151
+    content: t
+  - delay: 65
+    content: ' '
+  - delay: 192
+    content: e
+  - delay: 168
+    content: x
+  - delay: 172
+    content: a
+  - delay: 67
+    content: m
+  - delay: 124
+    content: p
+  - delay: 141
+    content: l
+  - delay: 76
+    content: e
+  - delay: 297
+    content: _
+  - delay: 90
+    content: d
+  - delay: 463
+    content: f
+  - delay: 356
+    content: "\r\n"
+  - delay: 487
+    content: '>>> '
+  - delay: 343
+    content: d
+  - delay: 155
+    content: f
+  - delay: 127
+    content: ' '
+  - delay: 124
+    content: '='
+  - delay: 108
+    content: ' '
+  - delay: 123
+    content: e
+  - delay: 178
+    content: x
+  - delay: 158
+    content: a
+  - delay: 71
+    content: m
+  - delay: 85
+    content: p
+  - delay: 152
+    content: l
+  - delay: 86
+    content: e
+  - delay: 253
+    content: _
+  - delay: 109
+    content: d
+  - delay: 164
+    content: f
+  - delay: 268
+    content: (
+  - delay: 212
+    content: )
+  - delay: 560
+    content: "\r\n"
+  - delay: 6
+    content: '>>> '
+  - delay: 246
+    content: d
+  - delay: 413
+    content: f
+  - delay: 742
+    content: "\r\n"
+  - delay: 9
+    content: "     country   population population_time    EUR\r\n0    Germany   82521653.0      2016-12-01   True\r\n1     France   66991000.0      2017-01-01   True\r\n2  Indonesia  255461700.0      2017-01-01  False\r\n3    Ireland    4761865.0             NaT   True\r\n4      Spain   46549045.0      2017-06-01   True\r\n5    Vatican          NaN             NaT   True\r\n>>> "
+  - delay: 2537
+    content: '{'
+  - delay: 382
+    content: '"'
+  - delay: 423
+    content: a
+  - delay: 342
+    content: '"'
+  - delay: 447
+    content: ':'
+  - delay: 197
+    content: ' '
+  - delay: 300
+    content: '"'
+  - delay: 304
+    content: b
+  - delay: 462
+    content: '"'
+  - delay: 254
+    content: ':'
+  - delay: 790
+    content: "\b\e[K"
+  - delay: 284
+    content: ','
+  - delay: 151
+    content: ' '
+  - delay: 352
+    content: '1'
+  - delay: 286
+    content: ':'
+  - delay: 718
+    content: '2'
+  - delay: 410
+    content: ','
+  - delay: 135
+    content: ' '
+  - delay: 208
+    content: '3'
+  - delay: 191
+    content: ':'
+  - delay: 1474
+    content: '3'
+  - delay: 97
+    content: .
+  - delay: 229
+    content: '4'
+  - delay: 554
+    content: ','
+  - delay: 184
+    content: ' '
+  - delay: 479
+    content: '4'
+  - delay: 212
+    content: ':'
+  - delay: 599
+    content: 'N'
+  - delay: 160
+    content: o
+  - delay: 113
+    content: 'n'
+  - delay: 117
+    content: e
+  - delay: 610
+    content: ','
+  - delay: 108
+    content: ' '
+  - delay: 427
+    content: '5'
+  - delay: 199
+    content: ':'
+  - delay: 691
+    content: ' '
+  - delay: 581
+    content: '['
+  - delay: 47
+    content: ']'
+  - delay: 119
+    content: "\b"
+  - delay: 618
+    content: "5]\b"
+  - delay: 725
+    content: "\b\e[1P]\b"
+  - delay: 192
+    content: "6]\b"
+  - delay: 462
+    content: ",]\b"
+  - delay: 149
+    content: "7]\b"
+  - delay: 823
+    content: "\e[C"
+  - delay: 1283
+    content: ','
+  - delay: 111
+    content: ' '
+  - delay: 759
+    content: '6'
+  - delay: 207
+    content: ':'
+  - delay: 915
+    content: ' '
+  - delay: 231
+    content: '"'
+  - delay: 247
+    content: o
+  - delay: 177
+    content: k
+  - delay: 338
+    content: '"'
+  - delay: 940
+    content: '}'
+  - delay: 990
+    content: "\r\n{'a': 'b', 1: 2, 3: 3.4, 4: None, 5: [6, 7], 6: 'ok'}\r\n>>> "
+  - delay: 2517
+    content: "\r\nKeyboardInterrupt\r\n>>> "
+  - delay: 323
+    content: "\r\n"
+  - delay: 76
+    content: "\e]0;moose@pc08:~\e\\\e]7;file://pc08/home/moose\e\\\e]0;moose@pc08: ~\amoose@pc08:~$ "
+  - delay: 2486
+    content: "^C\r\n\e]0;moose@pc08:~\e\\\e]7;file://pc08/home/moose\e\\\e]0;moose@pc08: ~\amoose@pc08:~$ "
+  - delay: 652
+    content: e
+  - delay: 195
+    content: x
+  - delay: 87
+    content: i
+  - delay: 156
+    content: t
+  - delay: 166
+    content: "\r\nlogout\r\n"

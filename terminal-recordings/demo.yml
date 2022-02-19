@@ -1,0 +1,270 @@
+# The configurations that used for the recording, feel free to edit them
+config:
+
+  # Specify a command to be executed
+  # like `/bin/bash -l`, `ls`, or any other commands
+  # the default is bash for Linux
+  # or powershell.exe for Windows
+  command: bash -l
+  
+  # Specify the current working directory path
+  # the default is the current working directory path
+  cwd: /home/moose
+  
+  # Export additional ENV variables
+  env:
+    recording: true
+  
+  # Explicitly set the number of columns
+  # or use `auto` to take the current
+  # number of columns of your shell
+  cols: 157
+  
+  # Explicitly set the number of rows
+  # or use `auto` to take the current
+  # number of rows of your shell
+  rows: 75
+  
+  # Amount of times to repeat GIF
+  # If value is -1, play once
+  # If value is 0, loop indefinitely
+  # If value is a positive number, loop n times
+  repeat: 0
+  
+  # Quality
+  # 1 - 100
+  quality: 100
+  
+  # Delay between frames in ms
+  # If the value is `auto` use the actual recording delays
+  frameDelay: auto
+  
+  # Maximum delay between frames in ms
+  # Ignored if the `frameDelay` isn't set to `auto`
+  # Set to `auto` to prevent limiting the max idle time
+  maxIdleTime: 2000
+  
+  # The surrounding frame box
+  # The `type` can be null, window, floating, or solid`
+  # To hide the title use the value null
+  # Don't forget to add a backgroundColor style with a null as type
+  frameBox:
+    type: floating
+    title: Terminalizer
+    style:
+      border: 0px black solid
+      # boxShadow: none
+      # margin: 0px
+  
+  # Add a watermark image to the rendered gif
+  # You need to specify an absolute path for
+  # the image on your machine or a URL, and you can also
+  # add your own CSS styles
+  watermark:
+    imagePath: null
+    style:
+      position: absolute
+      right: 15px
+      bottom: 15px
+      width: 100px
+      opacity: 0.9
+  
+  # Cursor style can be one of
+  # `block`, `underline`, or `bar`
+  cursorStyle: block
+  
+  # Font family
+  # You can use any font that is installed on your machine
+  # in CSS-like syntax
+  fontFamily: "Monaco, Lucida Console, Ubuntu Mono, Monospace"
+  
+  # The size of the font
+  fontSize: 12
+  
+  # The height of lines
+  lineHeight: 1
+  
+  # The spacing between letters
+  letterSpacing: 0
+  
+  # Theme
+  theme:
+    background: "transparent"
+    foreground: "#afafaf"
+    cursor: "#c7c7c7"
+    black: "#232628"
+    red: "#fc4384"
+    green: "#b3e33b"
+    yellow: "#ffa727"
+    blue: "#75dff2"
+    magenta: "#ae89fe"
+    cyan: "#708387"
+    white: "#d5d5d0"
+    brightBlack: "#626566"
+    brightRed: "#ff7fac"
+    brightGreen: "#c8ed71"
+    brightYellow: "#ebdf86"
+    brightBlue: "#75dff2"
+    brightMagenta: "#ae89fe"
+    brightCyan: "#b1c6ca"
+    brightWhite: "#f9f9f4"
+  
+# Records, feel free to edit them
+records:
+  - delay: 1387
+    content: "\e]0;moose@pc08:~\e\\\e]7;file://pc08/home/moose\e\\\e]0;moose@pc08: ~\amoose@pc08:~$ "
+  - delay: 1000
+    content: b
+  - delay: 60
+    content: p
+  - delay: 60
+    content: 'y'
+  - delay: 60
+    content: t
+  - delay: 60
+    content: h
+  - delay: 60
+    content: o
+  - delay: 60
+    content: 'n'
+  - delay: 60
+    content: "\r\n"
+  - delay: 300
+    content: "bpython version 0.22.1 on top of Python 3.9.1 /home/moose/.pyenv/versions/3.9.1/bin/python3.9\r\n\e[6n"
+  - delay: 50
+    content: "\e[?25l\e[75;1H\e[36m>>> \e[39m\e[K\e7\e[1000001;1H\eD\e8\e[75;1H\e[36mWelcome to bpython! Press <F1> for help.                                                                                                                     \e[39m\e[74;5H\e[?12l\e[?25h"
+  - delay: 1000
+    content: "\e[?25l\e[74;1H\e[36m>>> \e[39m\e[36mf\e[39m\e[30m\e[1mrom mpu.pd import example_df\e[0m\e[39m\e[K\e[75;1H\e[36m┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐\e[39m\e[K\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mfilter(   \e[39m \e[36mfinally   \e[39m \e[36mfloat(    \e[39m \e[36mfor       \e[39m \e[36mformat(   \e[39m \e[36mfrom      \e[39m \e[36mfrozenset(\e[39m                                             \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36mWelcome to bpython! Press <F1> for help.                                                                                                                     \e[39m\e[71;6H\e[?12l\e[?25h"
+  - delay: 60
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[36mfr\e[39m\e[30m\e[1mom mpu.pd import example_df\e[0m\e[39m\e[K\e[73;1H\e[36m│ \e[39m\e[36mfrom      \e[39m \e[36mfrozenset(\e[39m                                                                                                    \e[36m │\e[39m\e[K\e[71;7H\e[?12l\e[?25h"
+  - delay: 60
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[36mfro\e[39m\e[30m\e[1mm mpu.pd import example_df\e[0m\e[39m\e[K\e[71;8H\e[?12l\e[?25h"
+  - delay: 60
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[30m\e[1m mpu.pd import example_df\e[0m\e[39m\e[K\e[72;1H\e[36mWelcome to bpython! Press <F1> for help.                                                                                                                     \e[39m\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[71;9H\e[?12l\e[?25h"
+  - delay: 60
+    content: "\e[?25l\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[71;9H\e[?12l\e[?25h"
+  - delay: 60
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[30m\e[1mmpu.pd import example_df\e[0m\e[39m\e[K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[71;10H\e[?12l\e[?25h"
+  - delay: 60
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mm\e[39m\e[30m\e[1mpu.pd import example_df\e[0m\e[39m\e[K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[71;11H\e[?12l\e[?25h"
+  - delay: 60
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmp\e[39m\e[30m\e[1mu.pd import example_df\e[0m\e[39m\e[K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[71;12H\e[?12l\e[?25h"
+  - delay: 60
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[30m\e[1m.pd import example_df\e[0m\e[39m\e[K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[71;13H\e[?12l\e[?25h"
+  - delay: 60
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[30m\e[1mpd import example_df\e[0m\e[39m\e[K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[71;14H\e[?12l\e[?25h"
+  - delay: 60
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mp\e[39m\e[30m\e[1md import example_df\e[0m\e[39m\e[K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[71;15H\e[?12l\e[?25h"
+  - delay: 60
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[30m\e[1m import example_df\e[0m\e[39m\e[K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[71;16H\e[?12l\e[?25h"
+  - delay: 60
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[36m\e[1m \e[0m\e[39m\e[30m\e[1mimport example_df\e[0m\e[39m\e[K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[71;17H\e[?12l\e[?25h"
+  - delay: 60
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mi\e[39m\e[30m\e[1mmport example_df\e[0m\e[39m\e[K\e[72;1H\e[36m┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐\e[39m\e[K\e[73;1H\e[36m│ \e[39m\e[36mid(        \e[39m \e[36mif         \e[39m \e[36mimport     \e[39m \e[36min         \e[39m \e[36minput(     \e[39m \e[36mint(       \e[39m \e[36mis         \e[39m \e[36misinstance(\e[39m \e[36missubclass(\e[39m \e[36miter(      \e[39m  \e[36m │\e[39m\e[K\e[74;1H\e[36m└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘\e[39m\e[K\e[75;1H\e[K\e[1K\e[71;18H\e[?12l\e[?25h"
+  - delay: 60
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mim\e[39m\e[30m\e[1mport example_df\e[0m\e[39m\e[K\e[73;1H\e[36m│ \e[39m\e[36mimport\e[39m\e[36m                                                                                                                   \e[39m\e[36m │\e[39m\e[K\e[75;1H\e[K\e[1K\e[71;19H\e[?12l\e[?25h"
+  - delay: 60
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mimp\e[39m\e[30m\e[1mort example_df\e[0m\e[39m\e[K\e[75;1H\e[K\e[1K\e[71;20H\e[?12l\e[?25h"
+  - delay: 1000
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mimpo\e[39m\e[30m\e[1mrt example_df\e[0m\e[39m\e[K\e[75;1H\e[K\e[1K\e[71;21H\e[?12l\e[?25h"
+  - delay: 100
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mimpor\e[39m\e[30m\e[1mt example_df\e[0m\e[39m\e[K\e[75;1H\e[K\e[1K\e[71;22H\e[?12l\e[?25h"
+  - delay: 100
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[36m\e[1m \e[0m\e[39m\e[33mimport\e[39m\e[30m\e[1m example_df\e[0m\e[39m\e[K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[71;23H\e[?12l\e[?25h"
+  - delay: 100
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[36m\e[1m \e[0m\e[39m\e[33mimport\e[39m\e[36m\e[1m \e[0m\e[39m\e[30m\e[1mexample_df\e[0m\e[39m\e[K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[71;24H\e[?12l\e[?25h"
+  - delay: 100
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[36m\e[1m \e[0m\e[39m\e[33mimport\e[39m\e[36m\e[1m \e[0m\e[39m\e[36me\e[39m\e[30m\e[1mxample_df\e[0m\e[39m\e[K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[71;25H\e[?12l\e[?25h"
+  - delay: 100
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[36m\e[1m \e[0m\e[39m\e[33mimport\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mex\e[39m\e[30m\e[1mample_df\e[0m\e[39m\e[K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[71;26H\e[?12l\e[?25h"
+  - delay: 100
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[36m\e[1m \e[0m\e[39m\e[33mimport\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mexa\e[39m\e[30m\e[1mmple_df\e[0m\e[39m\e[K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[71;27H\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[36m\e[1m \e[0m\e[39m\e[33mimport\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mexam\e[39m\e[30m\e[1mple_df\e[0m\e[39m\e[K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[71;28H\e[?12l\e[?25h"
+  - delay: 115
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[36m\e[1m \e[0m\e[39m\e[33mimport\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mexamp\e[39m\e[30m\e[1mle_df\e[0m\e[39m\e[K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[71;29H\e[?12l\e[?25h"
+  - delay: 149
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[36m\e[1m \e[0m\e[39m\e[33mimport\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mexampl\e[39m\e[30m\e[1me_df\e[0m\e[39m\e[K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[71;30H\e[?12l\e[?25h"
+  - delay: 96
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[36m\e[1m \e[0m\e[39m\e[33mimport\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mexample\e[39m\e[30m\e[1m_df\e[0m\e[39m\e[K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[71;31H\e[?12l\e[?25h"
+  - delay: 415
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[36m\e[1m \e[0m\e[39m\e[33mimport\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mexample_\e[39m\e[30m\e[1mdf\e[0m\e[39m\e[K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[71;32H\e[?12l\e[?25h"
+  - delay: 170
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[36m\e[1m \e[0m\e[39m\e[33mimport\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mexample_d\e[39m\e[30m\e[1mf\e[0m\e[39m\e[K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[71;33H\e[?12l\e[?25h"
+  - delay: 177
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[36m\e[1m \e[0m\e[39m\e[33mimport\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mexample_df\e[39m\e[K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[71;34H\e[?12l\e[?25h"
+  - delay: 1245
+    content: "\e[?25l\e[72;1H\e[36m>>> \e[39m\e[K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[72;5H\e[?12l\e[?25h"
+  - delay: 520
+    content: "\e[?25l\e[72;1H\e[36m>>> \e[39m\e[36md\e[39m\e[30m\e[1mf = example_df()\e[0m\e[39m\e[K\e[73;1H\e[36m┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐\e[39m\e[K\e[74;1H\e[36m│ \e[39m\e[36mdef     \e[39m \e[36mdel     \e[39m \e[36mdelattr(\e[39m \e[36mdict(   \e[39m \e[36mdir(    \e[39m \e[36mdivmod( \e[39m                                                                    \e[36m │\e[39m\e[K\e[75;1H\e[36m└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘\e[39m\e[K\e[72;6H\e[?12l\e[?25h"
+  - delay: 172
+    content: "\e[?25l\e[72;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[30m\e[1m = example_df()\e[0m\e[39m\e[K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[72;7H\e[?12l\e[?25h"
+  - delay: 127
+    content: "\e[?25l\e[72;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[36m\e[1m \e[0m\e[39m\e[30m\e[1m= example_df()\e[0m\e[39m\e[K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[72;8H\e[?12l\e[?25h"
+  - delay: 128
+    content: "\e[?25l\e[72;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[36m\e[1m \e[0m\e[39m\e[33m\e[1m=\e[0m\e[39m\e[30m\e[1m example_df()\e[0m\e[39m\e[K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[72;9H\e[?12l\e[?25h"
+  - delay: 371
+    content: "\e[?25l\e[72;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[36m\e[1m \e[0m\e[39m\e[33m\e[1m=\e[0m\e[39m\e[36m\e[1m \e[0m\e[39m\e[30m\e[1mexample_df()\e[0m\e[39m\e[K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[72;10H\e[?12l\e[?25h"
+  - delay: 351
+    content: "\e[?25l\e[72;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[36m\e[1m \e[0m\e[39m\e[33m\e[1m=\e[0m\e[39m\e[36m\e[1m \e[0m\e[39m\e[36me\e[39m\e[30m\e[1mxample_df()\e[0m\e[39m\e[K\e[73;1H\e[36m┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐\e[39m\e[K\e[74;1H\e[36m│ \e[39m\e[36melif       \e[39m \e[36melse       \e[39m \e[36menumerate( \e[39m \e[36meval(      \e[39m \e[36mexample_df(\e[39m \e[36mexcept     \e[39m \e[36mexec(      \e[39m \e[36mexit(      \e[39m                          \e[36m │\e[39m\e[K\e[75;1H\e[36m└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘\e[39m\e[K\e[72;11H\e[?12l\e[?25h"
+  - delay: 208
+    content: "\e[?25l\e[72;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[36m\e[1m \e[0m\e[39m\e[33m\e[1m=\e[0m\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mex\e[39m\e[30m\e[1mample_df()\e[0m\e[39m\e[K\e[74;1H\e[36m│ \e[39m\e[36mexample_df(\e[39m \e[36mexcept     \e[39m \e[36mexec(      \e[39m \e[36mexit(      \e[39m                                                                          \e[36m │\e[39m\e[K\e[72;12H\e[?12l\e[?25h"
+  - delay: 189
+    content: "\e[?25l\e[72;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[36m\e[1m \e[0m\e[39m\e[33m\e[1m=\e[0m\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mexa\e[39m\e[30m\e[1mmple_df()\e[0m\e[39m\e[K\e[74;1H\e[36m│ \e[39m\e[36mexample_df(\e[39m\e[36m                                                                                                              \e[39m\e[36m │\e[39m\e[K\e[72;13H\e[?12l\e[?25h"
+  - delay: 155
+    content: "\e[?25l\e[72;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[36m\e[1m \e[0m\e[39m\e[33m\e[1m=\e[0m\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mexam\e[39m\e[30m\e[1mple_df()\e[0m\e[39m\e[K\e[72;14H\e[?12l\e[?25h"
+  - delay: 144
+    content: "\e[?25l\e[72;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[36m\e[1m \e[0m\e[39m\e[33m\e[1m=\e[0m\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mexamp\e[39m\e[30m\e[1mle_df()\e[0m\e[39m\e[K\e[72;15H\e[?12l\e[?25h"
+  - delay: 217
+    content: "\e[?25l\e[72;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[36m\e[1m \e[0m\e[39m\e[33m\e[1m=\e[0m\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mexampl\e[39m\e[30m\e[1me_df()\e[0m\e[39m\e[K\e[72;16H\e[?12l\e[?25h"
+  - delay: 114
+    content: "\e[?25l\e[72;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[36m\e[1m \e[0m\e[39m\e[33m\e[1m=\e[0m\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mexample\e[39m\e[30m\e[1m_df()\e[0m\e[39m\e[K\e[72;17H\e[?12l\e[?25h"
+  - delay: 475
+    content: "\e[?25l\e[72;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[36m\e[1m \e[0m\e[39m\e[33m\e[1m=\e[0m\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mexample_\e[39m\e[30m\e[1mdf()\e[0m\e[39m\e[K\e[72;18H\e[?12l\e[?25h"
+  - delay: 235
+    content: "\e[?25l\e[72;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[36m\e[1m \e[0m\e[39m\e[33m\e[1m=\e[0m\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mexample_d\e[39m\e[30m\e[1mf()\e[0m\e[39m\e[K\e[72;19H\e[?12l\e[?25h"
+  - delay: 203
+    content: "\e[?25l\e[72;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[36m\e[1m \e[0m\e[39m\e[33m\e[1m=\e[0m\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mexample_df\e[39m\e[30m\e[1m()\e[0m\e[39m\e[K\e[72;20H\e[?12l\e[?25h"
+  - delay: 368
+    content: "\e[?25l\e[72;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[36m\e[1m \e[0m\e[39m\e[33m\e[1m=\e[0m\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mexample_df\e[39m\e[33m\e[1m(\e[0m\e[39m\e[30m\e[1m)\e[0m\e[39m\e[K\e[74;1H\e[36m│ \e[39m\e[36m\e[1mexample_df\e[0m\e[39m\e[36m:\e[39m\e[36m \e[39m\e[36m(\e[39m\e[33m)\e[39m                                                                                                           \e[36m │\e[39m\e[K\e[75;1H\e[36m│ \e[39m\e[34mCreate an example dataframe.\e[39m\e[34m                                                                                             \e[39m\e[36m │\e[39m\e[K\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘\e[39m\e[71;21H\e[?12l\e[?25h"
+  - delay: 191
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[36m\e[1m \e[0m\e[39m\e[33m\e[1m=\e[0m\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mexample_df\e[39m\e[31m\e[1m\e[45m(\e[49m\e[0m\e[39m\e[31m\e[1m\e[45m)\e[49m\e[0m\e[39m\e[K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[71;22H\e[?12l\e[?25h"
+  - delay: 1151
+    content: "\e[?25l\e[71;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[36m\e[1m \e[0m\e[39m\e[33m\e[1m=\e[0m\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mexample_df\e[39m\e[33m(\e[39m\e[33m)\e[39m\e[K\e[72;1H\e[36m>>> \e[39m\e[K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[72;5H\e[?12l\e[?25h"
+  - delay: 618
+    content: "\e[?25l\e[72;1H\e[36m>>> \e[39m\e[36md\e[39m\e[30m\e[1mf = example_df()\e[0m\e[39m\e[K\e[73;1H\e[36m┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐\e[39m\e[K\e[74;1H\e[36m│ \e[39m\e[36mdef     \e[39m \e[36mdel     \e[39m \e[36mdelattr(\e[39m \e[36mdf      \e[39m \e[36mdict(   \e[39m \e[36mdir(    \e[39m \e[36mdivmod( \e[39m                                                           \e[36m │\e[39m\e[K\e[75;1H\e[36m└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘\e[39m\e[K\e[72;6H\e[?12l\e[?25h"
+  - delay: 198
+    content: "\e[?25l\e[72;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[30m\e[1m = example_df()\e[0m\e[39m\e[K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[72;7H\e[?12l\e[?25h"
+  - delay: 453
+    content: "\e[?25l\e[72;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[K\e[73;1H     country   population population_time    EUR\e[K\e[74;1H0    Germany   82521653.0      2016-12-01   True\e[K\e[75;1H1     France   66991000.0      2017-01-01   True\e[K\e7\e[1000001;1H\eD\e8\e[75;1H2  Indonesia  255461700.0      2017-01-01  False\e7\e[1000001;1H\eD\e8\e[75;1H3    Ireland    4761865.0             NaT   True\e7\e[1000001;1H\eD\e8\e[75;1H4      Spain   46549045.0      2017-06-01   True\e7\e[1000001;1H\eD\e8\e[75;1H5    Vatican          NaN             NaT   True\e[75;49H\e[?12l\e[?25h\e[?25l\e7\e[1000001;1H\eD\e8\e[75;1H\e[75;1H\e[?12l\e[?25h\e[?25l\e[75;1H\e[36m>>> \e[39m\e[K\e[75;5H\e[?12l\e[?25h"
+  - delay: 1637
+    content: "\e[?25l\e[75;1H\e[36m>>> \e[39m\e[36md\e[39m\e[30m\e[1mf\e[0m\e[39m\e[K\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mdef     \e[39m \e[36mdel     \e[39m \e[36mdelattr(\e[39m \e[36mdf      \e[39m \e[36mdict(   \e[39m \e[36mdir(    \e[39m \e[36mdivmod( \e[39m                                                           \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘\e[39m\e[72;6H\e[?12l\e[?25h"
+  - delay: 199
+    content: "\e[?25l\e[72;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[72;7H\e[?12l\e[?25h"
+  - delay: 261
+    content: "\e[?25l\e[72;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[K\e[73;1H\e[36m┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐\e[39m\e[K\e[74;1H\e[36m│ \e[39m\e[36mEUR                 \e[39m \e[36mT                   \e[39m \e[36mabs                 \e[39m \e[36madd                 \e[39m \e[36madd_prefix          \e[39m                 \e[36m │\e[39m\e[K\e[75;1H\e[36m│ \e[39m\e[36madd_suffix          \e[39m \e[36magg                 \e[39m \e[36maggregate           \e[39m \e[36malign               \e[39m \e[36mall                 \e[39m                 \e[36m │\e[39m\e[K\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36many                 \e[39m \e[36mappend              \e[39m \e[36mapply               \e[39m \e[36mapplymap            \e[39m \e[36masfreq              \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36masof                \e[39m \e[36massign              \e[39m \e[36mastype              \e[39m \e[36mat                  \e[39m \e[36mat_time             \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mattrs               \e[39m \e[36maxes                \e[39m \e[36mbackfill            \e[39m \e[36mbetween_time        \e[39m \e[36mbfill               \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mbool                \e[39m \e[36mboxplot             \e[39m \e[36mclip                \e[39m \e[36mcolumns             \e[39m \e[36mcombine             \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mcombine_first       \e[39m \e[36mcompare             \e[39m \e[36mconvert_dtypes      \e[39m \e[36mcopy                \e[39m \e[36mcorr                \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mcorrwith            \e[39m \e[36mcount               \e[39m \e[36mcountry             \e[39m \e[36mcov                 \e[39m \e[36mcummax              \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mcummin              \e[39m \e[36mcumprod             \e[39m \e[36mcumsum              \e[39m \e[36mdescribe            \e[39m \e[36mdiff                \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mdiv                 \e[39m \e[36mdivide              \e[39m \e[36mdot                 \e[39m \e[36mdrop                \e[39m \e[36mdrop_duplicates     \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mdroplevel           \e[39m \e[36mdropna              \e[39m \e[36mdtypes              \e[39m \e[36mduplicated          \e[39m \e[36mempty               \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36meq                  \e[39m \e[36mequals              \e[39m \e[36meval                \e[39m \e[36mewm                 \e[39m \e[36mexpanding           \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mexplode             \e[39m \e[36mffill               \e[39m \e[36mfillna              \e[39m \e[36mfilter              \e[39m \e[36mfirst               \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mfirst_valid_index   \e[39m \e[36mflags               \e[39m \e[36mfloordiv            \e[39m \e[36mfrom_dict           \e[39m \e[36mfrom_records        \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mge                  \e[39m \e[36mget                 \e[39m \e[36mgroupby             \e[39m \e[36mgt                  \e[39m \e[36mhead                \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mhist                \e[39m \e[36miat                 \e[39m \e[36midxmax              \e[39m \e[36midxmin              \e[39m \e[36miloc                \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mindex               \e[39m \e[36minfer_objects       \e[39m \e[36minfo                \e[39m \e[36minsert              \e[39m \e[36minterpolate         \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36misin                \e[39m \e[36misna                \e[39m \e[36misnull              \e[39m \e[36mitems               \e[39m \e[36miteritems           \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36miterrows            \e[39m \e[36mitertuples          \e[39m \e[36mjoin                \e[39m \e[36mkeys                \e[39m \e[36mkurt                \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mkurtosis            \e[39m \e[36mlast                \e[39m \e[36mlast_valid_index    \e[39m \e[36mle                  \e[39m \e[36mloc                 \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mlookup              \e[39m \e[36mlt                  \e[39m \e[36mmad                 \e[39m \e[36mmask                \e[39m \e[36mmax                 \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mmean                \e[39m \e[36mmedian              \e[39m \e[36mmelt                \e[39m \e[36mmemory_usage        \e[39m \e[36mmerge               \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mmin                 \e[39m \e[36mmod                 \e[39m \e[36mmode                \e[39m \e[36mmul                 \e[39m \e[36mmultiply            \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mndim                \e[39m \e[36mne                  \e[39m \e[36mnlargest            \e[39m \e[36mnotna               \e[39m \e[36mnotnull             \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mnsmallest           \e[39m \e[36mnunique             \e[39m \e[36mpad                 \e[39m \e[36mpct_change          \e[39m \e[36mpipe                \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mpivot               \e[39m \e[36mpivot_table         \e[39m \e[36mplot                \e[39m \e[36mpop                 \e[39m \e[36mpopulation          \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mpopulation_time     \e[39m \e[36mpow                 \e[39m \e[36mprod                \e[39m \e[36mproduct             \e[39m \e[36mquantile            \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mquery               \e[39m \e[36mradd                \e[39m \e[36mrank                \e[39m \e[36mrdiv                \e[39m \e[36mreindex             \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mreindex_like        \e[39m \e[36mrename              \e[39m \e[36mrename_axis         \e[39m \e[36mreorder_levels      \e[39m \e[36mreplace             \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mresample            \e[39m \e[36mreset_index         \e[39m \e[36mrfloordiv           \e[39m \e[36mrmod                \e[39m \e[36mrmul                \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mrolling             \e[39m \e[36mround               \e[39m \e[36mrpow                \e[39m \e[36mrsub                \e[39m \e[36mrtruediv            \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36msample              \e[39m \e[36mselect_dtypes       \e[39m \e[36msem                 \e[39m \e[36mset_axis            \e[39m \e[36mset_flags           \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mset_index           \e[39m \e[36mshape               \e[39m \e[36mshift               \e[39m \e[36msize                \e[39m \e[36mskew                \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mslice_shift         \e[39m \e[36msort_index          \e[39m \e[36msort_values         \e[39m \e[36msparse              \e[39m \e[36msqueeze             \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mstack               \e[39m \e[36mstd                 \e[39m \e[36mstyle               \e[39m \e[36msub                 \e[39m \e[36msubtract            \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36msum                 \e[39m \e[36mswapaxes            \e[39m \e[36mswaplevel           \e[39m \e[36mtail                \e[39m \e[36mtake                \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mto_clipboard        \e[39m \e[36mto_csv              \e[39m \e[36mto_dict             \e[39m \e[36mto_excel            \e[39m \e[36mto_feather          \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mto_gbq              \e[39m \e[36mto_hdf              \e[39m \e[36mto_html             \e[39m \e[36mto_json             \e[39m \e[36mto_latex            \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mto_markdown         \e[39m \e[36mto_numpy            \e[39m \e[36mto_parquet          \e[39m \e[36mto_period           \e[39m \e[36mto_pickle           \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mto_records          \e[39m \e[36mto_sql              \e[39m \e[36mto_stata            \e[39m \e[36mto_string           \e[39m \e[36mto_timestamp        \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mto_xarray           \e[39m \e[36mtransform           \e[39m \e[36mtranspose           \e[39m \e[36mtruediv             \e[39m \e[36mtruncate            \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mtz_convert          \e[39m \e[36mtz_localize         \e[39m \e[36munstack             \e[39m \e[36mupdate              \e[39m \e[36mvalue_counts        \e[39m                 \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m│ \e[39m\e[36mvalues              \e[39m \e[36mvar                 \e[39m \e[36mwhere               \e[39m \e[36mxs                  \e[39m                                      \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[75;1H\e[36m└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘\e[39m\e[30;8H\e[?12l\e[?25h"
+  - delay: 1342
+    content: "\e[?25l\e[30;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36ms\e[39m\e[K\e[32;1H\e[36m│ \e[39m\e[36msample          \e[39m \e[36mselect_dtypes   \e[39m \e[36msem             \e[39m \e[36mset_axis        \e[39m \e[36mset_flags       \e[39m \e[36mset_index       \e[39m \e[36mshape           \e[39m   \e[36m │\e[39m\e[K\e[33;1H\e[36m│ \e[39m\e[36mshift           \e[39m \e[36msize            \e[39m \e[36mskew            \e[39m \e[36mslice_shift     \e[39m \e[36msort_index      \e[39m \e[36msort_values     \e[39m \e[36msparse          \e[39m   \e[36m │\e[39m\e[K\e[34;1H\e[36m│ \e[39m\e[36msqueeze         \e[39m \e[36mstack           \e[39m \e[36mstd             \e[39m \e[36mstyle           \e[39m \e[36msub             \e[39m \e[36msubtract        \e[39m \e[36msum             \e[39m   \e[36m │\e[39m\e[K\e[35;1H\e[36m│ \e[39m\e[36mswapaxes        \e[39m \e[36mswaplevel       \e[39m                                                                                        \e[36m │\e[39m\e[K\e[36;1H\e[36m└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘\e[39m\e[K\e[37;1H\e[K\e[1K\e[38;1H\e[K\e[1K\e[39;1H\e[K\e[1K\e[40;1H\e[K\e[1K\e[41;1H\e[K\e[1K\e[42;1H\e[K\e[1K\e[43;1H\e[K\e[1K\e[44;1H\e[K\e[1K\e[45;1H\e[K\e[1K\e[46;1H\e[K\e[1K\e[47;1H\e[K\e[1K\e[48;1H\e[K\e[1K\e[49;1H\e[K\e[1K\e[50;1H\e[K\e[1K\e[51;1H\e[K\e[1K\e[52;1H\e[K\e[1K\e[53;1H\e[K\e[1K\e[54;1H\e[K\e[1K\e[55;1H\e[K\e[1K\e[56;1H\e[K\e[1K\e[57;1H\e[K\e[1K\e[58;1H\e[K\e[1K\e[59;1H\e[K\e[1K\e[60;1H\e[K\e[1K\e[61;1H\e[K\e[1K\e[62;1H\e[K\e[1K\e[63;1H\e[K\e[1K\e[64;1H\e[K\e[1K\e[65;1H\e[K\e[1K\e[66;1H\e[K\e[1K\e[67;1H\e[K\e[1K\e[68;1H\e[K\e[1K\e[69;1H\e[K\e[1K\e[70;1H\e[K\e[1K\e[71;1H\e[K\e[1K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[30;9H\e[?12l\e[?25h"
+  - delay: 347
+    content: "\e[?25l\e[30;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36mso\e[39m\e[K\e[32;1H\e[36m│ \e[39m\e[36msort_index    \e[39m \e[36msort_values   \e[39m                                                                                            \e[36m │\e[39m\e[K\e[33;1H\e[36m└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘\e[39m\e[K\e[34;1H\e[K\e[1K\e[35;1H\e[K\e[1K\e[36;1H\e[K\e[1K\e[37;1H\e[K\e[1K\e[38;1H\e[K\e[1K\e[39;1H\e[K\e[1K\e[40;1H\e[K\e[1K\e[41;1H\e[K\e[1K\e[42;1H\e[K\e[1K\e[43;1H\e[K\e[1K\e[44;1H\e[K\e[1K\e[45;1H\e[K\e[1K\e[46;1H\e[K\e[1K\e[47;1H\e[K\e[1K\e[48;1H\e[K\e[1K\e[49;1H\e[K\e[1K\e[50;1H\e[K\e[1K\e[51;1H\e[K\e[1K\e[52;1H\e[K\e[1K\e[53;1H\e[K\e[1K\e[54;1H\e[K\e[1K\e[55;1H\e[K\e[1K\e[56;1H\e[K\e[1K\e[57;1H\e[K\e[1K\e[58;1H\e[K\e[1K\e[59;1H\e[K\e[1K\e[60;1H\e[K\e[1K\e[61;1H\e[K\e[1K\e[62;1H\e[K\e[1K\e[63;1H\e[K\e[1K\e[64;1H\e[K\e[1K\e[65;1H\e[K\e[1K\e[66;1H\e[K\e[1K\e[67;1H\e[K\e[1K\e[68;1H\e[K\e[1K\e[69;1H\e[K\e[1K\e[70;1H\e[K\e[1K\e[71;1H\e[K\e[1K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[30;10H\e[?12l\e[?25h"
+  - delay: 244
+    content: "\e[?25l\e[30;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msor\e[39m\e[K\e[34;1H\e[K\e[1K\e[35;1H\e[K\e[1K\e[36;1H\e[K\e[1K\e[37;1H\e[K\e[1K\e[38;1H\e[K\e[1K\e[39;1H\e[K\e[1K\e[40;1H\e[K\e[1K\e[41;1H\e[K\e[1K\e[42;1H\e[K\e[1K\e[43;1H\e[K\e[1K\e[44;1H\e[K\e[1K\e[45;1H\e[K\e[1K\e[46;1H\e[K\e[1K\e[47;1H\e[K\e[1K\e[48;1H\e[K\e[1K\e[49;1H\e[K\e[1K\e[50;1H\e[K\e[1K\e[51;1H\e[K\e[1K\e[52;1H\e[K\e[1K\e[53;1H\e[K\e[1K\e[54;1H\e[K\e[1K\e[55;1H\e[K\e[1K\e[56;1H\e[K\e[1K\e[57;1H\e[K\e[1K\e[58;1H\e[K\e[1K\e[59;1H\e[K\e[1K\e[60;1H\e[K\e[1K\e[61;1H\e[K\e[1K\e[62;1H\e[K\e[1K\e[63;1H\e[K\e[1K\e[64;1H\e[K\e[1K\e[65;1H\e[K\e[1K\e[66;1H\e[K\e[1K\e[67;1H\e[K\e[1K\e[68;1H\e[K\e[1K\e[69;1H\e[K\e[1K\e[70;1H\e[K\e[1K\e[71;1H\e[K\e[1K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[30;11H\e[?12l\e[?25h"
+  - delay: 206
+    content: "\e[?25l\e[30;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msort\e[39m\e[K\e[34;1H\e[K\e[1K\e[35;1H\e[K\e[1K\e[36;1H\e[K\e[1K\e[37;1H\e[K\e[1K\e[38;1H\e[K\e[1K\e[39;1H\e[K\e[1K\e[40;1H\e[K\e[1K\e[41;1H\e[K\e[1K\e[42;1H\e[K\e[1K\e[43;1H\e[K\e[1K\e[44;1H\e[K\e[1K\e[45;1H\e[K\e[1K\e[46;1H\e[K\e[1K\e[47;1H\e[K\e[1K\e[48;1H\e[K\e[1K\e[49;1H\e[K\e[1K\e[50;1H\e[K\e[1K\e[51;1H\e[K\e[1K\e[52;1H\e[K\e[1K\e[53;1H\e[K\e[1K\e[54;1H\e[K\e[1K\e[55;1H\e[K\e[1K\e[56;1H\e[K\e[1K\e[57;1H\e[K\e[1K\e[58;1H\e[K\e[1K\e[59;1H\e[K\e[1K\e[60;1H\e[K\e[1K\e[61;1H\e[K\e[1K\e[62;1H\e[K\e[1K\e[63;1H\e[K\e[1K\e[64;1H\e[K\e[1K\e[65;1H\e[K\e[1K\e[66;1H\e[K\e[1K\e[67;1H\e[K\e[1K\e[68;1H\e[K\e[1K\e[69;1H\e[K\e[1K\e[70;1H\e[K\e[1K\e[71;1H\e[K\e[1K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[30;12H\e[?12l\e[?25h"
+  - delay: 590
+    content: "\e[?25l\e[30;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msort_\e[39m\e[K\e[34;1H\e[K\e[1K\e[35;1H\e[K\e[1K\e[36;1H\e[K\e[1K\e[37;1H\e[K\e[1K\e[38;1H\e[K\e[1K\e[39;1H\e[K\e[1K\e[40;1H\e[K\e[1K\e[41;1H\e[K\e[1K\e[42;1H\e[K\e[1K\e[43;1H\e[K\e[1K\e[44;1H\e[K\e[1K\e[45;1H\e[K\e[1K\e[46;1H\e[K\e[1K\e[47;1H\e[K\e[1K\e[48;1H\e[K\e[1K\e[49;1H\e[K\e[1K\e[50;1H\e[K\e[1K\e[51;1H\e[K\e[1K\e[52;1H\e[K\e[1K\e[53;1H\e[K\e[1K\e[54;1H\e[K\e[1K\e[55;1H\e[K\e[1K\e[56;1H\e[K\e[1K\e[57;1H\e[K\e[1K\e[58;1H\e[K\e[1K\e[59;1H\e[K\e[1K\e[60;1H\e[K\e[1K\e[61;1H\e[K\e[1K\e[62;1H\e[K\e[1K\e[63;1H\e[K\e[1K\e[64;1H\e[K\e[1K\e[65;1H\e[K\e[1K\e[66;1H\e[K\e[1K\e[67;1H\e[K\e[1K\e[68;1H\e[K\e[1K\e[69;1H\e[K\e[1K\e[70;1H\e[K\e[1K\e[71;1H\e[K\e[1K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[30;13H\e[?12l\e[?25h"
+  - delay: 222
+    content: "\e[?25l\e[30;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msort_v\e[39m\e[K\e[32;1H\e[36m│ \e[39m\e[36msort_values   \e[39m\e[36m                                                                                                           \e[39m\e[36m │\e[39m\e[K\e[34;1H\e[K\e[1K\e[35;1H\e[K\e[1K\e[36;1H\e[K\e[1K\e[37;1H\e[K\e[1K\e[38;1H\e[K\e[1K\e[39;1H\e[K\e[1K\e[40;1H\e[K\e[1K\e[41;1H\e[K\e[1K\e[42;1H\e[K\e[1K\e[43;1H\e[K\e[1K\e[44;1H\e[K\e[1K\e[45;1H\e[K\e[1K\e[46;1H\e[K\e[1K\e[47;1H\e[K\e[1K\e[48;1H\e[K\e[1K\e[49;1H\e[K\e[1K\e[50;1H\e[K\e[1K\e[51;1H\e[K\e[1K\e[52;1H\e[K\e[1K\e[53;1H\e[K\e[1K\e[54;1H\e[K\e[1K\e[55;1H\e[K\e[1K\e[56;1H\e[K\e[1K\e[57;1H\e[K\e[1K\e[58;1H\e[K\e[1K\e[59;1H\e[K\e[1K\e[60;1H\e[K\e[1K\e[61;1H\e[K\e[1K\e[62;1H\e[K\e[1K\e[63;1H\e[K\e[1K\e[64;1H\e[K\e[1K\e[65;1H\e[K\e[1K\e[66;1H\e[K\e[1K\e[67;1H\e[K\e[1K\e[68;1H\e[K\e[1K\e[69;1H\e[K\e[1K\e[70;1H\e[K\e[1K\e[71;1H\e[K\e[1K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[30;14H\e[?12l\e[?25h"
+  - delay: 153
+    content: "\e[?25l\e[30;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msort_va\e[39m\e[K\e[34;1H\e[K\e[1K\e[35;1H\e[K\e[1K\e[36;1H\e[K\e[1K\e[37;1H\e[K\e[1K\e[38;1H\e[K\e[1K\e[39;1H\e[K\e[1K\e[40;1H\e[K\e[1K\e[41;1H\e[K\e[1K\e[42;1H\e[K\e[1K\e[43;1H\e[K\e[1K\e[44;1H\e[K\e[1K\e[45;1H\e[K\e[1K\e[46;1H\e[K\e[1K\e[47;1H\e[K\e[1K\e[48;1H\e[K\e[1K\e[49;1H\e[K\e[1K\e[50;1H\e[K\e[1K\e[51;1H\e[K\e[1K\e[52;1H\e[K\e[1K\e[53;1H\e[K\e[1K\e[54;1H\e[K\e[1K\e[55;1H\e[K\e[1K\e[56;1H\e[K\e[1K\e[57;1H\e[K\e[1K\e[58;1H\e[K\e[1K\e[59;1H\e[K\e[1K\e[60;1H\e[K\e[1K\e[61;1H\e[K\e[1K\e[62;1H\e[K\e[1K\e[63;1H\e[K\e[1K\e[64;1H\e[K\e[1K\e[65;1H\e[K\e[1K\e[66;1H\e[K\e[1K\e[67;1H\e[K\e[1K\e[68;1H\e[K\e[1K\e[69;1H\e[K\e[1K\e[70;1H\e[K\e[1K\e[71;1H\e[K\e[1K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[30;15H\e[?12l\e[?25h"
+  - delay: 134
+    content: "\e[?25l\e[30;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msort_val\e[39m\e[K\e[34;1H\e[K\e[1K\e[35;1H\e[K\e[1K\e[36;1H\e[K\e[1K\e[37;1H\e[K\e[1K\e[38;1H\e[K\e[1K\e[39;1H\e[K\e[1K\e[40;1H\e[K\e[1K\e[41;1H\e[K\e[1K\e[42;1H\e[K\e[1K\e[43;1H\e[K\e[1K\e[44;1H\e[K\e[1K\e[45;1H\e[K\e[1K\e[46;1H\e[K\e[1K\e[47;1H\e[K\e[1K\e[48;1H\e[K\e[1K\e[49;1H\e[K\e[1K\e[50;1H\e[K\e[1K\e[51;1H\e[K\e[1K\e[52;1H\e[K\e[1K\e[53;1H\e[K\e[1K\e[54;1H\e[K\e[1K\e[55;1H\e[K\e[1K\e[56;1H\e[K\e[1K\e[57;1H\e[K\e[1K\e[58;1H\e[K\e[1K\e[59;1H\e[K\e[1K\e[60;1H\e[K\e[1K\e[61;1H\e[K\e[1K\e[62;1H\e[K\e[1K\e[63;1H\e[K\e[1K\e[64;1H\e[K\e[1K\e[65;1H\e[K\e[1K\e[66;1H\e[K\e[1K\e[67;1H\e[K\e[1K\e[68;1H\e[K\e[1K\e[69;1H\e[K\e[1K\e[70;1H\e[K\e[1K\e[71;1H\e[K\e[1K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[30;16H\e[?12l\e[?25h"
+  - delay: 201
+    content: "\e[?25l\e[30;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msort_valu\e[39m\e[K\e[34;1H\e[K\e[1K\e[35;1H\e[K\e[1K\e[36;1H\e[K\e[1K\e[37;1H\e[K\e[1K\e[38;1H\e[K\e[1K\e[39;1H\e[K\e[1K\e[40;1H\e[K\e[1K\e[41;1H\e[K\e[1K\e[42;1H\e[K\e[1K\e[43;1H\e[K\e[1K\e[44;1H\e[K\e[1K\e[45;1H\e[K\e[1K\e[46;1H\e[K\e[1K\e[47;1H\e[K\e[1K\e[48;1H\e[K\e[1K\e[49;1H\e[K\e[1K\e[50;1H\e[K\e[1K\e[51;1H\e[K\e[1K\e[52;1H\e[K\e[1K\e[53;1H\e[K\e[1K\e[54;1H\e[K\e[1K\e[55;1H\e[K\e[1K\e[56;1H\e[K\e[1K\e[57;1H\e[K\e[1K\e[58;1H\e[K\e[1K\e[59;1H\e[K\e[1K\e[60;1H\e[K\e[1K\e[61;1H\e[K\e[1K\e[62;1H\e[K\e[1K\e[63;1H\e[K\e[1K\e[64;1H\e[K\e[1K\e[65;1H\e[K\e[1K\e[66;1H\e[K\e[1K\e[67;1H\e[K\e[1K\e[68;1H\e[K\e[1K\e[69;1H\e[K\e[1K\e[70;1H\e[K\e[1K\e[71;1H\e[K\e[1K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[30;17H\e[?12l\e[?25h"
+  - delay: 120
+    content: "\e[?25l\e[30;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msort_value\e[39m\e[K\e[34;1H\e[K\e[1K\e[35;1H\e[K\e[1K\e[36;1H\e[K\e[1K\e[37;1H\e[K\e[1K\e[38;1H\e[K\e[1K\e[39;1H\e[K\e[1K\e[40;1H\e[K\e[1K\e[41;1H\e[K\e[1K\e[42;1H\e[K\e[1K\e[43;1H\e[K\e[1K\e[44;1H\e[K\e[1K\e[45;1H\e[K\e[1K\e[46;1H\e[K\e[1K\e[47;1H\e[K\e[1K\e[48;1H\e[K\e[1K\e[49;1H\e[K\e[1K\e[50;1H\e[K\e[1K\e[51;1H\e[K\e[1K\e[52;1H\e[K\e[1K\e[53;1H\e[K\e[1K\e[54;1H\e[K\e[1K\e[55;1H\e[K\e[1K\e[56;1H\e[K\e[1K\e[57;1H\e[K\e[1K\e[58;1H\e[K\e[1K\e[59;1H\e[K\e[1K\e[60;1H\e[K\e[1K\e[61;1H\e[K\e[1K\e[62;1H\e[K\e[1K\e[63;1H\e[K\e[1K\e[64;1H\e[K\e[1K\e[65;1H\e[K\e[1K\e[66;1H\e[K\e[1K\e[67;1H\e[K\e[1K\e[68;1H\e[K\e[1K\e[69;1H\e[K\e[1K\e[70;1H\e[K\e[1K\e[71;1H\e[K\e[1K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[30;18H\e[?12l\e[?25h"
+  - delay: 220
+    content: "\e[?25l\e[30;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msort_values\e[39m\e[K\e[31;1H\e[K\e[1K\e[32;1H\e[K\e[1K\e[33;1H\e[K\e[1K\e[34;1H\e[K\e[1K\e[35;1H\e[K\e[1K\e[36;1H\e[K\e[1K\e[37;1H\e[K\e[1K\e[38;1H\e[K\e[1K\e[39;1H\e[K\e[1K\e[40;1H\e[K\e[1K\e[41;1H\e[K\e[1K\e[42;1H\e[K\e[1K\e[43;1H\e[K\e[1K\e[44;1H\e[K\e[1K\e[45;1H\e[K\e[1K\e[46;1H\e[K\e[1K\e[47;1H\e[K\e[1K\e[48;1H\e[K\e[1K\e[49;1H\e[K\e[1K\e[50;1H\e[K\e[1K\e[51;1H\e[K\e[1K\e[52;1H\e[K\e[1K\e[53;1H\e[K\e[1K\e[54;1H\e[K\e[1K\e[55;1H\e[K\e[1K\e[56;1H\e[K\e[1K\e[57;1H\e[K\e[1K\e[58;1H\e[K\e[1K\e[59;1H\e[K\e[1K\e[60;1H\e[K\e[1K\e[61;1H\e[K\e[1K\e[62;1H\e[K\e[1K\e[63;1H\e[K\e[1K\e[64;1H\e[K\e[1K\e[65;1H\e[K\e[1K\e[66;1H\e[K\e[1K\e[67;1H\e[K\e[1K\e[68;1H\e[K\e[1K\e[69;1H\e[K\e[1K\e[70;1H\e[K\e[1K\e[71;1H\e[K\e[1K\e[72;1H\e[K\e[1K\e[73;1H\e[K\e[1K\e[74;1H\e[K\e[1K\e[75;1H\e[K\e[1K\e[30;19H\e[?12l\e[?25h"
+  - delay: 10000
+    content: "\e]0;moose@pc08:~\e\\\e]7;file://pc08/home/moose\e\\\e]0;moose@pc08: ~\amoose@pc08:~$ \n\n"
+
