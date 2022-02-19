@@ -42,7 +42,7 @@ config:
   # Maximum delay between frames in ms
   # Ignored if the `frameDelay` isn't set to `auto`
   # Set to `auto` to prevent limiting the max idle time
-  maxIdleTime: 2000
+  maxIdleTime: 10000
   
   # The surrounding frame box
   # The `type` can be null, window, floating, or solid`
@@ -113,7 +113,7 @@ config:
 records:
   - delay: 1000
     content: "\e]0;moose@pc08:~\e\\\e]7;file://pc08/home/moose\e\\\e]0;moose@pc08: ~\amoose@pc08:~$ "
-  - delay: 308
+  - delay: 300
     content: p
   - delay: 50
     content: 'y'
@@ -458,7 +458,7 @@ records:
   - delay: 150
     content: "\r\n"
   - delay: 5
-    content: "\e[31m╭─\e[0m\e[31m───────────────── \e[0m\e[1;31mTraceback \e[0m\e[1;2;31m(most recent call last)\e[0m\e[31m ──────────────────────\e[0m\e[31m─╮\e[0m\r\n\e[31m│\e[0m \e[33m<stdin>\e[0m:\e[94m1\e[0m in \e[92m<module>\e[0m                                                        \e[31m│\e[0m\r\n\e[31m╰────────────────────────────────────────────────────────────────────────────╯\e[0m\r\n\e[1;91mNameError: \e[0mname \e[32m'clear'\e[0m is not defined\r\n>>> "
+    content: "\e[31m╭─\e[0m\e[31m───────────────── \e[0m\e[1;31mTraceback \e[0m\e[1;2;31m(most recent call last)\e[0m\e[31m ──────────────────────\e[0m\e[31m─╮\e[0m\r\n\e[31m│\e[0m \e[33m<stdin>\e[0m:\e[94m1\e[0m in \e[92m<module>\e[0m                                                      \e[31m│\e[0m\r\n\e[31m╰────────────────────────────────────────────────────────────────────────────╯\e[0m\r\n\e[1;91mNameError: \e[0mname \e[32m'clear'\e[0m is not defined\r\n>>> "
   - delay: 1500
     content: d
   - delay: 50

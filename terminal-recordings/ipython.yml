@@ -42,7 +42,7 @@ config:
   # Maximum delay between frames in ms
   # Ignored if the `frameDelay` isn't set to `auto`
   # Set to `auto` to prevent limiting the max idle time
-  maxIdleTime: 2000
+  maxIdleTime: 10000
   
   # The surrounding frame box
   # The `type` can be null, window, floating, or solid`
@@ -130,94 +130,94 @@ records:
   - delay: 200
     content: "\r\n"
   - delay: 100
-    content: "\e[22;0t\e]0;IPython: algorithms/terminal-recordings\aPython 3.10.0rc2 (default, Oct  1 2021, 19:26:46) [GCC 9.3.0]\r\nType 'copyright', 'credits' or 'license' for more information\r\nIPython 7.30.1 -- An enhanced Interactive Python. Type '?' for help.\r\n\r\n\e[6n\e[?2004h\e[?1l\e[?25l\e[0m\e[?7l\e[0m\e[J\e[0;38;5;28mIn [\e[0;92;1m1\e[0;38;5;28m]: \e[8D\e[8C\e[?7h\e[0m\e[?12l\e[?25h"
+    content: "\e[22;0t\e]0;IPython: ~\aPython 3.10.0rc2 (default, Oct  1 2021, 19:26:46) [GCC 9.3.0]\r\nType 'copyright', 'credits' or 'license' for more information\r\nIPython 7.30.1 -- An enhanced Interactive Python. Type '?' for help.\r\n\r\n\e[6n\e[?2004h\e[?1l\e[?25l\e[0m\e[?7l\e[0m\e[J\e[0;38;5;28mIn [\e[0;92;1m1\e[0;38;5;28m]: \e[8D\e[8C\e[?7h\e[0m\e[?12l\e[?25h"
   - delay: 14
     content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 1968
+  - delay: 1000
     content: "\e[?25l\e[?7l\e[0mi\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 185
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mm\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 171
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mp\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 218
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mo\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 176
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mr\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 157
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mt\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 105
+  - delay: 100
     content: "\e[?25l\e[?7l\e[6D\e[0;38;5;28;1mimport\e[C\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 174
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0;38;5;32;1mm\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 120
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0;38;5;32;1mp\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 224
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0;38;5;32;1mu\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 530
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0m;\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 162
+  - delay: 50
     content: "\e[?25l\e[?7l\e[C\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 174
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mf\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 155
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mr\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 72
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mo\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 152
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mm\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 116
+  - delay: 50
     content: "\e[?25l\e[?7l\e[4D\e[0;38;5;28;1mfrom\e[C\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 258
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0;38;5;32;1mm\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 180
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0;38;5;32;1mp\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 192
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0;38;5;32;1mu\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 390
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0;38;5;32;1m.\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 661
+  - delay: 300
     content: "\e[?25l\e[?7l\e[0;38;5;32;1mp\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 143
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0;38;5;32;1md\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 181
+  - delay: 50
     content: "\e[?25l\e[?7l\e[C\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 419
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mi\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 185
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mm\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 102
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mp\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 151
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mp\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 590
+  - delay: 50
     content: "\e[?25l\e[?7l\b\e[0m\e[K\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 245
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mo\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 197
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mr\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 161
+  - delay: 50
     content: "\e[?25l\e[?7l\e[5D\e[0;38;5;28;1mimport\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 105
+  - delay: 50
     content: "\e[?25l\e[?7l\e[C\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 178
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0me\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 199
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mx\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 160
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0ma\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 91
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mm\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 71
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mp\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 159
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0ml\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 98
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0me\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 265
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0m_\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 231
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0md\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 250
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mf\e[?7h\e[0m\e[?12l\e[?25h"
   - delay: 274
     content: "\e[?25l\e[?7l\e[49D\e[0m\e[J\e[0;38;5;28mIn [\e[0;92;1m1\e[0;38;5;28m]: \e[0;38;5;28;1mimport\e[0m \e[0;38;5;32;1mmpu\e[0m; \e[0;38;5;28;1mfrom\e[0m \e[0;38;5;32;1mmpu.pd\e[0m \e[0;38;5;28;1mimport\e[0m example_df\e[49D\e[0m\r\r\n\e[J\e[?7h\e[0m\e[?12l\e[?25h\e[?2004l"
@@ -225,31 +225,31 @@ records:
     content: "\r\n\e[6n\e[?2004h\e[?25l\e[0m\e[?7l\e[0m\e[J\e[0;38;5;28mIn [\e[0;92;1m2\e[0;38;5;28m]: \e[8D\e[8C\e[?7h\e[0m\e[?12l\e[?25h"
   - delay: 11
     content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 1277
+  - delay: 1000
     content: "\e[?25l\e[?7l\e[0md\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 165
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mf\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 104
+  - delay: 50
     content: "\e[?25l\e[?7l\e[C\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 141
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0m=\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 107
+  - delay: 50
     content: "\e[?25l\e[?7l\e[C\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 248
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0me\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 191
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mx\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 176
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0ma\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 64
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mm\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 85
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mp\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 154
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0ml\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 92
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0me\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 333
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0m_\e[?7h\e[0m\e[?12l\e[?25h"
   - delay: 146
     content: "\e[?25l\e[?7l\e[0md\e[?7h\e[0m\e[?12l\e[?25h"
@@ -275,129 +275,129 @@ records:
     content: "\r\n     country   population population_time    EUR\r\n0    Germany   82521653.0      2016-12-01   True\r\n1     France   66991000.0      2017-01-01   True\r\n2  Indonesia  255461700.0      2017-01-01  False\r\n3    Ireland    4761865.0             NaT   True\r\n4      Spain   46549045.0      2017-06-01   True\r\n5    Vatican          NaN             NaT   True\r\n\r\n\e[6n\e[?2004h\e[?25l\e[0m\e[?7l\e[0m\e[J\e[0;38;5;28mIn [\e[0;92;1m4\e[0;38;5;28m]: \e[8D\e[8C\e[?7h\e[0m\e[?12l\e[?25h"
   - delay: 22
     content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 1346
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0md\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 291
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mf\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 523
+  - delay: 500
     content: "\e[?25l\e[?7l\e[0m.\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 3771
+  - delay: 3000
     content: "\e[?25l\e[?7l\e[11D\e[0;38;5;28mIn [\e[0;92;1m4\e[0;38;5;28m]: \e[0mdf.\e[0m\r\r\n\e[10C\e[0;38;5;16;48;5;250m  abs()             agg               any               asfreq            \r\e[84C \e[0m\r\r\n\e[10C\e[0;38;5;16;48;5;250m  add               aggregate         append            asof              \r\e[84C \e[0m\r\r\n\e[10C\e[0;38;5;16;48;5;250m  add_prefix        align             apply             assign            \r\e[84C>\e[0m\r\r\n\e[10C\e[0;38;5;16;48;5;250m  add_suffix        all               applymap          astype            \r\e[84C \e[0m\r\r\n\e[0m \b\e[5A\e[11C\e[?7h\e[0m\e[?12l\e[?25h"
   - delay: 6
     content: "\e[?25l\e[?7l\e[0mabs\e[0m\r\r\n\e[11C\e[0;38;5;231;48;5;102m abs()            \e[0m\r\r\n\r\r\n\r\r\n\r\r\n\e[10C\e[0;38;5;16;48;5;248m function() \e[5A\e[8D\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 1226
+  - delay: 1000
     content: "\e[?25l\e[?7l\e[2D\e[0mdd\e[0m\r\r\n\e[11C\e[0;38;5;16;48;5;250m abs()            \e[0m\r\r\n\e[11C\e[0;38;5;231;48;5;102m add              \e[0m\r\r\n\r\r\n\r\r\n\e[11C\e[0;38;5;16;48;5;248m<\e[2Cknow\e[C> \e[0m\e[K\e[5A\e[7D\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 426
+  - delay: 400
     content: "\e[?25l\e[?7l\e[0m_prefix\e[0m\r\r\n\r\r\n\e[11C\e[0;38;5;16;48;5;250m add              \e[0m\r\r\n\e[11C\e[0;38;5;231;48;5;102m add_prefix       \e[3A\e[8D\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 261
+  - delay: 200
     content: "\e[?25l\e[?7l\e[6D\e[0msuf\e[0m\r\r\n\r\r\n\r\r\n\e[11C\e[0;38;5;16;48;5;250m add_prefix       \e[0m\r\r\n\e[11C\e[0;38;5;231;48;5;102m add_suffix       \e[4A\e[8D\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 1610
+  - delay: 1500
     content: "\e[?25l\e[?7l\e[10D\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[5A\e[10C\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 3150
+  - delay: 300
     content: "\e[?25l\e[?7l\b\e[0m\e[K\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 465
+  - delay: 300
     content: "\e[?25l\e[?7l\b\e[0m\e[K\e[?7h\e[0m\e[?12l\e[?25h"
   - delay: 221
     content: "\e[?25l\e[?7l\b\e[0m\e[K\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 1556
+  - delay: 1500
     content: "\e[?25l\e[?7l\e[0mc\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 175
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0ml\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 171
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0me\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 93
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0ma\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 149
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mr\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 372
+  - delay: 50
     content: "\e[?25l\e[?7l\e[13D\e[0m\e[J\e[0;38;5;28mIn [\e[0;92;1m4\e[0;38;5;28m]: \e[0mclear\e[13D\e[0m\r\r\n\e[J\e[?7h\e[0m\e[?12l\e[?25h\e[?2004l\e[H\e[2J\e[3J\r\n\e[6n\e[?2004h\e[?25l\e[0m\e[?7l\e[0m\e[J\e[0;38;5;28mIn [\e[0;92;1m5\e[0;38;5;28m]: \e[8D\e[8C\e[?7h\e[0m\e[?12l\e[?25h\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
   - delay: 7
     content: "\e[?25l\e[?7l\e[8D\e[0;38;5;28mIn [\e[0;92;1m5\e[0;38;5;28m]: \e[0m\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\e[0m \b\e[19A\e[8C\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 1509
+  - delay: 1500
     content: "\e[?25l\e[?7l\e[0md\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 176
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0me\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 139
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mf\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 104
+  - delay: 50
     content: "\e[?25l\e[?7l\e[3D\e[0;38;5;28;1mdef\e[C\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 136
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0;38;5;32mf\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 335
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0m(\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 248
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mx\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 277
+  - delay: 50
     content: "\e[?25l\e[?7l\e[2D\e[0;38;5;16;48;5;152m(\e[C)\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 412
+  - delay: 300
     content: "\e[?25l\e[?7l\e[3D\e[0m(\e[C):\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 424
+  - delay: 300
     content: "\e[?25l\e[?7l\e[0m\r\r\n\e[0;38;5;28m   ...: \e[4C\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 328
+  - delay: 50
     content: "\e[?25l\e[?7l\e[C\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 646
+  - delay: 50
     content: "\e[?25l\e[?7l\b\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 759
+  - delay: 300
     content: "\e[?25l\e[?7l\e[0mx\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 503
+  - delay: 300
     content: "\e[?25l\e[?7l\e[0m+\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 369
+  - delay: 300
     content: "\e[?25l\e[?7l\e[0m=\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 383
+  - delay: 300
     content: "\e[?25l\e[?7l\e[0;38;5;28m1\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 580
+  - delay: 300
     content: "\e[?25l\e[?7l\e[0m\r\r\n\e[0;38;5;28m   ...: \e[4C\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 647
+  - delay: 300
     content: "\e[?25l\e[?7l\e[0mr\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 142
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0me\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 123
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mt\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 96
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mu\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 102
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mr\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 93
+  - delay: 50
     content: "\e[?25l\e[?7l\e[5D\e[0;38;5;28;1mreturn\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 554
+  - delay: 300
     content: "\e[?25l\e[?7l\e[C\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 243
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0mx\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 432
+  - delay: 300
     content: "\e[?25l\e[?7l\e[0m*\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 139
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0m*\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 193
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0;38;5;28m2\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 274
+  - delay: 50
     content: "\e[?25l\e[?7l\e[0m\r\r\n\e[0;38;5;28m   ...: \e[4C\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 550
+  - delay: 300
     content: "\e[?25l\e[?7l\e[3A\e[12D\e[0m\e[J\e[0;38;5;28mIn [\e[0;92;1m5\e[0;38;5;28m]: \e[0;38;5;28;1mdef\e[0m \e[0;38;5;32mf\e[0m(x):\e[0m\r\r\n\e[0;38;5;28m   ...: \e[0m    x+=\e[0;38;5;28m1\e[0m\r\r\n\e[0;38;5;28m   ...: \e[0m    \e[0;38;5;28;1mreturn\e[0m x**\e[0;38;5;28m2\e[0m\r\r\n\e[0;38;5;28m   ...: \e[8D\e[0m\r\r\n\e[J\e[?7h\e[0m\e[?12l\e[?25h\e[?2004l\r\n\e[6n\e[?2004h\e[?25l\e[0m\e[?7l\e[0m\e[J\e[0;38;5;28mIn [\e[0;92;1m6\e[0;38;5;28m]: \e[8D\e[8C\e[?7h\e[0m\e[?12l\e[?25h\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
   - delay: 9
     content: "\e[?25l\e[?7l\e[8D\e[0;38;5;28mIn [\e[0;92;1m6\e[0;38;5;28m]: \e[0m\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\e[0m \b\e[14A\e[8C\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 695
+  - delay: 300
     content: "\e[?25l\e[?7l\e[0;38;5;28;1mdef\e[0m \e[0;38;5;32mf\e[0m(x):\e[0m\r\r\n\e[0;38;5;28m   ...: \e[0m    x+=\e[0;38;5;28m1\e[0m\r\r\n\e[0;38;5;28m   ...: \e[0m    \e[0;38;5;28;1mreturn\e[0m x**\e[0;38;5;28m2\e[0m\r\r\n\e[0;38;5;28m   ...: \e[4C\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 1231
+  - delay: 1000
     content: "\e[?25l\e[?7l\e[3A\e[4D\e[0m\e[K\e[0m\r\r\n\e[0m \e[0m\e[K\e[0m\r\r\n\e[0m \e[0m\e[K\e[0m\r\r\n\e[0m \e[0m\e[K\e[3A\e[7C\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 512
+  - delay: 500
     content: "\e[?25l\e[?7l\e[0;38;5;28;1mdef\e[0m \e[0;38;5;32mf\e[0m(x):\e[0m\r\r\n\e[0;38;5;28m   ...: \e[0m    x+=\e[0;38;5;28m1\e[0m\r\r\n\e[0;38;5;28m   ...: \e[0m    \e[0;38;5;28;1mreturn\e[0m x**\e[0;38;5;28m2\e[0m\r\r\n\e[0;38;5;28m   ...: \e[4C\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 559
+  - delay: 500
     content: "\e[?25l\e[?7l\e[3A\e[4D\e[0m\e[K\e[0m\r\r\n\e[0m \e[0m\e[K\e[0m\r\r\n\e[0m \e[0m\e[K\e[0m\r\r\n\e[0m \e[0m\e[K\e[3A\e[7C\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 587
+  - delay: 500
     content: "\e[?25l\e[?7l\e[0;38;5;28;1mdef\e[0m \e[0;38;5;32mf\e[0m(x):\e[0m\r\r\n\e[0;38;5;28m   ...: \e[0m    x+=\e[0;38;5;28m1\e[0m\r\r\n\e[0;38;5;28m   ...: \e[0m    \e[0;38;5;28;1mreturn\e[0m x**\e[0;38;5;28m2\e[0m\r\r\n\e[0;38;5;28m   ...: \e[4C\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 417
+  - delay: 300
     content: "\e[?25l\e[?7l\e[A\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 198
+  - delay: 50
     content: "\e[?25l\e[?7l\e[A\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 159
+  - delay: 50
     content: "\e[?25l\e[?7l\e[A\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 557
+  - delay: 500
     content: "\e[?25l\e[?7l\e[4D\e[0mclear\e[0m\e[K\e[0m\r\r\n\e[0m \e[0m\e[K\e[0m\r\r\n\e[0m \e[0m\e[K\e[0m\r\r\n\e[0m \e[0m\e[K\e[3A\e[12C\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 563
+  - delay: 500
     content: "\e[?25l\e[?7l\e[5D\e[0mdf\e[0m\e[K\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 441
+  - delay: 300
     content: "\e[?25l\e[?7l\e[0m = example_df\e[0;38;5;16;48;5;152m()\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 591
+  - delay: 500
     content: "\e[?25l\e[?7l\e[17D\e[0m\e[K\e[?7h\e[0m\e[?12l\e[?25h"
-  - delay: 412
+  - delay: 20000
     content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"

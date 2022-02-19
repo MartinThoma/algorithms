@@ -111,9 +111,9 @@ config:
   
 # Records, feel free to edit them
 records:
-  - delay: 1255
+  - delay: 1000
     content: "\e]0;moose@pc08:~\e\\\e]7;file://pc08/home/moose\e\\\e]0;moose@pc08: ~\amoose@pc08:~$ "
-  - delay: 500
+  - delay: 300
     content: p
   - delay: 50
     content: 'y'
@@ -125,7 +125,7 @@ records:
     content: o
   - delay: 50
     content: 'n'
-  - delay: 100
+  - delay: 200
     content: "\r\n"
   - delay: 100
     content: "Python 3.9.1 (default, Jan 16 2021, 13:41:30) \r\n[GCC 9.3.0] on linux\r\nType \"help\", \"copyright\", \"credits\" or \"license\" for more information.\r\n>>> "
