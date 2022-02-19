@@ -458,7 +458,7 @@ records:
   - delay: 150
     content: "\r\n"
   - delay: 5
-    content: "\e[31m╭─\e[0m\e[31m────────────────────────────── \e[0m\e[1;31mTraceback \e[0m\e[1;2;31m(most recent call last)\e[0m\e[31m ───────────────────────────────\e[0m\e[31m─╮\e[0m\r\n\e[31m│\e[0m \e[33m<stdin>\e[0m:\e[94m1\e[0m in \e[92m<module>\e[0m                                                                            \e[31m│\e[0m\r\n\e[31m╰──────────────────────────────────────────────────────────────────────────────────────────────────╯\e[0m\r\n\e[1;91mNameError: \e[0mname \e[32m'clear'\e[0m is not defined\r\n>>> "
+    content: "\e[31m╭─\e[0m\e[31m───────────────── \e[0m\e[1;31mTraceback \e[0m\e[1;2;31m(most recent call last)\e[0m\e[31m ──────────────────────\e[0m\e[31m─╮\e[0m\r\n\e[31m│\e[0m \e[33m<stdin>\e[0m:\e[94m1\e[0m in \e[92m<module>\e[0m                                                        \e[31m│\e[0m\r\n\e[31m╰────────────────────────────────────────────────────────────────────────────╯\e[0m\r\n\e[1;91mNameError: \e[0mname \e[32m'clear'\e[0m is not defined\r\n>>> "
   - delay: 1500
     content: d
   - delay: 50
@@ -541,5 +541,5 @@ records:
     content: "\r\e[C\e[C\e[C\e[C\e[K"
   - delay: 400
     content: "\a"
-  - delay: 2000
+  - delay: 10000
     content: "\r\n"
