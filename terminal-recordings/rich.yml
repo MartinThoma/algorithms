@@ -1,0 +1,545 @@
+# The configurations that used for the recording, feel free to edit them
+config:
+
+  # Specify a command to be executed
+  # like `/bin/bash -l`, `ls`, or any other commands
+  # the default is bash for Linux
+  # or powershell.exe for Windows
+  command: bash -l
+  
+  # Specify the current working directory path
+  # the default is the current working directory path
+  cwd: /home/moose
+  
+  # Export additional ENV variables
+  env:
+    recording: true
+  
+  # Explicitly set the number of columns
+  # or use `auto` to take the current
+  # number of columns of your shell
+  cols: 80
+  
+  # Explicitly set the number of rows
+  # or use `auto` to take the current
+  # number of rows of your shell
+  rows: 20
+  
+  # Amount of times to repeat GIF
+  # If value is -1, play once
+  # If value is 0, loop indefinitely
+  # If value is a positive number, loop n times
+  repeat: 0
+  
+  # Quality
+  # 1 - 100
+  quality: 100
+  
+  # Delay between frames in ms
+  # If the value is `auto` use the actual recording delays
+  frameDelay: auto
+  
+  # Maximum delay between frames in ms
+  # Ignored if the `frameDelay` isn't set to `auto`
+  # Set to `auto` to prevent limiting the max idle time
+  maxIdleTime: 2000
+  
+  # The surrounding frame box
+  # The `type` can be null, window, floating, or solid`
+  # To hide the title use the value null
+  # Don't forget to add a backgroundColor style with a null as type
+  frameBox:
+    type: floating
+    title: Terminalizer
+    style:
+      border: 0px black solid
+      # boxShadow: none
+      # margin: 0px
+  
+  # Add a watermark image to the rendered gif
+  # You need to specify an absolute path for
+  # the image on your machine or a URL, and you can also
+  # add your own CSS styles
+  watermark:
+    imagePath: null
+    style:
+      position: absolute
+      right: 15px
+      bottom: 15px
+      width: 100px
+      opacity: 0.9
+  
+  # Cursor style can be one of
+  # `block`, `underline`, or `bar`
+  cursorStyle: block
+  
+  # Font family
+  # You can use any font that is installed on your machine
+  # in CSS-like syntax
+  fontFamily: "Monaco, Lucida Console, Ubuntu Mono, Monospace"
+  
+  # The size of the font
+  fontSize: 24
+  
+  # The height of lines
+  lineHeight: 1
+  
+  # The spacing between letters
+  letterSpacing: 0
+  
+  # Theme
+  theme:
+    background: "transparent"
+    foreground: "#afafaf"
+    cursor: "#c7c7c7"
+    black: "#232628"
+    red: "#fc4384"
+    green: "#b3e33b"
+    yellow: "#ffa727"
+    blue: "#75dff2"
+    magenta: "#ae89fe"
+    cyan: "#708387"
+    white: "#d5d5d0"
+    brightBlack: "#626566"
+    brightRed: "#ff7fac"
+    brightGreen: "#c8ed71"
+    brightYellow: "#ebdf86"
+    brightBlue: "#75dff2"
+    brightMagenta: "#ae89fe"
+    brightCyan: "#b1c6ca"
+    brightWhite: "#f9f9f4"
+  
+# Records, feel free to edit them
+records:
+  - delay: 1000
+    content: "\e]0;moose@pc08:~\e\\\e]7;file://pc08/home/moose\e\\\e]0;moose@pc08: ~\amoose@pc08:~$ "
+  - delay: 308
+    content: p
+  - delay: 50
+    content: 'y'
+  - delay: 50
+    content: t
+  - delay: 50
+    content: h
+  - delay: 50
+    content: o
+  - delay: 50
+    content: 'n'
+  - delay: 200
+    content: "\r\n"
+  - delay: 100
+    content: "Python 3.10.0rc2 (default, Oct  1 2021, 19:26:46) [GCC 9.3.0] on linux\r\nType \"help\", \"copyright\", \"credits\" or \"license\" for more information.\r\n"
+  - delay: 10
+    content: '>>> '
+  - delay: 200
+    content: f
+  - delay: 50
+    content: r
+  - delay: 50
+    content: o
+  - delay: 50
+    content: m
+  - delay: 50
+    content: ' '
+  - delay: 200
+    content: r
+  - delay: 50
+    content: i
+  - delay: 50
+    content: c
+  - delay: 50
+    content: h
+  - delay: 200
+    content: ' '
+  - delay: 50
+    content: i
+  - delay: 50
+    content: m
+  - delay: 50
+    content: p
+  - delay: 50
+    content: o
+  - delay: 50
+    content: r
+  - delay: 50
+    content: t
+  - delay: 150
+    content: ' '
+  - delay: 50
+    content: p
+  - delay: 50
+    content: r
+  - delay: 50
+    content: e
+  - delay: 50
+    content: t
+  - delay: 50
+    content: t
+  - delay: 50
+    content: 'y'
+  - delay: 50
+    content: ','
+  - delay: 100
+    content: ' '
+  - delay: 50
+    content: i
+  - delay: 50
+    content: 'n'
+  - delay: 50
+    content: s
+  - delay: 50
+    content: p
+  - delay: 50
+    content: e
+  - delay: 50
+    content: c
+  - delay: 50
+    content: t
+  - delay: 50
+    content: ','
+  - delay: 150
+    content: ' '
+  - delay: 50
+    content: t
+  - delay: 50
+    content: r
+  - delay: 50
+    content: a
+  - delay: 50
+    content: c
+  - delay: 50
+    content: e
+  - delay: 50
+    content: b
+  - delay: 50
+    content: a
+  - delay: 50
+    content: c
+  - delay: 50
+    content: k
+  - delay: 150
+    content: ' '
+  - delay: 50
+    content: a
+  - delay: 50
+    content: s
+  - delay: 150
+    content: ' '
+  - delay: 50
+    content: t
+  - delay: 50
+    content: b
+  - delay: 300
+    content: "\r\n"
+  - delay: 50
+    content: '>>> '
+  - delay: 150
+    content: p
+  - delay: 50
+    content: r
+  - delay: 50
+    content: e
+  - delay: 50
+    content: t
+  - delay: 50
+    content: t
+  - delay: 50
+    content: 'y'
+  - delay: 50
+    content: .
+  - delay: 150
+    content: i
+  - delay: 50
+    content: 'n'
+  - delay: 50
+    content: s
+  - delay: 50
+    content: t
+  - delay: 50
+    content: a
+  - delay: 50
+    content: l
+  - delay: 50
+    content: l
+  - delay: 150
+    content: (
+  - delay: 50
+    content: )
+  - delay: 150
+    content: ;
+  - delay: 150
+    content: ' '
+  - delay: 300
+    content: t
+  - delay: 50
+    content: b
+  - delay: 50
+    content: .
+  - delay: 150
+    content: i
+  - delay: 50
+    content: 'n'
+  - delay: 50
+    content: s
+  - delay: 50
+    content: t
+  - delay: 50
+    content: a
+  - delay: 50
+    content: l
+  - delay: 50
+    content: l
+  - delay: 150
+    content: (
+  - delay: 50
+    content: s
+  - delay: 50
+    content: h
+  - delay: 50
+    content: o
+  - delay: 50
+    content: w
+  - delay: 50
+    content: _
+  - delay: 50
+    content: l
+  - delay: 50
+    content: o
+  - delay: 50
+    content: c
+  - delay: 50
+    content: a
+  - delay: 50
+    content: l
+  - delay: 50
+    content: s
+  - delay: 150
+    content: '='
+  - delay: 50
+    content: F
+  - delay: 50
+    content: a
+  - delay: 50
+    content: l
+  - delay: 50
+    content: s
+  - delay: 50
+    content: e
+  - delay: 50
+    content: )
+  - delay: 200
+    content: "\r\n"
+  - delay: 8
+    content: "\e[1m<\e[0m\e[1;95mbuilt-in\e[0m\e[39m function excepthook\e[0m\e[1m>\e[0m\r\n>>> "
+  - delay: 1000
+    content: i
+  - delay: 50
+    content: m
+  - delay: 50
+    content: p
+  - delay: 50
+    content: o
+  - delay: 50
+    content: r
+  - delay: 50
+    content: t
+  - delay: 50
+    content: ' '
+  - delay: 150
+    content: m
+  - delay: 50
+    content: p
+  - delay: 50
+    content: u
+  - delay: 50
+    content: ;
+  - delay: 50
+    content: ' '
+  - delay: 200
+    content: f
+  - delay: 50
+    content: r
+  - delay: 50
+    content: o
+  - delay: 50
+    content: m
+  - delay: 150
+    content: ' '
+  - delay: 50
+    content: m
+  - delay: 50
+    content: p
+  - delay: 50
+    content: u
+  - delay: 50
+    content: .
+  - delay: 150
+    content: p
+  - delay: 300
+    content: d
+  - delay: 50
+    content: ' '
+  - delay: 50
+    content: i
+  - delay: 150
+    content: m
+  - delay: 50
+    content: p
+  - delay: 50
+    content: o
+  - delay: 50
+    content: r
+  - delay: 50
+    content: t
+  - delay: 50
+    content: ' '
+  - delay: 200
+    content: e
+  - delay: 50
+    content: x
+  - delay: 50
+    content: a
+  - delay: 50
+    content: m
+  - delay: 50
+    content: p
+  - delay: 50
+    content: l
+  - delay: 50
+    content: e
+  - delay: 50
+    content: _
+  - delay: 50
+    content: d
+  - delay: 50
+    content: f
+  - delay: 250
+    content: "\r\n"
+  - delay: 100
+    content: '>>> '
+  - delay: 50
+    content: e
+  - delay: 50
+    content: x
+  - delay: 50
+    content: a
+  - delay: 50
+    content: m
+  - delay: 50
+    content: p
+  - delay: 50
+    content: l
+  - delay: 50
+    content: e
+  - delay: 50
+    content: _
+  - delay: 50
+    content: d
+  - delay: 50
+    content: f
+  - delay: 50
+    content: (
+  - delay: 50
+    content: )
+  - delay: 300
+    content: "\r\n"
+  - delay: 40
+    content: "     country   population population_time    EUR\r\n\e[1;36m0\e[0m    Germany   \e[1;36m82521653.0\e[0m      \e[1;36m2016\e[0m-\e[1;36m12\e[0m-\e[1;36m01\e[0m   \e[3;92mTrue\e[0m\r\n\e[1;36m1\e[0m     France   \e[1;36m66991000.0\e[0m      \e[1;36m2017\e[0m-\e[1;36m01\e[0m-\e[1;36m01\e[0m   \e[3;92mTrue\e[0m\r\n\e[1;36m2\e[0m  Indonesia  \e[1;36m255461700.0\e[0m      \e[1;36m2017\e[0m-\e[1;36m01\e[0m-\e[1;36m01\e[0m  \e[3;91mFalse\e[0m\r\n\e[1;36m3\e[0m    Ireland    \e[1;36m4761865.0\e[0m             NaT   \e[3;92mTrue\e[0m\r\n\e[1;36m4\e[0m      Spain   \e[1;36m46549045.0\e[0m      \e[1;36m2017\e[0m-\e[1;36m06\e[0m-\e[1;36m01\e[0m   \e[3;92mTrue\e[0m\r\n\e[1;36m5\e[0m    Vatican          NaN             NaT   \e[3;92mTrue\e[0m\r\n>>> "
+  - delay: 1000
+    content: c
+  - delay: 50
+    content: l
+  - delay: 50
+    content: e
+  - delay: 50
+    content: a
+  - delay: 50
+    content: r
+  - delay: 150
+    content: "\r\n"
+  - delay: 5
+    content: "\e[31m╭─\e[0m\e[31m────────────────────────────── \e[0m\e[1;31mTraceback \e[0m\e[1;2;31m(most recent call last)\e[0m\e[31m ───────────────────────────────\e[0m\e[31m─╮\e[0m\r\n\e[31m│\e[0m \e[33m<stdin>\e[0m:\e[94m1\e[0m in \e[92m<module>\e[0m                                                                            \e[31m│\e[0m\r\n\e[31m╰──────────────────────────────────────────────────────────────────────────────────────────────────╯\e[0m\r\n\e[1;91mNameError: \e[0mname \e[32m'clear'\e[0m is not defined\r\n>>> "
+  - delay: 1500
+    content: d
+  - delay: 50
+    content: e
+  - delay: 50
+    content: f
+  - delay: 50
+    content: ' '
+  - delay: 50
+    content: f
+  - delay: 50
+    content: (
+  - delay: 50
+    content: x
+  - delay: 50
+    content: )
+  - delay: 50
+    content: ':'
+  - delay: 150
+    content: "\r\n... "
+  - delay: 50
+    content: ' '
+  - delay: 50
+    content: ' '
+  - delay: 50
+    content: x
+  - delay: 50
+    content: ' '
+  - delay: 50
+    content: +
+  - delay: 50
+    content: '='
+  - delay: 50
+    content: ' '
+  - delay: 50
+    content: '1'
+  - delay: 50
+    content: "\r\n... "
+  - delay: 500
+    content: ' '
+  - delay: 50
+    content: ' '
+  - delay: 50
+    content: r
+  - delay: 50
+    content: e
+  - delay: 50
+    content: t
+  - delay: 50
+    content: u
+  - delay: 50
+    content: r
+  - delay: 50
+    content: 'n'
+  - delay: 50
+    content: ' '
+  - delay: 50
+    content: x
+  - delay: 50
+    content: '*'
+  - delay: 50
+    content: '*'
+  - delay: 50
+    content: '2'
+  - delay: 250
+    content: "\r\n... "
+  - delay: 250
+    content: "\r\n>>> "
+  - delay: 250
+    content: '  return x**2'
+  - delay: 400
+    content: "\r\e[C\e[C\e[C\e[C\e[C\e[C\e[5Px += 1"
+  - delay: 400
+    content: "\r\e[C\e[C\e[C\e[Cdef f(x):"
+  - delay: 1000
+    content: "\r\e[C\e[C\e[C\e[C\e[1P  x += 1"
+  - delay: 400
+    content: "\b\b\b\b\b\breturn x**2"
+  - delay: 400
+    content: "\r\e[C\e[C\e[C\e[C\e[K"
+  - delay: 400
+    content: "\a"
+  - delay: 2000
+    content: "\r\n"

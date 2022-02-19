@@ -18,18 +18,18 @@ config:
   # Explicitly set the number of columns
   # or use `auto` to take the current
   # number of columns of your shell
-  cols: 157
+  cols: 80
   
   # Explicitly set the number of rows
   # or use `auto` to take the current
   # number of rows of your shell
-  rows: 75
+  rows: 20
   
   # Amount of times to repeat GIF
   # If value is -1, play once
   # If value is 0, loop indefinitely
   # If value is a positive number, loop n times
-  repeat: 0
+  repeat: -1
   
   # Quality
   # 1 - 100
@@ -79,7 +79,7 @@ config:
   fontFamily: "Monaco, Lucida Console, Ubuntu Mono, Monospace"
   
   # The size of the font
-  fontSize: 12
+  fontSize: 24
   
   # The height of lines
   lineHeight: 1
@@ -113,107 +113,107 @@ config:
 records:
   - delay: 1255
     content: "\e]0;moose@pc08:~\e\\\e]7;file://pc08/home/moose\e\\\e]0;moose@pc08: ~\amoose@pc08:~$ "
-  - delay: 891
+  - delay: 500
     content: p
-  - delay: 186
+  - delay: 50
     content: 'y'
-  - delay: 177
+  - delay: 50
     content: t
-  - delay: 47
+  - delay: 50
     content: h
-  - delay: 71
+  - delay: 50
     content: o
-  - delay: 148
+  - delay: 50
     content: 'n'
-  - delay: 197
+  - delay: 100
     content: "\r\n"
-  - delay: 116
+  - delay: 100
     content: "Python 3.9.1 (default, Jan 16 2021, 13:41:30) \r\n[GCC 9.3.0] on linux\r\nType \"help\", \"copyright\", \"credits\" or \"license\" for more information.\r\n>>> "
-  - delay: 1109
+  - delay: 1000
     content: f
-  - delay: 165
+  - delay: 50
     content: r
-  - delay: 55
+  - delay: 50
     content: o
-  - delay: 173
+  - delay: 50
     content: m
-  - delay: 89
+  - delay: 50
     content: ' '
-  - delay: 365
+  - delay: 300
     content: m
-  - delay: 296
+  - delay: 50
     content: p
-  - delay: 189
+  - delay: 50
     content: u
-  - delay: 248
+  - delay: 50
     content: .
-  - delay: 548
+  - delay: 200
     content: p
-  - delay: 183
+  - delay: 50
     content: d
-  - delay: 196
+  - delay: 200
     content: ' '
-  - delay: 117
+  - delay: 200
     content: i
-  - delay: 175
+  - delay: 50
     content: m
-  - delay: 86
+  - delay: 50
     content: p
-  - delay: 152
+  - delay: 50
     content: o
-  - delay: 125
+  - delay: 50
     content: r
-  - delay: 151
+  - delay: 50
     content: t
-  - delay: 65
+  - delay: 50
     content: ' '
-  - delay: 192
+  - delay: 200
     content: e
-  - delay: 168
+  - delay: 50
     content: x
-  - delay: 172
+  - delay: 50
     content: a
-  - delay: 67
+  - delay: 50
     content: m
-  - delay: 124
+  - delay: 50
     content: p
-  - delay: 141
+  - delay: 50
     content: l
-  - delay: 76
+  - delay: 50
     content: e
-  - delay: 297
+  - delay: 50
     content: _
-  - delay: 90
+  - delay: 100
     content: d
-  - delay: 463
+  - delay: 50
     content: f
-  - delay: 356
+  - delay: 50
     content: "\r\n"
-  - delay: 487
+  - delay: 500
     content: '>>> '
-  - delay: 343
+  - delay: 500
     content: d
-  - delay: 155
+  - delay: 100
     content: f
-  - delay: 127
+  - delay: 100
     content: ' '
-  - delay: 124
+  - delay: 100
     content: '='
-  - delay: 108
+  - delay: 100
     content: ' '
-  - delay: 123
+  - delay: 100
     content: e
-  - delay: 178
+  - delay: 50
     content: x
-  - delay: 158
+  - delay: 50
     content: a
-  - delay: 71
+  - delay: 50
     content: m
-  - delay: 85
+  - delay: 50
     content: p
-  - delay: 152
+  - delay: 50
     content: l
-  - delay: 86
+  - delay: 50
     content: e
   - delay: 253
     content: _
@@ -237,133 +237,115 @@ records:
     content: "\r\n"
   - delay: 9
     content: "     country   population population_time    EUR\r\n0    Germany   82521653.0      2016-12-01   True\r\n1     France   66991000.0      2017-01-01   True\r\n2  Indonesia  255461700.0      2017-01-01  False\r\n3    Ireland    4761865.0             NaT   True\r\n4      Spain   46549045.0      2017-06-01   True\r\n5    Vatican          NaN             NaT   True\r\n>>> "
-  - delay: 2537
+  - delay: 1500
     content: '{'
-  - delay: 382
+  - delay: 50
     content: '"'
-  - delay: 423
+  - delay: 50
     content: a
-  - delay: 342
+  - delay: 50
     content: '"'
-  - delay: 447
+  - delay: 50
     content: ':'
-  - delay: 197
+  - delay: 50
     content: ' '
-  - delay: 300
+  - delay: 50
     content: '"'
-  - delay: 304
+  - delay: 50
     content: b
-  - delay: 462
+  - delay: 50
     content: '"'
-  - delay: 254
+  - delay: 50
     content: ':'
-  - delay: 790
+  - delay: 50
     content: "\b\e[K"
-  - delay: 284
+  - delay: 50
     content: ','
-  - delay: 151
+  - delay: 50
     content: ' '
-  - delay: 352
+  - delay: 50
     content: '1'
-  - delay: 286
+  - delay: 50
     content: ':'
-  - delay: 718
+  - delay: 50
     content: '2'
-  - delay: 410
+  - delay: 50
     content: ','
-  - delay: 135
+  - delay: 50
     content: ' '
-  - delay: 208
+  - delay: 50
     content: '3'
-  - delay: 191
+  - delay: 50
     content: ':'
-  - delay: 1474
+  - delay: 50
     content: '3'
-  - delay: 97
+  - delay: 50
     content: .
-  - delay: 229
+  - delay: 50
     content: '4'
-  - delay: 554
+  - delay: 50
     content: ','
-  - delay: 184
+  - delay: 50
     content: ' '
-  - delay: 479
+  - delay: 50
     content: '4'
-  - delay: 212
+  - delay: 50
     content: ':'
-  - delay: 599
+  - delay: 50
     content: 'N'
-  - delay: 160
+  - delay: 50
     content: o
-  - delay: 113
+  - delay: 50
     content: 'n'
-  - delay: 117
+  - delay: 50
     content: e
-  - delay: 610
+  - delay: 50
     content: ','
-  - delay: 108
+  - delay: 50
     content: ' '
-  - delay: 427
+  - delay: 50
     content: '5'
-  - delay: 199
+  - delay: 50
     content: ':'
-  - delay: 691
+  - delay: 50
     content: ' '
-  - delay: 581
+  - delay: 50
     content: '['
-  - delay: 47
+  - delay: 50
     content: ']'
-  - delay: 119
+  - delay: 50
     content: "\b"
-  - delay: 618
+  - delay: 50
     content: "5]\b"
-  - delay: 725
+  - delay: 50
     content: "\b\e[1P]\b"
-  - delay: 192
+  - delay: 50
     content: "6]\b"
-  - delay: 462
+  - delay: 50
     content: ",]\b"
-  - delay: 149
+  - delay: 50
     content: "7]\b"
-  - delay: 823
+  - delay: 50
     content: "\e[C"
-  - delay: 1283
+  - delay: 50
     content: ','
-  - delay: 111
+  - delay: 50
     content: ' '
-  - delay: 759
+  - delay: 50
     content: '6'
-  - delay: 207
+  - delay: 50
     content: ':'
-  - delay: 915
+  - delay: 50
     content: ' '
-  - delay: 231
+  - delay: 50
     content: '"'
-  - delay: 247
+  - delay: 50
     content: o
-  - delay: 177
+  - delay: 50
     content: k
-  - delay: 338
+  - delay: 50
     content: '"'
-  - delay: 940
+  - delay: 50
     content: '}'
-  - delay: 990
+  - delay: 1000
     content: "\r\n{'a': 'b', 1: 2, 3: 3.4, 4: None, 5: [6, 7], 6: 'ok'}\r\n>>> "
-  - delay: 2517
-    content: "\r\nKeyboardInterrupt\r\n>>> "
-  - delay: 323
-    content: "\r\n"
-  - delay: 76
-    content: "\e]0;moose@pc08:~\e\\\e]7;file://pc08/home/moose\e\\\e]0;moose@pc08: ~\amoose@pc08:~$ "
-  - delay: 2486
-    content: "^C\r\n\e]0;moose@pc08:~\e\\\e]7;file://pc08/home/moose\e\\\e]0;moose@pc08: ~\amoose@pc08:~$ "
-  - delay: 652
-    content: e
-  - delay: 195
-    content: x
-  - delay: 87
-    content: i
-  - delay: 156
-    content: t
-  - delay: 166
-    content: "\r\nlogout\r\n"
