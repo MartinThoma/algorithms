@@ -9,7 +9,7 @@ config:
   
   # Specify the current working directory path
   # the default is the current working directory path
-  cwd: /home/moose
+  cwd: /home/MartinThoma
   
   # Export additional ENV variables
   env:
@@ -112,7 +112,7 @@ config:
 # Records, feel free to edit them
 records:
   - delay: 1000
-    content: "\e]0;moose@pc08:~\e\\\e]7;file://pc08/home/moose\e\\\e]0;moose@pc08: ~\amoose@pc08:~$ "
+    content: "\e]0;MartinThoma@blog:~\e\\\e]7;file://pc08/home/MartinThoma\e\\\e]0;MartinThoma@blog: ~\aMartinThoma@blog:~$ "
   - delay: 300
     content: p
   - delay: 50

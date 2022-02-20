@@ -1,0 +1,581 @@
+# The configurations that used for the recording, feel free to edit them
+config:
+
+  # Specify a command to be executed
+  # like `/bin/bash -l`, `ls`, or any other commands
+  # the default is bash for Linux
+  # or powershell.exe for Windows
+  command: bash -l
+  
+  # Specify the current working directory path
+  # the default is the current working directory path
+  cwd: /home/MartinThoma
+  
+  # Export additional ENV variables
+  env:
+    recording: true
+  
+  # Explicitly set the number of columns
+  # or use `auto` to take the current
+  # number of columns of your shell
+  cols: 80
+  
+  # Explicitly set the number of rows
+  # or use `auto` to take the current
+  # number of rows of your shell
+  rows: 20
+  
+  # Amount of times to repeat GIF
+  # If value is -1, play once
+  # If value is 0, loop indefinitely
+  # If value is a positive number, loop n times
+  repeat: 0
+  
+  # Quality
+  # 1 - 100
+  quality: 100
+  
+  # Delay between frames in ms
+  # If the value is `auto` use the actual recording delays
+  frameDelay: auto
+  
+  # Maximum delay between frames in ms
+  # Ignored if the `frameDelay` isn't set to `auto`
+  # Set to `auto` to prevent limiting the max idle time
+  maxIdleTime: 10000
+  
+  # The surrounding frame box
+  # The `type` can be null, window, floating, or solid`
+  # To hide the title use the value null
+  # Don't forget to add a backgroundColor style with a null as type
+  frameBox:
+    type: floating
+    title: Terminalizer
+    style:
+      border: 0px black solid
+      # boxShadow: none
+      # margin: 0px
+  
+  # Add a watermark image to the rendered gif
+  # You need to specify an absolute path for
+  # the image on your machine or a URL, and you can also
+  # add your own CSS styles
+  watermark:
+    imagePath: null
+    style:
+      position: absolute
+      right: 15px
+      bottom: 15px
+      width: 100px
+      opacity: 0.9
+  
+  # Cursor style can be one of
+  # `block`, `underline`, or `bar`
+  cursorStyle: block
+  
+  # Font family
+  # You can use any font that is installed on your machine
+  # in CSS-like syntax
+  fontFamily: "Monaco, Lucida Console, Ubuntu Mono, Monospace"
+  
+  # The size of the font
+  fontSize: 24
+  
+  # The height of lines
+  lineHeight: 1
+  
+  # The spacing between letters
+  letterSpacing: 0
+  
+  # Theme
+  theme:
+    background: "transparent"
+    foreground: "#afafaf"
+    cursor: "#c7c7c7"
+    black: "#232628"
+    red: "#fc4384"
+    green: "#b3e33b"
+    yellow: "#ffa727"
+    blue: "#75dff2"
+    magenta: "#ae89fe"
+    cyan: "#708387"
+    white: "#d5d5d0"
+    brightBlack: "#626566"
+    brightRed: "#ff7fac"
+    brightGreen: "#c8ed71"
+    brightYellow: "#ebdf86"
+    brightBlue: "#75dff2"
+    brightMagenta: "#ae89fe"
+    brightCyan: "#b1c6ca"
+    brightWhite: "#f9f9f4"
+  
+# Records, feel free to edit them
+records:
+  - delay: 1000
+    content: "\e]0;MartinThoma@blog:~\e\\\e]7;file://pc08/home/MartinThoma\e\\\e]0;MartinThoma@blog: ~\aMartinThoma@blog:~$ "
+  - delay: 300
+    content: p
+  - delay: 50
+    content: t
+  - delay: 50
+    content: p
+  - delay: 50
+    content: 'y'
+  - delay: 50
+    content: t
+  - delay: 50
+    content: h
+  - delay: 50
+    content: o
+  - delay: 50
+    content: 'n'
+  - delay: 200
+    content: "\r\n"
+  - delay: 433
+    content: "\e]2;Python REPL (ptpython)\a\e[6n"
+  - delay: 6
+    content: "\e[?2004h\e[?1l\e[?25l\e[0m\e[?7l\e[0m\e[J\e[0;1m>>>\e[0m\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\e[0m \b\e[5A\e[4C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 21
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\e[0;38;5;248;48;5;235m \e[0;38;5;227;48;5;235m[F4] Emacs\e[0;38;5;248;48;5;235m  21/21 \e[0;38;5;102;48;5;16m[F3]\e[0;38;5;248;48;5;235m History \e[0;38;5;102;48;5;16m[F6]\e[0;38;5;248;48;5;235m Paste mode      \e[0;38;5;102;48;5;16m[F2]\e[0;38;5;248;48;5;235m Menu - CPython 3.10.0\r\e[79C \r\e[6A\e[4C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 2000
+    content: "\e[?25l\e[?7l\e[0m¬\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 113
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 500
+    content: "\e[?25l\e[?7l\e[2D\e[0m\e[K\e[C\e[?7h\e[0m\e[?12l\e[?25h\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 1300
+    content: "\e[?25l\e[?7l\e[0m{\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 14
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 345
+    content: "\e[?25l\e[?7l\e[0;38;5;124m\"\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 898
+    content: "\e[?25l\e[?7l\e[0;38;5;124ma\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 6
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 25
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0;38;5;124m\"\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 11
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0m:\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 8
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 14
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0;38;5;124m\"\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 5
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0;38;5;124mb\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 14
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 11
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[12C\e[0;38;5;16;48;5;250m bpython.gif\e[0m\r\r\n\e[12C\e[0;38;5;16;48;5;250m bpython.yml\e[2A\e[12D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 1000
+    content: "\e[?25l\e[?7l\e[0;38;5;124m2\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[2A\e[12C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 5
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 500
+    content: "\e[?25l\e[?7l\b\e[0m\e[K\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0;38;5;124m\"\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 500
+    content: "\e[?25l\e[?7l\e[0m,\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 5
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[13C\e[0;38;5;16;48;5;250m abs()           ArithmeticError AttributeError  BlockingIOError\e[0m\r\r\n\e[13C\e[0;38;5;16;48;5;250m all()           ascii()         BaseException                  \e[0m\r\r\n\e[13C\e[0;38;5;16;48;5;250m any()           AssertionError  bin()                          \e[3A\e[63D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 7
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[8C\e[0;38;5;16;48;5;250m  abs()    \e[11C   ascii()     \e[C          bin()\e[C                 \r\e[79C \e[0m\r\r\n\e[8C\e[0;38;5;16;48;5;250m  all()    \e[11C   AssertionError         BlockingIOError        \r\e[79C \e[0m\r\r\n\e[8C\e[0;38;5;16;48;5;250m  any()                  AttributeError         bool                   \r\e[79C>\e[0m\r\r\n\e[8C\e[0;38;5;16;48;5;250m  ArithmeticError        BaseException          breakpoint()           \r\e[79C \e[4A\r\e[14C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 10
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[4A\e[14C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0;38;5;241m1\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 8
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0m:\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 15
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0;38;5;241m2\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 5
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 646
+    content: "\e[?25l\e[?7l\e[0m,\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 7
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 35
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[19C\e[0;38;5;16;48;5;250m  abs()                     ascii()                    \e[0m\r\r\n\e[19C\e[0;38;5;16;48;5;250m  all()                     AssertionError             \e[0m\r\r\n\e[19C\e[0;38;5;16;48;5;250m  any()                     AttributeError            >\e[0m\r\r\n\e[19C\e[0;38;5;16;48;5;250m  ArithmeticError           BaseException              \e[4A\e[55D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 66
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[4A\e[19C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 1000
+    content: "\e[?25l\e[?7l\e[0;38;5;241m4\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 7
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0m:\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 13
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 500
+    content: "\e[?25l\e[?7l\e[C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 6
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0mN\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 6
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 21
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[17C\e[0;38;5;16;48;5;250m NameError          \e[0;38;5;28;48;5;250m not                \e[0;38;5;16;48;5;250m NotImplementedError\e[0m\r\r\n\e[17C\e[0;38;5;16;48;5;250m next()              NotADirectoryError                     \e[0m\r\r\n\e[17C\e[0;38;5;16;48;5;250m None                NotImplemented                         \e[3A\e[53D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0mo\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[3A\e[24C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 5
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 21
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[25C\e[0;38;5;16;48;5;250m None                NotImplemented     \e[0m\r\r\n\e[25C\e[0;38;5;28;48;5;250m not                \e[0;38;5;16;48;5;250m NotImplementedError\e[0m\r\r\n\e[25C\e[0;38;5;16;48;5;250m NotADirectoryError                     \e[3A\e[40D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0mn\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[3A\e[25C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 20
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 30
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[26C\e[0;38;5;16;48;5;250m None\e[A\e[5D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[3D\e[0;38;5;28;1mNone\e[0m\r\r\n\e[C\e[0m\e[K\e[A\e[26C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 20
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 35
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 500
+    content: "\e[?25l\e[?7l\e[0m,\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 14
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 27
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[25C\e[0;38;5;16;48;5;250m  abs()                     ascii()                   \r\e[79C \e[0m\r\r\n\e[25C\e[0;38;5;16;48;5;250m  all()                     AssertionError            \r\e[79C \e[0m\r\r\n\e[25C\e[0;38;5;16;48;5;250m  any()                     AttributeError            \r\e[79C>\e[0m\r\r\n\e[25C\e[0;38;5;16;48;5;250m  ArithmeticError           BaseException             \r\e[79C \e[4A\r\e[28C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[4A\e[28C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 500
+    content: "\e[?25l\e[?7l\e[0;38;5;241m5\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0m:\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 739
+    content: "\e[?25l\e[?7l\e[0m[\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 38
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[13C\e[0;38;5;16;48;5;250m abs()           ArithmeticError AttributeError  BlockingIOError\e[0m\r\r\n\e[13C\e[0;38;5;16;48;5;250m all()           ascii()         BaseException   bool           \e[0m\r\r\n\e[13C\e[0;38;5;16;48;5;250m any()           AssertionError  bin()                          \e[3A\e[45D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 6
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[8C\e[0;38;5;16;48;5;250m  abs()    \e[11C   ascii()     \e[C          bin()\e[C                 \r\e[79C \e[0m\r\r\n\e[8C\e[0;38;5;16;48;5;250m  all()    \e[11C   AssertionError         BlockingIOError\e[6C  \r\e[79C \e[0m\r\r\n\e[8C\e[0;38;5;16;48;5;250m  any()                  AttributeError         bool                   \r\e[79C>\e[0m\r\r\n\e[8C\e[0;38;5;16;48;5;250m  ArithmeticError        BaseException          breakpoint()           \r\e[79C \e[4A\r\e[32C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 7
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 6
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 11
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[8C\e[0m                 \e[0;38;5;16;48;5;250m \e[Cabs()\e[C       \e[13Casci\e[C() \e[0m\r\r\n\e[8C\e[0m                 \e[0;38;5;16;48;5;250m \e[Call()\e[C              \e[6CAssertionError    \e[0m\r\r\n\e[8C\e[0m                 \e[0;38;5;16;48;5;250m \e[Cany()\e[C              \e[6CAttributeError\e[0m\r\r\n\e[8C\e[0m                 \e[0;38;5;16;48;5;250m \e[CArithmetic\e[Crror    \e[7CBaseExce\e[Ct\e[Con  \e[4A\e[36D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 1000
+    content: "\e[?25l\e[?7l\e[0;38;5;241m6\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[4A\e[32C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 230
+    content: "\e[?25l\e[?7l\e[0m,\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 31
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 42
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[25C\e[0;38;5;16;48;5;250m  abs()                     ascii()                   \r\e[79C \e[0m\r\r\n\e[25C\e[0;38;5;16;48;5;250m  all()                     AssertionError            \r\e[79C \e[0m\r\r\n\e[25C\e[0;38;5;16;48;5;250m  any()                     AttributeError            \r\e[79C>\e[0m\r\r\n\e[25C\e[0;38;5;16;48;5;250m  ArithmeticError           BaseException             \r\e[79C \e[4A\r\e[34C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 6
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 7
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 8
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 7
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 9
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 500
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[4A\e[34C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 5
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 458
+    content: "\e[?25l\e[?7l\e[0;38;5;241m7\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 6
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 500
+    content: "\e[?25l\e[?7l\e[0m]\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 1000
+    content: "\e[?25l\e[?7l\e[0m}\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 5
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 513
+    content: "\e[?25l\e[?7l\e[38D\e[0m\e[J\e[0;1m>>> \e[0m{\e[0;38;5;124m\"a\"\e[0m: \e[0;38;5;124m\"b\"\e[0m, \e[0;38;5;241m1\e[0m:\e[0;38;5;241m2\e[0m, \e[0;38;5;241m4\e[0m: \e[0;38;5;28;1mNone\e[0m, \e[0;38;5;241m5\e[0m:[\e[0;38;5;241m6\e[0m, \e[0;38;5;241m7\e[0m]}\e[38D\e[0m\r\r\n\e[J\e[?7h\e[0m\e[?12l\e[?25h\e[?2004l"
+  - delay: 8
+    content: "\e[0m\e[?7h\e[0m{\e[0;38;5;124m'a'\e[0m: \e[0;38;5;124m'b'\e[0m, \e[0;38;5;241m1\e[0m: \e[0;38;5;241m2\e[0m, \e[0;38;5;241m4\e[0m: \e[0;38;5;28;1mNone\e[0m, \e[0;38;5;241m5\e[0m: [\e[0;38;5;241m6\e[0m, \e[0;38;5;241m7\e[0m]}\r\r\n\e[0m\r\n\e[6n\e[?2004h\e[?25l\e[0m\e[?7l\e[0m\e[J\e[0;1m>>>\e[0m\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\e[0m \b\e[5A\e[4C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 6
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\e[0;38;5;248;48;5;235m \e[0;38;5;227;48;5;235m[F4] Emacs\e[0;38;5;248;48;5;235m  1/1 \e[0;38;5;102;48;5;16m[F3]\e[0;38;5;248;48;5;235m History \e[0;38;5;102;48;5;16m[F6]\e[0;38;5;248;48;5;235m Paste mode        \e[0;38;5;102;48;5;16m[F2]\e[0;38;5;248;48;5;235m Menu - CPython 3.10.0\r\e[79C \r\e[6A\e[4C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 1200
+    content: "\e[?25l\e[?7l\e[0;38;5;241m1\e[0m\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\e[13C\e[0;38;5;248;48;5;235m22/22 \e[0;38;5;102;48;5;16m[F3]\e[0;38;5;248;48;5;235m History \e[0;38;5;102;48;5;16m[F6]\e[0;38;5;248;48;5;235m Paste mode\e[6A\e[42D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 356
+    content: "\e[?25l\e[?7l\e[0;38;5;241m/\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 14
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 361
+    content: "\e[?25l\e[?7l\e[0;38;5;241m0\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 7
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 935
+    content: "\e[?25l\e[?7l\e[7D\e[0m\e[J\e[0;1m>>> \e[0;38;5;241m1/0\e[7D\e[0m\r\r\n\e[J\e[?7h\e[0m\e[?12l\e[?25h\e[?2004l"
+  - delay: 8
+    content: "\e[0m\e[?7h\e[0;38;5;26mTraceback (most recent call last):\r\r\n\e[0m  File \e[0;38;5;28m\"<stdin>\"\e[0m, line \e[0;38;5;241m1\e[0m, in <module>\r\r\n\e[0;38;5;160mZeroDivisionError\e[0m: division by zero\r\r\n\r\r\n\e[0mdivision by zero\r\n\e[6n\e[?2004h\e[?25l\e[0m\e[?7l\e[0m\e[J\e[0;1m>>>\e[0m\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\e[0m \b\e[5A\e[4C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 7
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\e[0;38;5;248;48;5;235m \e[0;38;5;227;48;5;235m[F4] Emacs\e[0;38;5;248;48;5;235m  1/1 \e[0;38;5;102;48;5;16m[F3]\e[0;38;5;248;48;5;235m History \e[0;38;5;102;48;5;16m[F6]\e[0;38;5;248;48;5;235m Paste mode        \e[0;38;5;102;48;5;16m[F2]\e[0;38;5;248;48;5;235m Menu - CPython 3.10.0\r\e[79C \r\e[6A\e[4C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 1000
+    content: "\e[?25l\e[?7l\e[0mf\e[0m\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\e[13C\e[0;38;5;248;48;5;235m23/23 \e[0;38;5;102;48;5;16m[F3]\e[0;38;5;248;48;5;235m History \e[0;38;5;102;48;5;16m[F6]\e[0;38;5;248;48;5;235m Paste mode\e[6A\e[42D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 6
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 13
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[C\e[0;38;5;16;48;5;250m False              filter()          \e[0;38;5;28;48;5;250m for               \e[0;38;5;16;48;5;250m frozenset         \e[0m\r\r\n\e[C\e[0;38;5;16;48;5;250m FileExistsError    float              format()           FutureWarning     \e[0m\r\r\n\e[C\e[0;38;5;16;48;5;250m FileNotFoundError  FloatingPointError\e[0;38;5;28;48;5;250m from              \e[0;38;5;16;48;5;250m                   \e[3A\e[72D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 146
+    content: "\e[?25l\e[?7l\e[0mr\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[3A\e[5C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 15
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 20
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[6C\e[0;38;5;28;48;5;250m from     \e[0m\r\r\n\e[6C\e[0;38;5;16;48;5;250m frozenset\e[2A\e[10D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 36
+    content: "\e[?25l\e[?7l\e[0mo\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[2A\e[6C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 13
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 12
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[7C\e[0;38;5;28;48;5;250m from     \e[0m\r\r\n\e[7C\e[0;38;5;16;48;5;250m frozenset\e[2A\e[10D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 161
+    content: "\e[?25l\e[?7l\e[0mm\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[2A\e[7C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 23
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 61
+    content: "\e[?25l\e[?7l\e[4D\e[0;38;5;28;1mfrom\e[C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 330
+    content: "\e[?25l\e[?7l\e[0;38;5;21;1mm\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 12
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[5C\e[0;38;5;16;48;5;250m mailbox           math              mimetypes         mpl_toolkits     \e[0m\r\r\n\e[5C\e[0;38;5;16;48;5;250m mailcap           matplotlib        mistune                            \e[0m\r\r\n\e[5C\e[0;38;5;16;48;5;250m markupsafe        matplotlib_inline mmap                               \e[0m\r\r\n\e[5C\e[0;38;5;16;48;5;250m marshal           mccabe            modulefinder                       \e[4A\e[67D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 7
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[5C\e[0;38;5;16;48;5;250m  mailbox\e[10C math\e[13C mimetypes\e[8C mpl_t\e[Colkits\e[4C  \r\e[79C \e[0m\r\r\n\e[5C\e[0;38;5;16;48;5;250m  mailcap\e[10C matplotlib\e[7C mistune\e[9C  mpu               \r\e[79C \e[0m\r\r\n\e[5C\e[0;38;5;16;48;5;250m  markupsafe\e[7C matplotlib_inline \e[Cmap\e[12C  multiprocessing   \r\e[79C>\e[0m\r\r\n\e[5C\e[0;38;5;16;48;5;250m  marshal\e[10C m\e[Ccabe\e[11C modulefinder\e[4C  mypy              \r\e[79C \e[4A\r\e[10C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0;38;5;21;1mp\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[4A\e[10C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 17
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 14
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[11C\e[0;38;5;16;48;5;250m mpl_toolkits\e[0m\r\r\n\e[11C\e[0;38;5;16;48;5;250m mpu         \e[2A\e[13D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0;38;5;21;1mu\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[2A\e[11C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 16
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 23
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 500
+    content: "\e[?25l\e[?7l\e[0;38;5;21;1m.\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 45
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[2C\e[0;38;5;16;48;5;250m aws            decorators     math           shell         \e[0m\r\r\n\e[2C\e[0;38;5;16;48;5;250m data           geometry       ml             string        \e[0m\r\r\n\e[2C\e[0;38;5;16;48;5;250m datastructures image          path           units         \e[0m\r\r\n\e[2C\e[0;38;5;16;48;5;250m datetime       io             pd             _version      \e[4A\e[49D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 1000
+    content: "\e[?25l\e[?7l\e[0;38;5;21;1mp\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[4A\e[13C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 8
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[14C\e[0;38;5;16;48;5;250m path\e[0m\r\r\n\e[14C\e[0;38;5;16;48;5;250m pd  \e[2A\e[5D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 200
+    content: "\e[?25l\e[?7l\e[0;38;5;21;1md\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[2A\e[14C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 15
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 11
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 500
+    content: "\e[?25l\e[?7l\e[C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 5
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0mi\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 5
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 6
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[17C\e[0;38;5;28;48;5;250m import\e[A\e[7D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0mm\e[0m\r\r\n\e[C\e[0m\e[K\e[A\e[17C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 6
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 7
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[18C\e[0;38;5;28;48;5;250m import\e[A\e[7D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 408
+    content: "\e[?25l\e[?7l\e[0mp\e[0m\r\r\n\e[C\e[0m\e[K\e[A\e[18C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 9
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[19C\e[0;38;5;28;48;5;250m import\e[A\e[7D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0mo\e[0m\r\r\n\e[C\e[0m\e[K\e[A\e[19C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 18
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[20C\e[0;38;5;28;48;5;250m import\e[A\e[7D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0mr\e[0m\r\r\n\e[C\e[0m\e[K\e[A\e[20C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 16
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 11
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[21C\e[0;38;5;28;48;5;250m import\e[A\e[7D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 128
+    content: "\e[?25l\e[?7l\e[5D\e[0;38;5;28;1mimport\e[0m\r\r\n\e[C\e[0m\e[K\e[A\e[21C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 111
+    content: "\e[?25l\e[?7l\e[C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 13
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 500
+    content: "\e[?25l\e[?7l\e[0me\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 12
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[24C\e[0;38;5;16;48;5;250m example_df()\e[A\e[13D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0mx\e[0m\r\r\n\e[C\e[0m\e[K\e[A\e[24C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 15
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 14
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[25C\e[0;38;5;16;48;5;250m example_df()\e[A\e[13D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0ma\e[0m\r\r\n\e[C\e[0m\e[K\e[A\e[25C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 16
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 21
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[26C\e[0;38;5;16;48;5;250m example_df()\e[A\e[13D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 500
+    content: "\e[?25l\e[?7l\e[0mmple_df\e[0m\r\r\n\e[26C\e[0;38;5;231;48;5;102m example_df()\e[0m\r\r\n\e[26C\e[0;38;5;16;48;5;248m function \e[2A\e[3D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 5
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 500
+    content: "\e[?25l\e[?7l\e[33D\e[0m\e[J\e[0;1m>>> \e[0;38;5;28;1mfrom\e[0m \e[0;38;5;21;1mmpu.pd\e[0m \e[0;38;5;28;1mimport\e[0m example_df\e[33D\e[0m\r\r\n\e[J\e[?7h\e[0m\e[?12l\e[?25h\e[?2004l"
+  - delay: 50
+    content: "\e[6n\e[?2004h\e[?25l\e[0m\e[?7l\e[0m\e[J\e[0;1m>>>\e[0m\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\e[0m \b\e[5A\e[4C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 14
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\e[0;38;5;248;48;5;235m \e[0;38;5;227;48;5;235m[F4] Emacs\e[0;38;5;248;48;5;235m  24/24 \e[0;38;5;102;48;5;16m[F3]\e[0;38;5;248;48;5;235m History \e[0;38;5;102;48;5;16m[F6]\e[0;38;5;248;48;5;235m Paste mode      \e[0;38;5;102;48;5;16m[F2]\e[0;38;5;248;48;5;235m Menu - CPython 3.10.0\r\e[79C \r\e[6A\e[4C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 1200
+    content: "\e[?25l\e[?7l\e[0md\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 14
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 19
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[5C\e[0;38;5;28;48;5;250m def               \e[0;38;5;16;48;5;250m DeprecationWarning divmod()          \e[0m\r\r\n\e[5C\e[0;38;5;28;48;5;250m del               \e[0;38;5;16;48;5;250m dict                                 \e[0m\r\r\n\e[5C\e[0;38;5;16;48;5;250m delattr()          dir()                                \e[3A\e[57D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0mf\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[3A\e[5C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 6
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 18
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 83
+    content: "\e[?25l\e[?7l\e[C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0;38;5;241m=\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 14
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 92
+    content: "\e[?25l\e[?7l\e[C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0me\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 5
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 18
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[9C\e[0;38;5;16;48;5;250m ellipsis         EnvironmentError example_df()     exit()          \e[0m\r\r\n\e[9C\e[0;38;5;16;48;5;250m Ellipsis         EOFError         Exception                        \e[0m\r\r\n\e[9C\e[0;38;5;16;48;5;250m enumerate        eval()           exec()                           \e[3A\e[67D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0mx\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[3A\e[10C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 30
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 30
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[11C\e[0;38;5;16;48;5;250m example_df() exec()      \e[0m\r\r\n\e[11C\e[0;38;5;16;48;5;250m Exception    exit()      \e[2A\e[26D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 1200
+    content: "\e[?25l\e[?7l\e[0mample_df\e[0m\r\r\n\e[11C\e[0;38;5;231;48;5;102m example_df()\e[0m\r\r\n\r\r\n\e[11C\e[0;38;5;16;48;5;248m function \e[3A\e[2D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 12
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 1500
+    content: "\e[?25l\e[?7l\e[0m(\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[3A\e[19C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 8
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 7
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 332
+    content: "\e[?25l\e[?7l\e[0m)\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 6
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 719
+    content: "\e[?25l\e[?7l\e[21D\e[0m\e[J\e[0;1m>>> \e[0mdf \e[0;38;5;241m=\e[0m example_df()\e[21D\e[0m\r\r\n\e[J\e[?7h\e[0m\e[?12l\e[?25h\e[?2004l"
+  - delay: 7
+    content: "\e[6n\e[?2004h\e[?25l\e[0m\e[?7l\e[0m\e[J\e[0;1m>>>\e[0m\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\e[0m \b\e[5A\e[4C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 6
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\e[0;38;5;248;48;5;235m \e[0;38;5;227;48;5;235m[F4] Emacs\e[0;38;5;248;48;5;235m  25/25 \e[0;38;5;102;48;5;16m[F3]\e[0;38;5;248;48;5;235m History \e[0;38;5;102;48;5;16m[F6]\e[0;38;5;248;48;5;235m Paste mode      \e[0;38;5;102;48;5;16m[F2]\e[0;38;5;248;48;5;235m Menu - CPython 3.10.0\r\e[79C \r\e[6A\e[4C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 1500
+    content: "\e[?25l\e[?7l\e[0md\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 11
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 7
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[5C\e[0;38;5;28;48;5;250m def               \e[0;38;5;16;48;5;250m DeprecationWarning dir()             \e[0m\r\r\n\e[5C\e[0;38;5;28;48;5;250m del               \e[0;38;5;16;48;5;250m df                 divmod()          \e[0m\r\r\n\e[5C\e[0;38;5;16;48;5;250m delattr()          dict                                 \e[3A\e[57D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[?7l\e[0mf\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[3A\e[5C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 5
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 20
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 195
+    content: "\e[?25l\e[?7l\e[6D\e[0m\e[J\e[0;1m>>> \e[0mdf\e[6D\e[0m\r\r\n\e[J\e[?7h\e[0m\e[?12l\e[?25h\e[?2004l"
+  - delay: 33
+    content: "\e[0m\e[?7h\e[0m     country   population population_time    EUR\r\r\n0    Germany   82521653.0      2016-12-01   True\r\r\n1     France   66991000.0      2017-01-01   True\r\r\n2  Indonesia  255461700.0      2017-01-01  False\r\r\n3    Ireland    4761865.0             NaT   True\r\r\n4      Spain   46549045.0      2017-06-01   True\r\r\n5    Vatican          NaN             NaT   True\r\r\n\e[0m\r\n\e[6n"
+  - delay: 5
+    content: "\e[?2004h\e[?25l\e[0m\e[?7l\e[0m\e[J\e[0;1m>>>\e[0m\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\e[0m \b\e[5A\e[4C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 28
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\e[0;38;5;248;48;5;235m \e[0;38;5;227;48;5;235m[F4] Emacs\e[0;38;5;248;48;5;235m  26/26 \e[0;38;5;102;48;5;16m[F3]\e[0;38;5;248;48;5;235m History \e[0;38;5;102;48;5;16m[F6]\e[0;38;5;248;48;5;235m Paste mode      \e[0;38;5;102;48;5;16m[F2]\e[0;38;5;248;48;5;235m Menu - CPython 3.10.0\r\e[79C \r\e[6A\e[4C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 1000
+    content: "\e[?25l\e[?7l\e[0md\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 6
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 12
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[5C\e[0;38;5;28;48;5;250m def      \e[0m\r\r\n\e[5C\e[0;38;5;28;48;5;250m del      \e[0m\r\r\n\e[5C\e[0;38;5;16;48;5;250m delattr()\e[3A\e[10D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 7
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[15C\e[0;38;5;28;48;5;250m         \e[0;38;5;16;48;5;250m DeprecationWarning dir()             \e[0m\r\r\n\e[15C\e[0;38;5;28;48;5;250m         \e[0;38;5;16;48;5;250m df                 divmod()          \e[0m\r\r\n\e[15C\e[0;38;5;16;48;5;250m          dict                                 \e[3A\e[57D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 188
+    content: "\e[?25l\e[?7l\e[0mf\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[3A\e[5C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 15
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 13
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 215
+    content: "\e[?25l\e[?7l\e[0;38;5;241m.\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 17
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 202
+    content: "\e[?25l\e[?7l\e[0ms\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 10
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 142
+    content: "\e[?25l\e[?7l\e[0mo\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 940
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 20
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[9C\e[0;38;5;16;48;5;250m sort_index() \e[0m\r\r\n\e[9C\e[0;38;5;16;48;5;250m sort_values()\e[2A\e[14D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 1856
+    content: "\e[?25l\e[?7l\e[0mrt_index\e[0m\r\r\n\e[9C\e[0;38;5;231;48;5;102m sort_index() \e[0m\r\r\n\r\r\n\e[9C\e[0;38;5;16;48;5;248m function \e[3A\e[2D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 7
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 1200
+    content: "\e[?25l\e[?7l\e[0m(\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[0m\r\r\n\e[C\e[0m\e[K\e[3A\e[17C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 500
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[C\e[0;38;5;23;48;5;250;3m ascending=...      inplace=...        level=...         \e[0;38;5;16;48;5;250m abs()             \e[0m\r\r\n\e[C\e[0;38;5;23;48;5;250;3m axis=...           key=...            na_position=...   \e[0;38;5;16;48;5;250m all()             \e[0m\r\r\n\e[C\e[0;38;5;23;48;5;250;3m ignore_index=...   kind=...           sort_remaining=...\e[0;38;5;16;48;5;250m                   \e[3A\e[59D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 23
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\e[C\e[0m                \e[0;38;5;16;48;5;250m \e[C\e[0;38;5;23;48;5;250;3mascending\e[12C     key=...\e[6C            \e[0;38;5;16;48;5;250m  \e[0m\e[K\e[0m\r\r\n\e[C\e[0m                \e[0;38;5;16;48;5;250m \e[C\e[0;38;5;23;48;5;250;3maxis=.\e[2C \e[12C     k\e[Cnd=..\e[C  \e[3C            \e[0;38;5;16;48;5;250m  \e[0m\e[K\e[0m\r\r\n\e[C\e[0m                \e[0;38;5;16;48;5;250m \e[0;38;5;23;48;5;250;3m ignore_index=...          level=...                \e[0;38;5;16;48;5;250m >\e[0m\e[K\e[0m\r\r\n\e[C\e[0m                \e[0;38;5;16;48;5;250m \e[0;38;5;23;48;5;250;3m inplace=...               na_position=...          \e[0;38;5;16;48;5;250m  \e[4A\e[54D\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 7
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 7
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 7
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 7
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 7
+    content: "\e[?25l\e[?7l\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 5000
+    content: "\e[?25l\e[?7l\e[18D\e[0m\e[J\e[0;38;5;102;1m>>> \e[0;38;5;102mdf.sort_index(                                                             \r\e[79C \r\e[0m\r\r\n\e[J\e[?7h\e[0m\e[?12l\e[?25h\e[?2004l\e[6n\e[?2004h\e[?25l\e[0m\e[?7l\e[0m\e[J\e[0;1m>>>\e[0m\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\e[0m \b\e[5A\e[4C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 10
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\e[0;38;5;248;48;5;235m \e[0;38;5;227;48;5;235m[F4] Emacs\e[0;38;5;248;48;5;235m  26/26 \e[0;38;5;102;48;5;16m[F3]\e[0;38;5;248;48;5;235m History \e[0;38;5;102;48;5;16m[F6]\e[0;38;5;248;48;5;235m Paste mode      \e[0;38;5;102;48;5;16m[F2]\e[0;38;5;248;48;5;235m Menu - CPython 3.10.0\r\e[79C \r\e[6A\e[4C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 500
+    content: "\e[?25l\e[?7l\e[4D\e[0m\e[J\e[0;38;5;102;1m>>> \e[0;38;5;102m                                                                           \r\e[79C \r\e[0m\r\r\n\e[J\e[?7h\e[0m\e[?12l\e[?25h\e[?2004l\e[6n\e[?2004h\e[?25l\e[0m\e[?7l\e[0m\e[J\e[0;1m>>>\e[0m\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\e[0m \b\e[5A\e[4C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 16
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\r\r\n\e[0;38;5;248;48;5;235m \e[0;38;5;227;48;5;235m[F4] Emacs\e[0;38;5;248;48;5;235m  26/26 \e[0;38;5;102;48;5;16m[F3]\e[0;38;5;248;48;5;235m History \e[0;38;5;102;48;5;16m[F6]\e[0;38;5;248;48;5;235m Paste mode      \e[0;38;5;102;48;5;16m[F2]\e[0;38;5;248;48;5;235m Menu - CPython 3.10.0\r\e[79C \r\e[6A\e[4C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 996
+    content: "\e[?25l\e[?7l\e[0m\r\r\n\r\r\n\r\r\n\e[2C\e[0;38;5;231;48;5;95m                                       \e[0m\r\r\n\e[2C\e[0;38;5;231;48;5;95m Do you really want to exit? ([y]/n)   \e[0m\r\r\n\e[0m  \e[0;38;5;231;48;5;95m                                       \e[0m\r\r\n\e[0m \e[0m\e[K\e[2A\e[38C\e[?7h\e[0m\e[?12l\e[?25h"
+  - delay: 1178
+    content: "\e[?25l\e[?7l\e[4A\e[39D\e[0m\e[J\e[0;38;5;102;1m>>> \e[0;38;5;102m                                                                           \r\e[79C \r\e[0m\r\r\n\e[J\e[?7h\e[0m\e[?12l\e[?25h\e[?2004l"
