@@ -1,7 +1,7 @@
 Click==7.0
 -e git+git@github.com:MartinThoma/implicit.git@0648da06139cb56262818ee6a1e43f943178d70b#egg=implicit
 joblib==0.13.2
-numpy==1.21.0
+numpy==1.22.0
 pandas==0.24.2
 pkg-resources==0.0.0
 progressbar2==3.42.0
