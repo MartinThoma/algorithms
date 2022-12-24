@@ -1,0 +1,283 @@
+# The configurations that used for the recording, feel free to edit them
+config:
+
+  # Specify a command to be executed
+  # like `/bin/bash -l`, `ls`, or any other commands
+  # the default is bash for Linux
+  # or powershell.exe for Windows
+  command: bash -l
+  
+  # Specify the current working directory path
+  # the default is the current working directory path
+  cwd: /home/moose
+  
+  # Export additional ENV variables
+  env:
+    recording: true
+  
+  # Explicitly set the number of columns
+  # or use `auto` to take the current
+  # number of columns of your shell
+  cols: 80
+  
+  # Explicitly set the number of rows
+  # or use `auto` to take the current
+  # number of rows of your shell
+  rows: 20
+  
+  # Amount of times to repeat GIF
+  # If value is -1, play once
+  # If value is 0, loop indefinitely
+  # If value is a positive number, loop n times
+  repeat: 0
+  
+  # Quality
+  # 1 - 100
+  quality: 100
+  
+  # Delay between frames in ms
+  # If the value is `auto` use the actual recording delays
+  frameDelay: auto
+  
+  # Maximum delay between frames in ms
+  # Ignored if the `frameDelay` isn't set to `auto`
+  # Set to `auto` to prevent limiting the max idle time
+  maxIdleTime: 10000
+  
+  # The surrounding frame box
+  # The `type` can be null, window, floating, or solid`
+  # To hide the title use the value null
+  # Don't forget to add a backgroundColor style with a null as type
+  frameBox:
+    type: floating
+    title: Terminalizer
+    style:
+      border: 0px black solid
+      # boxShadow: none
+      # margin: 0px
+  
+  # Add a watermark image to the rendered gif
+  # You need to specify an absolute path for
+  # the image on your machine or a URL, and you can also
+  # add your own CSS styles
+  watermark:
+    imagePath: null
+    style:
+      position: absolute
+      right: 15px
+      bottom: 15px
+      width: 100px
+      opacity: 0.9
+  
+  # Cursor style can be one of
+  # `block`, `underline`, or `bar`
+  cursorStyle: block
+  
+  # Font family
+  # You can use any font that is installed on your machine
+  # in CSS-like syntax
+  fontFamily: "Monaco, Lucida Console, Ubuntu Mono, Monospace"
+  
+  # The size of the font
+  fontSize: 24
+  
+  # The height of lines
+  lineHeight: 1
+  
+  # The spacing between letters
+  letterSpacing: 0
+  
+  # Theme
+  theme:
+    background: "transparent"
+    foreground: "#afafaf"
+    cursor: "#c7c7c7"
+    black: "#232628"
+    red: "#fc4384"
+    green: "#b3e33b"
+    yellow: "#ffa727"
+    blue: "#75dff2"
+    magenta: "#ae89fe"
+    cyan: "#708387"
+    white: "#d5d5d0"
+    brightBlack: "#626566"
+    brightRed: "#ff7fac"
+    brightGreen: "#c8ed71"
+    brightYellow: "#ebdf86"
+    brightBlue: "#75dff2"
+    brightMagenta: "#ae89fe"
+    brightCyan: "#b1c6ca"
+    brightWhite: "#f9f9f4"
+  
+# Records, feel free to edit them
+records:
+  - delay: 1000
+    content: "\e]0;moose@pc08:~\e\\\e]7;file://pc08/home/moose\e\\\e]0;moose@pc08: ~\amoose@pc08:~$ "
+  - delay: 308
+    content: b
+  - delay: 50
+    content: p
+  - delay: 50
+    content: 'y'
+  - delay: 50
+    content: t
+  - delay: 50
+    content: h
+  - delay: 50
+    content: o
+  - delay: 50
+    content: 'n'
+  - delay: 200
+    content: "\r\n"
+  - delay: 100
+    content: "bpython version 0.22.1 on top of Python 3.10.0rc2 /home/moose/.pyenv/versions/3.10.0rc2/bin/python3.10\r\n\e[6n"
+  - delay: 14
+    content: "\e[?25l\e[24;1H\e[36m>>> \e[39m\e[K\e7\e[1000001;1H\eD\e8\e[24;1H\e[36mWelcome to bpython! Press <F1> for help.                                        \e[39m\e[23;5H\e[?12l\e[?25h"
+  - delay: 1000
+    content: "\e[?25l\e[23;1H\e[36m>>> \e[39m\e[36mf\e[39m\e[30m\e[1mrom mpu.pd import example_df\e[0m\e[39m\e[K\e[24;1H\e[36m┌──────────────────────────────────────────────────────────────┐\e[39m\e[K\e7\e[1000001;1H\eD\e8\e[24;1H\e[36m│ \e[39m\e[36mfilter(   \e[39m \e[36mfinally   \e[39m \e[36mfloat(    \e[39m \e[36mfor       \e[39m \e[36mformat(   \e[39m      \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[24;1H\e[36m│ \e[39m\e[36mfrom      \e[39m \e[36mfrozenset(\e[39m                                       \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[24;1H\e[36m└──────────────────────────────────────────────────────────────┘\e[39m\e7\e[1000001;1H\eD\e8\e[24;1H\e[36mWelcome to bpython! Press <F1> for help.                                        \e[39m\e[19;6H\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mfr\e[39m\e[30m\e[1mom mpu.pd import example_df\e[0m\e[39m\e[K\e[21;1H\e[36m│ \e[39m\e[36mfrom      \e[39m \e[36mfrozenset(\e[39m                                       \e[36m │\e[39m\e[K\e[22;1H\e[36m└──────────────────────────────────────────────────────────────┘\e[39m\e[K\e[23;1H\e[36mWelcome to bpython! Press <F1> for help.                                        \e[39m\e[24;1H\e[K\e[1K\e[19;7H\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mfro\e[39m\e[30m\e[1mm mpu.pd import example_df\e[0m\e[39m\e[K\e[24;1H\e[K\e[1K\e[19;8H\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[30m\e[1m mpu.pd import example_df\e[0m\e[39m\e[K\e[20;1H\e[36mWelcome to bpython! Press <F1> for help.                                        \e[39m\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;9H\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[20;1H\e[K\e[1K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;9H\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[30m\e[1mmpu.pd import example_df\e[0m\e[39m\e[K\e[20;1H\e[K\e[1K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;10H\e[?12l\e[?25h"
+  - delay: 518
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mm\e[39m\e[30m\e[1mpu.pd import example_df\e[0m\e[39m\e[K\e[20;1H\e[K\e[1K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;11H\e[?12l\e[?25h"
+  - delay: 405
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmp\e[39m\e[30m\e[1mu.pd import example_df\e[0m\e[39m\e[K\e[20;1H\e[K\e[1K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;12H\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[30m\e[1m.pd import example_df\e[0m\e[39m\e[K\e[20;1H\e[K\e[1K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;13H\e[?12l\e[?25h"
+  - delay: 500
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[30m\e[1mpd import example_df\e[0m\e[39m\e[K\e[20;1H\e[K\e[1K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;14H\e[?12l\e[?25h"
+  - delay: 500
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mp\e[39m\e[30m\e[1md import example_df\e[0m\e[39m\e[K\e[20;1H\e[K\e[1K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;15H\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[30m\e[1m import example_df\e[0m\e[39m\e[K\e[20;1H\e[K\e[1K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;16H\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[36m\e[1m \e[0m\e[39m\e[30m\e[1mimport example_df\e[0m\e[39m\e[K\e[20;1H\e[K\e[1K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;17H\e[?12l\e[?25h"
+  - delay: 300
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mi\e[39m\e[30m\e[1mmport example_df\e[0m\e[39m\e[K\e[20;1H\e[36m┌──────────────────────────────────────────────────────────────┐\e[39m\e[K\e[21;1H\e[36m│ \e[39m\e[36mid(        \e[39m \e[36mif         \e[39m \e[36mimport     \e[39m \e[36min         \e[39m             \e[36m │\e[39m\e[K\e[22;1H\e[36m│ \e[39m\e[36minput(     \e[39m \e[36mint(       \e[39m \e[36mis         \e[39m \e[36misinstance(\e[39m             \e[36m │\e[39m\e[K\e[23;1H\e[36m│ \e[39m\e[36missubclass(\e[39m \e[36miter(      \e[39m                                     \e[36m │\e[39m\e[K\e[24;1H\e[36m└──────────────────────────────────────────────────────────────┘\e[39m\e[K\e[19;18H\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mim\e[39m\e[30m\e[1mport example_df\e[0m\e[39m\e[K\e[21;1H\e[36m│ \e[39m\e[36mimport\e[39m\e[36m                                                      \e[39m\e[36m │\e[39m\e[K\e[22;1H\e[36m└──────────────────────────────────────────────────────────────┘\e[39m\e[K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;19H\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mimp\e[39m\e[30m\e[1mort example_df\e[0m\e[39m\e[K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;20H\e[?12l\e[?25h"
+  - delay: 500
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[33mfrom\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mmpu\e[39m\e[36m.\e[39m\e[36mpd\e[39m\e[36m\e[1m \e[0m\e[39m\e[33mimport\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mexample_df\e[39m\e[K\e[20;1H\e[K\e[1K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;34H\e[?12l\e[?25h"
+  - delay: 500
+    content: "\e[?25l\e[20;1H\e[36m>>> \e[39m\e[K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[20;5H\e[?12l\e[?25h"
+  - delay: 1000
+    content: "\e[?25l\e[20;1H\e[36m>>> \e[39m\e[36md\e[39m\e[30m\e[1mf\e[0m\e[39m\e[K\e[21;1H\e[36m┌──────────────────────────────────────────────────────────────┐\e[39m\e[K\e[22;1H\e[36m│ \e[39m\e[36mdef     \e[39m \e[36mdel     \e[39m \e[36mdelattr(\e[39m \e[36mdict(   \e[39m \e[36mdir(    \e[39m \e[36mdivmod( \e[39m       \e[36m │\e[39m\e[K\e[23;1H\e[36m└──────────────────────────────────────────────────────────────┘\e[39m\e[K\e[24;1H\e[K\e[1K\e[20;6H\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[20;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[20;7H\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[20;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[36m\e[1m \e[0m\e[39m\e[30m\e[1m= example_df()\e[0m\e[39m\e[K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[20;8H\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[20;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[36m\e[1m \e[0m\e[39m\e[33m\e[1m=\e[0m\e[39m\e[30m\e[1m example_df()\e[0m\e[39m\e[K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[20;9H\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[20;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[36m\e[1m \e[0m\e[39m\e[33m\e[1m=\e[0m\e[39m\e[36m\e[1m \e[0m\e[39m\e[30m\e[1mexample_df()\e[0m\e[39m\e[K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[20;10H\e[?12l\e[?25h"
+  - delay: 1000
+    content: "\e[?25l\e[20;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[36m\e[1m \e[0m\e[39m\e[33m\e[1m=\e[0m\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mexample_df\e[39m\e[31m\e[1m\e[45m(\e[49m\e[0m\e[39m\e[31m\e[1m\e[45m)\e[49m\e[0m\e[39m\e[K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[20;22H\e[?12l\e[?25h"
+  - delay: 1000
+    content: "\e[?25l\e[20;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[36m\e[1m \e[0m\e[39m\e[33m\e[1m=\e[0m\e[39m\e[36m\e[1m \e[0m\e[39m\e[36mexample_df\e[39m\e[33m(\e[39m\e[33m)\e[39m\e[K\e[21;1H\e[36m>>> \e[39m\e[K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[21;5H\e[?12l\e[?25h"
+  - delay: 1000
+    content: "\e[?25l\e[21;1H\e[36m>>> \e[39m\e[36md\e[39m\e[30m\e[1mf = example_df()\e[0m\e[39m\e[K\e[22;1H\e[36m┌──────────────────────────────────────────────────────────────┐\e[39m\e[K\e[23;1H\e[36m│ \e[39m\e[36mdef     \e[39m \e[36mdel     \e[39m \e[36mdelattr(\e[39m \e[36mdf      \e[39m \e[36mdict(   \e[39m \e[36mdir(    \e[39m       \e[36m │\e[39m\e[K\e[24;1H\e[36m│ \e[39m\e[36mdivmod( \e[39m\e[36m                                                    \e[39m\e[36m │\e[39m\e[K\e7\e[1000001;1H\eD\e8\e[24;1H\e[36m└──────────────────────────────────────────────────────────────┘\e[39m\e[20;6H\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[20;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[30m\e[1m = example_df()\e[0m\e[39m\e[K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[20;7H\e[?12l\e[?25h"
+  - delay: 50
+    content: "\e[?25l\e[20;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[K\e[21;1H     country   population population_time    EUR\e[K\e[22;1H0    Germany   82521653.0      2016-12-01   True\e[K\e[23;1H1     France   66991000.0      2017-01-01   True\e[K\e[24;1H2  Indonesia  255461700.0      2017-01-01  False\e[K\e7\e[1000001;1H\eD\e8\e[24;1H3    Ireland    4761865.0             NaT   True\e7\e[1000001;1H\eD\e8\e[24;1H4      Spain   46549045.0      2017-06-01   True\e7\e[1000001;1H\eD\e8\e[24;1H5    Vatican          NaN             NaT   True\e[24;49H\e[?12l\e[?25h\e[?25l\e7\e[1000001;1H\eD\e8\e[24;1H\e[24;1H\e[?12l\e[?25h\e[?25l\e[24;1H\e[36m>>> \e[39m\e[K\e[24;5H\e[?12l\e[?25h"
+  - delay: 2000
+    content: "\e[?25l\e[24;1H\e[36m>>> \e[39m\e[33m\e[1m{\e[0m\e[39m\e[30m\e[1m\"a\": \"b\", 1: 2, 3: 3.5, 4: None, 5: [6,7], 6: {\"ok\"}}\e[0m\e[39m\e[K\e[24;6H\e[?12l\e[?25h"
+  - delay: 200
+    content: "\e[?25l\e[24;1H\e[36m>>> \e[39m\e[33m{\e[39m\e[35m\"\e[39m\e[30m\e[1ma\": \"b\", 1: 2, 3: 3.5, 4: None, 5: [6,7], 6: {\"ok\"}}\e[0m\e[39m\e[K\e[24;7H\e[?12l\e[?25h"
+  - delay: 1956
+    content: "\e[?25l\e[24;1H\e[36m>>> \e[39m\e[31m\e[1m\e[45m{\e[49m\e[0m\e[39m\e[35m\"\e[39m\e[35ma\e[39m\e[35m\"\e[39m\e[33m:\e[39m\e[36m\e[1m \e[0m\e[39m\e[35m\"\e[39m\e[35mb\e[39m\e[35m\"\e[39m\e[33m,\e[39m\e[36m\e[1m \e[0m\e[39m\e[32m\e[1m1\e[0m\e[39m\e[33m:\e[39m\e[36m\e[1m \e[0m\e[39m\e[32m\e[1m2\e[0m\e[39m\e[33m,\e[39m\e[36m\e[1m \e[0m\e[39m\e[32m\e[1m3\e[0m\e[39m\e[33m:\e[39m\e[36m\e[1m \e[0m\e[39m\e[32m\e[1m3.5\e[0m\e[39m\e[33m,\e[39m\e[36m\e[1m \e[0m\e[39m\e[32m\e[1m4\e[0m\e[39m\e[33m:\e[39m\e[36m\e[1m \e[0m\e[39m\e[33mNone\e[39m\e[33m,\e[39m\e[36m\e[1m \e[0m\e[39m\e[32m\e[1m5\e[0m\e[39m\e[33m:\e[39m\e[36m\e[1m \e[0m\e[39m\e[33m[\e[39m\e[32m\e[1m6\e[0m\e[39m\e[33m,\e[39m\e[32m\e[1m7\e[0m\e[39m\e[33m]\e[39m\e[33m,\e[39m\e[36m\e[1m \e[0m\e[39m\e[32m\e[1m6\e[0m\e[39m\e[33m:\e[39m\e[36m\e[1m \e[0m\e[39m\e[33m{\e[39m\e[35m\"\e[39m\e[35mok\e[39m\e[35m\"\e[39m\e[33m}\e[39m\e[31m\e[1m\e[45m}\e[49m\e[0m\e[39m\e[K\e[24;59H\e[?12l\e[?25h"
+  - delay: 1780
+    content: "\e[?25l\e[24;1H\e[36m>>> \e[39m\e[33m{\e[39m\e[35m\"\e[39m\e[35ma\e[39m\e[35m\"\e[39m\e[33m:\e[39m\e[36m\e[1m \e[0m\e[39m\e[35m\"\e[39m\e[35mb\e[39m\e[35m\"\e[39m\e[33m,\e[39m\e[36m\e[1m \e[0m\e[39m\e[32m\e[1m1\e[0m\e[39m\e[33m:\e[39m\e[36m\e[1m \e[0m\e[39m\e[32m\e[1m2\e[0m\e[39m\e[33m,\e[39m\e[36m\e[1m \e[0m\e[39m\e[32m\e[1m3\e[0m\e[39m\e[33m:\e[39m\e[36m\e[1m \e[0m\e[39m\e[32m\e[1m3.5\e[0m\e[39m\e[33m,\e[39m\e[36m\e[1m \e[0m\e[39m\e[32m\e[1m4\e[0m\e[39m\e[33m:\e[39m\e[36m\e[1m \e[0m\e[39m\e[33mNone\e[39m\e[33m,\e[39m\e[36m\e[1m \e[0m\e[39m\e[32m\e[1m5\e[0m\e[39m\e[33m:\e[39m\e[36m\e[1m \e[0m\e[39m\e[33m[\e[39m\e[32m\e[1m6\e[0m\e[39m\e[33m,\e[39m\e[32m\e[1m7\e[0m\e[39m\e[33m]\e[39m\e[33m,\e[39m\e[36m\e[1m \e[0m\e[39m\e[32m\e[1m6\e[0m\e[39m\e[33m:\e[39m\e[36m\e[1m \e[0m\e[39m\e[33m{\e[39m\e[35m\"\e[39m\e[35mok\e[39m\e[35m\"\e[39m\e[33m}\e[39m\e[33m}\e[39m\e[K\e7\e[1000001;1H\eD\e8\e[24;1H{'a': 'b', 1: 2, 3: 3.5, 4: None, 5: [6, 7], 6: {'ok'}}\e[24;56H\e[?12l\e[?25h\e[?25l\e7\e[1000001;1H\eD\e8\e[24;1H\e[24;1H\e[?12l\e[?25h\e[?25l\e[24;1H\e[36m>>> \e[39m\e[K\e[24;5H\e[?12l\e[?25h"
+  - delay: 2709
+    content: "\e[?25l\e[24;1H\e[36m>>> \e[39m\e[36md\e[39m\e[30m\e[1mf\e[0m\e[39m\e[K\e7\e[1000001;1H\eD\e8\e[24;1H\e[36m┌──────────────────────────────────────────────────────────────┐\e[39m\e7\e[1000001;1H\eD\e8\e[24;1H\e[36m│ \e[39m\e[36mdef     \e[39m \e[36mdel     \e[39m \e[36mdelattr(\e[39m \e[36mdf      \e[39m \e[36mdict(   \e[39m \e[36mdir(    \e[39m       \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[24;1H\e[36m│ \e[39m\e[36mdivmod( \e[39m\e[36m                                                    \e[39m\e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[24;1H\e[36m└──────────────────────────────────────────────────────────────┘\e[39m\e[20;6H\e[?12l\e[?25h"
+  - delay: 193
+    content: "\e[?25l\e[20;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[20;7H\e[?12l\e[?25h"
+  - delay: 199
+    content: "\e[?25l\e[20;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[K\e[21;1H\e[36m┌──────────────────────────────────────────────────────────────┐\e[39m\e[K\e[22;1H\e[36m│ \e[39m\e[36mEUR                 \e[39m \e[36mT                   \e[39m                   \e[36m │\e[39m\e[K\e[23;1H\e[36m│ \e[39m\e[36mabs                 \e[39m \e[36madd                 \e[39m                   \e[36m │\e[39m\e[K\e[24;1H\e[36m│ \e[39m\e[36madd_prefix          \e[39m \e[36madd_suffix          \e[39m                   \e[36m │\e[39m\e[K\e7\e[1000001;1H\eD\e8\e[24;1H\e[36m└──────────────────────────────────────────────────────────────┘\e[39m\e[19;8H\e[?12l\e[?25h"
+  - delay: 953
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36ms\e[39m\e[K\e[21;1H\e[36m│ \e[39m\e[36msample          \e[39m \e[36mselect_dtypes   \e[39m \e[36msem             \e[39m          \e[36m │\e[39m\e[K\e[22;1H\e[36m│ \e[39m\e[36mset_axis        \e[39m \e[36mset_flags       \e[39m \e[36mset_index       \e[39m          \e[36m │\e[39m\e[K\e[23;1H\e[36m│ \e[39m\e[36mshape           \e[39m \e[36mshift           \e[39m \e[36msize            \e[39m          \e[36m │\e[39m\e[K\e[19;9H\e[?12l\e[?25h"
+  - delay: 653
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36mso\e[39m\e[K\e[21;1H\e[36m│ \e[39m\e[36msort_index    \e[39m \e[36msort_values   \e[39m                               \e[36m │\e[39m\e[K\e[22;1H\e[36m└──────────────────────────────────────────────────────────────┘\e[39m\e[K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;10H\e[?12l\e[?25h"
+  - delay: 4559
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36ms\e[39m\e[K\e[21;1H\e[36m│ \e[39m\e[36msample          \e[39m \e[36mselect_dtypes   \e[39m \e[36msem             \e[39m          \e[36m │\e[39m\e[K\e[22;1H\e[36m│ \e[39m\e[36mset_axis        \e[39m \e[36mset_flags       \e[39m \e[36mset_index       \e[39m          \e[36m │\e[39m\e[K\e[23;1H\e[36m│ \e[39m\e[36mshape           \e[39m \e[36mshift           \e[39m \e[36msize            \e[39m          \e[36m │\e[39m\e[K\e[24;1H\e[36m└──────────────────────────────────────────────────────────────┘\e[39m\e[K\e[19;9H\e[?12l\e[?25h"
+  - delay: 275
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[K\e[21;1H\e[36m│ \e[39m\e[36mEUR                 \e[39m \e[36mT                   \e[39m                   \e[36m │\e[39m\e[K\e[22;1H\e[36m│ \e[39m\e[36mabs                 \e[39m \e[36madd                 \e[39m                   \e[36m │\e[39m\e[K\e[23;1H\e[36m│ \e[39m\e[36madd_prefix          \e[39m \e[36madd_suffix          \e[39m                   \e[36m │\e[39m\e[K\e[19;8H\e[?12l\e[?25h"
+  - delay: 197
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[K\e[20;1H\e[K\e[1K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;7H\e[?12l\e[?25h"
+  - delay: 260
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36md\e[39m\e[30m\e[1mf\e[0m\e[39m\e[K\e[20;1H\e[36m┌──────────────────────────────────────────────────────────────┐\e[39m\e[K\e[21;1H\e[36m│ \e[39m\e[36mdef     \e[39m \e[36mdel     \e[39m \e[36mdelattr(\e[39m \e[36mdf      \e[39m \e[36mdict(   \e[39m \e[36mdir(    \e[39m       \e[36m │\e[39m\e[K\e[22;1H\e[36m│ \e[39m\e[36mdivmod( \e[39m\e[36m                                                    \e[39m\e[36m │\e[39m\e[K\e[23;1H\e[36m└──────────────────────────────────────────────────────────────┘\e[39m\e[K\e[24;1H\e[K\e[1K\e[19;6H\e[?12l\e[?25h"
+  - delay: 465
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[K\e[20;1H\e[K\e[1K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;5H\e[?12l\e[?25h"
+  - delay: 11643
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[32m\e[1m1\e[0m\e[39m\e[K\e[20;1H\e[K\e[1K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;6H\e[?12l\e[?25h"
+  - delay: 361
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[32m\e[1m1\e[0m\e[39m\e[33m\e[1m/\e[0m\e[39m\e[K\e[20;1H\e[K\e[1K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;7H\e[?12l\e[?25h"
+  - delay: 909
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[32m\e[1m1\e[0m\e[39m\e[33m\e[1m/\e[0m\e[39m\e[32m\e[1m0\e[0m\e[39m\e[K\e[20;1H\e[K\e[1K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;8H\e[?12l\e[?25h"
+  - delay: 419
+    content: "\e[?25l\e[20;1HTraceback (most recent call last):\e[K\e[21;1H  File \e[32m\"<input>\"\e[39m, line \e[35m\e[1m1\e[0m\e[39m, in \e[36m<module>\e[39m\e[K\e[22;1H    1/0\e[K\e[23;1H\e[31m\e[1mZeroDivisionError\e[0m\e[39m: \e[36mdivision by zero\e[39m\e[K\e[24;1H\e[36m>>> \e[39m\e[K\e[24;5H\e[?12l\e[?25h"
+  - delay: 10972
+    content: "\e[?25l\e[24;1H\e[36m>>> \e[39m\e[36md\e[39m\e[30m\e[1mf\e[0m\e[39m\e[K\e7\e[1000001;1H\eD\e8\e[24;1H\e[36m┌──────────────────────────────────────────────────────────────┐\e[39m\e7\e[1000001;1H\eD\e8\e[24;1H\e[36m│ \e[39m\e[36mdef     \e[39m \e[36mdel     \e[39m \e[36mdelattr(\e[39m \e[36mdf      \e[39m \e[36mdict(   \e[39m \e[36mdir(    \e[39m       \e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[24;1H\e[36m│ \e[39m\e[36mdivmod( \e[39m\e[36m                                                    \e[39m\e[36m │\e[39m\e7\e[1000001;1H\eD\e8\e[24;1H\e[36m└──────────────────────────────────────────────────────────────┘\e[39m\e[20;6H\e[?12l\e[?25h"
+  - delay: 247
+    content: "\e[?25l\e[20;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[20;7H\e[?12l\e[?25h"
+  - delay: 169
+    content: "\e[?25l\e[20;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[K\e[21;1H\e[36m┌──────────────────────────────────────────────────────────────┐\e[39m\e[K\e[22;1H\e[36m│ \e[39m\e[36mEUR                 \e[39m \e[36mT                   \e[39m                   \e[36m │\e[39m\e[K\e[23;1H\e[36m│ \e[39m\e[36mabs                 \e[39m \e[36madd                 \e[39m                   \e[36m │\e[39m\e[K\e[24;1H\e[36m│ \e[39m\e[36madd_prefix          \e[39m \e[36madd_suffix          \e[39m                   \e[36m │\e[39m\e[K\e7\e[1000001;1H\eD\e8\e[24;1H\e[36m└──────────────────────────────────────────────────────────────┘\e[39m\e[19;8H\e[?12l\e[?25h"
+  - delay: 448
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36ms\e[39m\e[K\e[21;1H\e[36m│ \e[39m\e[36msample          \e[39m \e[36mselect_dtypes   \e[39m \e[36msem             \e[39m          \e[36m │\e[39m\e[K\e[22;1H\e[36m│ \e[39m\e[36mset_axis        \e[39m \e[36mset_flags       \e[39m \e[36mset_index       \e[39m          \e[36m │\e[39m\e[K\e[23;1H\e[36m│ \e[39m\e[36mshape           \e[39m \e[36mshift           \e[39m \e[36msize            \e[39m          \e[36m │\e[39m\e[K\e[19;9H\e[?12l\e[?25h"
+  - delay: 850
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36mso\e[39m\e[K\e[21;1H\e[36m│ \e[39m\e[36msort_index    \e[39m \e[36msort_values   \e[39m                               \e[36m │\e[39m\e[K\e[22;1H\e[36m└──────────────────────────────────────────────────────────────┘\e[39m\e[K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;10H\e[?12l\e[?25h"
+  - delay: 209
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msor\e[39m\e[K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;11H\e[?12l\e[?25h"
+  - delay: 192
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msort\e[39m\e[K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;12H\e[?12l\e[?25h"
+  - delay: 292
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msort_\e[39m\e[K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;13H\e[?12l\e[?25h"
+  - delay: 290
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msort_i\e[39m\e[K\e[21;1H\e[36m│ \e[39m\e[36msort_index   \e[39m\e[36m                                               \e[39m\e[36m │\e[39m\e[K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;14H\e[?12l\e[?25h"
+  - delay: 147
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msort_in\e[39m\e[K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;15H\e[?12l\e[?25h"
+  - delay: 100
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msort_ind\e[39m\e[K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;16H\e[?12l\e[?25h"
+  - delay: 153
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msort_inde\e[39m\e[K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;17H\e[?12l\e[?25h"
+  - delay: 212
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msort_index\e[39m\e[K\e[20;1H\e[K\e[1K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;18H\e[?12l\e[?25h"
+  - delay: 364
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msort_index\e[39m\e[33m\e[1m(\e[0m\e[39m\e[K\e[20;1H\e[36m┌──────────────────────────────────────────────────────────────┐\e[39m\e[K\e[21;1H\e[36m│ \e[39m\e[36m\e[1mdf.sort_index\e[0m\e[39m\e[36m:\e[39m\e[36m \e[39m\e[36m(\e[39m\e[36maxis\e[39m\e[33m=\e[39m\e[36m\e[1mAxis=0\e[0m\e[39m\e[33m,\e[39m\e[33m \e[39m\e[36m\e[1mlevel\e[0m\e[39m\e[33m=\e[39m\e[36m\e[1mLevel|None=None\e[0m\e[39m\e[33m,\e[39m         \e[36m │\e[39m\e[K\e[22;1H\e[36m│ \e[39m\e[36mascending\e[39m\e[33m=\e[39m\e[36m\e[1mbool|int|Sequence[bool\e[0m\e[39m\e[36m\e[1m \e[0m\e[39m\e[36m\e[1m|\e[0m\e[39m\e[36m\e[1m \e[0m\e[39m\e[36m\e[1mint]=True\e[0m\e[39m\e[33m,\e[39m               \e[36m │\e[39m\e[K\e[23;1H\e[36m│ \e[39m\e[36minplace\e[39m\e[33m=\e[39m\e[36m\e[1mbool=False\e[0m\e[39m\e[33m,\e[39m\e[33m \e[39m\e[36mkind\e[39m\e[33m=\e[39m\e[36m\e[1mstr=\"quicksort\"\e[0m\e[39m\e[33m,\e[39m                   \e[36m │\e[39m\e[K\e[24;1H\e[36m└──────────────────────────────────────────────────────────────┘\e[39m\e[K\e[19;19H\e[?12l\e[?25h"
+  - delay: 6401
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msort_index\e[39m\e[K\e[20;1H\e[K\e[1K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;18H\e[?12l\e[?25h"
+  - delay: 196
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msort_inde\e[39m\e[K\e[20;1H\e[36m┌──────────────────────────────────────────────────────────────┐\e[39m\e[K\e[21;1H\e[36m│ \e[39m\e[36msort_index   \e[39m\e[36m                                               \e[39m\e[36m │\e[39m\e[K\e[22;1H\e[36m└──────────────────────────────────────────────────────────────┘\e[39m\e[K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;17H\e[?12l\e[?25h"
+  - delay: 150
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msort_ind\e[39m\e[K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;16H\e[?12l\e[?25h"
+  - delay: 159
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msort_in\e[39m\e[K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;15H\e[?12l\e[?25h"
+  - delay: 176
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msort_i\e[39m\e[K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;14H\e[?12l\e[?25h"
+  - delay: 300
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msort_\e[39m\e[K\e[21;1H\e[36m│ \e[39m\e[36msort_index    \e[39m \e[36msort_values   \e[39m                               \e[36m │\e[39m\e[K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;13H\e[?12l\e[?25h"
+  - delay: 438
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msort\e[39m\e[K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;12H\e[?12l\e[?25h"
+  - delay: 239
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36msor\e[39m\e[K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;11H\e[?12l\e[?25h"
+  - delay: 195
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36mso\e[39m\e[K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;10H\e[?12l\e[?25h"
+  - delay: 333
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[36ms\e[39m\e[K\e[21;1H\e[36m│ \e[39m\e[36msample          \e[39m \e[36mselect_dtypes   \e[39m \e[36msem             \e[39m          \e[36m │\e[39m\e[K\e[22;1H\e[36m│ \e[39m\e[36mset_axis        \e[39m \e[36mset_flags       \e[39m \e[36mset_index       \e[39m          \e[36m │\e[39m\e[K\e[23;1H\e[36m│ \e[39m\e[36mshape           \e[39m \e[36mshift           \e[39m \e[36msize            \e[39m          \e[36m │\e[39m\e[K\e[24;1H\e[36m└──────────────────────────────────────────────────────────────┘\e[39m\e[K\e[19;9H\e[?12l\e[?25h"
+  - delay: 2944
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[33m\e[1m.\e[0m\e[39m\e[K\e[21;1H\e[36m│ \e[39m\e[36mEUR                 \e[39m \e[36mT                   \e[39m                   \e[36m │\e[39m\e[K\e[22;1H\e[36m│ \e[39m\e[36mabs                 \e[39m \e[36madd                 \e[39m                   \e[36m │\e[39m\e[K\e[23;1H\e[36m│ \e[39m\e[36madd_prefix          \e[39m \e[36madd_suffix          \e[39m                   \e[36m │\e[39m\e[K\e[19;8H\e[?12l\e[?25h"
+  - delay: 197
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36mdf\e[39m\e[K\e[20;1H\e[K\e[1K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;7H\e[?12l\e[?25h"
+  - delay: 193
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[36md\e[39m\e[30m\e[1mf\e[0m\e[39m\e[K\e[20;1H\e[36m┌──────────────────────────────────────────────────────────────┐\e[39m\e[K\e[21;1H\e[36m│ \e[39m\e[36mdef     \e[39m \e[36mdel     \e[39m \e[36mdelattr(\e[39m \e[36mdf      \e[39m \e[36mdict(   \e[39m \e[36mdir(    \e[39m       \e[36m │\e[39m\e[K\e[22;1H\e[36m│ \e[39m\e[36mdivmod( \e[39m\e[36m                                                    \e[39m\e[36m │\e[39m\e[K\e[23;1H\e[36m└──────────────────────────────────────────────────────────────┘\e[39m\e[K\e[24;1H\e[K\e[1K\e[19;6H\e[?12l\e[?25h"
+  - delay: 20000
+    content: "\e[?25l\e[19;1H\e[36m>>> \e[39m\e[K\e[20;1H\e[K\e[1K\e[21;1H\e[K\e[1K\e[22;1H\e[K\e[1K\e[23;1H\e[K\e[1K\e[24;1H\e[K\e[1K\e[19;5H\e[?12l\e[?25h"
