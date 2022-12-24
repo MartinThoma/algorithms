@@ -68,51 +68,103 @@ def new_point(rect: Rectangle, i: int, pct: float = 0.1) -> Point:
     raise ValueError(f"i = {i} is invalid")
 
 
-def get_color(i: int, variant:int=1) -> Tuple[int, int, int, int]:
+def get_color(i: int, variant: int = 1) -> Tuple[int, int, int, int]:
+    variant = variant % 9
+    if variant == 0:
+        r = i % (256)
+        g = 0
+        b = 0
+        return (r, g, b, 255)
     if variant == 1:
-        r = 0 # i % 256
-        g = 0  # i * 2 % 256
+        r = 0
+        g = i % (256)
+        b = 0
+        return (r, g, b, 255)
+    elif variant == 2:
+        r = 0
+        g = 0
         b = i % (256)
         return (r, g, b, 255)
-    else:
-        r = i % 256
-        g = 0  # i * 2 % 256
-        b = 0 # i % (256 * 2)
+    elif variant == 3:
+        r = i % (256)
+        g = i % (256)
+        b = 0
+        return (r, g, b, 255)
+    elif variant == 4:
+        r = i % (64)
+        g = i % (64)
+        b = i % (64)
+        return (r, g, b, 255)
+    elif variant == 5:
+        r = 0
+        g = i % (256)
+        b = i % (256)
+        return (r, g, b, 255)
+    elif variant == 6:
+        r = i % (256)
+        g = i % (256)
+        b = i % (256)
+        return (r, g, b, 255)
+    elif variant == 7:
+        r = i % (128)
+        g = i % (128)
+        b = i % (128)
+        return (r, g, b, 255)
+    elif variant == 8:
+        r = i % (256)
+        g = 0
+        b = i % (256)
         return (r, g, b, 255)
 
 
-def main():
-    width = 1000
-    height = 1000
-    im = Image.new("RGB", (width, height), (0, 0, 0))
-    draw = ImageDraw.Draw(im)
+def create_rectangle(
+    im, draw, rect_width, rect_height, w_offset, h_offset, variant: int, pct: float = 0.01
+):
     rectangle = Rectangle(
-        Point(0, 0), Point(width, 0), Point(width, height), Point(0, height)
-    )
-
-    rect_width = 300
-    rect_height = 300
-    w_offset = (width - rect_width) / 2
-    h_offset = (height - rect_height) / 2
-    rectangle2 = Rectangle(
         Point(w_offset, h_offset),
-        Point(width - w_offset, h_offset),
-        Point(width - w_offset, height - h_offset),
-        Point(w_offset, height - h_offset),
+        Point(w_offset + rect_width, h_offset),
+        Point(w_offset + rect_width, h_offset + rect_height),
+        Point(w_offset, h_offset + rect_height),
     )
-
     for i in range(1000):
         p1 = rectangle[i % 4]
         p2 = rectangle[(i + 1) % 4]
-        draw_line_antialiased(draw, im, p1.x, p1.y, p2.x, p2.y, get_color(i, variant=1))
-
-        p1 = rectangle2[i % 4]
-        p2 = rectangle2[(i + 1) % 4]
-        draw_line_antialiased(draw, im, p1.x, p1.y, p2.x, p2.y, get_color(i, variant=2))
+        draw_line_antialiased(
+            draw, im, p1.x, p1.y, p2.x, p2.y, get_color(i, variant=variant)
+        )
 
         # draw.line((p1.x, p1.y, p2.x, p2.y), fill=get_color(i))
-        rectangle[i % 4] = new_point(rectangle, i % 4, pct=0.01)
-        rectangle2[i % 4] = new_point(rectangle2, i % 4, pct=0.01)
+        rectangle[i % 4] = new_point(rectangle, i % 4, pct=pct)
+
+
+def main():
+    rect_width = 300
+    rect_height = 300
+    rows = 3
+    cols = 3
+    width = rows * rect_width
+    height = cols * rect_height
+    im = Image.new("RGB", (width, height), (0, 0, 0))
+    draw = ImageDraw.Draw(im)
+
+    w_offset = (width - rect_width) / 2
+    h_offset = (height - rect_height) / 2
+    pct = [0.1, 0.1, 0.1, 0.1, 0.2, 0.1, 0.1, 0.1, 0.1]
+    for row in range(rows):
+        w_offset = rect_width * row
+        for col in range(cols):
+            i = row * rows + col
+            h_offset = rect_height * col
+            create_rectangle(
+                im,
+                draw,
+                rect_width,
+                rect_height,
+                w_offset,
+                h_offset,
+                variant=i,
+                pct=pct[i % len(pct)],
+            )
 
     # write to stdout
     im.save("rectangles.png", "PNG")

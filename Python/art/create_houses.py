@@ -7,6 +7,7 @@ from typing import List, Tuple
 import cv2
 import numpy as np
 import progressbar
+
 # First party modules
 from mpu.geometry import LineSegment, Point, do_lines_intersect
 
