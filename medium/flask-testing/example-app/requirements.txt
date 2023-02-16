@@ -12,12 +12,12 @@ click==7.1.2
     #   pip-tools
 flake8==3.9.0
     # via -r requirements.in
-flask-sqlalchemy==2.5.1
-    # via -r requirements.in
 flask==1.1.2
     # via
     #   -r requirements.in
     #   flask-sqlalchemy
+flask-sqlalchemy==2.5.1
+    # via -r requirements.in
 greenlet==1.0.0
     # via sqlalchemy
 iniconfig==1.1.1
@@ -26,14 +26,16 @@ itsdangerous==1.1.0
     # via flask
 jinja2==2.11.3
     # via flask
-markupsafe==1.1.1
-    # via jinja2
+markupsafe==2.1.2
+    # via
+    #   jinja2
+    #   werkzeug
 mccabe==0.6.1
     # via flake8
-mypy-extensions==0.4.3
-    # via mypy
 mypy==0.812
     # via -r requirements.in
+mypy-extensions==0.4.3
+    # via mypy
 packaging==20.9
     # via pytest
 pep517==0.10.0
@@ -62,7 +64,7 @@ typed-ast==1.4.2
     # via mypy
 typing-extensions==3.7.4.3
     # via mypy
-werkzeug==1.0.1
+werkzeug==2.2.3
     # via flask
 
 # The following packages are considered to be unsafe in a requirements file:
