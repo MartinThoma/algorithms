@@ -6,3 +6,6 @@ run:
 
 dump:
 	docker exec -t my_postgres_container pg_dump -U myuser -d my_database_name > my_database_name_dump.sql
+
+dumpdata:
+	docker exec -t my_postgres_container pg_dump --data-only -U myuser -d my_database_name > my_database_name_dump-dataonly.sql
