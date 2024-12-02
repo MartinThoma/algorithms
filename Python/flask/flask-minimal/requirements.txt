@@ -14,15 +14,17 @@ itsdangerous==2.0.1
     # via flask
 jinja2==3.0.3
     # via flask
-markupsafe==2.0.1
-    # via jinja2
+markupsafe==2.1.2
+    # via
+    #   jinja2
+    #   werkzeug
 pep517==0.12.0
     # via pip-tools
 pip-tools==6.4.0
     # via -r requirements.in
 tomli==1.2.2
     # via pep517
-werkzeug==2.0.2
+werkzeug==2.2.3
     # via flask
 wheel==0.37.0
     # via pip-tools
