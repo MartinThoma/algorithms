@@ -27,7 +27,7 @@ vector<double> gauss(vector< vector<double> >& A) {
         int maxRow = i;
         for (int k=i+1; k<n; k++) {
             if (abs(A[k][i]) > maxEl) {
-                maxEl = A[k][i];
+                maxEl = abs(A[k][i]);
                 maxRow = k;
             }
         }
