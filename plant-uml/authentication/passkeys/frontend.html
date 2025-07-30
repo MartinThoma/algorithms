@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Passkey Registration & Login</title>
+</head>
+<body>
+  <h1>Register Passkey</h1>
+  <input id="username" placeholder="Username" />
+  <button onclick="register()">Register</button>
+
+  <h1>Login</h1>
+  <input id="login-username" placeholder="Username" />
+  <button onclick="login()">Login</button>
+
+  <script>
+    // Helper to decode base64url string to Uint8Array
+    function decodeBase64Url(base64url) {
+      const pad = "=".repeat((4 - base64url.length % 4) % 4);
+      const base64 = base64url.replace(/-/g, "+").replace(/_/g, "/") + pad;
+      const str = atob(base64);
+      return new Uint8Array([...str].map(c => c.charCodeAt(0)));
+    }
+
+    async function register() {
+      const username = document.getElementById("username").value;
+      const res = await fetch("/register/options", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username }),
+      });
+      const options = await res.json();
+
+      // Decode challenge and user.id
+      options.publicKey.challenge = decodeBase64Url(options.publicKey.challenge);
+      options.publicKey.user.id = decodeBase64Url(options.publicKey.user.id);
+
+      // Decode excludeCredentials if present
+      if (options.publicKey.excludeCredentials) {
+        for (const cred of options.publicKey.excludeCredentials) {
+          cred.id = decodeBase64Url(cred.id);
+        }
+      }
+
+      // Pass only the publicKey part here (important!)
+      console.log('options.publicKey:', options.publicKey);
+      const credential = await navigator.credentials.create(options);
+
+      const attestationObject = credential.response.attestationObject;
+      const clientDataJSON = credential.response.clientDataJSON;
+      const rawId = credential.rawId;
+
+      await fetch("/register/complete", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: credential.id,
+          rawId: btoa(String.fromCharCode(...new Uint8Array(rawId))),
+          type: credential.type,
+          response: {
+            attestationObject: btoa(String.fromCharCode(...new Uint8Array(attestationObject))),
+            clientDataJSON: btoa(String.fromCharCode(...new Uint8Array(clientDataJSON))),
+          },
+        }),
+      });
+
+      alert("Registration complete!");
+    }
+
+    async function login() {
+      const username = document.getElementById("login-username").value;
+      const res = await fetch("/auth/options", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username }),
+      });
+      const options = await res.json();
+
+      // Decode challenge
+      options.publicKey.challenge = decodeBase64Url(options.publicKey.challenge);
+
+      // Decode allowedCredentials IDs
+      if (options.publicKey.allowCredentials) {
+        for (const cred of options.publicKey.allowCredentials) {
+          cred.id = decodeBase64Url(cred.id);
+        }
+      }
+
+      // Pass only the publicKey part here (important!)
+      const assertion = await navigator.credentials.get(options.publicKey);
+
+      const authData = assertion.response.authenticatorData;
+      const clientDataJSON = assertion.response.clientDataJSON;
+      const signature = assertion.response.signature;
+      const userHandle = assertion.response.userHandle;
+      const rawId = assertion.rawId;
+
+      await fetch("/auth/complete", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: assertion.id,
+          rawId: btoa(String.fromCharCode(...new Uint8Array(rawId))),
+          type: assertion.type,
+          response: {
+            authenticatorData: btoa(String.fromCharCode(...new Uint8Array(authData))),
+            clientDataJSON: btoa(String.fromCharCode(...new Uint8Array(clientDataJSON))),
+            signature: btoa(String.fromCharCode(...new Uint8Array(signature))),
+            userHandle: userHandle ? btoa(String.fromCharCode(...new Uint8Array(userHandle))) : null,
+          },
+        }),
+      });
+
+      alert("Login complete!");
+    }
+  </script>
+</body>
+</html>
