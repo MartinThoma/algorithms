@@ -2,11 +2,20 @@ import base64
 
 from fido2.server import Fido2Server
 from fido2.webauthn import (
+    AuthenticationResponse,
     PublicKeyCredentialRpEntity,
     PublicKeyCredentialUserEntity,
     RegistrationResponse,
 )
 from flask import Flask, jsonify, request, send_from_directory, session
+
+
+class RegisteredCredential:
+    def __init__(self, credential_id, public_key, sign_count):
+        self.credential_id = credential_id
+        self.public_key = public_key
+        self.sign_count = sign_count
+
 
 app = Flask(__name__)
 app.secret_key = "replace-with-a-secure-random-key"
@@ -110,7 +119,22 @@ def register_options():
     options, state = server.register_begin(
         user=user,
         credentials=[],
-        user_verification="preferred",
+        # resident_key_requirement: How the authenticator handles resident keys.
+        # Resident keys are credentials that are stored on the authenticator
+        #   "required" if you want to enforce resident keys,
+        #   "preferred" if you want to allow but not require them,
+        #   "discouraged" if you want to discourage them.
+        resident_key_requirement="required",
+        # authenticator_attachment: How the authenticator is attached to the device.
+        #   "platform" for platform authenticators  (e.g., Touch ID, Face ID, Windows Hello, Android fingerprint)
+        #   "cross-platform" for cross-platform authenticators (e.g., YubiKey, USB/Bluetooth/NFC device)
+        #   None for any authenticator.
+        authenticator_attachment=None,
+        # user_verification: How the user proofs their identity to the authenticator.
+        #   "required" to require user verification (e.g., PIN, biometric)
+        #   "preferred" to prefer user verification but allow without it
+        #   "discouraged" to discourage user verification but allow it
+        user_verification="required",
     )
     session["state"] = state
     session["username"] = username
@@ -134,7 +158,9 @@ def register_complete():
         ),
     }
 
-    registration_response = RegistrationResponse(raw_id=raw_id, response=response)
+    registration_response = RegistrationResponse(
+        raw_id=raw_id, response=response
+    )
 
     auth_data = server.register_complete(state, registration_response)
     attested_credential_data = auth_data.credential_data
@@ -156,7 +182,9 @@ def auth_options():
 
     credentials = [
         {
-            "id": base64.urlsafe_b64decode(users[username]["credential_id"] + "=="),
+            "id": base64.urlsafe_b64decode(
+                users[username]["credential_id"] + "=="
+            ),
             "transports": ["usb", "nfc", "ble"],
             "type": "public-key",
         },
@@ -166,31 +194,47 @@ def auth_options():
     session["state"] = state
     session["username"] = username
     auth_data_serialized = serialize_auth_options(auth_data)
-    return jsonify(auth_data_serialized)
+    return jsonify({"publicKey": auth_data_serialized})
 
 
 @app.route("/auth/complete", methods=["POST"])
 def auth_complete():
     data = request.json
-    client_data = data["clientDataJSON"]
-    authenticator_data = data["authenticatorData"]
-    signature = data["signature"]
-    credential_id = data["id"]
+    # data looks like this:
+    # {
+    #     "id": "7rwi3aL3o9f4dq4Zr8soJQ",
+    #     "rawId": "7rwi3aL3o9f4dq4Zr8soJQ==",
+    #     "type": "public-key",
+    #     "response": {
+    #         "authenticatorData": "SZYN5YgOjGh0NBcPZHZgW4/krrmihjLHmVzzuoMdl2MZAAAAAA==",
+    #         "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiX1JSUlpBTi1kNThXVHRmN1IyWVVnRVRFeDhvX3g0M3ZKMjY3Z1Ywdm5DdyIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImNyb3NzT3JpZ2luIjpmYWxzZX0=",
+    #         "signature": "MEUCIQCQVCGC7d+KwZwJZMGh3prD9aJ83q5/djXNsXZso0QIewIgYHm9zG88MiDbh7j0Z8Dw07P+n55mWRxbAwVXRoDK/Cg=",
+    #         "userHandle": "bW9vc2U="
+    #     }
+    # }
 
     state = session.pop("state")
+    # {'challenge': '05UCoyJGlmksGsQvI-O187oeOVauAZeShj9nf9flZVM', 'user_verification': None}
+
+    def base64url_normalize(s: str) -> str:
+        return s + "=" * (-len(s) % 4)
+
+    raw_id = base64url_normalize(data["rawId"])
+    data["id"] = raw_id
+    data["rawId"] = raw_id
+
     username = session.get("username")
     if username not in users:
         return jsonify({"error": "Unknown user"}), 400
 
-    credential = users[username]
-    server.authenticate_complete(
-        state,
-        [credential],
-        credential_id,
-        client_data,
-        authenticator_data,
-        signature,
+    auth_response = AuthenticationResponse.from_dict(data)
+    credential = RegisteredCredential(
+        credential_id=base64.urlsafe_b64decode(data["id"] + "=="),
+        public_key=users[username]["public_key"],
+        sign_count=users[username]["sign_count"],
     )
+
+    server.authenticate_complete(state, [credential], auth_response)
     return jsonify({"status": "ok"})
 
 

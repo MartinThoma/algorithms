@@ -90,7 +90,7 @@
       }
 
       // Pass only the publicKey part here (important!)
-      const assertion = await navigator.credentials.get(options.publicKey);
+      const assertion = await navigator.credentials.get({ publicKey: options.publicKey });
 
       const authData = assertion.response.authenticatorData;
       const clientDataJSON = assertion.response.clientDataJSON;
