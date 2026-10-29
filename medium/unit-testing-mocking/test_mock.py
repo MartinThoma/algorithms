@@ -9,9 +9,9 @@ from mock_example import generate_filename
 class NewDate(datetime.datetime):
     @classmethod
     def now(cls):
-        return cls(1990, 4, 28)
+        return cls(1990, 5, 15)
 
 
 def test_generate_filename():
     datetime.datetime = NewDate
-    assert generate_filename() == "1990-04-28.png"
+    assert generate_filename() == "1990-05-15.png"
