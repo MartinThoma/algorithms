@@ -153,13 +153,43 @@ def main():
         sns.lineplot(data=df_resampled, x="hour", y="E_out", label="Energy to grid (kWh)", color="orange")
         sns.lineplot(data=df_resampled, x="hour", y="E_in", label="Energy from grid (kWh)", color="blue")
         sns.lineplot(data=df_resampled, x="hour", y="Power_PV", label="Energy Produced (kWh)", color="yellow")
-        plt.title("Energy Usage and Production Over Time")      
+        plt.title(f"Energy Usage and Production ({df_resampled['date'].min()} to {df_resampled['date'].max()})")      
         plt.xlabel("Hour of the Day")
         plt.ylabel("Energy (kWh)")
         plt.xticks(range(0, 24), [f"{i}:00" for i in range(24)], rotation=45)
         plt.legend()
         plt.tight_layout()
-        plt.show()
+        # plt.show()
+        plt.savefig(f"energy_usage_production-{df_resampled['date'].min()}.png")
+
+    # Show a histogram of the Power column
+    plt.figure(figsize=(10, 6))
+    sns.histplot(df[df["Power"] > 500]["Power"], bins=50, kde=True)
+    plt.title("Distribution of Power Consumption (over 500W)")
+    plt.xlabel("Power (Watt)")
+    plt.ylabel("Frequency")
+    plt.tight_layout()
+    plt.savefig("power_distribution_over_500.png")
+
+
+    # Show a histogram of the Power column
+    plt.figure(figsize=(10, 6))
+    sns.histplot(df[df["Power"] < 500]["Power"], bins=50, kde=True)
+    plt.title("Distribution of Power Consumption (under 500W)")
+    plt.xlabel("Power (Watt)")
+    plt.ylabel("Frequency")
+    plt.tight_layout()
+    plt.savefig("power_distribution_under_500.png")
+    plt.show()
+
+    # Find outliers in the Power column
+    power_threshold = 4500  # Define a threshold for outliers
+    outliers = df[df["Power"] > power_threshold]
+    if not outliers.empty:
+        print("Outliers in Power column:")
+        print(outliers[["Power"]])
+    else:
+        print("No outliers found in Power column.")
 
 if __name__ == "__main__":
     main()

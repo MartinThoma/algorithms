@@ -30,5 +30,5 @@ Time is in local time (Berlin/Europe).
         * If my wife has a night-shift, I prepare the dinner starting around 17:00.
         * If my wife has a free day, she prepares the dinner starting around 18:30.
     * We don't have a heater in the bathroom, so we use an electric heater there. Typically in the evening.
-    * I was sick in the night of 2025-05-27 to 2025-05-28, so I used the electric heater in the bathroom during the night. I think I even slept there and forgot to turn it off.
     * In the night from 2025-05-24 to 2025-05-25 I forgot to turn off the oven. I noticed in the morning.
+    * I was sick in the night of 2025-05-27 to 2025-05-28, so I used the electric heater in the bathroom during the night. I think I even slept there and forgot to turn it off.

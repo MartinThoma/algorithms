@@ -8,7 +8,7 @@ from datetime import datetime
 TASMOTA_IP = "http://192.168.178.30"
 CMD = "Status 8"
 CSV_FILE = "energy_data.csv"
-POLL_INTERVAL = 1  # seconds
+POLL_INTERVAL = 5  # seconds
 
 def fetch_data():
     try:
@@ -22,7 +22,7 @@ def fetch_data():
 def extract_data(json_data):
     try:
         sns = json_data.get("StatusSNS", {})
-        timestamp = sns.get("Time")
+        timestamp = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
         ehz = sns.get("eHZ", {})
         return {
             "timestamp": timestamp,
